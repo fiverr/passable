@@ -1,0 +1,44 @@
+{
+    "ecmaFeatures": {
+        "globalReturn": true,
+        "jsx": true,
+        "modules": true
+    },
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "globals": {
+        "document": false,
+        "escape": false,
+        "navigator": false,
+        "unescape": false,
+        "window": false,
+        "describe": true,
+        "before": true,
+        "it": true,
+        "expect": true,
+        "sinon": true
+    },
+    "parser": "babel-eslint",
+    "plugins": [],
+    "rules": {
+        "arrow-body-style": 2,
+        "arrow-parens": 2,
+        "arrow-spacing": 2,
+        "no-duplicate-imports": 2,
+        "no-template-curly-in-string": 2,
+        "no-useless-computed-key": 2,
+        "no-useless-constructor": 2,
+        "no-useless-rename": 2,
+        "no-var": 2,
+        "object-shorthand": ["error", "properties"],
+        "prefer-arrow-callback": 2,
+        "prefer-const": 2,
+        "prefer-spread": 2,
+        "prefer-template": 2,
+        "rest-spread-spacing": 2,
+        "template-curly-spacing": 2
+    }
+}
