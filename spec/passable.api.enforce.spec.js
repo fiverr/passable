@@ -5,7 +5,6 @@ import chai from 'chai';
 
 const expect = chai.expect;
 
-
 const enforce = new Passable('oneValidationError', function(group, pass) {
     pass('IsFalse', 'Should Fail', () => group.enforce([1, 2, 3], {
         isLongerThan: {

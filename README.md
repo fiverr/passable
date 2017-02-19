@@ -56,41 +56,61 @@ const validate = new Passable('UserEditForm', function(group, pass) {
         // this is an example for a free-style, do it yourself, validation
 		return data.email.substr(-1) !== 'y';
 	});
-})
+});
 ```
 
 And the resulting object for these tests would be:
 ```js
 {
-    "name": "UserEditForm",
-    "testsPerformed": {
-        "UserName": {
-            "testCount": 1,
-            "failCount": 1
+    name: 'UserEditForm',
+    testsPerformed: {
+        UserName: {
+            testCount: 1,
+            failCount: 1
         },
-        "UserEmail": {
-            "testCount": 1,
-            "failCount": 1
+        UserEmail: {
+            testCount: 1,
+            failCount: 1
         }
     },
-    "hasValidationErrors": true,
-    "validationErrors": {
-        "UserName": [
-            "Must be at least 5 chars, but not longer than 20"
+    hasValidationErrors: true,
+    validationErrors: {
+        UserName: [
+            'Must be at least 5 chars, but not longer than 20'
         ],
-        "UserEmail": [
-            "Must not end with the letter Y"
+        UserEmail: [
+            'Must not end with the letter Y'
         ]
     },
-    "failCount": 2,
-    "testCount": 2
+    failCount: 2,
+    testCount: 2
 }
 ```
 
-## The predefined tests
-The predefined tests, which are accessible through the `enforce` method accept these two attributes:
-* `testAgainst`: if relevant, the value to test your data against (for example, max length)
-* `expect`: the result of the test, in case the data passes the validation.
+## Optimistic approach
+Passable is optimistic by default. If you run Passable and do not supply it with any tests, your results object will be a passing object.
+You could, if you want to override this this behaviour, you could set your test to a pessimistic approach, which will fail empty tests by default.
+
+```js
+const validate = new Passable('PessimisticFail', 'pessimistic', function() {});
+```
+This will result with the following results object:
+```js
+{
+	name:'PessimisticFail',
+	testsPerformed:{},
+	hasValidationErrors:true,
+	validationErrors:{},
+	failCount:0,
+	testCount:0
+}
+```
+
+## The enforce method
+The enforce method runs predefined tests in a sequence. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually.
+For each predefined tests, the enforce method accept these two attributes:
+* `testAgainst`: [optional | unless needed] the value to test your data against (for example, max length).
+* `expect`: [optional | default: true] the result of the test, in case the data passes the validation.
 
 This gives you the flexibility to write your tests the way that suites you, for example:
 ```js

@@ -1,8 +1,21 @@
 import Tests from './tests/Tests';
 
+const OPTIMISTIC = 'optimistic',
+    PESSIMISTIC  = 'pessimistic';
+
 class Passable {
 
-    constructor(name, passables) {
+    constructor(name, ...args) {
+
+        let passables,
+            operationMode = OPTIMISTIC;
+
+        if (typeof args[1] === 'function') {
+            passables = args[1];
+            operationMode = args[0] === PESSIMISTIC ? args[0] : operationMode;
+        } else {
+            passables = args[0];
+        }
 
         this.name = name;
         this.testsPerformed = {};
@@ -12,6 +25,10 @@ class Passable {
         this.testCount = 0;
 
         passables(this, this.pass.bind(this));
+
+        if ((this.testCount === 0) && (operationMode === PESSIMISTIC)) {
+            this.hasValidationErrors = true;
+        }
     }
 
     pass(dataName, statement, callback) {
