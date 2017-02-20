@@ -23,7 +23,7 @@ const config = {
     entry: `${__dirname}/src/Passable.js`,
     devtool: 'source-map',
     output: {
-        path: `${__dirname}/../passable-dist/lib`,
+        path: `${__dirname}/lib`,
         filename: outputFile,
         library: libraryName,
         libraryTarget: 'umd',
