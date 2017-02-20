@@ -29,7 +29,7 @@ const warnPass = new Passable('WarnPass', function (pass, group) {
         pass('Fail', 'should Fail', () => false);
     }),
     fail = new Passable('Fail', function (pass, group) {
-        pass('Warn', 'should warn', 'warn', () => true);
+        pass('Warn', 'should not warn', 'warn', () => true);
         pass('Fail', 'should Fail', () => false);
     });
 
