@@ -27,7 +27,7 @@ class Passable {
         this.warnCount = 0;
         this.testCount = 0;
 
-        passables(this, this.pass.bind(this));
+        passables(this.pass.bind(this), this);
 
         if ((this.testCount === 0) && (operationMode === PESSIMISTIC)) {
             this.hasValidationErrors = true;

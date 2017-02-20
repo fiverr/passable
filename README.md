@@ -37,7 +37,7 @@ You could perform multiple 'passes' on the same data object. If you do so, it is
 //  email: "test@sil.ly"
 // }
 
-const validate = new Passable('UserEditForm', function(group, pass) {
+const validate = new Passable('UserEditForm', function(pass, group) {
 	pass('UserName', 'Must be at least 5 chars, but not longer than 20', () => {
         // this is an example using the predefined tests, using the 'enforce' method
 		return group.enforce(data.userName, {
@@ -97,7 +97,7 @@ This will leave `hasValidationErrors` unchanged (other tests may have set it to 
 If no flag is added, your pass function will default to `fail`.
 
 ```
-const validate = new Passable('WarnAndPass', function(group, pass) {
+const validate = new Passable('WarnAndPass', function(pass, group) {
     pass('WarnMe', 'Should warn and not fail', 'warn', () => false);
 });
 ```

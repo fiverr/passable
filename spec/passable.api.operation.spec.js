@@ -6,7 +6,7 @@ import chai from 'chai';
 const expect = chai.expect;
 
 const pessimisticFail = new Passable('pessimistic-fail', 'pessimistic', function() {});
-const pessimisticPass = new Passable('pessimistic-pass', 'pessimistic', function(group, pass) {
+const pessimisticPass = new Passable('pessimistic-pass', 'pessimistic', function(pass, group) {
     pass('pessimisticPass', 'should pass', () => true);
 });
 
@@ -20,7 +20,7 @@ describe('Test pessimistic behaviour', () => {
 });
 
 const explicitOptimisticPass = new Passable('optimistic-pass', 'optimistic', function() {});
-const explicitOptimisticFail = new Passable('optimistic-fail', 'optimistic', function(group, pass) {
+const explicitOptimisticFail = new Passable('optimistic-fail', 'optimistic', function(pass, group) {
     pass('ExplicitOptimisticFail', 'should Fail', () => false);
 });
 
@@ -35,7 +35,7 @@ describe('Test explicit pessimistic behaviour', () => {
 
 
 const implicitOptimisticPass = new Passable('optimistic-pass', function() {});
-const implicitOptimisticFail = new Passable('optimistic-fail', function(group, pass) {
+const implicitOptimisticFail = new Passable('optimistic-fail', function(pass, group) {
     pass('ImplicitOptimisticFail', 'should Fail', () => false);
 });
 
