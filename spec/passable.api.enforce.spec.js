@@ -44,10 +44,12 @@ const enforce = new Passable('oneValidationError', function(group, pass) {
 
 describe('Test Passable\'s enforce function', () => {
     it('Should fail four times', () => {
-        expect(enforce.testsPerformed).to.have.deep.property('IsFalse.failCount', 4);
+        expect(enforce.testsPerformed.IsFalse.failCount).to.equal(4);
+        expect(enforce.testsPerformed.IsFalse.testCount).to.equal(4);
     });
 
     it('Should pass two times', () => {
-        expect(enforce.testsPerformed).to.have.deep.property('IsTrue.testCount', 2);
+        expect(enforce.testsPerformed.IsTrue.testCount).to.equal(2);
+        expect(enforce.testsPerformed.IsTrue.failCount).to.equal(0);
     });
 });

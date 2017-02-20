@@ -20,9 +20,9 @@ See [Passable-Server](https://github.com/ealush/passable-server) for server side
 ## Installation
 Just `npm install passable --save` and you're all set.
 
-# How to use Passable?
-
 ---
+
+# How to use Passable?
 
 You construct your tests in a spec-like manner, grouping a bunch of tests together, for example, all inputs in a form.
 
@@ -63,6 +63,8 @@ And the resulting object for these tests would be:
 ```js
 {
     name: 'UserEditForm',
+    hasValidationErrors: true,
+    hasValidationWarnings: false,
     testsPerformed: {
         UserName: {
             testCount: 1,
@@ -73,7 +75,6 @@ And the resulting object for these tests would be:
             failCount: 1
         }
     },
-    hasValidationErrors: true,
     validationErrors: {
         UserName: [
             'Must be at least 5 chars, but not longer than 20'
@@ -82,8 +83,47 @@ And the resulting object for these tests would be:
             'Must not end with the letter Y'
         ]
     },
+    validationWarnings: {},
     failCount: 2,
+    warnCount: 0,
     testCount: 2
+}
+```
+
+## Warn vs Fail
+By default, `pass` functions with the return value of `false` will fail your test group and set `hasValidationErrors` to `true`. Sometimes you would want to set a warn-only validation test (password strength, for example). In this case, you would add the 'warn' flag to your pass function.
+This will leave `hasValidationErrors` unchanged (other tests may have set it to `true`), and update `hasValidationWarnings` to `true`. It will also bump up `warnCount`.
+
+If no flag is added, your pass function will default to `fail`.
+
+```
+const validate = new Passable('WarnAndPass', function(group, pass) {
+    pass('WarnMe', 'Should warn and not fail', 'warn', () => false);
+});
+```
+
+Will result in the following object:
+```js
+{
+    name: 'WarnAndPass',
+    hasValidationErrors: false,
+    hasValidationWarnings: true,
+    testsPerformed: {
+        WarnMe: {
+            testCount: 1,
+            failCount: 0,
+            warnCount: 1
+        }
+    },
+    validationErrors: {},
+    validationWarnings: {
+        WarnMe: [
+            'Should warn and not fail'
+        ]
+    },
+    failCount: 0,
+    warnCount: 1,
+    testCount: 1
 }
 ```
 
@@ -94,15 +134,18 @@ You could, if you want to override this this behaviour, you could set your test 
 ```js
 const validate = new Passable('PessimisticFail', 'pessimistic', function() {});
 ```
-This will result with the following results object:
+This will return the following results object:
 ```js
 {
-	name:'PessimisticFail',
-	testsPerformed:{},
-	hasValidationErrors:true,
-	validationErrors:{},
-	failCount:0,
-	testCount:0
+    name: 'PessimisticFail',
+    hasValidationErrors: true,
+    hasValidationWarnings: false,
+    testsPerformed: {},
+    validationErrors: {},
+    validationWarnings: {},
+    failCount: 0,
+    warnCount: 0,
+    testCount: 0
 }
 ```
 

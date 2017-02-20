@@ -1,27 +1,30 @@
 import Tests from './tests/Tests';
 
 const OPTIMISTIC = 'optimistic',
-    PESSIMISTIC  = 'pessimistic';
+    PESSIMISTIC = 'pessimistic',
+    WARN = 'warn',
+    FAIL = 'fail';
 
 class Passable {
 
     constructor(name, ...args) {
 
-        let passables,
+        let passables = args[0],
             operationMode = OPTIMISTIC;
 
         if (typeof args[1] === 'function') {
             passables = args[1];
             operationMode = args[0] === PESSIMISTIC ? args[0] : operationMode;
-        } else {
-            passables = args[0];
         }
 
         this.name = name;
-        this.testsPerformed = {};
         this.hasValidationErrors = false;
+        this.hasValidationWarnings = false;
+        this.testsPerformed = {};
         this.validationErrors = {};
+        this.validationWarnings = {};
         this.failCount = 0;
+        this.warnCount = 0;
         this.testCount = 0;
 
         passables(this, this.pass.bind(this));
@@ -31,26 +34,48 @@ class Passable {
         }
     }
 
-    pass(dataName, statement, callback) {
+    pass(dataName, statement, ...args) {
+
+        let callback = args[0],
+            severity = FAIL;
+
+         if (typeof args[1] === 'function') {
+            callback = args[1];
+            severity = args[0] === WARN ? args[0] : FAIL;
+        }
+
         const isValid = callback();
 
         if (!this.testsPerformed.hasOwnProperty(dataName)) {
             this.testsPerformed[dataName] = {
                 testCount: 0,
-                failCount: 0
+                failCount: 0,
+                warnCount: 0
             };
         }
 
         if (!isValid) {
-            this.testsPerformed[dataName].failCount++;
-            this.hasValidationErrors = true;
-            this.validationErrors[dataName] = this.validationErrors[dataName] || [];
-            this.validationErrors[dataName].push(statement);
-            this.failCount++;
+            severity === FAIL ? this.onError(dataName, statement) : this.onWarn(dataName, statement);
         }
 
         this.testsPerformed[dataName].testCount++;
         this.testCount++;
+    }
+
+    onError(dataName, statement) {
+        this.hasValidationErrors = true;
+        this.validationErrors[dataName] = this.validationErrors[dataName] || [];
+        this.validationErrors[dataName].push(statement);
+        this.failCount++;
+        this.testsPerformed[dataName].failCount++;
+    }
+
+    onWarn(dataName, statement) {
+        this.hasValidationWarnings = true;
+        this.validationWarnings[dataName] = this.validationWarnings[dataName] || [];
+        this.validationWarnings[dataName].push(statement);
+        this.warnCount++;
+        this.testsPerformed[dataName].warnCount++;
     }
 
     run(value, test, testAgainst) {
