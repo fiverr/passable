@@ -1,4 +1,4 @@
-# Passable
+# Passable [![npm version](https://badge.fury.io/js/passable.svg)](https://badge.fury.io/js/passable) [![Build Status](https://travis-ci.org/ealush/passable.svg?branch=master)](https://travis-ci.org/ealush/passable)
 Isomorphic data model validations made easy.
 
 ## What is Passable
