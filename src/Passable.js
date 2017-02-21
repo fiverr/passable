@@ -1,21 +1,15 @@
 import Tests from './tests/Tests';
 
-const OPTIMISTIC = 'optimistic',
-    PESSIMISTIC = 'pessimistic',
-    WARN = 'warn',
-    FAIL = 'fail';
+const WARN = 'warn',
+    FAIL = 'fail',
+    FUNCTION = 'function',
+    STRING = 'string';
 
 class Passable {
 
     constructor(name, ...args) {
 
-        let passables = args[0],
-            operationMode = OPTIMISTIC;
-
-        if (typeof args[1] === 'function') {
-            passables = args[1];
-            operationMode = args[0] === PESSIMISTIC ? args[0] : operationMode;
-        }
+        const passables = args.slice(-1)[0];
 
         this.name = name;
         this.hasValidationErrors = false;
@@ -27,24 +21,25 @@ class Passable {
         this.warnCount = 0;
         this.testCount = 0;
 
-        passables(this.pass.bind(this), this);
-
-        if ((this.testCount === 0) && (operationMode === PESSIMISTIC)) {
-            this.hasValidationErrors = true;
+        if (typeof passables === FUNCTION) {
+            passables(this.pass.bind(this), this);
         }
     }
 
     pass(dataName, statement, ...args) {
 
-        let callback = args[0],
-            severity = FAIL;
+        const callback = args.slice(-1)[0];
 
-         if (typeof args[1] === 'function') {
-            callback = args[1];
-            severity = args[0] === WARN ? args[0] : FAIL;
+        let severity = FAIL,
+            isValid  = true;
+
+        if (typeof callback === FUNCTION) {
+            isValid = callback();
         }
 
-        const isValid = callback();
+         if (typeof args[0] === STRING) {
+            severity = args[0] === WARN ? WARN : FAIL;
+        }
 
         if (!this.testsPerformed.hasOwnProperty(dataName)) {
             this.testsPerformed[dataName] = {

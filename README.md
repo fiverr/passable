@@ -127,28 +127,6 @@ Will result in the following object:
 }
 ```
 
-## Optimistic approach
-Passable is optimistic by default. If you run Passable and do not supply it with any tests, your results object will be a passing object.
-You could, if you want to override this this behaviour, you could set your test to a pessimistic approach, which will fail empty tests by default.
-
-```js
-const validate = new Passable('PessimisticFail', 'pessimistic', function() {});
-```
-This will return the following results object:
-```js
-{
-    name: 'PessimisticFail',
-    hasValidationErrors: true,
-    hasValidationWarnings: false,
-    testsPerformed: {},
-    validationErrors: {},
-    validationWarnings: {},
-    failCount: 0,
-    warnCount: 0,
-    testCount: 0
-}
-```
-
 ## The enforce method
 The enforce method runs predefined tests in a sequence. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually.
 For each predefined tests, the enforce method accept these two attributes:
