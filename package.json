@@ -8,8 +8,8 @@
     "scripts": {
         "build": "WEBPACK_ENV=build webpack",
         "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
-        "test-watch": "mocha --compilers js:babel-core/register --colors -w ./spec/*.spec.js",
-        "test": "mocha --compilers js:babel-core/register --colors ./spec/*.spec.js"
+        "test:watch": "mocha --compilers js:babel-core/register --colors -w ./**/*.spec.js ./**/spec.js",
+        "test": "mocha --compilers js:babel-core/register --colors ./**/*.spec.js ./**/spec.js"
     },
     "devDependencies": {
         "babel-core": "^6.22.1",

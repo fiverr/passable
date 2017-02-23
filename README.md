@@ -10,7 +10,7 @@ Just `npm install passable --save` and you're all set.
 ---
 
 ## What is Passable
-More than anything, Passable is a way to structure your data model validations in a way that's easy to manage - as small tests, grouped logically. They can be interdependant, or standalone, they can perform your own validation logic, or rely on the predefined tests you can match your data model against.
+More than anything, Passable is a way to structure your data model validations in a way that's easy to manage - as small tests, grouped logically. They can be interdependant, or standalone, they can perform your own validation logic, or rely on the predefined rules you can match your data model against.
 
 ![alt tag](https://raw.githubusercontent.com/ealush/passable/diagram/passable_diagram.png)
 
@@ -45,7 +45,7 @@ You could perform multiple 'passes' on the same data object. If you do so, it is
 
 const validate = Passable('UserEditForm', (pass, enforce) =>  {
 	pass('UserName', 'Must be at least 5 chars, but not longer than 20', () => {
-        // this is an example using the predefined tests, using the 'enforce' method
+        // this is an example using the predefined tests, using the 'enforce' function
 		return enforce(data.userName, {
 			isLongerThan: {
 				testAgainst: 5,
@@ -96,7 +96,69 @@ And the resulting object for these tests would be:
 }
 ```
 
-## Warn vs Fail
+# The enforce function
+The enforce function runs predefined rules in a sequence. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually.
+For each rule, you may also pass an options object (or a false value, if there is no need for options), which will be used by the function of the rule.
+
+Inside the options object, you can also pass an `expect` attribute (defaults to `true` if unspecified); After running testing each rule, the result is compared with the expected value to determine wheather the test has passed.
+
+This gives you the flexibility to write your tests the way that's more comfortable to you.
+```js
+{
+    isShorterThan: { // must be 5 or more
+        testAgainst: 5,
+        expect: false // basically flips the results
+   },
+   isArray: 0, // no need to pass arguments, expect defaults to true
+   isOfExactLength: {
+       testAgainst: 6 // again, expect is implicitly true
+   }
+}
+```
+
+It is recommended that your `expect` attribute will be a boolean value, but with custom rules, you can use any value you want.
+
+## The predefined rules
+At the moment there are only a few predefined rules:
+* `isArray`
+* `isLongerThan     // options: testAgainst`
+* `isNumber`
+* `isOfExactLength  // options: testAgainst`
+* `isShorterThan    // options: testAgainst`
+* `isString`
+* `matchesRegex     // options: testAgainst`
+
+## Adding more (/custom) rules
+To make it easier to reuse logic across your application, sometimes you would want to encapsulate bits of logic in rules that you can later on use, for example, what's considered a valid email.
+
+Your custom rules are essentially a single javascript object containing your rules.
+```js
+const myCustomRules = {
+    isValidEmail: (value) => value.indexOf('@') > -1,
+    hasKey: (value, {key}) => value.hasOwnProperty(key),
+    passwordsMatch: (passConfirm, options) => passConfirm === options.passConfirm && options.passIsValid
+}
+```
+Just like the predefined rules, your custom rules can accepts two parameters:
+* `value` The actual value you are testing against.
+* `options` (optional) the options object which you pass when running your tests.
+
+Adding your rules so they are available to the enforce function is as simple as running Passable with another param.
+```js
+    Passable('GroupName', () => {...}, myCustomRules);
+```
+```js
+    Passable('GroupName', (pass, enforce) => {
+        pass('TestName', 'Must have a valid email', () => {
+            enforce(user.email, {
+                isValidEmail: { expect: true }
+            });
+        });
+    }, myCustomRules);
+```
+
+
+# Warn only tests
 By default, `pass` functions with the return value of `false` will fail your test group and set `hasValidationErrors` to `true`. Sometimes you would want to set a warn-only validation test (password strength, for example). In this case, you would add the 'warn' flag to your pass function.
 This will leave `hasValidationErrors` unchanged (other tests may have set it to `true`), and update `hasValidationWarnings` to `true`. It will also bump up `warnCount`.
 
@@ -130,31 +192,5 @@ Will result in the following object:
     failCount: 0,
     warnCount: 1,
     testCount: 1
-}
-```
-
-## The enforce method
-The enforce method runs predefined tests in a sequence. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually.
-For each predefined tests, the enforce method accept these two attributes:
-* `testAgainst`: [optional | unless needed] the value to test your data against (for example, max length).
-* `expect`: [optional | default: true] the result of the test, in case the data passes the validation.
-
-This gives you the flexibility to write your tests the way that suites you, for example:
-```js
-{
-   isShorterThan: {
-        testAgainst: 5,
-        expect: false
-   }
-}
-```
-
-will return the same result as
-```js
-{
-   isLongerThan: {
-        testAgainst: 5,
-        expect: true
-   }
 }
 ```
