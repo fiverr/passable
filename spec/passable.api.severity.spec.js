@@ -21,14 +21,14 @@ describe('Test warn flag', () => {
 
 // Actual test data
 
-const warnPass = new Passable('WarnPass', function (pass, group) {
+const warnPass = Passable('WarnPass', (pass, enforce) =>  {
         pass('WarnPass', 'should warn', 'warn', () => false);
     }),
-    warnFail = new Passable('WarnFail', function (pass, group) {
+    warnFail = Passable('WarnFail', (pass, enforce) =>  {
         pass('Warn', 'should warn', 'warn', () => false);
         pass('Fail', 'should Fail', () => false);
     }),
-    fail = new Passable('Fail', function (pass, group) {
+    fail = Passable('Fail', (pass, enforce) =>  {
         pass('Warn', 'should not warn', 'warn', () => true);
         pass('Fail', 'should Fail', () => false);
     });

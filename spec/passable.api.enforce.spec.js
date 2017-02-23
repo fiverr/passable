@@ -5,36 +5,36 @@ import chai from 'chai';
 
 const expect = chai.expect;
 
-const enforce = new Passable('oneValidationError', function(pass, group) {
-    pass('IsFalse', 'Should Fail', () => group.enforce([1, 2, 3], {
+const enforce = Passable('oneValidationError', (pass, enforce) =>  {
+    pass('IsFalse', 'Should Fail', () => enforce([1, 2, 3], {
         isLongerThan: {
             testAgainst: 4
         }
     }));
-    pass('IsFalse', 'Should Fail', () => group.enforce([1, 2, 3], {
+    pass('IsFalse', 'Should Fail', () => enforce([1, 2, 3], {
         isShorterThan: {
             testAgainst: 2
         }
     }));
-    pass('IsFalse', 'Should Fail', () => group.enforce([1, 2, 3], {
+    pass('IsFalse', 'Should Fail', () => enforce([1, 2, 3], {
         isLongerThan: {
             testAgainst: 4,
             expect: true
         }
     }));
-    pass('IsFalse', 'Should Fail', () => group.enforce([1, 2, 3], {
+    pass('IsFalse', 'Should Fail', () => enforce([1, 2, 3], {
         isShorterThan: {
             testAgainst: 2,
             expect: true
         }
     }));
-    pass('IsTrue', 'Should Pass', () => group.enforce([1, 2, 3], {
+    pass('IsTrue', 'Should Pass', () => enforce([1, 2, 3], {
         isLongerThan: {
             testAgainst: 4,
             expect: false
         }
     }));
-    pass('IsTrue', 'Should Pass', () => group.enforce([1, 2, 3], {
+    pass('IsTrue', 'Should Pass', () => enforce([1, 2, 3], {
         isShorterThan: {
             testAgainst: 2,
             expect: false

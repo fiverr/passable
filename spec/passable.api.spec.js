@@ -5,17 +5,17 @@ import chai from 'chai';
 
 const expect = chai.expect;
 
-const oneValidationError = new Passable('oneValidationError', function (pass, group) {
+const oneValidationError = Passable('oneValidationError', (pass, enforce) =>  {
     pass('IsFalse', 'Should Fail', () => false);
     pass('IsTrue', 'Should Pass', () => true);
 });
 
-const noValidationErrors = new Passable('noValidationErrors', function (pass, group) {
+const noValidationErrors = Passable('noValidationErrors', (pass, enforce) =>  {
     pass('IsTrue', 'Should Pass', () => true);
     pass('IsTrue', 'ShouldPass', () => true);
 });
 
-const failSecondTest = new Passable('failSecondTest', function (pass, group) {
+const failSecondTest = Passable('failSecondTest', (pass, enforce) =>  {
     pass('FirstTest', 'Should Pass ', () => true);
     pass('SecondTest', 'Should Fail', () => false);
     pass('ThirdTest', 'Should Pass', () => true);
