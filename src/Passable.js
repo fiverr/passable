@@ -45,11 +45,15 @@ const Passable = (name, passes, custom) => {
         const callback = args.slice(-1)[0];
 
         let severity = FAIL,
-            isValid = true;
+            isValid;
 
         if (typeof callback === FUNCTION) {
             // run the validation logic
-            isValid = callback();
+            try {
+                isValid = callback();
+            } catch (e) {
+                isValid = false;
+            }
         }
 
         if (typeof args[0] === 'string') {
