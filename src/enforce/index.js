@@ -30,14 +30,21 @@ const Enforce = (custom) => {
         let isValid = true;
         for (const rule in tests) {
 
-            let expect = true;
+            let expect = true,
+                options = tests[rule];
 
-            const options = tests[rule],
-                result = run(value, rule, options);
-
-            if (options && options.hasOwnProperty('expect')) {
+            if (!options) {
+                expect = false;
+                options = {};
+            } else if (typeof options === 'object' && options.hasOwnProperty('expect')) {
                 expect = options.expect;
+            } else {
+                // options === true
+                expect = true;
+                options = {};
             }
+
+            const result = run(value, rule, options);
 
             if (expect !== result) {
                 isValid = false;

@@ -98,9 +98,42 @@ And the resulting object for these tests would be:
 
 # The enforce function
 The enforce function runs predefined rules in a sequence. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually.
-For each rule, you may also pass an options object (or a false value, if there is no need for options), which will be used by the function of the rule.
+For each rule, you may also pass an options object, which will be used by the function of the rule.
 
 Inside the options object, you can also pass an `expect` attribute (defaults to `true` if unspecified); After running testing each rule, the result is compared with the expected value to determine wheather the test has passed.
+
+If there is no need in an options object, you can simply pass in a value (either positive or negative, which will override the default `expect` option).
+
+All the following examples are the same:
+```js
+///////////////////////////
+// options.expect = true //
+///////////////////////////
+
+    {
+        isShorterThan: { expect: true }
+    }
+    // is the same as
+    {
+        isShorterThan: {}
+    }
+    // and the same as
+    {
+        isShorterThan: true
+    }
+
+    ////////////////////////////
+    // options.expect = false //
+    ////////////////////////////
+
+    {
+        isShorterThan: { expect: false }
+    }
+    // is the same as
+    {
+        isShorterThan: false
+    }
+```
 
 This gives you the flexibility to write your tests the way that's more comfortable to you.
 ```js
