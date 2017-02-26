@@ -22,7 +22,8 @@ const Passable = (name, passes, custom) => {
         hasValidationWarnings = false,
         failCount = 0,
         warnCount = 0,
-        testCount = 0;
+        testCount = 0,
+        success;
 
     const testsPerformed = {},
         validationErrors = {},
@@ -81,6 +82,10 @@ const Passable = (name, passes, custom) => {
         return isValid;
     };
 
+    const done = (callback) => {
+        success = callback(generateResultObject());
+    }
+
     const onError = (dataName, statement) => {
         hasValidationErrors = true;
         validationErrors[dataName] = validationErrors[dataName] || [];
@@ -97,25 +102,35 @@ const Passable = (name, passes, custom) => {
         testsPerformed[dataName].warnCount++;
     };
 
+    const generateResultObject = () => {
+        const result = {
+            name,
+            hasValidationErrors,
+            hasValidationWarnings,
+            testsPerformed,
+            validationErrors,
+            validationWarnings,
+            failCount,
+            warnCount,
+            testCount
+        };
+
+        if (typeof success !== 'undefined') {
+            result.success = success;
+        }
+
+        return result;
+    };
+
     if (typeof passes === FUNCTION) {
         // register all the tests
         const enforce = Enforce(custom);
 
         // run all units in the group
-        passes(pass, enforce);
+        passes(pass, enforce, done);
     }
 
-    return {
-        name,
-        hasValidationErrors,
-        hasValidationWarnings,
-        testsPerformed,
-        validationErrors,
-        validationWarnings,
-        failCount,
-        warnCount,
-        testCount
-    };
+    return generateResultObject();
 };
 
 module.exports = Passable;
