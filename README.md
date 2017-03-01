@@ -47,11 +47,11 @@ const validate = Passable('UserEditForm', (pass, enforce) =>  {
 	pass('UserName', 'Must be at least 5 chars, but not longer than 20', () => {
         // this is an example using the predefined tests, using the 'enforce' function
 		return enforce(data.userName, {
-			isLongerThan: {
+			longerThan: {
 				testAgainst: 5,
 				expect: true
 			},
-			isShorterThan: {
+			shorterThan: {
 				testAgainst: 20,
 				expect: true
 			}
@@ -111,15 +111,15 @@ All the following examples are the same:
 ///////////////////////////
 
     {
-        isShorterThan: { expect: true }
+        shorterThan: { expect: true }
     }
     // is the same as
     {
-        isShorterThan: {}
+        shorterThan: {}
     }
     // and the same as
     {
-        isShorterThan: true
+        shorterThan: true
     }
 
     ////////////////////////////
@@ -127,23 +127,23 @@ All the following examples are the same:
     ////////////////////////////
 
     {
-        isShorterThan: { expect: false }
+        shorterThan: { expect: false }
     }
     // is the same as
     {
-        isShorterThan: false
+        shorterThan: false
     }
 ```
 
 This gives you the flexibility to write your tests the way that's more comfortable to you.
 ```js
 {
-    isShorterThan: { // must be 5 or more
+    shorterThan: { // must be 5 or more
         testAgainst: 5,
         expect: false // basically flips the results
    },
    isArray: 0, // no need to pass arguments, expect defaults to true
-   isOfExactLength: {
+   hasLengthOf: {
        testAgainst: 6 // again, expect is implicitly true
    }
 }
@@ -154,10 +154,10 @@ It is recommended that your `expect` attribute will be a boolean value, but with
 ## The predefined rules
 At the moment there are only a few predefined rules:
 * `isArray`
-* `isLongerThan     // options: testAgainst`
+* `longerThan     // options: testAgainst`
 * `isNumber`
-* `isOfExactLength  // options: testAgainst`
-* `isShorterThan    // options: testAgainst`
+* `hasLengthOf  // options: testAgainst`
+* `shorterThan    // options: testAgainst`
 * `isString`
 * `matchesRegex     // options: testAgainst`
 

@@ -7,27 +7,27 @@ const expect = chai.expect,
     enforce = Enforce();
 
 const failOnImplicitTrue = enforce([1, 2, 3], {
-    isLongerThan: {
+    longerThan: {
         testAgainst: 4
     }
 });
 
 const faileOnExplicitTrue = enforce([1, 2, 3], {
-    isLongerThan: {
+    longerThan: {
         testAgainst: 4,
         expect: true
     }
 });
 
 const passOnExplicitFlip = enforce([1, 2, 3], {
-    isLongerThan: {
+    longerThan: {
         testAgainst: 4,
         expect: false
     }
 });
 
 const failOnExplicitFlip = enforce([1, 2, 3], {
-    isShorterThan: {
+    shorterThan: {
         testAgainst: 4,
         expect: false
     }
