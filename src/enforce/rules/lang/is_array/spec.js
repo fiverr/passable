@@ -5,7 +5,7 @@ import isArray from './index';
 
 const expect = chai.expect;
 
-describe('Tests isArray module', () => {
+describe('Tests isArray rule', () => {
 
     it('Should return true for an empty array', () => {
         expect(isArray([])).to.equal(true);

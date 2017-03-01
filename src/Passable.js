@@ -36,7 +36,7 @@ const Passable = (name, passes, custom) => {
      * @param  {String}   statement - A description for the test which is being run
      * @param  {String}   severity  - (optional) warn instead of fail (expects 'warn')
      * @param  {Function} callback  - The specific test's validation logic
-     * @return {Boolean}  wheather the unit is valid or not
+     * @return {Boolean}  whether the unit is valid or not
      *
      * @example pass('UserName', 'Must be longer than 5 chars', () => {...});
      */

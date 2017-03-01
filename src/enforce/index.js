@@ -36,8 +36,8 @@ const Enforce = (custom) => {
             if (!options) {
                 expect = false;
                 options = {};
-            } else if (typeof options === 'object' && options.hasOwnProperty('expect')) {
-                expect = options.expect;
+            } else if (typeof options === 'object') {
+                expect = options.hasOwnProperty('expect') ? options.expect : true;
             } else {
                 // options === true
                 expect = true;

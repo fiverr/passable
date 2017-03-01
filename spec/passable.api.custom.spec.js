@@ -30,7 +30,7 @@ const noSnuffles = Passable('ExtendTests', (pass, enforce) => {
                 has_no_snuffles: {
                     expect: true
                 },
-                longerThan: {
+                largerThan: {
                     testAgainst: 0
                 }
             });
@@ -38,7 +38,7 @@ const noSnuffles = Passable('ExtendTests', (pass, enforce) => {
 
         pass('regularTest', 'should pass', () => {
             return enforce('The name is snuffles', {
-                longerThan: {
+                largerThan: {
                     expect: false,
                     testAgainst: 42
                 }

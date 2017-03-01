@@ -5,29 +5,28 @@ import chai from 'chai';
 
 const expect = chai.expect,
     enforce = Enforce();
-
 const failOnImplicitTrue = enforce([1, 2, 3], {
-    longerThan: {
-        testAgainst: 4
+    largerThan: {
+        testAgainst: 22
     }
 });
 
 const faileOnExplicitTrue = enforce([1, 2, 3], {
-    longerThan: {
-        testAgainst: 4,
+    largerThan: {
+        testAgainst: 4111,
         expect: true
     }
 });
 
 const passOnExplicitFlip = enforce([1, 2, 3], {
-    longerThan: {
+    largerThan: {
         testAgainst: 4,
         expect: false
     }
 });
 
 const failOnExplicitFlip = enforce([1, 2, 3], {
-    shorterThan: {
+    smallerThan: {
         testAgainst: 4,
         expect: false
     }

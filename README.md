@@ -43,15 +43,15 @@ You could perform multiple 'passes' on the same data object. If you do so, it is
 //  email: "test@sil.ly"
 // }
 
-const validate = Passable('UserEditForm', (pass, enforce) =>  {
+const validate = Passable('UserEditForm', (pass, enforce, done) =>  {
 	pass('UserName', 'Must be at least 5 chars, but not longer than 20', () => {
         // this is an example using the predefined tests, using the 'enforce' function
 		return enforce(data.userName, {
-			longerThan: {
+			largerThan: {
 				testAgainst: 5,
 				expect: true
 			},
-			shorterThan: {
+			smallerThan: {
 				testAgainst: 20,
 				expect: true
 			}
@@ -62,6 +62,11 @@ const validate = Passable('UserEditForm', (pass, enforce) =>  {
         // this is an example for a free-style, do it yourself, validation
 		return data.email.substr(-1) !== 'y';
 	});
+
+    done((result)=> {
+        return !result.validationErrors['UserName'];
+        // this will add a 'success' attribute to the result object (not present by defualt)
+    });
 });
 ```
 
@@ -100,7 +105,7 @@ And the resulting object for these tests would be:
 The enforce function runs predefined rules in a sequence. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually.
 For each rule, you may also pass an options object, which will be used by the function of the rule.
 
-Inside the options object, you can also pass an `expect` attribute (defaults to `true` if unspecified); After running testing each rule, the result is compared with the expected value to determine wheather the test has passed.
+Inside the options object, you can also pass an `expect` attribute (defaults to `true` if unspecified); After running testing each rule, the result is compared with the expected value to determine whether the test has passed.
 
 If there is no need in an options object, you can simply pass in a value (either positive or negative, which will override the default `expect` option).
 
@@ -111,15 +116,15 @@ All the following examples are the same:
 ///////////////////////////
 
     {
-        shorterThan: { expect: true }
+        smallerThan: { expect: true }
     }
     // is the same as
     {
-        shorterThan: {}
+        smallerThan: {}
     }
     // and the same as
     {
-        shorterThan: true
+        smallerThan: true
     }
 
     ////////////////////////////
@@ -127,23 +132,23 @@ All the following examples are the same:
     ////////////////////////////
 
     {
-        shorterThan: { expect: false }
+        smallerThan: { expect: false }
     }
     // is the same as
     {
-        shorterThan: false
+        smallerThan: false
     }
 ```
 
 This gives you the flexibility to write your tests the way that's more comfortable to you.
 ```js
 {
-    shorterThan: { // must be 5 or more
+    smallerThan: { // must be 5 or more
         testAgainst: 5,
         expect: false // basically flips the results
    },
    isArray: 0, // no need to pass arguments, expect defaults to true
-   hasLengthOf: {
+   sizeEquals: {
        testAgainst: 6 // again, expect is implicitly true
    }
 }
@@ -153,13 +158,16 @@ It is recommended that your `expect` attribute will be a boolean value, but with
 
 ## The predefined rules
 At the moment there are only a few predefined rules:
-* `isArray`
-* `longerThan     // options: testAgainst`
-* `isNumber`
-* `hasLengthOf  // options: testAgainst`
-* `shorterThan    // options: testAgainst`
-* `isString`
-* `matchesRegex     // options: testAgainst`
+
+| Name           | Type | Options        | Description                                              |
+|----------------|:----:|:--------------:|----------------------------------------------------------|
+| `iSArray`      | Lang | N/A            | Determines whether a given value is an array or not.     |
+| `isString`     | Lang | N/A            | Determines whether a given value is a string or not.     |
+| `isNumber`     | Lang | N/A            | Determines whether a given value is a number or not.     |
+| `largerThan`   | Size | `testAgainst`  | Compares numbers, array/string lengths and object sizes. |
+| `sizeEquals`   | Size | `testAgainst`  | Compares numbers, array/string lengths and object sizes. |
+| `smallerThan`  | Size | `testAgainst`  | Compares numbers, array/string lengths and object sizes. |
+| `isEmpty`      | Size | N/A            | Returns true if a given value is empty(object/array), false, undefined, null, NaN or equals zero |
 
 ## Adding more (/custom) rules
 To make it easier to reuse logic across your application, sometimes you would want to encapsulate bits of logic in rules that you can later on use, for example, what's considered a valid email.
@@ -189,7 +197,6 @@ Adding your rules so they are available to the enforce function is as simple as 
         });
     }, myCustomRules);
 ```
-
 
 # Warn only tests
 By default, `pass` functions with the return value of `false` will fail your test group and set `hasValidationErrors` to `true`. Sometimes you would want to set a warn-only validation test (password strength, for example). In this case, you would add the 'warn' flag to your pass function.
@@ -227,3 +234,8 @@ Will result in the following object:
     testCount: 1
 }
 ```
+
+# The done function
+You may have noticed that Passable does not explicitly marks a test as successful. It only returnes a list of all the tests, and the failed tests among them. Sometimes you would want to explicitly mark a group of tests as passing (or failing). The `done` function is accepts a callback, which has access to the results object data before passable is done running. There you can provide your own success or failure conditions for the whole group.
+Returning `true` will add to your result object `success: true`, and false will add `success: false`.
+It is not mandatory to use the `done` function for the flow to complete, and in many cases it wouldn't be necessary at all. Not using it (or using it just as a callback without a return value) will simply end up with giving you a result object back with no `success` key in it.

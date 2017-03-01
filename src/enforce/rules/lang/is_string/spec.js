@@ -5,7 +5,7 @@ import isString from './index';
 
 const expect = chai.expect;
 
-describe('Tests isString module', () => {
+describe('Tests isString rule', () => {
 
     it('Should return false for a number', () => {
         expect(isString(42)).to.equal(false);
