@@ -7,16 +7,18 @@ const WARN = 'warn',
 /**
  * Runs a group of validation tests
  *
- * @param  {String}   name   - A name for the group of tests which is being run
- * @param  {function} passes - A function that contains the validation logic
- * @param  {Object}   custom - (optional) Custom rules, extensions for the predefined rules
+ * @param  {String}   name     - A name for the group of tests which is being run
+ * @param  {Array}    specific - (optional) An array of names specific passes you wish to run. If passed, others will be excluded.
+ * @param  {function} passes   - A function that contains the validation logic
+ * @param  {Object}   custom   - (optional) Custom rules, extensions for the predefined rules
  * @return validation result
  *
- * @example Passable('UserEdit', (pass, enforce) => {...}, {
- *  is_larger_than: (a, b) => a > b;
- * });
  */
-const Passable = (name, passes, custom) => {
+function Passable(name, ...args) {
+
+    const {
+        specific, passes, custom
+    } = passableArgs(args);
 
     let hasValidationErrors = false,
         hasValidationWarnings = false,
@@ -27,7 +29,8 @@ const Passable = (name, passes, custom) => {
 
     const testsPerformed = {},
         validationErrors = {},
-        validationWarnings = {};
+        validationWarnings = {},
+        skipped = [];
 
     /**
      * Runs a single test within the validation process
@@ -41,6 +44,11 @@ const Passable = (name, passes, custom) => {
      * @example pass('UserName', 'Must be longer than 5 chars', () => {...});
      */
     const pass = (dataName, statement, ...args) => {
+
+        if (specific.length && specific.indexOf(dataName) === -1) {
+            skipped.push(dataName);
+            return;
+        }
 
         // callback is always the last argument
         const callback = args.slice(-1)[0];
@@ -82,10 +90,6 @@ const Passable = (name, passes, custom) => {
         return isValid;
     };
 
-    const done = (callback) => {
-        success = callback(generateResultObject());
-    }
-
     const onError = (dataName, statement) => {
         hasValidationErrors = true;
         validationErrors[dataName] = validationErrors[dataName] || [];
@@ -112,7 +116,8 @@ const Passable = (name, passes, custom) => {
             validationWarnings,
             failCount,
             warnCount,
-            testCount
+            testCount,
+            skipped
         };
 
         if (typeof success !== 'undefined') {
@@ -127,10 +132,42 @@ const Passable = (name, passes, custom) => {
         const enforce = Enforce(custom);
 
         // run all units in the group
-        passes(pass, enforce, done);
+        passes(pass, enforce);
     }
 
     return generateResultObject();
 };
 
 module.exports = Passable;
+
+// helpers
+
+function passableArgs(args) {
+
+    let passes,
+        specific,
+        custom;
+
+    if (args.length === 1) {
+        passes = args[0];
+    } else if (args.length === 3) {
+        specific = args[0];
+        passes = args[1];
+        custom = args[2];
+    } else if (args.length === 2) {
+        if (typeof args[1] === FUNCTION) {
+            specific = args[0];
+            passes = args[1];
+        } else {
+            passes = args[0];
+            custom = args[1];
+        }
+    }
+
+    specific = specific || [];
+    custom = custom || {};
+
+    return {
+        passes, specific, custom
+    }
+};
