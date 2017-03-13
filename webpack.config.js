@@ -26,21 +26,14 @@ const config = {
         path: `${__dirname}/lib`,
         filename: outputFile,
         library: libraryName,
-        libraryTarget: 'umd',
-        umdNamedDefine: true
+        libraryTarget: 'umd'
     },
     module: {
         loaders: [{
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader?presets[]=es2015'
-            },
-            {
-                test: /(\.jsx|\.js)$/,
-                loader: "eslint-loader",
-                exclude: /node_modules/
-            }
-        ]
+            test: /\.js$/,
+            loaders: ['babel-loader'],
+            exclude: /(node_modules)/
+        }]
     },
     resolve: {
         alias: {

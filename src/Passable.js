@@ -1,4 +1,5 @@
 import Enforce from './enforce';
+import { PassableArgs } from './helpers';
 
 const WARN = 'warn',
     FAIL = 'fail',
@@ -18,7 +19,7 @@ function Passable(name, ...args) {
 
     const {
         specific, passes, custom
-    } = passableArgs(args);
+    } = PassableArgs(args);
 
     let hasValidationErrors = false,
         hasValidationWarnings = false,
@@ -138,36 +139,4 @@ function Passable(name, ...args) {
     return generateResultObject();
 };
 
-module.exports = Passable;
-
-// helpers
-
-function passableArgs(args) {
-
-    let passes,
-        specific,
-        custom;
-
-    if (args.length === 1) {
-        passes = args[0];
-    } else if (args.length === 3) {
-        specific = args[0];
-        passes = args[1];
-        custom = args[2];
-    } else if (args.length === 2) {
-        if (typeof args[1] === FUNCTION) {
-            specific = args[0];
-            passes = args[1];
-        } else {
-            passes = args[0];
-            custom = args[1];
-        }
-    }
-
-    specific = specific || [];
-    custom = custom || {};
-
-    return {
-        passes, specific, custom
-    }
-};
+export default Passable;
