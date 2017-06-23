@@ -1,0 +1,12 @@
+.vscode
+node_modules
+spec
+src
+.babelrc
+.eslintignore
+.eslintrc
+.travis.yml
+webpack.config.js
+yarn.lock
+dist/Passable-dev.js
+dist/Passable-dev.js.map

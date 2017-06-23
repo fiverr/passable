@@ -6,7 +6,7 @@ import sizeEquals        from './size/size_equals';
 import largerThan        from './size/larger_than';
 import smallerThan       from './size/smaller_than';
 
-export default () => ({
+export default {
     isArray,
     isNumber,
     isString,
@@ -14,4 +14,4 @@ export default () => ({
     largerThan,
     smallerThan,
     sizeEquals
-});
+};

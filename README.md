@@ -33,8 +33,6 @@ The other, possibly more important use of Passable, is server side validations. 
 
 Instead, with Passable, you could just as easily set up a data model validations server that would run the same exact validation code that runs in the browser. No duplication, no sync problems.
 
-See [Passable-Server](https://github.com/ealush/passable-server) for server side implementation.
-
 ---
 
 # How to use Passable?
@@ -61,17 +59,12 @@ You could perform multiple 'passes' on the same data object. If you do so, it is
 const validate = Passable('UserEditForm', (pass, enforce) =>  {
 	pass('UserName', 'Must be at least 5 chars, but not longer than 20', () => {
         // this is an example using the predefined tests, using the 'enforce' function
-		return enforce(data.userName, {
-			largerThan: {
-				testAgainst: 5,
-				expect: true
-			},
-			smallerThan: {
-				testAgainst: 20,
-				expect: true
-			}
-		});
-	});
+
+        return enforce(data.userName).allOf({
+            largerThan: 5,
+            smallerThan: 20
+        });
+    });
 
 	pass('UserEmail', 'Must not end with the letter Y', () => {
         // this is an example for a free-style, do it yourself, validation
@@ -123,72 +116,70 @@ And the resulting object for these tests would be:
 }
 ```
 
-## The enforce function
-The enforce function runs predefined rules in a sequence. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually.
-For each rule, you may also pass an options object, which will be used by the function of the rule.
+## Passable params
 
-Inside the options object, you can also pass an `expect` attribute (defaults to `true` if unspecified); After running testing each rule, the result is compared with the expected value to determine whether the test has passed.
+Listed here are the params Passable accepts:
 
-If there is no need in an options object, you can simply pass in a value (either positive or negative, which will override the default `expect` option).
+| Name       | Optional? | type     | Description                                       |
+|------------|:---------:|:--------:|---------------------------------------------------|
+| `name`     | No        | String   | A name for the group of tests which is being run. |
+| `specific` | Yes       | Array    | Whitelist of tests to run.                        |
+| `passes`   | No        | Function | A function contains the actual validation logic.  |
+| `custom`   | Yes       | Object   | Custom rules to extend the basic ruleset with.    |
 
-All the following examples are the same:
+# The enforce function
+The enforce function runs predefined rules in sequence. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually.
+For each rule, you may also pass either value or an options object that may be used by the function of the rule.
+
+The enforce function exposes the following four functions:
+* `allOf` - makes sure all rules specified are true.
+* `anyOf` - makes sure at least one rule is true.
+* `noneOf` - makes sure no rule is true.
+* `fin` - returns the result.
+
+All functions are chainable, fin must be at the end. All functions other than fin can be used more than once. All enforce chain-blocks are in an `AND` relationship, which means that if one block is `false` the others won't even get evaluated.
+
+All the following are valid uses of enforce.
 ```js
-///////////////////////////
-// options.expect = true //
-///////////////////////////
+    enforce([1,2,3,4,5,6]).anyOf({
+        largerThan: 5, // in anyOf - this one is enough to set the anyOf block to true
+        smallerThan: 6,
+    }).noneOf({
+        isString: null, // in noneOf, all must be false
+        isNumber: null
+    }).allOf({
+        isArray: null
+    }).fin(); // true
 
-    {
-        isArray: { expect: true }
-    }
-    // is the same as
-    {
-        isArray: {}
-    }
-    // and the same as
-    {
-        isArray: true
-    }
+    -------------
 
-    ////////////////////////////
-    // options.expect = false //
-    ////////////////////////////
+    enforce('North Dakota, por favor').noneOf({
+        largerThan: 5,
+        smallerThan: 2
+    }).fin(); // false
 
-    {
-        isArray: { expect: false }
-    }
-    // is the same as
-    {
-        isArray: false
-    }
+    -------------
+
+    enforce('I consider it asshole tax').anyOf({
+        largerThan: 5,
+        smallerThan: 2
+    }).anyOf({
+        smallerThan: 150
+    }).fin(); // true
+
 ```
-
-This gives you the flexibility to write your tests the way that's more comfortable to you.
-```js
-{
-    smaller: { // must be 5 or more
-        testAgainst: 5,
-        expect: false // basically flips the results
-   },
-   isArray: 0, // no need to pass arguments, expect defaults to true
-   sizeEquals: {
-       testAgainst: 6 // again, expect is implicitly true
-   }
-}
-```
-
-It is recommended that your `expect` attribute will be a boolean value, but with custom rules, you can use any value you want.
 
 ## The predefined rules
-At the moment there are only a few predefined rules:
+At the moment there are only a few predefined rules.
 
 | Name           | Type | Options        | Description                                              |
 |----------------|:----:|:--------------:|----------------------------------------------------------|
 | `isArray`      | Lang | N/A            | Determines whether a given value is an array or not.     |
 | `isString`     | Lang | N/A            | Determines whether a given value is a string or not.     |
 | `isNumber`     | Lang | N/A            | Determines whether a given value is a number or not.     |
-| `largerThan`   | Size | `testAgainst`  | Compares numbers, array/string lengths and object sizes. |
-| `sizeEquals`   | Size | `testAgainst`  | Compares numbers, array/string lengths and object sizes. |
-| `smallerThan`  | Size | `testAgainst`  | Compares numbers, array/string lengths and object sizes. |
+| `largerThan`   | Size | value  | Compares numbers, array/string lengths and object sizes. |
+| `sizeEquals`   | Size | value  | Compares numbers, array/string lengths and object sizes. |
+| `smallerThan`  | Size | value  | Compares numbers, array/string lengths and object sizes. |
 | `isEmpty`      | Size | N/A            | Returns true if a given value is empty(object/array), false, undefined, null, NaN or equals zero |
 
 ## Adding more (/custom) rules
@@ -213,9 +204,9 @@ Adding your rules so they are available to the enforce function is as simple as 
 ```js
     Passable('GroupName', (pass, enforce) => {
         pass('TestName', 'Must have a valid email', () => {
-            enforce(user.email, {
-                isValidEmail: { expect: true }
-            });
+            return enforce(user.email).allOf({
+                isValidEmail: null
+            }).fin();
         });
     }, myCustomRules);
 ```

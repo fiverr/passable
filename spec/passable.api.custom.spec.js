@@ -17,30 +17,19 @@ describe('Test test extensions', () => {
 
 const noSnuffles = Passable('ExtendTests', (pass, enforce) => {
 
-        pass('NoSnuffles', 'should pass', () => enforce('The name is Rick', {
-                has_no_snuffles: {
-                    expect: true
-                }
-            })
-        );
+    pass('NoSnuffles', 'should pass', () => enforce('The name is Rick').allOf({
+        has_no_snuffles: {}
+    }).fin());
 
-        pass('NoSnuffles', 'should Fail', () => enforce('The name is snuffles', {
-                has_no_snuffles: {
-                    expect: true
-                },
-                largerThan: {
-                    testAgainst: 0
-                }
-            })
-        );
+    pass('NoSnuffles', 'should Fail', () => enforce('The name is snuffles').allOf({
+        has_no_snuffles: {},
+        largerThan: 5
+    }).fin());
 
-        pass('regularTest', 'should pass', () => enforce('The name is snuffles', {
-                largerThan: {
-                    expect: false,
-                    testAgainst: 42
-                }
-            })
-        )
-    }, {
-        has_no_snuffles: (v) => v.indexOf('snuffles') === -1
-    });
+    pass('regularTest', 'should pass', () => enforce(55).allOf({
+        largerThan: 42
+    }).fin());
+
+}, {
+    has_no_snuffles: (v) => v.indexOf('snuffles') === -1
+});

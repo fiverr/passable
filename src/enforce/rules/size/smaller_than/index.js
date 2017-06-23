@@ -1,5 +1,5 @@
 import {getSize} from '../../helpers';
 
-const smallerThan = (value, {testAgainst}) => getSize(value) < getSize(testAgainst);
+const smallerThan = (value, arg1) => getSize(value) < getSize(arg1);
 
 export default smallerThan;

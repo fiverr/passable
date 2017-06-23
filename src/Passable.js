@@ -1,4 +1,4 @@
-import Enforce from './enforce';
+import enforce from './enforce';
 import { PassableArgs } from './helpers';
 
 const WARN = 'warn',
@@ -8,10 +8,10 @@ const WARN = 'warn',
 /**
  * Runs a group of validation tests
  *
- * @param  {String}   name     - A name for the group of tests which is being run
+ * @param  {String}   name   - A name for the group of tests which is being run
  * @param  {Array}    specific - (optional) An array of names specific passes you wish to run. If passed, others will be excluded.
- * @param  {function} passes   - A function that contains the validation logic
- * @param  {Object}   custom   - (optional) Custom rules, extensions for the predefined rules
+ * @param  {function} passes - A function that contains the validation logic
+ * @param  {Object}   custom - (optional) Custom rules, extensions for the predefined rules
  * @return validation result
  *
  */
@@ -25,8 +25,7 @@ function Passable(name, ...args) {
         hasValidationWarnings = false,
         failCount = 0,
         warnCount = 0,
-        testCount = 0,
-        success;
+        testCount = 0;
 
     const testsPerformed = {},
         validationErrors = {},
@@ -44,7 +43,12 @@ function Passable(name, ...args) {
      *
      * @example pass('UserName', 'Must be longer than 5 chars', () => {...});
      */
-    const pass = (dataName, statement, ...args) => {
+    function pass(dataName, statement, ...args) {
+
+        if (specific.length && specific.indexOf(dataName) === -1) {
+            skipped.push(dataName);
+            return;
+        }
 
         if (specific.length && specific.indexOf(dataName) === -1) {
             skipped.push(dataName);
@@ -91,23 +95,23 @@ function Passable(name, ...args) {
         return isValid;
     };
 
-    const onError = (dataName, statement) => {
+    function onError(dataName, statement) {
         hasValidationErrors = true;
         validationErrors[dataName] = validationErrors[dataName] || [];
         validationErrors[dataName].push(statement);
         failCount++;
         testsPerformed[dataName].failCount++;
-    };
+    }
 
-    const onWarn = (dataName, statement) => {
+    function onWarn(dataName, statement) {
         hasValidationWarnings = true;
         validationWarnings[dataName] = validationWarnings[dataName] || [];
         validationWarnings[dataName].push(statement);
         warnCount++;
         testsPerformed[dataName].warnCount++;
-    };
+    }
 
-    const generateResultObject = () => {
+    function generateResultObject() {
         const result = {
             name,
             hasValidationErrors,
@@ -121,22 +125,18 @@ function Passable(name, ...args) {
             skipped
         };
 
-        if (typeof success !== 'undefined') {
-            result.success = success;
-        }
-
         return result;
-    };
+    }
 
     if (typeof passes === FUNCTION) {
         // register all the tests
-        const enforce = Enforce(custom);
+        const Enforce = (value) => enforce(value, custom);
 
         // run all units in the group
-        passes(pass, enforce);
+        passes(pass, Enforce);
     }
 
     return generateResultObject();
-};
+}
 
 export default Passable;

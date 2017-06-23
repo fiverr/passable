@@ -1,71 +1,49 @@
-/**
- * @module enforce
- */
-
 import rules from './rules';
+import runners from './runners';
 
-/**
- * Registers custom rules and exposes an api
- *
- * @param  {Object} custom - An Object containing custom rules
- * @return {Function} the 'enforce' function, which is accessed in the validation proccess
- *
- * @example Enforce({
- *  is_larger_than: (a, b) => a > b;
- * });
- */
-const Enforce = (custom) => {
+function enforce(value, custom) {
+    custom = custom || {};
 
-    const registered = {};
+    const registered = Object.assign({}, rules, custom);
+    let valid = null;
 
-    /** Registers rules and makes them available */
-    const register = () => {
-        custom = custom || {};
-        Object.assign(registered, rules(), custom);
-    };
+   function isUntested() {
+        return valid === null;
+    }
 
-    /** Provides an API for running tests (using registered rules) */
-    const enforce = (value, tests) => {
+    function isInvalid() {
+        return !isUntested() && valid === false;
+    }
 
-        let isValid = true;
-        for (const rule in tests) {
-
-            let expect = true,
-                options = tests[rule];
-
-            if (!options) {
-                expect = false;
-                options = {};
-            } else if (typeof options === 'object') {
-                expect = options.hasOwnProperty('expect') ? options.expect : true;
-            } else {
-                // options === true
-                expect = true;
-                options = {};
-            }
-
-            const result = run(value, rule, options);
-
-            if (expect !== result) {
-                isValid = false;
-                break;
-            }
+    function allOf(tests) {
+        if (isInvalid()) {
+            return this;
         }
+        valid = runners.allOf(value, tests, registered);
+        return this;
+    }
 
-        return isValid;
-    };
-
-    /** Called by 'enforce' to run tests */
-    const run = (value, rule, options) => {
-
-        if (typeof registered[rule] === "function") {
-            return registered[rule](value, options);
+    function anyOf(tests) {
+        if (isInvalid()) {
+            return this;
         }
-    };
+        valid = runners.anyOf(value, tests, registered);
+        return this;
+    }
 
-    register();
+    function noneOf(tests) {
+        if (isInvalid()) {
+            return this;
+        }
+        valid = runners.noneOf(value, tests, registered);
+        return this;
+    }
 
-    return enforce;
-};
+    function fin() {
+        return valid;
+    }
 
-export default Enforce;
+    return { allOf, anyOf, noneOf, fin };
+}
+
+export default enforce;

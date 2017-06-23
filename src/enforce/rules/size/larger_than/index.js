@@ -1,5 +1,5 @@
 import {getSize} from '../../helpers';
 
-const largerThan = (value, { testAgainst }) => getSize(value) > getSize(testAgainst);
+const largerThan = (value, arg1) => getSize(value) > getSize(arg1);
 
 export default largerThan;
