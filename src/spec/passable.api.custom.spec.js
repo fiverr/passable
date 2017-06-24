@@ -1,6 +1,6 @@
 'use strict';
 
-import passable from '../Passable.js';
+import passable from '../Passable';
 import chai from 'chai';
 
 const expect = chai.expect;
@@ -16,20 +16,24 @@ describe('Test test extensions', () => {
 });
 
 const noSnuffles = passable('ExtendTests', (pass, enforce) => {
+    pass('NoSnuffles', 'should pass', () => (
+        enforce('The name is Snowball').allOf({
+            no_slave_name: {}
+        }).fin()
+    ));
 
-    pass('NoSnuffles', 'should pass', () => enforce('The name is Rick').allOf({
-        has_no_snuffles: {}
-    }).fin());
+    pass('NoSnuffles', 'should Fail', () => {
 
-    pass('NoSnuffles', 'should Fail', () => enforce('The name is snuffles').allOf({
-        has_no_snuffles: {},
-        largerThan: 5
-    }).fin());
+        enforce('The name is Snuffles').allOf({
+            no_slave_name: {},
+            largerThan: 5
+        }, 'here').fin();
+    });
 
     pass('regularTest', 'should pass', () => enforce(55).allOf({
         largerThan: 42
     }).fin());
 
 }, {
-    has_no_snuffles: (v) => v.indexOf('snuffles') === -1
+    no_slave_name: (v) => v.indexOf('Snuffles') === -1
 });

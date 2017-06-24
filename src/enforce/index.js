@@ -1,53 +1,54 @@
 import rules from './rules';
 import runners from './runners';
 
-class Enforce {
-    constructor(value, custom) {
-        this.value = value;
-        this.custom = custom || {};
-        this.registeredRules = Object.assign({}, rules, custom);
-        this.valid = null;
-        return this;
+function enforce(value, custom) {
+    const self = this || {};
+    custom = custom || {};
+
+    const registered = Object.assign({}, rules, custom);
+
+    self.anyOf = anyOf;
+    self.allOf = allOf;
+    self.noneOf = noneOf;
+    self.fin = fin;
+
+    function isUntested() {
+        return self.valid === null;
     }
 
-    isUntested() {
-        return this.valid === null;
+    function isInvalid() {
+        return !isUntested() && self.valid === false;
     }
 
-    isInvalid() {
-        return !this.isUntested() && this.valid === false;
-    }
-
-    allOf(tests) {
-        if (this.isInvalid()) {
-            return this;
+    function allOf(tests) {
+        if (isInvalid()) {
+            return self;
         }
-        this.valid = runners.allOf(this.value, tests, this.registeredRules);
-        return this;
+        self.valid = runners.allOf(value, tests, registered);
+        return self;
     }
 
-    anyOf(tests) {
-        if (this.isInvalid()) {
-            return this;
+    function anyOf(tests) {
+        if (isInvalid()) {
+            return self;
         }
-        this.valid = runners.anyOf(this.value, tests, this.registeredRules);
-        return this;
+        self.valid = runners.anyOf(value, tests, registered);
+        return self;
     }
 
-    noneOf(tests) {
-        if (this.isInvalid()) {
-            return this;
+    function noneOf(tests) {
+        if (isInvalid()) {
+            return self;
         }
-        this.valid = runners.noneOf(this.value, tests, this.registeredRules);
-        return this;
+        self.valid = runners.noneOf(value, tests, registered);
+        return self;
     }
 
-    fin() {
-        return this.valid;
+    function fin() {
+        return self.valid;
     }
 
+    return self;
 }
-
-const enforce = (value, custom) => new Enforce(value, custom);
 
 export default enforce;

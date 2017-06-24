@@ -1,9 +1,9 @@
 import enforce from './enforce';
+import passRun from './passRun';
 import { passableArgs } from './helpers';
 
 const WARN = 'warn',
-    FAIL = 'fail',
-    FUNCTION = 'function';
+    FAIL = 'fail';
 
 /**
  * Runs a group of validation tests
@@ -20,6 +20,8 @@ function Passable(name, ...args) {
     const {
         specific, passes, custom
     } = passableArgs(args);
+
+    let currentPass;
 
     let hasValidationErrors = false,
         hasValidationWarnings = false,
@@ -50,25 +52,12 @@ function Passable(name, ...args) {
             return;
         }
 
-        if (specific.length && specific.indexOf(dataName) === -1) {
-            skipped.push(dataName);
-            return;
-        }
+        let severity = FAIL;
 
         // callback is always the last argument
         const callback = args.slice(-1)[0];
-
-        let severity = FAIL,
-            isValid;
-
-        if (typeof callback === FUNCTION) {
-            // run the validation logic
-            try {
-                isValid = callback();
-            } catch (e) {
-                isValid = false;
-            }
-        }
+        currentPass = passRun();
+        const isValid = currentPass.run(callback);
 
         if (typeof args[0] === 'string') {
             // warn rather than fail
@@ -128,9 +117,12 @@ function Passable(name, ...args) {
         return result;
     }
 
-    if (typeof passes === FUNCTION) {
+    if (typeof passes === 'function') {
         // register all the tests
-        const Enforce = (value) => enforce(value, custom);
+        const Enforce = (value) => {
+            const e = enforce.bind(currentPass);
+            return e(value, custom);
+        };
 
         // run all units in the group
         passes(pass, Enforce);
