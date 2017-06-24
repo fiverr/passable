@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import chai from 'chai';
 import isString from './index';
@@ -16,6 +16,6 @@ describe('Tests isString rule', () => {
     });
 
     it('Should return true a string', () => {
-        expect(isString("I love you")).to.equal(true);
+        expect(isString('I love you')).to.equal(true);
     });
 });

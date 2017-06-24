@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import chai from 'chai';
 import getSize from './index';
@@ -12,11 +12,11 @@ describe('Tests getSize helper', () => {
     });
 
     it('Should return a length of a string (3)', () => {
-        expect(getSize("abc")).to.equal(3);
+        expect(getSize('abc')).to.equal(3);
     });
 
     it('Should return the length of an array (4)', () => {
-        expect(getSize([1,2,3,4])).to.equal(4);
+        expect(getSize([1, 2, 3, 4])).to.equal(4);
     });
 
     it('Should return the length of an empty array (0)', () => {

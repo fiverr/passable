@@ -1,5 +1,5 @@
 import enforce from './enforce';
-import { PassableArgs } from './helpers';
+import { passableArgs } from './helpers';
 
 const WARN = 'warn',
     FAIL = 'fail',
@@ -19,7 +19,7 @@ function Passable(name, ...args) {
 
     const {
         specific, passes, custom
-    } = PassableArgs(args);
+    } = passableArgs(args);
 
     let hasValidationErrors = false,
         hasValidationWarnings = false,

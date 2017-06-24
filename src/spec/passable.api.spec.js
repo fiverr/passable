@@ -1,27 +1,27 @@
-'use strict'
+'use strict';
 
-import Passable from '../src/Passable.js';
+import passable from '../Passable.js';
 import chai from 'chai';
 
 const expect = chai.expect;
 
-const oneValidationError = Passable('oneValidationError', (pass, enforce) =>  {
+const oneValidationError = passable('oneValidationError', (pass, enforce) => {
     pass('IsFalse', 'Should Fail', () => false);
     pass('IsTrue', 'Should Pass', () => true);
 });
 
-const noValidationErrors = Passable('noValidationErrors', (pass, enforce) =>  {
+const noValidationErrors = passable('noValidationErrors', (pass, enforce) => {
     pass('IsTrue', 'Should Pass', () => true);
     pass('IsTrue', 'ShouldPass', () => true);
 });
 
-const failSecondTest = Passable('failSecondTest', (pass, enforce) =>  {
+const failSecondTest = passable('failSecondTest', (pass, enforce) => {
     pass('FirstTest', 'Should Pass ', () => true);
     pass('SecondTest', 'Should Fail', () => false);
     pass('ThirdTest', 'Should Pass', () => true);
 });
 
-describe('Test Passable\'s api ', () => {
+describe('Test passable\'s api ', () => {
     it('Should have one validation error', () => {
         expect(oneValidationError.failCount).to.equal(1);
     });

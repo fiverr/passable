@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-import PassableArgs from './index';
+import passableArgs from './index';
 import chai from 'chai';
 
 const expect = chai.expect;
@@ -8,7 +8,7 @@ const expect = chai.expect;
 describe('Test Passable arguments logic', () => {
 
     it('Should return given "passes", default on specific and custom', () => {
-        const value = PassableArgs(['basic']);
+        const value = passableArgs(['basic']);
         expect(value).to.deep.equal({
             passes: 'basic',
             custom: {},
@@ -17,30 +17,30 @@ describe('Test Passable arguments logic', () => {
     });
 
     it('Should return all attrs, not use default values', () => {
-        const value = PassableArgs(['funny', 'yet', 'not']);
+        const value = passableArgs(['funny', 'yet', 'not']);
         expect(value).to.deep.equal({
             specific: 'funny',
             passes: 'yet',
-            custom: 'not',
+            custom: 'not'
         });
     });
 
     it('Should return specific and passes, default on custom', () => {
-        const stamFunction = () => {},
-            value = PassableArgs([['Yo'], stamFunction]);
+        const noop = () => undefined,
+            value = passableArgs([['Yo'], noop]);
         expect(value).to.deep.equal({
             specific: ['Yo'],
-            passes: stamFunction,
-            custom: {},
+            passes: noop,
+            custom: {}
         });
     });
 
     it('Should return custom and passes, default on specific', () => {
-        const value = PassableArgs(['First', 'Second']);
+        const value = passableArgs(['First', 'Second']);
         expect(value).to.deep.equal({
             specific: [],
             passes: 'First',
-            custom: 'Second',
+            custom: 'Second'
         });
     });
 });

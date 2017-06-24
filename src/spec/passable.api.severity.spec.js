@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-import Passable from '../src/Passable.js';
+import passable from '../Passable.js';
 import chai from 'chai';
 
 const expect = chai.expect;
@@ -21,14 +21,14 @@ describe('Test warn flag', () => {
 
 // Actual test data
 
-const warnPass = Passable('WarnPass', (pass, enforce) =>  {
+const warnPass = passable('WarnPass', (pass, enforce) => {
         pass('WarnPass', 'should warn', 'warn', () => false);
     }),
-    warnFail = Passable('WarnFail', (pass, enforce) =>  {
+    warnFail = passable('WarnFail', (pass, enforce) => {
         pass('Warn', 'should warn', 'warn', () => false);
         pass('Fail', 'should Fail', () => false);
     }),
-    fail = Passable('Fail', (pass, enforce) =>  {
+    fail = passable('Fail', (pass, enforce) => {
         pass('Warn', 'should not warn', 'warn', () => true);
         pass('Fail', 'should Fail', () => false);
     });

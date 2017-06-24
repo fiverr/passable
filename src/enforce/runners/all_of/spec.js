@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import chai from 'chai';
 import allOf from './index';

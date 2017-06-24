@@ -1,41 +1,41 @@
-'use strict'
+'use strict';
 
 import enforce from './index';
 import chai from 'chai';
 
 const expect = chai.expect;
 
-describe(`Test Passable's en function`, () => {
+describe('Test Passable\'s enforce function', () => {
     it('Should expose all API functions', () => {
         const en = enforce();
-        expect(en).to.have.ownProperty('fin');
-        expect(en).to.have.ownProperty('allOf');
-        expect(en).to.have.ownProperty('anyOf');
-        expect(en).to.have.ownProperty('noneOf');
+        expect(en.fin).to.be.a('function');
+        expect(en.allOf).to.be.a('function');
+        expect(en.anyOf).to.be.a('function');
+        expect(en.noneOf).to.be.a('function');
     });
 
     it('Should allow chaining all functions after allOf', () => {
         const allOf = enforce().allOf({});
-        expect(allOf).to.have.ownProperty('fin');
-        expect(allOf).to.have.ownProperty('allOf');
-        expect(allOf).to.have.ownProperty('anyOf');
-        expect(allOf).to.have.ownProperty('noneOf');
+        expect(allOf.fin).to.be.a('function');
+        expect(allOf.allOf).to.be.a('function');
+        expect(allOf.anyOf).to.be.a('function');
+        expect(allOf.noneOf).to.be.a('function');
     });
 
     it('Should allow chaining all functions after anyOf', () => {
         const anyOf = enforce().anyOf({});
-        expect(anyOf).to.have.ownProperty('fin');
-        expect(anyOf).to.have.ownProperty('allOf');
-        expect(anyOf).to.have.ownProperty('anyOf');
-        expect(anyOf).to.have.ownProperty('noneOf');
+        expect(anyOf.fin).to.be.a('function');
+        expect(anyOf.allOf).to.be.a('function');
+        expect(anyOf.anyOf).to.be.a('function');
+        expect(anyOf.noneOf).to.be.a('function');
     });
 
     it('Should allow chaining all functions after anyOf', () => {
         const noneOf = enforce().noneOf({});
-        expect(noneOf).to.have.ownProperty('fin');
-        expect(noneOf).to.have.ownProperty('allOf');
-        expect(noneOf).to.have.ownProperty('anyOf');
-        expect(noneOf).to.have.ownProperty('noneOf');
+        expect(noneOf.fin).to.be.a('function');
+        expect(noneOf.allOf).to.be.a('function');
+        expect(noneOf.anyOf).to.be.a('function');
+        expect(noneOf.noneOf).to.be.a('function');
     });
 
     it('Should return test result after fin', () => {

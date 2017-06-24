@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const webpack = require('webpack'),
     path = require('path');
@@ -8,22 +8,25 @@ const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
     libraryName = 'Passable',
     plugins = [];
 
-let outputFile;
+let outputFile,
+    outputDir;
 
 if (env === 'build') {
     plugins.push(new UglifyJsPlugin({
         minimize: true
     }));
     outputFile = `${libraryName}.min.js`;
+    outputDir = 'dist';
 } else {
     outputFile = `${libraryName}.js`;
+    outputDir = 'dev';
 }
 
 const config = {
     entry: `${__dirname}/src/Passable.js`,
     devtool: 'source-map',
     output: {
-        path: `${__dirname}/dist`,
+        path: `${__dirname}/${outputDir}`,
         filename: outputFile,
         library: libraryName,
         libraryTarget: 'umd'

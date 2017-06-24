@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import chai from 'chai';
 import isEmpty from './index';
@@ -8,7 +8,7 @@ const expect = chai.expect;
 describe('Tests isEmpty rule', () => {
 
     it('Should return false for a non-empty array', () => {
-        expect(isEmpty([1,2,3,4,5,6])).to.equal(false);
+        expect(isEmpty([1, 2, 3, 4, 5, 6])).to.equal(false);
     });
 
     it('Should return true for an empty array', () => {
@@ -24,11 +24,11 @@ describe('Tests isEmpty rule', () => {
     });
 
     it('Should return true for an empty string', () => {
-        expect(isEmpty("")).to.equal(true);
+        expect(isEmpty('')).to.equal(true);
     });
 
     it('Should return false for a non empty string', () => {
-        expect(isEmpty("hey")).to.equal(false);
+        expect(isEmpty('hey')).to.equal(false);
     });
 
     it('Should return true for zero', () => {

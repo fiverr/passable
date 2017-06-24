@@ -1,49 +1,53 @@
 import rules from './rules';
 import runners from './runners';
 
-function enforce(value, custom) {
-    custom = custom || {};
-
-    const registered = Object.assign({}, rules, custom);
-    let valid = null;
-
-   function isUntested() {
-        return valid === null;
-    }
-
-    function isInvalid() {
-        return !isUntested() && valid === false;
-    }
-
-    function allOf(tests) {
-        if (isInvalid()) {
-            return this;
-        }
-        valid = runners.allOf(value, tests, registered);
+class Enforce {
+    constructor(value, custom) {
+        this.value = value;
+        this.custom = custom || {};
+        this.registeredRules = Object.assign({}, rules, custom);
+        this.valid = null;
         return this;
     }
 
-    function anyOf(tests) {
-        if (isInvalid()) {
+    isUntested() {
+        return this.valid === null;
+    }
+
+    isInvalid() {
+        return !this.isUntested() && this.valid === false;
+    }
+
+    allOf(tests) {
+        if (this.isInvalid()) {
             return this;
         }
-        valid = runners.anyOf(value, tests, registered);
+        this.valid = runners.allOf(this.value, tests, this.registeredRules);
         return this;
     }
 
-    function noneOf(tests) {
-        if (isInvalid()) {
+    anyOf(tests) {
+        if (this.isInvalid()) {
             return this;
         }
-        valid = runners.noneOf(value, tests, registered);
+        this.valid = runners.anyOf(this.value, tests, this.registeredRules);
         return this;
     }
 
-    function fin() {
-        return valid;
+    noneOf(tests) {
+        if (this.isInvalid()) {
+            return this;
+        }
+        this.valid = runners.noneOf(this.value, tests, this.registeredRules);
+        return this;
     }
 
-    return { allOf, anyOf, noneOf, fin };
+    fin() {
+        return this.valid;
+    }
+
 }
+
+const enforce = (value, custom) => new Enforce(value, custom);
 
 export default enforce;

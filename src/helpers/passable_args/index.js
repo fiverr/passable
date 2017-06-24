@@ -25,7 +25,7 @@ function passableArgs(args) {
 
     return {
         passes, specific, custom
-    }
+    };
 };
 
 export default passableArgs;

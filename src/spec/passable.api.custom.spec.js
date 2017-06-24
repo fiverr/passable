@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-import Passable from '../src/Passable.js';
+import passable from '../Passable.js';
 import chai from 'chai';
 
 const expect = chai.expect;
@@ -15,7 +15,7 @@ describe('Test test extensions', () => {
     });
 });
 
-const noSnuffles = Passable('ExtendTests', (pass, enforce) => {
+const noSnuffles = passable('ExtendTests', (pass, enforce) => {
 
     pass('NoSnuffles', 'should pass', () => enforce('The name is Rick').allOf({
         has_no_snuffles: {}

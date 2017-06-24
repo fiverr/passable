@@ -1,5 +1,5 @@
-import PassableArgs from './PassableArgs';
+import passableArgs from './passable_args';
 
 export {
-    PassableArgs
+    passableArgs
 };

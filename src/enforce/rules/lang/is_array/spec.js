@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import chai from 'chai';
 import isArray from './index';
@@ -12,10 +12,10 @@ describe('Tests isArray rule', () => {
     });
 
     it('Should return true for an array with elements', () => {
-        expect(isArray([1,2,3])).to.equal(true);
+        expect(isArray([1, 2, 3])).to.equal(true);
     });
 
     it('Should return false a string', () => {
-        expect(isArray("1")).to.equal(false);
+        expect(isArray('1')).to.equal(false);
     });
 });

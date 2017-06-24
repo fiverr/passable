@@ -1,5 +1,5 @@
-import getSize from './get_size'
+import getSize from './get_size';
 
-module.exports = {
+export default {
     getSize
 };
