@@ -16,8 +16,8 @@ class PassRun {
 
             try {
                 const res = this.callback();
-                if (typeof res !== 'undefined' && res.hasOwnProperty('valid')) {
-                    this.valid = this.callback().valid;
+                if (typeof res !== 'undefined' && res !== null && res.hasOwnProperty('valid')) {
+                    this.valid = res.valid;
                 } else if (typeof res === 'boolean') {
                     this.valid = res;
                 }

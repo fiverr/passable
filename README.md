@@ -60,7 +60,7 @@ const validate = Passable('UserEditForm', (pass, enforce) =>  {
 	pass('UserName', 'Must be at least 5 chars, but not longer than 20', () => {
         // this is an example using the predefined tests, using the 'enforce' function
 
-        return enforce(data.userName).allOf({
+        enforce(data.userName).allOf({
             largerThan: 5,
             smallerThan: 20
         });
@@ -169,6 +169,18 @@ All the following are valid uses of enforce.
 
 ```
 
+When using `enforce`, you do not have to return the result (although you may), each of your enforce tests updates the result of the whole pass. You may also use multiple enforces in the same pass function, they will simply run in sequence.
+
+Again, as in the different enforce functions, all `enforce` call have an `AND` relationship, which means that once one call fails, the whole pass fails.
+
+```js
+pass('test', 'multiple enforces', () => {
+    enforce('str1').allOf({...}).anyOf({...}).fin();
+    enforce('str2').noneOf({...}).fin();
+    enforce('str3').anyOf({...}).fin();
+});
+```
+
 ## The predefined rules
 At the moment there are only a few predefined rules.
 
@@ -204,7 +216,7 @@ Adding your rules so they are available to the enforce function is as simple as 
 ```js
     Passable('GroupName', (pass, enforce) => {
         pass('TestName', 'Must have a valid email', () => {
-            return enforce(user.email).allOf({
+            enforce(user.email).allOf({
                 isValidEmail: null
             }).fin();
         });
