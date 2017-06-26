@@ -57,7 +57,7 @@ You could perform multiple 'passes' on the same data object. If you do so, it is
 // }
 
 const validate = Passable('UserEditForm', (pass, enforce) =>  {
-	pass('UserName', 'Must be at least 5 chars, but not longer than 20', () => {
+    pass('UserName', 'Must be at least 5 chars, but not longer than 20', () => {
         // this is an example using the predefined tests, using the 'enforce' function
 
         enforce(data.userName).allOf({
@@ -66,10 +66,10 @@ const validate = Passable('UserEditForm', (pass, enforce) =>  {
         });
     });
 
-	pass('UserEmail', 'Must not end with the letter Y', () => {
+    pass('UserEmail', 'Must not end with the letter Y', () => {
         // this is an example for a free-style, do it yourself, validation
-		return data.email.substr(-1) !== 'y';
-	});
+        return data.email.substr(-1) !== 'y';
+    });
 });
 ```
 
@@ -145,10 +145,10 @@ All the following are valid uses of enforce.
         largerThan: 5, // in anyOf - this one is enough to set the anyOf block to true
         smallerThan: 6,
     }).noneOf({
-        isString: null, // in noneOf, all must be false
-        isNumber: null
+        isString: true, // in noneOf, all must be false
+        isNumber: true
     }).allOf({
-        isArray: null
+        isArray: true
     }).fin(); // true
 
     -------------
@@ -184,15 +184,15 @@ pass('test', 'multiple enforces', () => {
 ## The predefined rules
 At the moment there are only a few predefined rules.
 
-| Name           | Type | Options        | Description                                              |
+| Name           | Type | Accepts        | Description                                              |
 |----------------|:----:|:--------------:|----------------------------------------------------------|
-| `isArray`      | Lang | N/A            | Determines whether a given value is an array or not.     |
-| `isString`     | Lang | N/A            | Determines whether a given value is a string or not.     |
-| `isNumber`     | Lang | N/A            | Determines whether a given value is a number or not.     |
+| `isArray`      | Lang | Boolean (for negative check) | Determines whether a given value is an array or not.     |
+| `isString`     | Lang | Boolean (for negative check) | Determines whether a given value is a string or not.     |
+| `isNumber`     | Lang | Boolean (for negative check) | Determines whether a given value is a number or not.     |
+| `isEmpty`      | Size | Boolean (for negative check) | Returns true if a given value is empty(object/array), false, undefined, null, NaN or equals zero |
 | `largerThan`   | Size | value  | Compares numbers, array/string lengths and object sizes. |
 | `sizeEquals`   | Size | value  | Compares numbers, array/string lengths and object sizes. |
 | `smallerThan`  | Size | value  | Compares numbers, array/string lengths and object sizes. |
-| `isEmpty`      | Size | N/A            | Returns true if a given value is empty(object/array), false, undefined, null, NaN or equals zero |
 
 ## Adding more (/custom) rules
 To make it easier to reuse logic across your application, sometimes you would want to encapsulate bits of logic in rules that you can later on use, for example, what's considered a valid email.

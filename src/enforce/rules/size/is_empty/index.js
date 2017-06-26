@@ -1,5 +1,9 @@
-import {getSize} from '../../helpers';
+import { expectType, getSize } from '../../helpers';
 
-const isEmpty = (value) => getSize(value) === 0;
+function isEmpty(value, expect) {
+    expectType(expect, 'boolean', 'isEmpty');
+
+    return (getSize(value) === 0) === expect;
+};
 
 export default isEmpty;
