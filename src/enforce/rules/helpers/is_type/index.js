@@ -1,4 +1,4 @@
-function isType(value, type, expect) {
+function isType(value, type, expect = true) {
 
     if (type === 'array') {
         return Array.isArray(value) === expect;

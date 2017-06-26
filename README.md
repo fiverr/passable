@@ -155,7 +155,8 @@ All the following are valid uses of enforce.
 
     enforce('North Dakota, por favor').noneOf({
         largerThan: 5,
-        smallerThan: 2
+        smallerThan: 2,
+        matches: /[0-9]/
     }).fin(); // false
 
     -------------
@@ -190,6 +191,7 @@ At the moment there are only a few predefined rules.
 | `isString`     | Lang | Boolean (for negative check) | Determines whether a given value is a string or not.     |
 | `isNumber`     | Lang | Boolean (for negative check) | Determines whether a given value is a number or not.     |
 | `isEmpty`      | Size | Boolean (for negative check) | Returns true if a given value is empty(object/array), false, undefined, null, NaN or equals zero |
+| `matches`   | Content | RegExp  | Tests value against RegExp. Returns true even for a partial match. |
 | `largerThan`   | Size | value  | Compares numbers, array/string lengths and object sizes. |
 | `sizeEquals`   | Size | value  | Compares numbers, array/string lengths and object sizes. |
 | `smallerThan`  | Size | value  | Compares numbers, array/string lengths and object sizes. |

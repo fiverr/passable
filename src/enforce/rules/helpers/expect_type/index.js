@@ -1,4 +1,4 @@
-import isType from '../is_type';
+import { isType } from '../';
 
 function throwTypeError(value, type, functionName) {
     throw new TypeError(`${functionName}: expected ${value} to be a ${type}.`);

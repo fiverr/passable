@@ -1,5 +1,4 @@
-import expectType from '../../helpers/expect_type';
-import isType from '../../helpers/is_type';
+import { isType, expectType } from '../../helpers';
 
 function isString(value, expect) {
     expectType(expect, 'boolean', 'isString');
