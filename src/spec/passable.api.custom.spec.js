@@ -17,6 +17,7 @@ describe('Test test extensions', () => {
 
 const noSnuffles = passable('ExtendTests', (pass, enforce) => {
     pass('NoSnuffles', 'should pass', () => (
+
         enforce('The name is Snowball').allOf({
             no_slave_name: {}
         }).fin()
