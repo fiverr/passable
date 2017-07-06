@@ -6,10 +6,12 @@ Isomorphic data model validations made easy.
 
 ---
 
+[LIVE DEMO](https://ealush.github.io/passable/) (try it in your browser);
+
 ## What is Passable
 More than anything, Passable is a way to structure your data model validations in a way that's easy to manage - as small tests, grouped logically. They can be interdependant, or standalone, they can perform your own validation logic, or rely on the predefined rules you can match your data model against.
 
-![alt tag](https://raw.githubusercontent.com/ealush/passable/diagram/passable_diagram.png)
+![alt tag](https://raw.githubusercontent.com/ealush/passable/gh-pages/passable_diagram.png)
 
 * [Why Passable](#why-passable-key-benefits)
     * [Structured Validations](#structured-validations)
@@ -173,14 +175,15 @@ pass('test', 'multiple enforces', () => {
 
 ## The predefined rules
 Passable come with a few preDefined rules:
-* [isArray](https://github.com/ealush/passable/tree/master/src/enforce/rules/lang/is_array#rule---isarray) Determines whether a given value is an array or not.
-* [isString](https://github.com/ealush/passable/tree/master/src/enforce/rules/lang/is_string#rule---isstring) Determines whether a given value is a string or not.
-* [isNumber](https://github.com/ealush/passable/tree/master/src/enforce/rules/lang/is_number#rule---isnumber) Determines whether a given value is a number or not.
-* [isEmpty](https://github.com/ealush/passable/tree/master/src/enforce/rules/size/is_empty#rule---isempty) Returns true if a given value is empty.
-* [matches](https://github.com/ealush/passable/tree/master/src/enforce/rules/content/matches#rule---matches) Tests value against RegExp.
-* [largerThan](https://github.com/ealush/passable/tree/master/src/enforce/rules/size/larger_than#rule---largerthan) Compares numbers, array/string lengths and object sizes.
-* [sizeEquals](https://github.com/ealush/passable/tree/master/src/enforce/rules/size/size_equals#rule---sizeequals) Compares numbers, array/string lengths and object sizes.
-* [smallerThan](https://github.com/ealush/passable/tree/master/src/enforce/rules/size/smaller_than#rule---smallerthan) Compares numbers, array/string lengths and object sizes.
+* [isArray](./src/enforce/rules/lang/is_array#rule---isarray) Determines whether a given value is an array or not.
+* [isString](./src/enforce/rules/lang/is_string#rule---isstring) Determines whether a given value is a string or not.
+* [isNumber](./src/enforce/rules/lang/is_number#rule---isnumber) Determines whether a given value is a number or not.
+* [isEmpty](./src/enforce/rules/size/is_empty#rule---isempty) Returns true if a given value is empty.
+* [matches](./src/enforce/rules/content/matches#rule---matches) Tests value against RegExp.
+* [inside](./src/enforce/rules/content/inside#rule---inside) Checks if a value is contained inside another value.
+* [largerThan](./src/enforce/rules/size/larger_than#rule---largerthan) Compares numbers, array/string lengths and object sizes.
+* [sizeEquals](./src/enforce/rules/size/size_equals#rule---sizeequals) Compares numbers, array/string lengths and object sizes.
+* [smallerThan](./src/enforce/rules/size/smaller_than#rule---smallerthan) Compares numbers, array/string lengths and object sizes.
 
 ## Adding more (/custom) rules
 To make it easier to reuse logic across your application, sometimes you would want to encapsulate bits of logic in rules that you can later on use, for example, what's considered a valid email.
