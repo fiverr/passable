@@ -116,17 +116,6 @@ And the resulting object for these tests would be:
 }
 ```
 
-## Passable params
-
-Listed here are the params Passable accepts:
-
-| Name       | Optional? | type     | Description                                       |
-|------------|:---------:|:--------:|---------------------------------------------------|
-| `name`     | No        | String   | A name for the group of tests which is being run. |
-| `specific` | Yes       | Array    | Whitelist of tests to run.                        |
-| `passes`   | No        | Function | A function contains the actual validation logic.  |
-| `custom`   | Yes       | Object   | Custom rules to extend the basic ruleset with.    |
-
 # The enforce function
 The enforce function runs predefined rules in sequence. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually.
 For each rule, you may also pass either value or an options object that may be used by the function of the rule.
