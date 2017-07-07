@@ -172,18 +172,15 @@ pass('test', 'multiple enforces', () => {
 ```
 
 ## The predefined rules
-At the moment there are only a few predefined rules.
-
-| Name           | Type | Accepts        | Description                                              |
-|----------------|:----:|:--------------:|----------------------------------------------------------|
-| `isArray`      | Lang | Boolean (for negative check) | Determines whether a given value is an array or not.     |
-| `isString`     | Lang | Boolean (for negative check) | Determines whether a given value is a string or not.     |
-| `isNumber`     | Lang | Boolean (for negative check) | Determines whether a given value is a number or not.     |
-| `isEmpty`      | Size | Boolean (for negative check) | Returns true if a given value is empty(object/array), false, undefined, null, NaN or equals zero |
-| `matches`   | Content | RegExp  | Tests value against RegExp. Returns true even for a partial match. |
-| `largerThan`   | Size | value  | Compares numbers, array/string lengths and object sizes. |
-| `sizeEquals`   | Size | value  | Compares numbers, array/string lengths and object sizes. |
-| `smallerThan`  | Size | value  | Compares numbers, array/string lengths and object sizes. |
+Passable come with a few preDefined rules:
+* [isArray](https://github.com/ealush/passable/tree/master/src/enforce/rules/lang/is_array#rule---isarray) Determines whether a given value is an array or not.
+* [isString](https://github.com/ealush/passable/tree/master/src/enforce/rules/lang/is_string#rule---isstring) Determines whether a given value is a string or not.
+* [isNumber](https://github.com/ealush/passable/tree/master/src/enforce/rules/lang/is_number#rule---isnumber) Determines whether a given value is a number or not.
+* [isEmpty](https://github.com/ealush/passable/tree/master/src/enforce/rules/size/is_empty#rule---isempty) Returns true if a given value is empty.
+* [matches](https://github.com/ealush/passable/tree/master/src/enforce/rules/content/matches#rule---matches) Tests value against RegExp.
+* [largerThan](https://github.com/ealush/passable/tree/master/src/enforce/rules/size/larger_than#rule---largerthan) Compares numbers, array/string lengths and object sizes.
+* [sizeEquals](https://github.com/ealush/passable/tree/master/src/enforce/rules/size/size_equals#rule---sizeequals) Compares numbers, array/string lengths and object sizes.
+* [smallerThan](https://github.com/ealush/passable/tree/master/src/enforce/rules/size/smaller_than#rule---smallerthan) Compares numbers, array/string lengths and object sizes.
 
 ## Adding more (/custom) rules
 To make it easier to reuse logic across your application, sometimes you would want to encapsulate bits of logic in rules that you can later on use, for example, what's considered a valid email.

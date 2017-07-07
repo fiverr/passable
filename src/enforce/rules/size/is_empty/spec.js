@@ -97,4 +97,12 @@ describe('Tests isEmpty rule (expect false)', () => {
     it('Should return false for NaN', () => {
         expect(isEmpty(NaN, false)).to.equal(false);
     });
+
+    it('Should return true for false', () => {
+        expect(isEmpty(false, true)).to.equal(true);
+    });
+
+    it('Should return false for false', () => {
+        expect(isEmpty(false, false)).to.equal(false);
+    });
 });
