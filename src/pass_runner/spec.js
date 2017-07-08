@@ -11,8 +11,8 @@ const expect = chai.expect,
 
 describe('Test Pass Runner Logic', () => {
 
-    it('Should be default to false', () => {
-        expect(pr(() => undefined)).to.equal(false);
+    it('Should default to true if not thrown', () => {
+        expect(pr(() => undefined)).to.equal(true);
     });
 
     it('Should return null if no callback is given', () => {

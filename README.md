@@ -48,7 +48,7 @@ You construct your tests in a spec-like manner, grouping a bunch of tests togeth
 When compared to a spec, you can see your current running instance of `Passable` as your describe function, and each `pass` is equivalent to a single it.
 
 The `pass` function is a single test inside of the group of tests. It accepts the name of the test, description of the success condition, and the actual test function.
-If the test function returns true, the test has passed. If not, it is considered as failed.
+If you explicitly return true, or if your enforce function passed correctly, it is assumed that the pass is `true`.
 
 You could perform multiple 'passes' on the same data object. If you do so, it is recommended to use the same name for all these passes, as the results for all tests under the same name will be grouped together.
 ```js
