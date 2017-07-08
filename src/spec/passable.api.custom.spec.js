@@ -5,7 +5,7 @@ import chai from 'chai';
 
 const expect = chai.expect;
 
-describe('Test test extensions', () => {
+describe('Test rule extensions', () => {
     it('Should perform three tests', () => {
         expect(noSnuffles.testCount).to.equal(3);
     });

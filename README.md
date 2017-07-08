@@ -81,7 +81,7 @@ Listed here are the params Passable accepts:
 
 | Name       | Optional? | type     | Description                                       |
 |------------|:---------:|:--------:|---------------------------------------------------|
-| `name`     | No        | String   | A name for the group of tests which is being run. |
+| `name`     | No        | String   | A name for the group of tests. E.G - form name    |
 | `specific` | Yes       | Array    | Whitelist of tests to run.                        |
 | `passes`   | No        | Function | A function contains the actual validation logic.  |
 | `custom`   | Yes       | Object   | Custom rules to extend the basic ruleset with.    |
@@ -200,8 +200,38 @@ Just like the predefined rules, your custom rules can accepts two parameters:
 * `value` The actual value you are testing against.
 * `options` (optional) the options object which you pass when running your tests.
 
+### Addind custom rules globally
+It is possible to add a global custom rules object named `customPassableRules` (to `window`, in the browser, or to `global` on the server) and have it store all your custom rules. This is especially useful when you have many tests that rely on the same logic, and you don't want to manually define them for each passable run.
+
+Passable will grab all the rules configured in this object:
+```js
+// browser:
+window.customPassableRules = {
+    alwaysTrue: () => true,
+    alwaysFalse: () => false,
+    hasKey: (value, key) => value.hasOwnProperty(key)
+}
+
+// node:
+// browser:
+global.customPassableRules = {
+    alwaysTrue: () => true,
+    alwaysFalse: () => false,
+    hasKey: (value, key) => value.hasOwnProperty(key)
+}
+```
+
+### Addind custom rules for a single tests run
+Sometimes you just want to extend Passable with more options that are not used anywhere else and shouldn't be stored globally.
+
 Adding your rules so they are available to the enforce function is as simple as running Passable with another param.
 ```js
+    const myCustomRules = {
+        isValidEmail: (value) => value.indexOf('@') > -1,
+        hasKey: (value, {key}) => value.hasOwnProperty(key),
+        passwordsMatch: (passConfirm, options) => passConfirm === options.passConfirm && options.passIsValid
+    }
+
     Passable('GroupName', () => {...}, myCustomRules);
 ```
 ```js

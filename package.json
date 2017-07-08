@@ -1,6 +1,6 @@
 {
     "name": "passable",
-    "version": "5.4.2",
+    "version": "5.5.0",
     "description": "Isomorphic Data Model Validations",
     "main": "./dist/Passable.min.js",
     "author": "Evyatar <evyatar.a@fiverr.com>",
@@ -31,6 +31,7 @@
         "eslint": "^4.1.1",
         "eslint-loader": "^ 1.8.0",
         "mocha": "^3.4.2",
-        "webpack": "^3.0.0"
+        "webpack": "^3.0.0",
+        "window-or-global": "^1.0.1"
     }
 }

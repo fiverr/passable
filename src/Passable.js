@@ -1,18 +1,19 @@
 import enforce from './enforce';
 import passRunner from './pass_runner';
 import { passableArgs, initResponseObject, initField, onFail } from './helpers';
+import root from 'window-or-global';
 
 const FAIL = 'fail';
 
 class Passable {
 
     constructor(name, ...args) {
-        const computedArgs = passableArgs(args);
+        const computedArgs = passableArgs(args),
+            globalRules = root.customPassableRules || {};
+
         this.specific = computedArgs.specific;
-        this.custom = computedArgs.custom;
-
+        this.custom = Object.assign({}, globalRules, computedArgs.custom);
         this.res = initResponseObject(name);
-
         this.pass = this.pass.bind(this);
         this.enforce = this.enforce.bind(this);
 
