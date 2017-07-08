@@ -24,14 +24,7 @@ class Passable {
         return this.res;
     }
 
-    enforce(value) {
-        const e = enforce.bind(this.currentPass);
-        return e(value, this.custom);
-    }
-
     pass(fieldName, statement, ...args) {
-
-        this.currentPass = {};
 
         if (this.specific.length && this.specific.indexOf(fieldName) === -1) {
             this.res.skipped.push(fieldName);
@@ -42,7 +35,7 @@ class Passable {
 
         // callback is always the last argument
         const callback = args.pop(),
-            isValid = passRunner.call(this.currentPass, callback);
+            isValid = passRunner(callback);
 
         if (!isValid) {
             const severity = args[0] || FAIL;
@@ -52,8 +45,11 @@ class Passable {
         }
 
         this.bumpCounters(fieldName);
-        this.currentPass = {};
         return isValid;
+    }
+
+    enforce(value) {
+        return enforce(value, this.custom);
     }
 
     bumpCounters(fieldName) {

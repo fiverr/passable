@@ -6,14 +6,18 @@ function passRunner(callback) {
         return false;
     }
 
-    const res = callback();
+    try {
+        const res = callback();
 
-    if (typeof res !== 'undefined' && res !== null && res.hasOwnProperty('valid')) {
-        isValid = res.valid;
-    } else if (typeof res === 'boolean') {
-        isValid = res || false;
-    } else if (this.valid) {
-        isValid = this.valid;
+        if (typeof res !== 'undefined' && res !== null && res.hasOwnProperty('valid')) {
+            isValid = res.valid;
+        } else if (typeof res === 'boolean') {
+            isValid = res || false;
+        } else {
+            isValid = true;
+        }
+    } catch (e) {
+        isValid = false;
     }
 
     return !!isValid;

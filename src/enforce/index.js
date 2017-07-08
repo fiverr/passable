@@ -9,11 +9,9 @@ function isInvalid(valid) {
     return !isUntested(valid) && valid === false;
 }
 
-function enforce(value, custom) {
-    const self = this || {};
-    custom = custom || {};
-
-    const registered = Object.assign({}, rules, custom);
+function enforce(value, custom = {}) {
+    const self = {},
+        allRules = Object.assign({}, rules, custom);
 
     self.anyOf = (tests) => run('anyOf', tests);
     self.allOf = (tests) => run('allOf', tests);
@@ -25,12 +23,17 @@ function enforce(value, custom) {
             return self;
         }
 
-        self.valid = runners[group](value, tests, registered);
+        self.valid = runners[group](value, tests, allRules);
+
+        if (self.valid !== true) {
+            throw new Error(`${group} - ${value} - invalid`);
+        }
+
         return self;
     }
 
     function fin() {
-        return self.valid;
+        return !!self.valid;
     }
 
     return self;
