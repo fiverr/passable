@@ -4,135 +4,285 @@ Isomorphic data model validations made easy.
 
 [![npm version](https://badge.fury.io/js/passable.svg)](https://badge.fury.io/js/passable) [![Build Status](https://travis-ci.org/ealush/passable.svg?branch=master)](https://travis-ci.org/ealush/passable) [![bitHound Overall Score](https://www.bithound.io/github/ealush/passable/badges/score.svg)](https://www.bithound.io/github/ealush/passable)
 
+[LIVE DEMO](https://ealush.github.io/passable/) (try it in your browser);
 ---
 
-[LIVE DEMO](https://ealush.github.io/passable/) (try it in your browser);
 
-## What is Passable
-More than anything, Passable is a way to structure your data model validations in a way that's easy to manage - as small tests, grouped logically. They can be interdependant, or standalone, they can perform your own validation logic, or rely on the predefined rules you can match your data model against.
-
-![alt tag](https://raw.githubusercontent.com/ealush/passable/gh-pages/passable_diagram.png)
-
-* [Why Passable](#why-passable-key-benefits)
+* [Installation](#installation)
+* [What is Passable?](#what-is-passable)
+* [Why Passable](#key-benefits)
     * [Structured Validations](#structured-validations)
     * [Isomorphic Validations](#isomorphic-validations)
 * [How to use Passable](#how-to-use-passable)
-    * [Installation](#installation)
-    * [Test Construction](#test-construction)
+    * [Writing Tests](#writing-tests)
+    * [The Response Object](#the-response-object)
+        * [Why no isValid](#note-no-isvalid-prop)
     * [Accepted Params](#passable-params)
+        * [Running specific passes](#running-specific-pass)
+        * [The Pass Function](#the-pass-function)
+            * [How to fail a pass function](#all-ways-to-fail-a-pass)
+            * [Warn Only Tests](#warn-only-pass)
     * [The Enforce Function](#the-enforce-function)
-        * [Predefined rules](#the-predefined-rules)
+        * [Enforce Rules](#enforce-rules)
         * [Adding custom rules](#adding-more-custom-rules)
-    * [Warn only tests](#warn-only-tests)
-    * [Running specific Passes conditionally](#running-specific-passes-only-with-the-specific-param)
+            * [Globally](#addind-custom-rules-globally)
+            * [Per Form](#addind-custom-rules-for-a-single-tests-run)
 
-## Why Passable (Key benefits)
-### Structured Validations
-The basic notion behind Passable is that you would want to structure your data model validation in your application, in a way that's consistent and easy to follow. It isn't much of a problem in a smaller scale application, but as the application gets larger, and more complex, it gets harder to keep track of the different flows of the application and the ways data model validations are performed in each one. Passable gives you a consistent wstructure to construct your data model validations, in a way that's both reusable and easy to read.
+# Installation
+```npm install passable --save```
 
-### Isomorphic Validations
-The other, possibly more important use of Passable, is server side validations. Since most of the times we perform validations, we send the data back to the server, we would like to perform the tests there as well. This causes a great deal of confusion and error. It is hard to keep the validations in the server and the client synced, so if we update a validation in the client side, or the server, it is easy to neglet and change it on the other side as well. Even if we _do_ keep them up to date, it is easy, especially if the server and the client are written in different languages, to have a slightly different interpertation of the logic on each end, whic, eventually, causes inconsistencies and bugs.
+# What is Passable
+Passable is a system for javascript applications that allows you to write structured data model validations in a way that's consistent all accross your app, and fully reusable.
+
+Inspired by the world of unit tests, Passable validations are written like actual specs that need to be passed. The syntax is very similar, adapted to be more suitable for testing data model.
+
+![alt tag](https://raw.githubusercontent.com/ealush/passable/gh-pages/passable_diagram.png)
+
+## Key Benefits
+### **Structured Validations**
+
+The basic notion behind Passable is that you would want to structure your data model validation in your application, in a way that's consistent and easy to follow. It isn't much of a problem in a smaller scale application, but as the application gets larger, and more complex, it gets harder to keep track of the different flows of the application and the ways data model validations are performed in each one. Passable gives you a consistent structure to construct your data model validations, in a way that's both reusable and easy to read.
+
+### **Isomorphic Validations**
+
+The other, use of Passable, is server side validations. Since most of the times we perform validations, we send the data back to the server, we would like to perform the tests there as well. This causes a great deal of confusion and error. It is hard to keep the validations in the server and the client synced, so if we update a validation in the client side, or the server, it is easy to neglet and change it on the other side as well. Even if we do keep them up to date, it is easy, especially if the server and the client are written in different languages, to have a slightly different interpertation of the logic on each end, whic, eventually, causes inconsistencies and bugs.
 
 Instead, with Passable, you could just as easily set up a data model validations server that would run the same exact validation code that runs in the browser. No duplication, no sync problems.
 
----
+ [Here is an example server](https://github.com/ealush/passable-server) running Passable, both as  a file server, and as a validations server.
 
-# How to use Passable?
+ # How to use Passable
+ ## Writing tests
+ Much like when writing unin-tests, writing validations with Passable is all about knowing in advance which values you expect to get. The structure is very similar to the familiar unit test `describe/it/expect` combo, only that with Passable the functions you will mostly run are `Passable/pass/enforce`.
 
-## Installation
-`npm install passable --save`
+ * `Passable` - the wrapper for your form validation, much like the describe function in unit tests.
+ * `pass` - a single tests, most commonly a single field, much like the it function in unit tests.
+ * `enforce` - the function which gets and enforces the data model compliance, similar to the expect function in unit tests.
 
-## Test Construction
+The most basic test would looke somewhat like this:
 
-You construct your tests in a spec-like manner, grouping a bunch of tests together, for example, all inputs in a form.
-When compared to a spec, you can see your current running instance of `Passable` as your describe function, and each `pass` is equivalent to a single it.
-
-The `pass` function is a single test inside of the group of tests. It accepts the name of the test, description of the success condition, and the actual test function.
-If you explicitly return true, or if your enforce function passed correctly, it is assumed that the pass is `true`.
-
-You could perform multiple 'passes' on the same data object. If you do so, it is recommended to use the same name for all these passes, as the results for all tests under the same name will be grouped together.
 ```js
-
 // data = {
-//  userName: "test",
-//  email: "test@sil.ly"
+//     username: 'ealush',
+//     age: 27
 // }
-
-const validate = Passable('UserEditForm', (pass, enforce) =>  {
-    pass('UserName', 'Must be at least 5 chars, but not longer than 20', () => {
-        // this is an example using the predefined tests, using the 'enforce' function
-
-        enforce(data.userName).allOf({
-            largerThan: 5,
-            smallerThan: 20
+Passable('NewUserForm', (pass, enforce) => {
+    pass('username', 'Must be a string between 2 and 10 chars', () => {
+        enforce(data.username).allOf({
+            isString: true,
+            largerThan: 1,
+            smallerThan: 11
         });
     });
 
-    pass('UserEmail', 'Must not end with the letter Y', () => {
-        // this is an example for a free-style, do it yourself, validation
-        return data.email.substr(-1) !== 'y';
-    });
+    pass('age', 'Can either be empty, or larger than 18', () => {
+        enforce(data.age).anyOf({
+            isEmpty: true,
+            largerThan: 18
+        });
+    })
 });
+```
+
+In the example above, we tested a form named `NewUserForm`, and ran two tets on it. One of the `username` field, and one on the `age` field. When testing the username field, we made sure that **all** conditions are true, and when testing age, we made sure that **at least one** condition is true.
+
+If our validation fails, among other information, we would get the names of the fields, and an array of errors for each, so we can show them back to the user.
+
+### The response object:
+In the response object you will find the following:
+* name: `string` | the name of the form being validated
+* hasValidationErrors: `boolean` | whether there are validation errors or not
+* hasValidationWarnings: `boolean` | whether there are validation warnings or not
+* failCount: `number` | overall errors count for this form
+* warnCount: `number` | overall warning count for this form
+* testCount: `number` | overall test count in this form
+* testsPerformed: `object` | detailed stats per each field
+    * [field-name]: `object` | per field data
+        * testCount: `number` | test count for the field.
+        * failCount: `number` | error count for the field.
+        * warnCount: `number` | warning count for the field.
+* validationErrors: `object` | actual errors per each field
+    * [field-name]: `array` | all error strings for thes field
+* validationWarnings: `object` | actual warnings per each field
+    * [field-name]: `array` | all warning strings for thes field
+* skipped | `array` | all skipped fields (empty, unless the `specific` option is used)
+
+#### **Note** No `isValid` prop
+There is **no** `isValid` prop, this is by design. Passable cannot know your business logic, nor can it ever assume that `0` errors means valid response. `0` errors can be due to skipped fields. Same goes for isInvalid. Even though, usually, errors mean invalidity, it is not always the case. This is why Passable gives you all the information about the tests, but it is your job to decide whether it means that the validation failed or not.
+
+**A passing** response object would look somewhat like this:
+```js
+{
+  "name": "NewUserForm",
+  "hasValidationErrors": false,
+  "hasValidationWarnings": false,
+  "failCount": 0,
+  "warnCount": 0,
+  "testCount": 2,
+  "testsPerformed": {
+    "username": {
+      "testCount": 1,
+      "failCount": 0,
+      "warnCount": 0
+    },
+    "age": {
+      "testCount": 1,
+      "failCount": 0,
+      "warnCount": 0
+    }
+  },
+  "validationErrors": {},
+  "validationWarnings": {},
+  "skipped": []
+}
+```
+
+**A failing** response object would look somewhat like this
+```js
+{
+  "name": "NewUserForm",
+  "hasValidationErrors": true,
+  "hasValidationWarnings": false,
+  "failCount": 2,
+  "warnCount": 0,
+  "testCount": 2,
+  "testsPerformed": {
+    "username": {
+      "testCount": 1,
+      "failCount": 1,
+      "warnCount": 0
+    },
+    "age": {
+      "testCount": 1,
+      "failCount": 1,
+      "warnCount": 0
+    }
+  },
+  "validationErrors": {
+    "username": [
+      "Must be a string between 2 and 10 chars"
+    ],
+    "age": [
+      "Can either be empty, or larger than 18"
+    ]
+  },
+  "validationWarnings": {},
+  "skipped": []
+}
 ```
 
 ## Passable params
 
-Listed here are the params Passable accepts:
+| Name       | Optional? | type     | Description                                                               |
+|------------|:---------:|:--------:|---------------------------------------------------------------------------|
+| `name`     | No        | String   | A name for the group of tests. E.G - form name                            |
+| `specific` | Yes       | Array    | Whitelist of tests to run. Can be sompletely ommitted                     |
+| `passes`   | No        | Function | A function containing the actual validation logic.                        |
+| `custom`   | Yes       | Object   | Custom rules to extend the basic ruleset with. Can be sompletely ommitted |
 
-| Name       | Optional? | type     | Description                                       |
-|------------|:---------:|:--------:|---------------------------------------------------|
-| `name`     | No        | String   | A name for the group of tests. E.G - form name    |
-| `specific` | Yes       | Array    | Whitelist of tests to run.                        |
-| `passes`   | No        | Function | A function contains the actual validation logic.  |
-| `custom`   | Yes       | Object   | Custom rules to extend the basic ruleset with.    |
+![alt tag](https://raw.githubusercontent.com/ealush/passable/gh-pages/passable-api.jpg)
 
-And the resulting object for these tests would be:
+### Running `specific` pass
+Sometimes you want to test only a specific field out of the whole form. For example, when validating upon user interaction, such as input change, you probably do not want to validate all other fields as well. Same goes for only validating dirty/touched fields.
+With the `specific` param, it is as easy as passing the names of the fields you wish to test. All other fields will be skipped and not tested.
+
+The specific param is optional, and it accepts an array of fields to include - must be the same as the names specified in their `pass` function. The way easiest to use it, is to wrap your validation with a function that passes down the fields to include, only if needed.
+
+In the following example, only First pass is going to run. Second will be skipped.
+```js
+const result = SpecificTests(['First']);
+
+function SpecificTests (specific) {
+    return Passable('SpecificTests', specific, (pass, enforce) => {
+        pass('First',  'should pass', () => {...});
+        pass('Second', 'should be skipped', () => {...});
+    });
+};
+```
+
+## The `pass` function
+The pass function is a single test in your validations. It is similar to unit tests `it` function. `pass` accepts the name of the test, the error message and the actual test function. If you explicitly return true, or if your enforce function passed correctly, it is assumed that the pass is true.
+
+You can have multipe `pass` functions for each field, each with a different error.
+
+```js
+Passable('MyForm', (pass, enforce) => {
+    pass('name',  'should be ...', () => {...});
+    pass('name',  'should be ...', () => {...});
+    pass('age', 'should be ...', () => {...});
+});
+```
+
+### All ways to fail a `pass`
+There are three ways of failing a pass, and marking it as having a validation error:
+* Having an `enforce` function which ends up failing.
+    ```js
+        pass('field', 'should fail by enforce', () => {
+            enforce(1).allOf({ largerThan: 5 });
+        });
+    ```
+* explicitly returning false from the `pass` itself (running some logic that returns false).
+    ```js
+        pass('filed', 'should explicitly fail by false', () => false);
+        pass('filed', 'should explicitly fail by false', () => { return 1 !== 1; });
+    ```
+* Throwing an Error from within the `pass`. Thrown errors within the `pass` function are caught and handled to mark the pass as failing.
+    ```js
+        pass('filed', 'should fail by a thrown error', () => { throw new Error(); });
+    ```
+
+### Warn only `pass`
+By default, a failing `pass` will set `hasValidationErrors` to `true`. Sometimes you would want to set a warn-only validation test (password strength, for example). In this case, you would add the 'warn' flag to your pass function.
+This will leave `hasValidationErrors` unchanged (other tests may have set it to `true`), and update `hasValidationWarnings` to `true`. It will also bump up `warnCount`.
+
+If no flag is added, your pass function will default to `fail`.
+
+```
+Passable('WarnAndPass', (pass, enforce) => {
+    pass('WarnMe', 'Should warn and not fail', 'warn', () => false);
+});
+```
+
+Will result in the following object:
 ```js
 {
-    name: 'UserEditForm',
+    name: 'WarnAndPass',
     skipped: [],
-    hasValidationErrors: true,
-    hasValidationWarnings: false,
+    hasValidationErrors: false,
+    hasValidationWarnings: true,
     testsPerformed: {
-        UserName: {
+        WarnMe: {
             testCount: 1,
-            failCount: 1
-        },
-        UserEmail: {
-            testCount: 1,
-            failCount: 1
+            failCount: 0,
+            warnCount: 1
         }
     },
-    validationErrors: {
-        UserName: [
-            'Must be at least 5 chars, but not longer than 20'
-        ],
-        UserEmail: [
-            'Must not end with the letter Y'
+    validationErrors: {},
+    validationWarnings: {
+        WarnMe: [
+            'Should warn and not fail'
         ]
     },
-    validationWarnings: {},
-    failCount: 2,
-    warnCount: 0,
-    testCount: 2
+    failCount: 0,
+    warnCount: 1,
+    testCount: 1
 }
 ```
 
-# The enforce function
-The enforce function runs predefined rules in sequence. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually.
-For each rule, you may also pass either value or an options object that may be used by the function of the rule.
+## The `enforce` function
+The `enforce` function runs your data against different rules and condition. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually. For each rule, you may also pass either value or an options object that may be used by the function of the rule.
 
-The enforce function exposes the following four functions:
-* `allOf` - makes sure all rules specified are true.
-* `anyOf` - makes sure at least one rule is true.
-* `noneOf` - makes sure no rule is true.
-* `fin` - returns the result.
+The enforce function exposes the following functions:
 
-All functions are chainable, fin must be at the end. All functions other than fin can be used more than once. All enforce chain-blocks are in an `AND` relationship, which means that if one block is `false` the others won't even get evaluated.
+* `allOf`  | `AND` | makes sure all rules specified are true.
+* `anyOf`  | `OR`  | makes sure at least one rule is true.
+* `noneOf` | `NOT` | makes sure no rule is true.
 
+All of these functions are chainable. All functions other can be used more than once. All enforce chain-blocks are in an AND relationship, which means that if one block is false the others won't get evaluated.
 All the following are valid uses of enforce.
+
 ```js
-    enforce([1,2,3,4,5,6]).anyOf({
+enforce([1,2,3,4,5,6]).anyOf({
         largerThan: 5, // in anyOf - this one is enough to set the anyOf block to true
         smallerThan: 6,
     }).noneOf({
@@ -140,7 +290,7 @@ All the following are valid uses of enforce.
         isNumber: true
     }).allOf({
         isArray: true
-    }).fin(); // true
+    }); // true
 
     -------------
 
@@ -148,7 +298,7 @@ All the following are valid uses of enforce.
         largerThan: 5,
         smallerThan: 2,
         matches: /[0-9]/
-    }).fin(); // false
+    }); // false
 
     -------------
 
@@ -157,24 +307,24 @@ All the following are valid uses of enforce.
         smallerThan: 2
     }).anyOf({
         smallerThan: 150
-    }).fin(); // true
-
+    }); // true
 ```
 
-When using `enforce`, you do not have to return the result (although you may), each of your enforce tests updates the result of the whole pass. You may also use multiple enforces in the same pass function, they will simply run in sequence.
-
-Again, as in the different enforce functions, all `enforce` call have an `AND` relationship, which means that once one call fails, the whole pass fails.
+When using enforce, you do not have to return the result (although you may), each of your enforce tests updates the result of the whole pass. You may also use multiple enforces in the same pass function, they will run in sequence.
 
 ```js
-pass('test', 'multiple enforces', () => {
-    enforce('str1').allOf({...}).anyOf({...}).fin();
-    enforce('str2').noneOf({...}).fin();
-    enforce('str3').anyOf({...}).fin();
+Passable('enforcement', (pass, enforce) => {
+    pass('test', 'multiple enforces', () => {
+        enforce('str1').allOf({...}).anyOf({...});
+        enforce('str2').noneOf({...});
+        enforce('str3').anyOf({...});
+    });
 });
 ```
 
-## The predefined rules
-Passable come with a few preDefined rules:
+### Enforce rules
+
+Passable comes with the following rules (click for detailed info)
 * [isArray](./src/enforce/rules/lang/is_array#rule---isarray) Determines whether a given value is an array or not.
 * [isString](./src/enforce/rules/lang/is_string#rule---isstring) Determines whether a given value is a string or not.
 * [isNumber](./src/enforce/rules/lang/is_number#rule---isnumber) Determines whether a given value is a number or not.
@@ -239,60 +389,7 @@ Adding your rules so they are available to the enforce function is as simple as 
         pass('TestName', 'Must have a valid email', () => {
             enforce(user.email).allOf({
                 isValidEmail: null
-            }).fin();
+            });
         });
     }, myCustomRules);
-```
-
-## Warn only tests
-By default, `pass` functions with the return value of `false` will fail your test group and set `hasValidationErrors` to `true`. Sometimes you would want to set a warn-only validation test (password strength, for example). In this case, you would add the 'warn' flag to your pass function.
-This will leave `hasValidationErrors` unchanged (other tests may have set it to `true`), and update `hasValidationWarnings` to `true`. It will also bump up `warnCount`.
-
-If no flag is added, your pass function will default to `fail`.
-
-```
-const validate = Passable('WarnAndPass', (pass, enforce) =>  {
-    pass('WarnMe', 'Should warn and not fail', 'warn', () => false);
-});
-```
-
-Will result in the following object:
-```js
-{
-    name: 'WarnAndPass',
-    skipped: [],
-    hasValidationErrors: false,
-    hasValidationWarnings: true,
-    testsPerformed: {
-        WarnMe: {
-            testCount: 1,
-            failCount: 0,
-            warnCount: 1
-        }
-    },
-    validationErrors: {},
-    validationWarnings: {
-        WarnMe: [
-            'Should warn and not fail'
-        ]
-    },
-    failCount: 0,
-    warnCount: 1,
-    testCount: 1
-}
-```
-
-## Running specific passes only with the `specific` param
-Sometimes you would want to run only specific tests in your group. For example, when running validations on an input change, you would probably want to test it specifically, and not the other test in the same group. This is simple using the `specific` param. The specific param is optional, and it accepts an array of pass functions to include (by their name). The easiest to use it in a reusable way, is to wrap your Passable group with a function that passes down the fields to include, only if needed.
-
-In the following example, only `First` pass is going to run. `Second` will be skipped.
-```js
-const result = SpecificTests(['First']);
-
-function SpecificTests (specific) {
-    return Passable('SpecificTests', specific, (pass, enforce) => {
-        pass('First',   'should pass', () => true);
-        pass('Second',  'should pass', () => true);
-    });
-};
 ```
