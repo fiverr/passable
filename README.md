@@ -53,7 +53,7 @@ Instead, with Passable, you could just as easily set up a data model validations
 
  # How to use Passable
  ## Writing tests
- Much like when writing unin-tests, writing validations with Passable is all about knowing in advance which values you expect to get. The structure is very similar to the familiar unit test `describe/it/expect` combo, only that with Passable the functions you will mostly run are `Passable/pass/enforce`.
+ Much like when writing unit-tests, writing validations with Passable is all about knowing in advance which values you expect to get. The structure is very similar to the familiar unit test `describe/it/expect` combo, only that with Passable the functions you will mostly run are `Passable/pass/enforce`.
 
  * `Passable` - the wrapper for your form validation, much like the describe function in unit tests.
  * `pass` - a single tests, most commonly a single field, much like the it function in unit tests.
@@ -176,9 +176,9 @@ There is **no** `isValid` prop, this is by design. Passable cannot know your bus
 | Name       | Optional? | type     | Description                                                               |
 |------------|:---------:|:--------:|---------------------------------------------------------------------------|
 | `name`     | No        | String   | A name for the group of tests. E.G - form name                            |
-| `specific` | Yes       | Array    | Whitelist of tests to run. Can be sompletely ommitted                     |
+| `specific` | Yes       | Array    | Whitelist of tests to run. Can be completely ommitted                     |
 | `passes`   | No        | Function | A function containing the actual validation logic.                        |
-| `custom`   | Yes       | Object   | Custom rules to extend the basic ruleset with. Can be sompletely ommitted |
+| `custom`   | Yes       | Object   | Custom rules to extend the basic ruleset with. Can be completely ommitted |
 
 ![alt tag](https://raw.githubusercontent.com/ealush/passable/gh-pages/passable-api.jpg)
 
@@ -363,7 +363,6 @@ window.customPassableRules = {
 }
 
 // node:
-// browser:
 global.customPassableRules = {
     alwaysTrue: () => true,
     alwaysFalse: () => false,
