@@ -27,6 +27,7 @@ Isomorphic data model validations made easy.
         * [Adding custom rules](#adding-more-custom-rules)
             * [Globally](#addind-custom-rules-globally)
             * [Per Form](#addind-custom-rules-for-a-single-tests-run)
+    * [Using with other assertion libraries](#using-with-other-assertion-libraries)
 
 # Installation
 ```npm install passable --save```
@@ -270,7 +271,7 @@ Will result in the following object:
 ```
 
 ## The `enforce` function
-The `enforce` function runs your data against different rules and condition. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually. For each rule, you may also pass either value or an options object that may be used by the function of the rule.
+The `enforce` function runs your data against different rules and condition. It is basically, the default assertion method for Passable tests. Its intended use is for validations logic that gets repeated over and over again and shouldn't be written manually. For each rule, you may also pass either value or an options object that may be used by the function of the rule.
 
 The enforce function exposes the following functions:
 
@@ -392,3 +393,30 @@ Adding your rules so they are available to the enforce function is as simple as 
         });
     }, myCustomRules);
 ```
+
+## Using with other assertion libraries
+Using other assertion libraries along with Passable can't be easier. Most popular assertion libraries are supported by default, and many others are supported as well. Basically, if it throws an error, it works. You can even use it alongside enforce. Say you want some `chaijs` goodness in Passable, here is how to do it:
+
+```js
+import { expect } from chai; // you can also just embed chai as a script tag if you don't use es6 imports
+
+// data = {
+//     username: 'ealush',
+//     age: 27
+// }
+
+Passable('FormWithChai', (pass, enforce) => {
+    pass('username', 'Should be a string', () => {
+        expect(data.username).to.be.a('string');
+    });
+
+    pass('age', 'Should be a number and larger than 18', () => {
+        expect(data.age).to.be.a('number');
+        enforce(data.age).allOf({
+            largerThan: 18
+        });
+    });
+});
+
+```
+
