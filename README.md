@@ -35,7 +35,7 @@ Isomorphic data model validations made easy.
 # What is Passable
 Passable is a system for javascript applications that allows you to write structured data model validations in a way that's consistent all accross your app, and fully reusable.
 
-Inspired by the world of unit tests, Passable validations are written like actual specs that need to be passed. The syntax is very similar, adapted to be more suitable for testing data model.
+Inspired by the world of unit tests, Passable validations are written like actual specs that need to be passed. The syntax is very similar, adapted to be more suitable for testing data model, and runs in production code - not in testing environment.
 
 ![alt tag](https://raw.githubusercontent.com/ealush/passable/gh-pages/passable_diagram.png)
 
@@ -46,7 +46,7 @@ The basic notion behind Passable is that you would want to structure your data m
 
 ### **Isomorphic Validations**
 
-The other, use of Passable, is server side validations. Since most of the times we perform validations, we send the data back to the server, we would like to perform the tests there as well. This causes a great deal of confusion and error. It is hard to keep the validations in the server and the client synced, so if we update a validation in the client side, or the server, it is easy to neglet and change it on the other side as well. Even if we do keep them up to date, it is easy, especially if the server and the client are written in different languages, to have a slightly different interpertation of the logic on each end, whic, eventually, causes inconsistencies and bugs.
+The other use of Passable is server side validations. Since most of the times we perform validations, we send the data back to the server, we would like to perform the tests there as well. This causes a great deal of confusion and error. It is hard to keep the validations in the server and the client synced, so if we update a validation in the client side, or the server, it is easy to neglet and change it on the other side as well. Even if we do keep them up to date, it is easy, especially if the server and the client are written in different languages, to have a slightly different interpertation of the logic on each end, whic, eventually, causes inconsistencies and bugs.
 
 Instead, with Passable, you could just as easily set up a data model validations server that would run the same exact validation code that runs in the browser. No duplication, no sync problems.
 
@@ -108,7 +108,7 @@ In the response object you will find the following:
     * [field-name]: `array` | all warning strings for thes field
 * skipped | `array` | all skipped fields (empty, unless the `specific` option is used)
 
-#### **Note** No `isValid` prop
+#### **Note**: No `isValid` prop
 There is **no** `isValid` prop, this is by design. Passable cannot know your business logic, nor can it ever assume that `0` errors means valid response. `0` errors can be due to skipped fields. Same goes for isInvalid. Even though, usually, errors mean invalidity, it is not always the case. This is why Passable gives you all the information about the tests, but it is your job to decide whether it means that the validation failed or not.
 
 **A passing** response object would look somewhat like this:
