@@ -35,7 +35,7 @@ Isomorphic data model validations made easy.
 # What is Passable
 Passable is a system for javascript applications that allows you to write structured data model validations in a way that's consistent all accross your app, and fully reusable.
 
-Inspired by the world of unit tests, Passable validations are written like actual specs that need to be passed. The syntax is very similar, adapted to be more suitable for testing data model, and runs in production code - not in testing environment.
+Inspired by the world of unit testing, Passable validations are written like actual specs that need to be passed, and are considered to be an enforceable contract between the backend and the client. The syntax is very similar, adapted to be more suitable for testing data model, and runs in production code - not in testing environment.
 
 ![alt tag](https://raw.githubusercontent.com/ealush/passable/gh-pages/passable_diagram.png)
 
@@ -335,6 +335,7 @@ Passable comes with the following rules (click for detailed info)
 * [largerThan](./src/enforce/rules/size/larger_than#rule---largerthan) Compares numbers, array/string lengths and object sizes.
 * [sizeEquals](./src/enforce/rules/size/size_equals#rule---sizeequals) Compares numbers, array/string lengths and object sizes.
 * [smallerThan](./src/enforce/rules/size/smaller_than#rule---smallerthan) Compares numbers, array/string lengths and object sizes.
+* [smallerThanOrEquals](./src/enforce/rules/size/smaller_than_or_equals#rule---smallerthanorequals) Compares numbers, array/string lengths and object sizes.
 
 ## Adding more (/custom) rules
 To make it easier to reuse logic across your application, sometimes you would want to encapsulate bits of logic in rules that you can later on use, for example, what's considered a valid email.

@@ -1,41 +1,41 @@
 {
-    "name": "passable",
-    "version": "5.5.2",
-    "description": "Isomorphic Data Model Validations",
-    "main": "./dist/Passable.min.js",
-    "author": "Evyatar <evyatar.a@fiverr.com>",
-    "license": "MIT",
-    "scripts": {
-        "build": "WEBPACK_ENV=build webpack",
-        "build:watch": "webpack --watch",
-        "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
-        "test:custom": "mocha --compilers js:babel-core/register --colors -w './src/**/*custom.spec.js'",
-        "test:global_custom": "mocha --compilers js:babel-core/register --colors -w './src/spec/passable.api.global-custom.spec.js'",
-        "test:enforce": "mocha --compilers js:babel-core/register --colors -w './src/enforce/spec.js'",
-        "test:pass_runner": "mocha --compilers js:babel-core/register --colors -w './src/pass_runner/spec.js'",
-        "test:watch": "mocha --compilers js:babel-core/register --colors -w './src/**/*spec.js'",
-        "test": "mocha --compilers js:babel-core/register --colors './src/**/*spec.js'",
-        "eslint": "eslint -c .eslintrc './src/**/*.js'; exit 0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ealush/passable.git"
-    },
-    "bugs": {
-        "url": "https://github.com/ealush/passable/issues"
-    },
-    "homepage": "https://github.com/ealush/passable#readme",
-    "devDependencies": {
-        "babel-cli": "^6.24.1",
-        "babel-core": "^6.25.0",
-        "babel-loader": "^7.1.0",
-        "babel-plugin-add-module-exports": "^0.2.1",
-        "babel-preset-es2015": "^6.24.1",
-        "chai": "^4.0.2",
-        "eslint": "^4.1.1",
-        "eslint-loader": "^ 1.8.0",
-        "mocha": "^3.4.2",
-        "webpack": "^3.0.0",
-        "window-or-global": "^1.0.1"
-    }
+  "name": "passable",
+  "version": "5.6.0",
+  "description": "Isomorphic Data Model Validations",
+  "main": "./dist/Passable.min.js",
+  "author": "Evyatar <evyatar.a@fiverr.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "WEBPACK_ENV=build webpack",
+    "build:watch": "webpack --watch",
+    "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch",
+    "test:custom": "mocha --compilers js:babel-core/register --colors -w './src/**/*custom.spec.js'",
+    "test:global_custom": "mocha --compilers js:babel-core/register --colors -w './src/spec/passable.api.global-custom.spec.js'",
+    "test:enforce": "mocha --compilers js:babel-core/register --colors -w './src/enforce/spec.js'",
+    "test:pass_runner": "mocha --compilers js:babel-core/register --colors -w './src/pass_runner/spec.js'",
+    "test:watch": "mocha --compilers js:babel-core/register --colors -w './src/**/*spec.js'",
+    "test": "mocha --compilers js:babel-core/register --colors './src/**/*spec.js'",
+    "eslint": "eslint -c .eslintrc './src/**/*.js'; exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ealush/passable.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ealush/passable/issues"
+  },
+  "homepage": "https://github.com/ealush/passable#readme",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.24.1",
+    "chai": "^4.0.2",
+    "eslint": "^4.1.1",
+    "eslint-loader": "^ 1.8.0",
+    "mocha": "^3.4.2",
+    "webpack": "^3.0.0",
+    "window-or-global": "^1.0.1"
+  }
 }

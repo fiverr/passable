@@ -1,7 +1,7 @@
-# [RULE] - smallerThan
+# [RULE] - smallerThanOrEquals
 
 ## Description
-Returns true if a given value is smaller than another value. The values do not have to be of the same type
+Returns true if a given value is smaller than or equals another value. The values do not have to be of the same type
 
 ## Arguments
 * `value`: the value which you would like to test. can be:
@@ -14,62 +14,62 @@ Both arguments can be of the following types:
 * string: checks against length
 
 ## Response
-The smallerThan rule returns a boolean. `true` for smaller values
+The smallerThanOrEquals rule returns a boolean. `true` for smaller or equal values
 
 ## usage examples:
 
 ```js
 enforce([]).allOf({
-    smallerThan: 1
+    smallerThanOrEquals: 1
 });
 // true
 ```
 
 ```js
 enforce(5).allOf({
-    smallerThan: 6
+    smallerThanOrEquals: 6
 });
 // true
 ```
 
 ```js
-enforce({1:1, 2:2}).allOf({
-    smallerThan: [1,2,3]
+enforce({1:1, 2:2, 3:3}).allOf({
+    smallerThanOrEquals: [1,2,3]
 });
 // true
 ```
 
 ```js
 enforce('hell').allOf({
-    smallerThan: [1,2,3,4,5,6]
+    smallerThanOrEquals: [1,2,3,4]
 });
 // true
 ```
 
 ```js
 enforce([1]).allOf({
-    smallerThan: 1
+    smallerThanOrEquals: 1
+});
+// true
+```
+
+```js
+enforce({1:1, 2:2, 3:3}).allOf({
+    smallerThanOrEquals: [1, 2]
 });
 // false
 ```
 
 ```js
-enforce({1:1, 2:2}).allOf({
-    smallerThan: [1, 2]
+enforce('yo').allOf({
+    smallerThanOrEquals: []
 });
 // false
 ```
 
 ```js
-enforce('').allOf({
-    smallerThan: []
-});
-// false
-```
-
-```js
-enforce('').allOf({
-    smallerThan: 0
+enforce('0').allOf({
+    smallerThanOrEquals: 0
 });
 // false
 ```

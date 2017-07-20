@@ -1,7 +1,7 @@
 # [RULE] - largerThan
 
 ## Description
-Returns true if a given value larger than another value. The values do not have to be of the same type
+Returns true if a given value is larger than another value. The values do not have to be of the same type
 
 ## Arguments
 * `value`: the value which you would like to test. can be:
