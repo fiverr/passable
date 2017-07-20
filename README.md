@@ -333,6 +333,7 @@ Passable comes with the following rules (click for detailed info)
 * [matches](./src/enforce/rules/content/matches#rule---matches) Tests value against RegExp.
 * [inside](./src/enforce/rules/content/inside#rule---inside) Checks if a value is contained inside another value.
 * [largerThan](./src/enforce/rules/size/larger_than#rule---largerthan) Compares numbers, array/string lengths and object sizes.
+* [largerThanOrEquals](./src/enforce/rules/size/larger_than_or_equals#rule---smallerthanorequals) Compares numbers, array/string lengths and object sizes.
 * [sizeEquals](./src/enforce/rules/size/size_equals#rule---sizeequals) Compares numbers, array/string lengths and object sizes.
 * [smallerThan](./src/enforce/rules/size/smaller_than#rule---smallerthan) Compares numbers, array/string lengths and object sizes.
 * [smallerThanOrEquals](./src/enforce/rules/size/smaller_than_or_equals#rule---smallerthanorequals) Compares numbers, array/string lengths and object sizes.

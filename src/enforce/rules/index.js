@@ -8,6 +8,7 @@ import sizeEquals from './size/size_equals';
 import largerThan from './size/larger_than';
 import smallerThan from './size/smaller_than';
 import smallerThanOrEquals from './size/smaller_than_or_equals';
+import largerThanOrEquals from './size/larger_than_or_equals';
 
 export default {
     isArray,
@@ -19,5 +20,6 @@ export default {
     largerThan,
     smallerThan,
     smallerThanOrEquals,
+    largerThanOrEquals,
     sizeEquals
 };
