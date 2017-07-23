@@ -1,9 +1,15 @@
+// @flow
+
 import { isType,
     findArrayValuesInArray,
     findValInArrayOrString
 } from '../../helpers';
 
-function inside(value, arg1) {
+type All = string | number | boolean | Array<mixed>;
+type Value = All | Array<All>;
+type Arg = string | Array<All>;
+
+function inside(value: Value , arg1: Arg): boolean {
 
     if (isType(arg1, 'array')) {
 
@@ -20,7 +26,6 @@ function inside(value, arg1) {
     }
 
     return false;
-
 }
 
 export default inside;

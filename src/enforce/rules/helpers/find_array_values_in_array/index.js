@@ -1,7 +1,11 @@
+// @flow
+
 import { reduceArrayToObject,
     findArrayValuesInObjectKeys } from '../index';
 
-function findArrayValuesInArray(values, array) {
+type Value = Array<string | number>;
+
+function findArrayValuesInArray(values: Value, array: Value): boolean {
     const reducedArray = reduceArrayToObject(array),
         allItemsFound = findArrayValuesInObjectKeys(values, reducedArray);
 

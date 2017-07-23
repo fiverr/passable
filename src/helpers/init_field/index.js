@@ -1,3 +1,4 @@
+// @flow
 function initField() {
     return {
         testCount: 0,

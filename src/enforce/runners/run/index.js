@@ -1,4 +1,5 @@
-export default function run(value, key, tests, rules) {
+// @flow
+export default function run(value: any, key: string, tests: Object, rules: Rules): boolean {
 
     if (!(typeof rules[key] === 'function')) {
         return false;

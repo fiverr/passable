@@ -1,6 +1,7 @@
+// @flow
 import { isType, expectType } from '../../helpers';
 
-function isString(value, expect) {
+function isString(value: mixed, expect: boolean): boolean {
     expectType(expect, 'boolean', 'isString');
     return isType(value, 'string', expect);
 }

@@ -1,6 +1,7 @@
+// @flow
 const WARN = 'warn';
 
-function onFail(fieldName, statement, severity, prevResObj) {
+function onFail(fieldName: string, statement: string, severity: Severity, prevResObj: Object): PassableResponse {
     let countName = 'failCount',
         nameSuffix = 'Errors';
 
@@ -9,8 +10,8 @@ function onFail(fieldName, statement, severity, prevResObj) {
         nameSuffix = 'Warnings';
     }
 
-    const objectName = `validation${nameSuffix}`,
-        res = prevResObj || {};
+    const objectName = `validation${nameSuffix}`;
+    const res = prevResObj;
 
     res[`hasValidation${nameSuffix}`] = true;
     res[objectName][fieldName] = res[objectName][fieldName] || [];

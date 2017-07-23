@@ -1,4 +1,6 @@
-function isType(value, type, expect = true) {
+// @flow
+
+function isType(value: any, type: string, expect?: boolean = true): boolean {
 
     if (type === 'array') {
         return Array.isArray(value) === expect;

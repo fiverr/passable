@@ -1,6 +1,7 @@
+// @flow
 import { isType } from '../../helpers';
 
-function matches(value, regex) {
+function matches(value: string, regex: RegExp | string): boolean {
 
     if (regex instanceof RegExp) {
         return regex.test(value);

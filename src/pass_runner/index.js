@@ -1,4 +1,5 @@
-function passRunner(callback) {
+// @flow
+function passRunner(callback: Function): boolean {
 
     let isValid = null;
 

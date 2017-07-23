@@ -1,10 +1,12 @@
+// @flow
+
 import { isType } from '../';
 
-function throwTypeError(value, type, functionName) {
+function throwTypeError(value: any, type: string, functionName: string): void {
     throw new TypeError(`${functionName}: expected ${value} to be a ${type}.`);
 }
 
-function expect_type(value, type, functionName) {
+function expectType(value: any, type: string, functionName: string): true | void {
     if (!isType(value, type, true)) {
         return throwTypeError(value, type, functionName);
     }
@@ -12,4 +14,4 @@ function expect_type(value, type, functionName) {
     return true;
 }
 
-export default expect_type;
+export default expectType;

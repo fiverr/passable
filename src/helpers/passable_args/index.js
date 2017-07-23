@@ -1,4 +1,6 @@
-function passableArgs(args) {
+// @flow
+
+function passableArgs(args: PassableArguments) {
 
     let passes,
         specific,

@@ -1,6 +1,7 @@
+// @flow
 import run from '../run';
 
-export default function noneOf(value, tests, rules) {
+export default function noneOf(value: any, tests: Object, rules: Rules): boolean {
 
     const testsCount = Object.keys(tests).length;
     let failCount = 0;

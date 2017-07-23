@@ -1,3 +1,5 @@
+// @flow
+
 import enforce from './enforce';
 import passRunner from './pass_runner';
 import { passableArgs, initResponseObject, initField, onFail } from './helpers';
@@ -7,7 +9,13 @@ const FAIL = 'fail';
 
 class Passable {
 
-    constructor(name, ...args) {
+    specific: Array<string> | string;
+    custom: Rules;
+    res: PassableResponse;
+    pass: Function;
+    enforce: Function;
+
+    constructor(name: string, ...args) {
         const computedArgs = passableArgs(args),
             globalRules = root.customPassableRules || {};
 
@@ -24,7 +32,7 @@ class Passable {
         return this.res;
     }
 
-    pass(fieldName, statement, ...args) {
+    pass(fieldName: string, statement: string, ...args: Array<any>) {
 
         if (this.specific.length && this.specific.indexOf(fieldName) === -1) {
             this.res.skipped.push(fieldName);
@@ -48,17 +56,17 @@ class Passable {
         return isValid;
     }
 
-    enforce(value) {
+    enforce(value: any) {
         return enforce(value, this.custom);
     }
 
-    bumpCounters(fieldName) {
+    bumpCounters(fieldName: string) {
         // bump overall counters
         this.res.testsPerformed[fieldName].testCount++;
         this.res.testCount++;
     }
 }
 
-const passable = (name, ...args) => new Passable(name, ...args);
+const passable = (name: string, ...args: PassableArguments) => new Passable(name, ...args);
 
 export default passable;

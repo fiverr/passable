@@ -1,6 +1,7 @@
+// @flow
 import run from '../run';
 
-export default function allOf(value, tests, rules) {
+export default function allOf(value: any, tests: Object, rules: Rules): boolean {
 
     const testsCount = Object.keys(tests).length;
     let successCount = 0;

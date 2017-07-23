@@ -1,4 +1,5 @@
-const getSize = (value) => {
+// @flow
+function getSize(value: any): number {
 
     if (!value) {
         return 0;

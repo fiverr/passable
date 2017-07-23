@@ -1,9 +1,20 @@
 {
-    "parserOptions":{
+    "parserOptions": {
         "sourceType": "module",
         "ecmaFeatures": {
             "globalReturn": true,
             "modules": true
+        }
+    },
+    "extends": [
+        "plugin:flowtype/recommended"
+    ],
+    "plugins": [
+        "flowtype"
+    ],
+    "settings": {
+        "flowtype": {
+            "onlyFilesWithFlowAnnotation": false
         }
     },
     "env": {
@@ -23,18 +34,34 @@
         "sinon": true
     },
     "rules": {
+        "flowtype/require-valid-file-annotation": [2, "always"],
+        "flowtype/require-variable-type": [2],
+        "flowtype/no-weak-types": [1, {
+            "Function": false
+        }],
         "eqeqeq": 2,
-        "no-multi-spaces": [2, {"exceptions": { "VariableDeclarator": true, "Property": false }}],
+        "no-multi-spaces": [2, {
+            "exceptions": {
+                "VariableDeclarator": true,
+                "Property": false
+            }
+        }],
         "comma-dangle": 2,
         "comma-spacing": 2,
         "comma-style": 2,
         "computed-property-spacing": 2,
         "dot-notation": 2,
         "func-call-spacing": 2,
-        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "indent": ["error", 4, {
+            "SwitchCase": 1
+        }],
         "jsx-quotes": 2,
         "keyword-spacing": 2,
-        "lines-around-comment": ["error", {"beforeBlockComment": true, "allowBlockStart": true, "beforeLineComment": true}],
+        "lines-around-comment": ["error", {
+            "beforeBlockComment": true,
+            "allowBlockStart": true,
+            "beforeLineComment": true
+        }],
         "new-cap": 2,
         "no-lonely-if": 2,
         "no-case-declarations": 0,
@@ -42,7 +69,9 @@
         "no-trailing-spaces": 1,
         "no-unneeded-ternary": 2,
         "no-whitespace-before-property": 2,
-        "quotes": ["error", "single", {"avoidEscape": true}],
+        "quotes": ["error", "single", {
+            "avoidEscape": true
+        }],
         "semi-spacing": 2,
         "semi": 2,
         "space-before-function-paren": ["error", "never"],

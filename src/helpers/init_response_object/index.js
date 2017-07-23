@@ -1,4 +1,5 @@
-function initResponseObject(name) {
+// @flow
+function initResponseObject(name: string) {
     return {
         name,
         hasValidationErrors: false,
