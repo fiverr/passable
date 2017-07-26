@@ -1,4 +1,4 @@
-# [RULE] - Inside
+# Inside
 
 ## Description
 Checks if a given value is contained in another array or string.

@@ -1,4 +1,4 @@
-# [RULE] - isString
+# isString
 
 ## Description
 Checks if a value is of type `String`

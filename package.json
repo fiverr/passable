@@ -1,6 +1,6 @@
 {
   "name": "passable",
-  "version": "5.7.0",
+  "version": "5.7.1",
   "description": "Isomorphic Data Model Validations",
   "main": "./dist/Passable.min.js",
   "author": "Evyatar <evyatar.a@fiverr.com>",
@@ -32,6 +32,7 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-es2015": "^6.24.1",
     "chai": "^4.0.2",
+    "docpress": "0.7.1",
     "eslint": "^4.1.1",
     "eslint-loader": "^ 1.8.0",
     "mocha": "^3.4.2",

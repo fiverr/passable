@@ -1,7 +1,7 @@
-# [RULE] - largerThan
+# smallerThan
 
 ## Description
-Returns true if a given value is larger than another value. The values do not have to be of the same type
+Returns true if a given value is smaller than another value. The values do not have to be of the same type
 
 ## Arguments
 * `value`: the value which you would like to test. can be:
@@ -14,62 +14,62 @@ Both arguments can be of the following types:
 * string: checks against length
 
 ## Response
-The largerThan rule returns a boolean. `true` for larger values
+The smallerThan rule returns a boolean. `true` for smaller values
 
 ## usage examples:
 
 ```js
-enforce([1]).allOf({
-    largerThan: 0
+enforce([]).allOf({
+    smallerThan: 1
 });
 // true
 ```
 
 ```js
-enforce(6).allOf({
-    largerThan: 5
+enforce(5).allOf({
+    smallerThan: 6
 });
 // true
 ```
 
 ```js
 enforce({1:1, 2:2}).allOf({
-    largerThan: [1]
+    smallerThan: [1,2,3]
 });
 // true
 ```
 
 ```js
 enforce('hell').allOf({
-    largerThan: []
+    smallerThan: [1,2,3,4,5,6]
 });
 // true
 ```
 
 ```js
 enforce([1]).allOf({
-    largerThan: 1
+    smallerThan: 1
 });
 // false
 ```
 
 ```js
 enforce({1:1, 2:2}).allOf({
-    largerThan: [1, 2]
+    smallerThan: [1, 2]
 });
 // false
 ```
 
 ```js
 enforce('').allOf({
-    largerThan: []
+    smallerThan: []
 });
 // false
 ```
 
 ```js
 enforce('').allOf({
-    largerThan: 0
+    smallerThan: 0
 });
 // false
 ```

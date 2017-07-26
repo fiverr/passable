@@ -1,4 +1,4 @@
-# [RULE] - isArray
+# isArray
 
 ## Description
 Checks if a value is of type `Array`

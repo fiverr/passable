@@ -1,4 +1,4 @@
-# [RULE] - isEmpty
+# isEmpty
 
 ## Description
 Returns true if a given value is empty, false, or zero.

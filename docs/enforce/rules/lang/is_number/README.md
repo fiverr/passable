@@ -1,4 +1,4 @@
-# [RULE] - isNumber
+# isNumber
 
 ## Description
 Checks if a value is of type `number`

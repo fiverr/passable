@@ -1,4 +1,4 @@
-# [RULE] - matches
+# matches
 
 ## Description
 Checks if a value contains a regex match.
