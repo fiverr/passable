@@ -2,11 +2,10 @@
 node_modules
 spec
 src
+dev
 .babelrc
 .eslintignore
 .eslintrc
 .travis.yml
 webpack.config.js
 yarn.lock
-dist/Passable-dev.js
-dist/Passable-dev.js.map
