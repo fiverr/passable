@@ -9,3 +9,6 @@ dev
 .travis.yml
 webpack.config.js
 yarn.lock
+docs
+_docpress
+_docs

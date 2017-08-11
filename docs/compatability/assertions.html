@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../assets/style.css?t=615badd5">
+    <script src="../assets/script.js?t=42463e55"></script>
+    <title>Using with assertions libraries - PASSABLE</title>
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1 -parent"><a class="link title  link-index" href="../index.html">PASSABLE</a>
+              <ul class="submenu">
+                <li class="menu-item -level-2 -parent"><span class="title">Getting Started</span>
+                  <ul class="submenu">
+                    <li class="menu-item -level-3"><a class="link title  link-getting_startedinstallation" href="../getting_started/installation.html">Installation</a>
+                    </li>
+                    <li class="menu-item -level-3"><a class="link title  link-getting_startedwriting_tests" href="../getting_started/writing_tests.html">Writing tests</a>
+                    </li>
+                    <li class="menu-item -level-3"><a class="link title  link-getting_startedresponse" href="../getting_started/response.html">The response object</a>
+                    </li>
+                    <li class="menu-item -level-3"><a class="link title  link-getting_startedparams" href="../getting_started/params.html">Passable params</a>
+                    </li>
+                    <li class="menu-item -level-3 -parent"><a class="link title  link-getting_startedpass" href="../getting_started/pass/index.html">The pass function</a>
+                      <ul class="submenu">
+                        <li class="menu-item -level-4"><a class="link title  link-getting_startedpasshow_to_fail" href="../getting_started/pass/how_to_fail.html">How to fail a pass</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-getting_startedpasswarn_only_passes" href="../getting_started/pass/warn_only_passes.html">Warn only passes</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-getting_startedpassspecific" href="../getting_started/pass/specific.html">Running a specific pass</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu-item -level-2 -parent"><a class="link title  link-enforce" href="../enforce/index.html">The Enforce Function</a>
+                  <ul class="submenu">
+                    <li class="menu-item -level-3"><a class="link title  link-enforcerelationships" href="../enforce/relationships/index.html">Enforce relationships</a>
+                    </li>
+                    <li class="menu-item -level-3 -parent"><a class="link title  link-enforcerules" href="../enforce/rules/index.html">Enforce Rules</a>
+                      <ul class="submenu">
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulescontentmatches" href="../enforce/rules/content/matches/index.html">content/matches</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulescontentinside" href="../enforce/rules/content/inside/index.html">content/inside</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforceruleslangis_array" href="../enforce/rules/lang/is_array/index.html">lang/isArray</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforceruleslangis_string" href="../enforce/rules/lang/is_string/index.html">lang/isString</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforceruleslangis_number" href="../enforce/rules/lang/is_number/index.html">lang/isNumber</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizeis_empty" href="../enforce/rules/size/is_empty/index.html">size/isEmpty</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizelarger_than" href="../enforce/rules/size/larger_than/index.html">size/largerThan</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizelarger_than_or_equals" href="../enforce/rules/size/larger_than_or_equals/index.html">size/largerThanOrEquals</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizesize_equals" href="../enforce/rules/size/size_equals/index.html">size/sizeEquals</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizesmaller_than" href="../enforce/rules/size/smaller_than/index.html">size/smallerThan</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizesmaller_than_or_equals" href="../enforce/rules/size/smaller_than_or_equals/index.html">size/smallerThanOrEquals</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="menu-item -level-3"><a class="link title  link-enforcerulescustom" href="../enforce/rules/custom.html">Custom Enforce Rules</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu-item -level-2"><a class="link title -active link-compatabilityassertions" href="../compatability/assertions.html">Using with assertions libraries</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </div>
+      <div class="body page-compatabilityassertions">
+        <div class="header-nav">
+          <div class="right">
+          </div>
+        </div>
+        <div class="markdown-body"><h1 id="using-with-other-assertion-libraries">Using with other assertion libraries</h1>
+<p>Using other assertion libraries along with Passable can&apos;t be easier. Most popular assertion libraries are supported by default, and many others are supported as well. Basically, if it throws an error, it works. You can even use it alongside enforce. Say you want some <code>chaijs</code> goodness in Passable, here is how to do it:</p>
+<pre><code class="lang-js"><span class="pl-k">import</span> { expect } <span class="pl-k">from</span> chai; <span class="pl-c">// you can also just embed chai as a script tag if you don&apos;t use es6 imports</span>
+
+<span class="pl-c">// data = {</span>
+<span class="pl-c">//     username: &apos;ealush&apos;,</span>
+<span class="pl-c">//     age: 27</span>
+<span class="pl-c">// }</span>
+
+Passable(<span class="pl-s">&apos;FormWithChai&apos;</span>, (pass, enforce) =&gt; {
+    pass(<span class="pl-s">&apos;username&apos;</span>, <span class="pl-s">&apos;Should be a string&apos;</span>, () =&gt; {
+        expect(data.username).to.be.a(<span class="pl-s">&apos;string&apos;</span>);
+    });
+
+    pass(<span class="pl-s">&apos;age&apos;</span>, <span class="pl-s">&apos;Should be a number and larger than 18&apos;</span>, () =&gt; {
+        expect(data.age).to.be.a(<span class="pl-s">&apos;number&apos;</span>);
+        enforce(data.age).allOf({
+            <span class="hljs-attr">largerThan</span>: <span class="hljs-number">18</span>
+        });
+    });
+});
+
+</code></pre>
+
+        </div>
+        <div class="footer-nav">
+          <div class="left"><a href="../enforce/rules/custom.html"><span class="title">Custom Enforce Rules</span></a></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
