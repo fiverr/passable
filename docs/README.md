@@ -2,7 +2,7 @@ PASSABLE
 ========
 
 * [PASSABLE](../README.md)
-    * [Live demo](../README.md)
+    * [Live demo](./try)
     * Getting Started
         * [Installation](./getting_started/installation.md)
         * [Writing tests](./getting_started/writing_tests.md)
