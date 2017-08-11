@@ -14,7 +14,7 @@ Passable is a system for javascript applications that allows you to write struct
 
 Inspired by the world of unit testing, Passable validations are written like actual specs that need to be passed, and are considered to be an enforceable contract between the backend and the client. The syntax is very similar, adapted to be more suitable for testing data model, and runs in production code - not in testing environment.
 
-![alt tag](https://raw.githubusercontent.com/ealush/passable/gh-pages/passable_diagram.png)
+![alt tag](https://raw.githubusercontent.com/ealush/passable/master/docs/assets/passable_diagram.png)
 
 ## Key Benefits
 ### Structured Validations

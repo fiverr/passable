@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../assets/style.css?t=615badd5">
+    <script src="../../assets/script.js?t=42463e55"></script>
+    <title>Enforce relationships - PASSABLE</title>
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1 -parent"><a class="link title  link-index" href="../../index.html">PASSABLE</a>
+              <ul class="submenu">
+                <li class="menu-item -level-2 -parent"><span class="title">Getting Started</span>
+                  <ul class="submenu">
+                    <li class="menu-item -level-3"><a class="link title  link-getting_startedinstallation" href="../../getting_started/installation.html">Installation</a>
+                    </li>
+                    <li class="menu-item -level-3"><a class="link title  link-getting_startedwriting_tests" href="../../getting_started/writing_tests.html">Writing tests</a>
+                    </li>
+                    <li class="menu-item -level-3"><a class="link title  link-getting_startedresponse" href="../../getting_started/response.html">The response object</a>
+                    </li>
+                    <li class="menu-item -level-3"><a class="link title  link-getting_startedparams" href="../../getting_started/params.html">Passable params</a>
+                    </li>
+                    <li class="menu-item -level-3 -parent"><a class="link title  link-getting_startedpass" href="../../getting_started/pass/index.html">The pass function</a>
+                      <ul class="submenu">
+                        <li class="menu-item -level-4"><a class="link title  link-getting_startedpasshow_to_fail" href="../../getting_started/pass/how_to_fail.html">How to fail a pass</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-getting_startedpasswarn_only_passes" href="../../getting_started/pass/warn_only_passes.html">Warn only passes</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-getting_startedpassspecific" href="../../getting_started/pass/specific.html">Running a specific pass</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu-item -level-2 -parent"><a class="link title  link-enforce" href="../../enforce/index.html">The Enforce Function</a>
+                  <ul class="submenu">
+                    <li class="menu-item -level-3"><a class="link title -active link-enforcerelationships" href="../../enforce/relationships/index.html">Enforce relationships</a>
+                      <ul class="headings heading-list">
+                        <li class="heading-item -depth-2"><a class="hlink link-allof-or-and-relationship" href="#allof-or-and-relationship">allOf  |  AND Relationship</a>
+                        </li>
+                        <li class="heading-item -depth-2"><a class="hlink link-anyof-or-or-relationship" href="#anyof-or-or-relationship">anyOf  |  OR Relationship</a>
+                        </li>
+                        <li class="heading-item -depth-2"><a class="hlink link-noneof-or-and-not-relationship" href="#noneof-or-and-not-relationship">noneOf  |  AND NOT Relationship</a>
+                        </li>
+                        <li class="heading-item -depth-2"><a class="hlink link-chaining-enforce-functions" href="#chaining-enforce-functions">Chaining enforce functions</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="menu-item -level-3 -parent"><a class="link title  link-enforcerules" href="../../enforce/rules/index.html">Enforce Rules</a>
+                      <ul class="submenu">
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulescontentmatches" href="../../enforce/rules/content/matches/index.html">content/matches</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulescontentinside" href="../../enforce/rules/content/inside/index.html">content/inside</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforceruleslangis_array" href="../../enforce/rules/lang/is_array/index.html">lang/isArray</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforceruleslangis_string" href="../../enforce/rules/lang/is_string/index.html">lang/isString</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforceruleslangis_number" href="../../enforce/rules/lang/is_number/index.html">lang/isNumber</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizeis_empty" href="../../enforce/rules/size/is_empty/index.html">size/isEmpty</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizelarger_than" href="../../enforce/rules/size/larger_than/index.html">size/largerThan</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizelarger_than_or_equals" href="../../enforce/rules/size/larger_than_or_equals/index.html">size/largerThanOrEquals</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizesize_equals" href="../../enforce/rules/size/size_equals/index.html">size/sizeEquals</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizesmaller_than" href="../../enforce/rules/size/smaller_than/index.html">size/smallerThan</a>
+                        </li>
+                        <li class="menu-item -level-4"><a class="link title  link-enforcerulessizesmaller_than_or_equals" href="../../enforce/rules/size/smaller_than_or_equals/index.html">size/smallerThanOrEquals</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="menu-item -level-3"><a class="link title  link-enforcerulescustom" href="../../enforce/rules/custom.html">Custom Enforce Rules</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu-item -level-2"><a class="link title  link-compatabilityassertions" href="../../compatability/assertions.html">Using with assertions libraries</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </div>
+      <div class="body page-enforcerelationships">
+        <div class="header-nav">
+          <div class="right">
+          </div>
+        </div>
+        <div class="markdown-body"><h1 id="enforce-conditions-relationships">Enforce conditions relationships</h1>
+<p>When running validations against your data, there are different relationships between your rules that you need to consider. The enforce function exposes three different functions that represent possible relationships.</p>
+<ul>
+<li><code>allOf</code>  | <code>AND</code> | makes sure all rules specified are true.</li>
+<li><code>anyOf</code>  | <code>OR</code>  | makes sure at least one rule is true.</li>
+<li><code>noneOf</code> | <code>NOT</code> | makes sure no rule is true.</li>
+</ul>
+<h2 id="allof-or-and-relationship">allOf  |  AND Relationship</h2>
+<p>You should use <code>allOf</code> when you need all your rules to be true in order for the validation to pass. For example, if any of the following is NOT TRUE, the validation should fail:</p>
+<ul>
+<li>The field must be a string</li>
+<li><code>AND</code> The String must be longer than 5 characters</li>
+<li><code>AND</code> The String must be shorter than 10 characters</li>
+</ul>
+<p>Can be represented like this:</p>
+<pre><code class="lang-js"><span class="pl-c">// myString = &apos;hey there delilah what\&apos;s it like in new york city&apos;;</span>
+
+enforce(myString).allOf({
+    <span class="hljs-attr">isString</span>: <span class="pl-c1">true</span>,
+    <span class="hljs-attr">largerThanOrEquals</span>: <span class="hljs-number">5</span>,
+    <span class="hljs-attr">smallerThanOrEquals</span>: <span class="hljs-number">10</span>
+});
+</code></pre>
+<h2 id="anyof-or-or-relationship">anyOf  |  OR Relationship</h2>
+<p>You should use <code>anyOf</code> when you need at least one of your rules to be true in order for the validation to pass. Only if all the following are false, the validation will fail:</p>
+<ul>
+<li>The field can be left empty</li>
+<li><code>Or</code>, it can contain a number</li>
+</ul>
+<p>Can be represented like this:</p>
+<pre><code class="lang-js">
+enforce(data).anyOf({
+    <span class="hljs-attr">isEmpty</span>: <span class="pl-c1">true</span>,
+    <span class="hljs-attr">isNumber</span>: <span class="pl-c1">true</span>
+});
+</code></pre>
+<h2 id="noneof-or-and-not-relationship">noneOf  |  AND NOT Relationship</h2>
+<p>You should use <code>noneOf</code> when you need all of your fields to be false in order for the validation to pass. If any of the following is true, the validation will fail:</p>
+<ul>
+<li>The field cannot be left empty</li>
+<li><code>AND NOT</code> be longer than 20 chars</li>
+</ul>
+<p>Can be represented like this:</p>
+<pre><code class="lang-js">
+enforce(data).noneOf({
+    <span class="hljs-attr">isEmpty</span>: <span class="pl-c1">true</span>,
+    <span class="hljs-attr">largerThan</span>: <span class="hljs-number">20</span>
+});
+</code></pre>
+<h2 id="chaining-enforce-functions">Chaining enforce functions</h2>
+<p>All of these functions are chainable. All functions other can be used more than once.
+When chained, all blocks share an AND relationship, meaning that if one block fails, the whole test fails as well.</p>
+<p>All the following are valid uses of enforce.</p>
+<pre><code class="lang-js">enforce([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]).anyOf({
+        <span class="hljs-attr">largerThan</span>: <span class="hljs-number">5</span>, <span class="pl-c">// in anyOf - this one is enough to set the anyOf block to true</span>
+        smallerThan: <span class="hljs-number">6</span>,
+    }).noneOf({
+        <span class="hljs-attr">isString</span>: <span class="pl-c1">true</span>, <span class="pl-c">// in noneOf, all must be false</span>
+        isNumber: <span class="pl-c1">true</span>
+    }).allOf({
+        <span class="hljs-attr">isArray</span>: <span class="pl-c1">true</span>
+    }); <span class="pl-c">// true</span>
+
+    -------------
+
+    enforce(<span class="pl-s">&apos;North Dakota, por favor&apos;</span>).noneOf({
+        <span class="hljs-attr">largerThan</span>: <span class="hljs-number">5</span>,
+        <span class="hljs-attr">smallerThan</span>: <span class="hljs-number">2</span>,
+        <span class="hljs-attr">matches</span>: <span class="hljs-regexp">/[0-9]/</span>
+    }); <span class="pl-c">// false</span>
+
+    -------------
+
+    enforce(<span class="pl-s">&apos;I consider it asshole tax&apos;</span>).anyOf({
+        <span class="hljs-attr">largerThan</span>: <span class="hljs-number">5</span>,
+        <span class="hljs-attr">smallerThan</span>: <span class="hljs-number">2</span>
+    }).anyOf({
+        <span class="hljs-attr">smallerThan</span>: <span class="hljs-number">150</span>
+    }); <span class="pl-c">// true</span>
+</code></pre>
+
+        </div>
+        <div class="footer-nav">
+          <div class="left"><a href="../../enforce/index.html"><span class="title">The Enforce Function</span></a></div>
+          <div class="right"><a href="../../enforce/rules/index.html"><span class="label">Next: </span><span class="title">Enforce Rules</span></a></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
