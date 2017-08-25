@@ -1,5 +1,5 @@
 // @flow
-function getSize(value: any): number {
+function getSize(value: AnyValue): number {
 
     if (!value) {
         return 0;

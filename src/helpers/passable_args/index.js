@@ -2,9 +2,9 @@
 
 function passableArgs(args: PassableArguments) {
 
-    let passes,
-        specific,
-        custom;
+    let passes: Function,
+        specific: specific,
+        custom: Rules | void;
 
     if (args.length === 1) {
         passes = args[0];

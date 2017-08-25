@@ -5,7 +5,7 @@ import passRunner from './pass_runner';
 import { passableArgs, initResponseObject, initField, onFail } from './helpers';
 import root from 'window-or-global';
 
-const FAIL = 'fail';
+const FAIL: string = 'fail';
 
 class Passable {
 
@@ -16,8 +16,8 @@ class Passable {
     enforce: Function;
 
     constructor(name: string, ...args) {
-        const computedArgs = passableArgs(args),
-            globalRules = root.customPassableRules || {};
+        const computedArgs: PassableArguments = passableArgs(args),
+            globalRules: Rules = root.customPassableRules || {};
 
         this.specific = computedArgs.specific;
         this.custom = Object.assign({}, globalRules, computedArgs.custom);
@@ -32,7 +32,7 @@ class Passable {
         return this.res;
     }
 
-    pass(fieldName: string, statement: string, ...args: Array<any>) {
+    pass(fieldName: string, statement: string, ...args: Array<AnyValue>) {
 
         if (this.specific.length && this.specific.indexOf(fieldName) === -1) {
             this.res.skipped.push(fieldName);
@@ -42,11 +42,11 @@ class Passable {
         this.res.testsPerformed[fieldName] = this.res.testsPerformed[fieldName] || initField();
 
         // callback is always the last argument
-        const callback = args.pop(),
-            isValid = passRunner(callback);
+        const callback: Function = args.pop(),
+            isValid: boolean = passRunner(callback);
 
         if (!isValid) {
-            const severity = args[0] || FAIL;
+            const severity: string = args[0] || FAIL;
 
             // on failure/error, bump up the counters
             this.res = onFail(fieldName, statement, severity, this.res);
@@ -56,7 +56,7 @@ class Passable {
         return isValid;
     }
 
-    enforce(value: any) {
+    enforce(value: AnyValue) {
         return enforce(value, this.custom);
     }
 
@@ -67,6 +67,6 @@ class Passable {
     }
 }
 
-const passable = (name: string, ...args: PassableArguments) => new Passable(name, ...args);
+const passable: Function = (name: string, ...args: PassableArguments) => new Passable(name, ...args);
 
 export default passable;

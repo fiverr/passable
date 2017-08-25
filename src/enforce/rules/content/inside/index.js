@@ -9,7 +9,7 @@ type All = string | number | boolean | Array<mixed>;
 type Value = All | Array<All>;
 type Arg = string | Array<All>;
 
-function inside(value: Value , arg1: Arg): boolean {
+function inside(value: Value, arg1: Arg): boolean {
 
     if (isType(arg1, 'array')) {
 

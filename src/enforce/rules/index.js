@@ -1,3 +1,4 @@
+// @flow
 import isArray from './lang/is_array';
 import isNumber from './lang/is_number';
 import isString from './lang/is_string';

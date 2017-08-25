@@ -35,7 +35,6 @@ describe('Test running specific tests', () => {
     });
 });
 
-
 function specificTests(specific) {
     return passable('specificTests', specific, (pass, enforce) => {
         pass('First', 'should pass', () => true);

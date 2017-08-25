@@ -6,8 +6,8 @@ import { reduceArrayToObject,
 type Value = Array<string | number>;
 
 function findArrayValuesInArray(values: Value, array: Value): boolean {
-    const reducedArray = reduceArrayToObject(array),
-        allItemsFound = findArrayValuesInObjectKeys(values, reducedArray);
+    const reducedArray: ArrayReducedToObject = reduceArrayToObject(array),
+        allItemsFound: boolean = findArrayValuesInObjectKeys(values, reducedArray);
 
     return allItemsFound;
 }

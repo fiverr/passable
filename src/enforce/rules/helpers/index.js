@@ -1,3 +1,4 @@
+// @flow
 import expectType from './expect_type';
 import findArrayValuesInArray from './find_array_values_in_array';
 import findArrayValuesInObjectKeys from './find_array_values_in_object_keys';

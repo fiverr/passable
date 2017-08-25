@@ -1,14 +1,14 @@
 // @flow
 function passRunner(callback: Function): boolean {
 
-    let isValid = null;
+    let isValid: null | boolean = null;
 
     if (typeof callback !== 'function') {
         return false;
     }
 
     try {
-        const res = callback();
+        const res: PassRunnerCallback = callback();
 
         if (typeof res !== 'undefined' && res !== null && res.hasOwnProperty('valid')) {
             isValid = res.valid;
