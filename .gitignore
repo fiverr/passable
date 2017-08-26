@@ -3,3 +3,4 @@ node_modules
 dev_docpress
 _docpress
 dev
+!playground/node_modules
