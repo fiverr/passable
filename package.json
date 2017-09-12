@@ -19,12 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ealush/passable.git"
+    "url": "git+https://github.com/fiverr/passable.git"
   },
   "bugs": {
-    "url": "https://github.com/ealush/passable/issues"
+    "url": "https://github.com/fiverr/passable/issues"
   },
-  "homepage": "https://github.com/ealush/passable#readme",
+  "homepage": "https://github.com/fiverr/passable#readme",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",

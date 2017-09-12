@@ -7,4 +7,4 @@
 | `passes`   | No        | Function | A function containing the actual validation logic.                        |
 | `custom`   | Yes       | Object   | Custom rules to extend the basic ruleset with. Can be completely ommitted |
 
-![alt tag](https://raw.githubusercontent.com/ealush/passable/master/docs/assets/passable-api.jpg)
+![alt tag](https://raw.githubusercontent.com/fiverr/passable/master/docs/assets/passable-api.jpg)
