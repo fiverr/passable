@@ -1,5 +1,5 @@
 {
-  "presets": ["flow", "es2015"],
+  "presets": ["flow", "env"],
   "plugins": [
     "babel-plugin-add-module-exports",
     "transform-class-properties"
