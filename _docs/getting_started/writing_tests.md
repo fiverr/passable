@@ -5,7 +5,7 @@
  * `pass` - a single tests, most commonly a single field, much like the it function in unit tests.
  * `enforce` - the function which gets and enforces the data model compliance, similar to the expect function in unit tests.
 
-The most basic test would looke somewhat like this:
+The most basic test would look somewhat like this:
 
 ```js
 // data = {
@@ -30,6 +30,6 @@ Passable('NewUserForm', (pass, enforce) => {
 });
 ```
 
-In the example above, we tested a form named `NewUserForm`, and ran two tets on it. One of the `username` field, and one on the `age` field. When testing the username field, we made sure that **all** conditions are true, and when testing age, we made sure that **at least one** condition is true.
+In the example above, we tested a form named `NewUserForm`, and ran two tests on it. One of the `username` field, and one on the `age` field. When testing the username field, we made sure that **all** conditions are true, and when testing age, we made sure that **at least one** condition is true.
 
 If our validation fails, among other information, we would get the names of the fields, and an array of errors for each, so we can show them back to the user.

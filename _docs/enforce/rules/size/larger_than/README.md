@@ -5,7 +5,7 @@ Returns true if a given value is larger than another value. The values do not ha
 
 ## Arguments
 * `value`: the value which you would like to test. can be:
-* `target` the value which you woul like your initial object to be tested against
+* `target` the value which you would like your initial object to be tested against
 
 Both arguments can be of the following types:
 * object: checks against count of keys

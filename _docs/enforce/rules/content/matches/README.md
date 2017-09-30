@@ -4,7 +4,7 @@
 Checks if a value contains a regex match.
 
 ## Arguments
-* `value`: the value which you would like to test against the rexep
+* `value`: the value which you would like to test against the regular expression
 * `regexp`: either a `RegExp` object, or a RegExp valid string
 
 ## Response

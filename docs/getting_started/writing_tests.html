@@ -90,7 +90,7 @@
 <li><code>pass</code> - a single tests, most commonly a single field, much like the it function in unit tests.</li>
 <li><code>enforce</code> - the function which gets and enforces the data model compliance, similar to the expect function in unit tests.</li>
 </ul>
-<p>The most basic test would looke somewhat like this:</p>
+<p>The most basic test would look somewhat like this:</p>
 <pre><code class="lang-js"><span class="pl-c">// data = {</span>
 <span class="pl-c">//     username: &apos;ealush&apos;,</span>
 <span class="pl-c">//     age: 27</span>
@@ -112,7 +112,7 @@ Passable(<span class="pl-s">&apos;NewUserForm&apos;</span>, (pass, enforce) =&gt
     })
 });
 </code></pre>
-<p>In the example above, we tested a form named <code>NewUserForm</code>, and ran two tets on it. One of the <code>username</code> field, and one on the <code>age</code> field. When testing the username field, we made sure that <strong>all</strong> conditions are true, and when testing age, we made sure that <strong>at least one</strong> condition is true.</p>
+<p>In the example above, we tested a form named <code>NewUserForm</code>, and ran two tests on it. One of the <code>username</code> field, and one on the <code>age</code> field. When testing the username field, we made sure that <strong>all</strong> conditions are true, and when testing age, we made sure that <strong>at least one</strong> condition is true.</p>
 <p>If our validation fails, among other information, we would get the names of the fields, and an array of errors for each, so we can show them back to the user.</p>
 
         </div>

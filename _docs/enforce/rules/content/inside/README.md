@@ -16,7 +16,7 @@ The inside rule returns a boolean. `true` for matched values, and `false` for no
 ### inside: array
 Checks for membership in an array.
 
-srting: checks if a string is an element in an array
+string: checks if a string is an element in an array
 
 ```js
 enforce('hello').allOf({
