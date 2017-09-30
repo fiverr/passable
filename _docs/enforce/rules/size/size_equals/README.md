@@ -1,11 +1,11 @@
 # Size | sizeEquals
 
 ## Description
-Returns true if a given value eauqls the size than another value. The values do not have to be of the same type
+Returns true if a given value equals the size than another value. The values do not have to be of the same type
 
 ## Arguments
 * `value`: the value which you would like to test. can be:
-* `target` the value which you woul like your initial object to be tested against
+* `target` the value which you would like your initial object to be tested against
 
 Both arguments can be of the following types:
 * object: checks against count of keys
