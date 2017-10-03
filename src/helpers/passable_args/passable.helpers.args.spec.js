@@ -6,28 +6,37 @@ import chai from 'chai';
 const expect = chai.expect;
 
 describe('Test Passable arguments logic', () => {
+    const noop = () => {};
+
+    it('Should throw exception when given no arguments', () => {
+        expect(passableArgs.bind(null, [])).to.throw('passable]: Failed to execute `passableArgs`: At least 1 argument required, but only 0 present.');
+    });
+
+    it('Should throw exception when given only string argument', () => {
+        expect(passableArgs.bind(null, ['basic'])).to.throw('[passable]: Failed to execute `passableArgs`: Unexpected string, expected function');
+    });
 
     it('Should return given "passes", default on specific and custom', () => {
-        const value = passableArgs(['basic']);
+        const value = passableArgs([noop]);
         expect(value).to.deep.equal({
-            passes: 'basic',
+            passes: noop,
             custom: {},
             specific: []
         });
     });
 
     it('Should return all attrs, not use default values', () => {
-        const value = passableArgs(['funny', 'yet', 'not']);
+        const yet = noop;
+        const value = passableArgs(['funny', yet, 'not']);
         expect(value).to.deep.equal({
             specific: 'funny',
-            passes: 'yet',
+            passes: yet,
             custom: 'not'
         });
     });
 
     it('Should return specific and passes, default on custom', () => {
-        const noop = () => undefined,
-            value = passableArgs([['Yo'], noop]);
+        const value = passableArgs([['Yo'], noop]);
         expect(value).to.deep.equal({
             specific: ['Yo'],
             passes: noop,

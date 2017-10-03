@@ -1,32 +1,46 @@
 // @flow
 
+/**
+ * The function which runs the validation tests.
+ *
+ * @callback passableCallback
+ * @param {function} pass
+ * @param {function} enforce
+ */
+
+/**
+ * Get Passable configuration settings
+ * specific - whitelist of tests to run
+ * passes - The function which runs the validations
+ * custom - custom validation rules
+ *
+ * @param {Array.<{specific: String[], passes: passableCallback, custom: Object}>} args - arguments for Passable configuration
+ * @return {object} Passable configuration settings
+ */
 function passableArgs(args: PassableArguments) {
 
     let passes: Function,
-        specific: specific,
-        custom: Rules | void;
+        specific: specific = [],
+        custom: Rules = {};
 
-    if (args.length === 1) {
-        passes = args[0];
-    } else if (args.length === 3) {
-        specific = args[0];
-        passes = args[1];
-        custom = args[2];
-    } else if (args.length === 2) {
-        if (typeof args[1] === 'function') {
-            specific = args[0];
-            passes = args[1];
-        } else {
-            passes = args[0];
-            custom = args[1];
+    switch (args.length) {
+      case 0:
+        throw new TypeError('[passable]: Failed to execute `passableArgs`: At least 1 argument required, but only 0 present.');
+
+      case 1: // [passes] = args;
+        if (typeof args[0] != 'function') {
+          throw new TypeError('[passable]: Failed to execute `passableArgs`: Unexpected ' + typeof args[0] + ', expected function');
         }
+        args = [specific, ...args];
+
+      case 2:
+        args = (typeof args[1] == 'function') ? [...args, custom] : [specific, ...args];
     }
 
-    specific = specific || [];
-    custom = custom || {};
+    [specific, passes, custom] = args;
 
     return {
-        passes, specific, custom
+        specific, passes, custom
     };
 };
 
