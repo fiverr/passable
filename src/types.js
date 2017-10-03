@@ -10,7 +10,7 @@ declare type Tests = {
     [name: string]: mixed
 };
 
-declare type specific = Array<string> | string | void;
+declare type Specific = Array<string> | string | void;
 
 declare type PassRunnerCallback = {
     valid: boolean
@@ -31,6 +31,12 @@ declare type EnforceSelf = {
 declare type Severity = 'warn' | 'fail';
 
 declare type PassableArguments = Array<string | Array<string> | Object | Function>; // eslint-disable-line flowtype/no-weak-types
+
+declare type PassableRuntime = {
+    passes: Function,
+    specific: Specific,
+    custom: Rules
+};
 
 declare type PassableResponse = {
     [name: string]: string,

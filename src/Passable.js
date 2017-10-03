@@ -16,7 +16,7 @@ class Passable {
     enforce: Function;
 
     constructor(name: string, ...args) {
-        const computedArgs: PassableArguments = passableArgs(args),
+        const computedArgs: PassableRuntime = passableArgs(args),
             globalRules: Rules = root.customPassableRules || {};
 
         this.specific = computedArgs.specific;
