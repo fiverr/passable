@@ -16,7 +16,7 @@ export default function anyOf(value: mixed, tests: Tests, rules: Rules): boolean
 
         if (success === true) {
             successCount++;
-            continue;
+            break;
         }
     }
 
