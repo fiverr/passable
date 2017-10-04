@@ -40,7 +40,6 @@
     "eslint-plugin-flowtype": "^2.35.0",
     "flow-bin": "^0.54.0",
     "mocha": "^3.5.3",
-    "webpack": "^3.5.5",
-    "window-or-global": "^1.0.1"
+    "webpack": "^3.5.5"
   }
 }

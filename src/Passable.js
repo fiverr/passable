@@ -2,8 +2,7 @@
 
 import enforce from './enforce';
 import passRunner from './pass_runner';
-import { passableArgs, initResponseObject, initField, onFail } from './helpers';
-import root from 'window-or-global';
+import { passableArgs, initResponseObject, initField, onFail, root } from './helpers';
 
 const FAIL: Severity = 'fail';
 
