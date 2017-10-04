@@ -25,9 +25,7 @@ class Passable {
         this.pass = this.pass.bind(this);
         this.enforce = this.enforce.bind(this);
 
-        if (typeof computedArgs.passes === 'function') {
-            computedArgs.passes(this.pass, this.enforce);
-        }
+        computedArgs.passes(this.pass, this.enforce);
 
         return this.res;
     }
