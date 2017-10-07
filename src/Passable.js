@@ -5,7 +5,7 @@ import passRunner from './pass_runner';
 import { passableArgs, initResponseObject, initField, onFail } from './helpers';
 import root from 'window-or-global';
 
-const FAIL: string = 'fail';
+const FAIL: Severity = 'fail';
 
 class Passable {
 
@@ -32,7 +32,7 @@ class Passable {
         return this.res;
     }
 
-    pass(fieldName: string, statement: string, ...args: Array<AnyValue>) {
+    pass(fieldName: string, statement: string, ...args: Array<Severity | () => void>) {
 
         if (this.specific.length && this.specific.indexOf(fieldName) === -1) {
             this.res.skipped.push(fieldName);
@@ -41,12 +41,12 @@ class Passable {
 
         this.res.testsPerformed[fieldName] = this.res.testsPerformed[fieldName] || initField();
 
-        // callback is always the last argument
+        // callback is always the last argument -- $FlowFixMe (we DO know it is a function)
         const callback: Function = args.pop(),
             isValid: boolean = passRunner(callback);
 
-        if (!isValid) {
-            const severity: string = args[0] || FAIL;
+        if (!isValid) { // $FlowFixMe (we DO know it is a string)
+            const severity: Severity = args[0] || FAIL;
 
             // on failure/error, bump up the counters
             this.res = onFail(fieldName, statement, severity, this.res);

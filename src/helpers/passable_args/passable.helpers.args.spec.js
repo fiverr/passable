@@ -6,7 +6,7 @@ import chai from 'chai';
 const expect = chai.expect;
 
 describe('Test Passable arguments logic', () => {
-    const noop = () => {};
+    const noop = () => undefined;
 
     it('Should throw exception when given no arguments', () => {
         expect(passableArgs.bind(null, [])).to.throw('passable]: Failed to execute `passableArgs`: At least 1 argument required, but only 0 present.');

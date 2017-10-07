@@ -17,24 +17,27 @@
  * @param {Array.<{specific: String[], passes: passableCallback, custom: Object}>} args - arguments for Passable configuration
  * @return {object} Passable configuration settings
  */
-function passableArgs(args: PassableArguments) {
+function passableArgs(args: PassableArguments): PassableRuntime {
 
-    let passes: Function,
-        specific: specific = [],
+    let passes: Passes,
+        specific: Specific = [],
         custom: Rules = {};
 
     switch (args.length) {
-      case 0:
-        throw new TypeError('[passable]: Failed to execute `passableArgs`: At least 1 argument required, but only 0 present.');
+        case 0:
+            throw new TypeError('[passable]: Failed to execute `passableArgs`: At least 1 argument required, but only 0 present.');
 
-      case 1: // [passes] = args;
-        if (typeof args[0] != 'function') {
-          throw new TypeError('[passable]: Failed to execute `passableArgs`: Unexpected ' + typeof args[0] + ', expected function');
-        }
-        args = [specific, ...args];
+        case 1: // [passes] = args;
+            if (typeof args[0] !== 'function') {
+                throw new TypeError(`[passable]: Failed to execute 'passableArgs': Unexpected ${typeof args[0]}, expected function`);
+            }
+            args = [specific, ...args];
 
-      case 2:
-        args = (typeof args[1] == 'function') ? [...args, custom] : [specific, ...args];
+        case 2:
+            args = (typeof args[1] === 'function') ? [...args, custom] : [specific, ...args];
+
+        default:
+            break;
     }
 
     [specific, passes, custom] = args;

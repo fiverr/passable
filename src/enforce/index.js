@@ -27,7 +27,7 @@ function enforce(value: mixed, custom: Rules = {}) {
         self.valid = runners[group](value, tests, allRules);
 
         if (self.valid !== true) {
-            throw new Error(`${group} - ${value} - invalid`);
+            throw new Error(`[Passable] 'Enforce': ${group} - invalid ${typeof value} value`);
         }
 
         return self;
