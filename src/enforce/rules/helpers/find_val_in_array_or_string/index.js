@@ -1,5 +1,5 @@
 // @flow
-function findValInArrayOrString(value: string | AnyValue, container: Array<mixed> | string): boolean {
+function findValInArrayOrString(value: string | AnyValue, container: Array<TYPENSB> | string): boolean {
     return container.indexOf(value) > -1;
 }
 

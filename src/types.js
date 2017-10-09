@@ -16,6 +16,8 @@ declare type PassRunnerCallback = {
     valid: boolean
 } | void | null;
 
+declare type TYPENSB = number | string | boolean;
+
 declare type ArrayReducedToObject = {
     [name: string]: mixed
 };
@@ -30,8 +32,7 @@ declare type EnforceSelf = {
 
 declare type Severity = 'warn' | 'fail';
 
-// declare type PassableArguments = Array<string | Array<string> | Passes | Rules>;
-declare type PassableArguments = [string, Array<string>, Passes | Rules];
+declare type PassableArguments = Passes | Array<string | Array<string> | Rules>;
 
 declare type Pass = () => void;
 declare type enforce = (AnyValue) => void;
