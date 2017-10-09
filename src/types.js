@@ -38,8 +38,8 @@ declare type enforce = (AnyValue) => void;
 declare type Passes = (pass: Pass, enforce: enforce) => void;
 
 declare type PassableRuntime = {
-    passes: Passes,
     specific: Array<string>,
+    passes: Passes,
     custom: Rules
 };
 

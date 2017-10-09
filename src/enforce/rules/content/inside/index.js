@@ -13,7 +13,7 @@ function inside(value: Value, arg1: Arg): boolean {
 
     if (isType(arg1, 'array')) {
 
-        if (isType(value, 'string') || isType(value, 'number') || isType(value, 'boolean')) {
+        if ((isType(value, 'string') || isType(value, 'number') || isType(value, 'boolean'))) {
             return findValInArrayOrString(value, arg1);
         } else if (isType(value, 'array')) {
             return findArrayValuesInArray(value, arg1);
