@@ -38,18 +38,22 @@ function passableArgs(args: PassableArguments): PassableRuntime {
             break;
         case 2:
             if (typeof args[1] === 'function' && (typeof args[0] === 'string' || Array.isArray(args[0]))) {
+                // [specific, passes]
                 res = [args[0], args[1], custom];
             } else if (typeof args[0] === 'function') {
+                // [passes, custom]
                 res = typeof args[1] === 'object' && !Array.isArray(args[1]) ? [specific, args[0], args[1]] : [specific, args[0], custom];
             } else {
                 throw new TypeError("[passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '1' or '2'");
             }
             break;
-        case 3:
+        case 3: // [specific, passes, custom]
         default:
             if (typeof args[1] !== 'function') {
+                // [specific, ?, custom]
                 throw new TypeError("[passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '2'");
             } else if (!(typeof args[0] === 'string' || Array.isArray(args[0])) || !(typeof args[2] === 'object' && !Array.isArray(args[2]))) {
+                // [?, passes, ?]
                 throw new TypeError("[passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom");
             } else {
                 res = [args[0], args[1], args[2]];
