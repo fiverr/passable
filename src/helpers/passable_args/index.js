@@ -33,18 +33,28 @@ function passableArgs(args: PassableArguments): PassableRuntime {
             if (typeof args[0] !== 'function') {
                 throw new TypeError(`[passable]: Failed to execute 'passableArgs': Unexpected ${typeof args[0]}, expected function`);
             } else {
-                res = [[], args[0], custom];
+                res = [specific, args[0], custom];
             }
-
+            break;
         case 2:
-        default:
             if (typeof args[1] === 'function' && (typeof args[0] === 'string' || Array.isArray(args[0]))) {
                 res = [args[0], args[1], custom];
-            } else if (typeof args[0] === 'function' && typeof args[1] === 'object' && !Array.isArray(args[1])) {
-                res = [[], args[0], args[1]];
+            } else if (typeof args[0] === 'function') {
+                res = typeof args[1] === 'object' && !Array.isArray(args[1]) ? [specific, args[0], args[1]] : [specific, args[0], custom];
             } else {
-                throw new TypeError("[passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '2' or '3'");
+                throw new TypeError("[passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '1' or '2'");
             }
+            break;
+        case 3:
+        default:
+            if (typeof args[1] !== 'function') {
+                throw new TypeError("[passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '2'");
+            } else if (!(typeof args[0] === 'string' || Array.isArray(args[0])) || !(typeof args[2] === 'object' && !Array.isArray(args[2]))) {
+                throw new TypeError("[passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom");
+            } else {
+                res = [args[0], args[1], args[2]];
+            }
+            break;
     }
 
     [specific, passes, custom] = res;

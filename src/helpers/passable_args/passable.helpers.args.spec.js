@@ -26,12 +26,11 @@ describe('Test Passable arguments logic', () => {
     });
 
     it('Should return all attrs, not use default values', () => {
-        const yet = noop;
-        const value = passableArgs(['funny', yet, 'not']);
+        const value = passableArgs([['noop'], noop, {noop}]);
         expect(value).to.deep.equal({
-            specific: 'funny',
-            passes: yet,
-            custom: 'not'
+            specific: ['noop'],
+            passes: noop,
+            custom: {noop}
         });
     });
 
@@ -45,11 +44,15 @@ describe('Test Passable arguments logic', () => {
     });
 
     it('Should return custom and passes, default on specific', () => {
-        const value = passableArgs(['First', 'Second']);
+        const value = passableArgs([noop, {t: noop}]);
         expect(value).to.deep.equal({
             specific: [],
-            passes: 'First',
-            custom: 'Second'
+            passes: noop,
+            custom: {t: noop}
         });
+    });
+
+    it('Should throw a typerror if passes is not a function', () => {
+        expect(passableArgs.bind(null, [[], 'noop', {}])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '2'");
     });
 });
