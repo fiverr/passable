@@ -8,11 +8,11 @@ const expect = chai.expect;
 describe('Test Passable arguments logic', () => {
     const noop = () => undefined;
 
-    it('Should throw exception when given no arguments', () => {
+    it('Should throw an exception when given no arguments', () => {
         expect(passableArgs.bind(null, [])).to.throw("passable]: Failed to execute 'passableArgs': At least 1 argument required, but only 0 present.");
     });
 
-    it('Should throw exception when given only string argument', () => {
+    it('Should throw an exception when given only string argument', () => {
         expect(passableArgs.bind(null, ['basic'])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected string, expected function");
     });
 
@@ -52,7 +52,18 @@ describe('Test Passable arguments logic', () => {
         });
     });
 
-    it('Should throw a typerror if passes is not a function', () => {
+    it('Should throw an exception when passes is not a function', () => {
         expect(passableArgs.bind(null, [[], 'noop', {}])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '2'");
+    });
+
+    it('Should throw an exception if either specific or custom are of wrong types', () => {
+        expect(passableArgs.bind(null, [true, noop, ''])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom");
+        expect(passableArgs.bind(null, [[], noop, ''])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom");
+        expect(passableArgs.bind(null, [{}, noop, {}])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom");
+    });
+
+    it('Should throw an exception if two arguments are passed, with no function', () => {
+        expect(passableArgs.bind(null, [[], {}])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '1' or '2'");
+        expect(passableArgs.bind(null, ['noop', {}])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '1' or '2'");
     });
 });
