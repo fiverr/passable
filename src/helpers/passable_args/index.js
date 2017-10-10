@@ -25,7 +25,7 @@ function passableArgs(args: PassableArguments): PassableRuntime {
 
     switch (args.length) {
         case 0:
-            throw new TypeError('[passable]: Failed to execute `passableArgs`: At least 1 argument required, but only 0 present.');
+            throw new TypeError("[passable]: Failed to execute 'passableArgs': At least 1 argument required, but only 0 present.");
 
         case 1: // [passes] = args;
             if (typeof args[0] !== 'function') {

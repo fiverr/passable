@@ -9,11 +9,11 @@ describe('Test Passable arguments logic', () => {
     const noop = () => undefined;
 
     it('Should throw exception when given no arguments', () => {
-        expect(passableArgs.bind(null, [])).to.throw('passable]: Failed to execute `passableArgs`: At least 1 argument required, but only 0 present.');
+        expect(passableArgs.bind(null, [])).to.throw("passable]: Failed to execute 'passableArgs': At least 1 argument required, but only 0 present.");
     });
 
     it('Should throw exception when given only string argument', () => {
-        expect(passableArgs.bind(null, ['basic'])).to.throw('[passable]: Failed to execute `passableArgs`: Unexpected string, expected function');
+        expect(passableArgs.bind(null, ['basic'])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected string, expected function");
     });
 
     it('Should return given "passes", default on specific and custom', () => {
