@@ -16,7 +16,7 @@ declare type PassRunnerCallback = {
     valid: boolean
 } | void | null;
 
-declare type TYPENSB = number | string | boolean;
+declare type NUMSTRBOOL = number | string | boolean;
 
 declare type ArrayReducedToObject = {
     [name: string]: mixed

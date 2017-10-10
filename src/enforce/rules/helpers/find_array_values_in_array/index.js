@@ -3,7 +3,7 @@
 import { reduceArrayToObject,
     findArrayValuesInObjectKeys } from '../index';
 
-type Value = Array<TYPENSB>;
+type Value = Array<NUMSTRBOOL>;
 
 function findArrayValuesInArray(values: Value, array: Value): boolean {
     const reducedArray: ArrayReducedToObject = reduceArrayToObject(array),
