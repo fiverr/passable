@@ -12,8 +12,18 @@ describe('Test Passable arguments logic', () => {
         expect(passableArgs.bind(null, [])).to.throw("passable]: Failed to execute 'passableArgs': At least 1 argument required, but only 0 present.");
     });
 
-    it('Should throw an exception when given only string argument', () => {
+    it('Should throw an exception when given a single argument of the wrong type', () => {
         expect(passableArgs.bind(null, ['basic'])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected string, expected function");
+        expect(passableArgs.bind(null, [{}])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected object, expected function");
+        expect(passableArgs.bind(null, [1])).to.throw("[passable]: Failed to execute 'passableArgs': Unexpected number, expected function");
+    });
+
+    it('Should return a correct passable arguments object when passableArgs recieves only a function as an argument', () => {
+        expect(passableArgs([noop])).to.deep.equal({
+            passes: noop,
+            specific: [],
+            custom: {}
+        });
     });
 
     it('Should return given "passes", default on specific and custom', () => {

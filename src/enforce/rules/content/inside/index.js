@@ -6,9 +6,9 @@ import {
     findValInArrayOrString
 } from '../../helpers';
 
-type All = NUMSTRBOOL | Array<NUMSTRBOOL>;
-type Value = All | Array<NUMSTRBOOL>;
-type Arg = string | Array<NUMSTRBOOL>;
+type All = NumStrBool | Array<NumStrBool>;
+type Value = All | Array<NumStrBool>;
+type Arg = string | Array<NumStrBool>;
 
 function inside(value: Value, arg1: Arg): boolean {
 

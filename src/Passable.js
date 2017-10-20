@@ -32,7 +32,7 @@ class Passable {
         return this.res;
     }
 
-    pass(fieldName: string, statement: string, ...args: Array<Severity | () => void>) {
+    pass(fieldName: string, statement: string, ...args: Array<Severity | Pass>) {
 
         if (this.specific.length && this.specific.indexOf(fieldName) === -1) {
             this.res.skipped.push(fieldName);
