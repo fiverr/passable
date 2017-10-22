@@ -32,14 +32,14 @@ declare type EnforceSelf = {
 
 declare type Severity = 'warn' | 'fail';
 
-declare type PassableArguments = Array<Passes | string | Array<string> | Rules>;
+declare type PassableArguments = Array<Passes | Specific | Rules>;
 
 declare type Pass = () => void;
 declare type Enforce = (AnyValue) => void;
 declare type Passes = (pass: Pass, enforce: Enforce) => void;
 
 declare type PassableRuntime = {
-    specific: Array<string> | string,
+    specific: Specific,
     passes: Passes,
     custom: Rules
 };
