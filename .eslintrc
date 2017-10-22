@@ -113,7 +113,10 @@
         "no-var": 2,
         "object-shorthand": ["error", "properties"],
         "prefer-arrow-callback": 2,
-        "prefer-const": 2,
+        "prefer-const": ["error", {
+            "destructuring": "all",
+            "ignoreReadBeforeAssign": false
+        }],
         "prefer-spread": 2,
         "prefer-template": 2,
         "rest-spread-spacing": 2,

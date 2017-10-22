@@ -1,19 +1,24 @@
 // @flow
 const WARN: string = 'warn';
 
+type CountName = 'failCount' | 'warnCount';
+type ObjectName = 'validationErrors' | 'validationWarnings';
+type ValidationName = 'hasValidationErrors' | 'hasValidationWarnings';
+
 function onFail(fieldName: string, statement: string, severity: Severity, prevResObj: PassableResponse): PassableResponse {
-    let countName: string = 'failCount',
-        nameSuffix: string = 'Errors';
+    let countName: CountName = 'failCount',
+        objectName: objectName = 'validationErrors',
+        validationName: ValidationName = 'hasValidationErrors';
 
     if (severity === WARN) {
         countName = 'warnCount';
-        nameSuffix = 'Warnings';
+        objectName = 'validationWarnings';
+        validationName = 'hasValidationWarnings';
     }
 
-    const objectName: string = `validation${nameSuffix}`;
     const res: PassableResponse = prevResObj;
 
-    res[`hasValidation${nameSuffix}`] = true;
+    res[validationName] = true;
     res[objectName][fieldName] = res[objectName][fieldName] || [];
     res[objectName][fieldName].push(statement);
     res[countName]++;

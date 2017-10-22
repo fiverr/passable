@@ -1,12 +1,7 @@
 // @flow
 
-function isType(value: mixed, type: string, expect?: boolean = true): boolean {
-
-    if (type === 'array') {
-        return Array.isArray(value) === expect;
-    }
-
-    return (typeof value === type) === expect;
+function isType(value: mixed, type: string, expect?: boolean = true): boolean %checks {
+    return type === 'array' ? Array.isArray(value) === expect : (typeof value === type) === expect;
 }
 
 export default isType;
