@@ -1,5 +1,5 @@
 // @flow
-let root: object;
+let root: AnyValue;
 
 // credit https://stackoverflow.com/questions/3277182/how-to-get-the-global-object-in-javascript
 try {

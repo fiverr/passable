@@ -19,8 +19,8 @@
  */
 function passableArgs(args: PassableArguments): PassableRuntime {
 
-    let passes: Passes,
-        specific: Specific = [],
+    let specific: Specific = [],
+        passes: Passes,
         custom: Rules = {};
 
     let res: [Array<string> | string, Passes, Rules];
@@ -44,14 +44,14 @@ function passableArgs(args: PassableArguments): PassableRuntime {
                 // [passes, custom]
                 res = typeof args[1] === 'object' && !Array.isArray(args[1]) ? [specific, args[0], args[1]] : [specific, args[0], custom];
             } else {
-                throw new TypeError("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '1' or '2'");
+                throw new TypeError("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '1' or '2'");
             }
             break;
         case 3: // [specific, passes, custom]
         default:
             if (typeof args[1] !== 'function') {
                 // [specific, ?, custom]
-                throw new TypeError("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '2'");
+                throw new TypeError("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '2'");
             } else if (!(typeof args[0] === 'string' || Array.isArray(args[0])) || !(typeof args[2] === 'object' && !Array.isArray(args[2]))) {
                 // [?, passes, ?]
                 throw new TypeError("[Passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom");

@@ -63,7 +63,7 @@ describe('Test Passable arguments logic', () => {
     });
 
     it('Should throw an exception when passes is not a function', () => {
-        expect(passableArgs.bind(null, [[], 'noop', {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '2'");
+        expect(passableArgs.bind(null, [[], 'noop', {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '2'");
     });
 
     it('Should throw an exception if either specific or custom are of wrong types', () => {
@@ -73,7 +73,7 @@ describe('Test Passable arguments logic', () => {
     });
 
     it('Should throw an exception if two arguments are passed, with no function', () => {
-        expect(passableArgs.bind(null, [[], {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '1' or '2'");
-        expect(passableArgs.bind(null, ['noop', {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at positon '1' or '2'");
+        expect(passableArgs.bind(null, [[], {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '1' or '2'");
+        expect(passableArgs.bind(null, ['noop', {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '1' or '2'");
     });
 });
