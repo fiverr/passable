@@ -2,7 +2,7 @@
 
 import passable from '../Passable';
 import chai from 'chai';
-import { root } from '../helpers';
+import { root } from 'Helpers';
 
 const expect = chai.expect;
 
