@@ -16,7 +16,7 @@ class Passable {
 
     constructor(name: string, ...args) {
         if (typeof name !== 'string') {
-            throw new TypeError(`[passable]: failed to execute 'Passable' constructor: Unexpected ${typeof name}, expected string`);
+            throw new TypeError(`[Passable]: failed to execute 'Passable' constructor: Unexpected ${typeof name}, expected string`);
         }
         const computedArgs: PassableRuntime = passableArgs(args),
             globalRules: Rules = root.customPassableRules || {};
