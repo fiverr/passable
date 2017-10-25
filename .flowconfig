@@ -1,2 +1,8 @@
 [libs]
 src/types.js
+
+[options]
+module.name_mapper='^Root\/\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
+module.name_mapper='^Root$' -> '<PROJECT_ROOT>/src'
+module.name_mapper='^Helpers\/\(.*\)$' -> '<PROJECT_ROOT>/src/helpers/\1'
+module.name_mapper='^Helpers$' -> '<PROJECT_ROOT>/src/helpers'
