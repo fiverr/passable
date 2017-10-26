@@ -1,6 +1,6 @@
 {
   "name": "passable",
-  "version": "5.7.5",
+  "version": "5.7.6",
   "description": "Isomorphic Data Model Validations",
   "main": "./dist/Passable.min.js",
   "author": "Evyatar <evyatar.a@fiverr.com>",
@@ -32,6 +32,7 @@
     "babel-loader": "^7.1.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-webpack-aliases": "^1.0.3",
     "babel-preset-env": "^1.6.0",
     "babel-preset-flow": "^6.23.0",
     "chai": "^4.1.1",
@@ -40,7 +41,6 @@
     "eslint-plugin-flowtype": "^2.35.0",
     "flow-bin": "^0.54.0",
     "mocha": "^3.5.3",
-    "webpack": "^3.5.5",
-    "window-or-global": "^1.0.1"
+    "webpack": "^3.5.5"
   }
 }

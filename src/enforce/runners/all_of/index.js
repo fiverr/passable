@@ -3,20 +3,11 @@ import run from '../run';
 
 export default function allOf(value: mixed, tests: Tests, rules: Rules): boolean {
 
-    const testsCount: number = Object.keys(tests).length;
-    let successCount: number = 0;
+    const validations: Array<string> = Object.keys(tests);
 
-    if (testsCount === 0) {
+    if (validations.length === 0) {
         return false;
     }
 
-    for (const key: string in tests) {
-        const success: boolean = run(value, key, tests, rules);
-
-        if (success === true) {
-            successCount++;
-        }
-    }
-
-    return successCount === testsCount;
+    return validations.every((key) => run(value, key, tests, rules) === true);
 }

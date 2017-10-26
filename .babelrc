@@ -1,6 +1,7 @@
 {
   "presets": ["flow", "env"],
   "plugins": [
+    ["webpack-aliases", {"config": "webpack.config.js"}],
     "babel-plugin-add-module-exports",
     "transform-class-properties"
   ]
