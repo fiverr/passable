@@ -28,7 +28,7 @@ function enforce(value: mixed, custom: Rules = {}) {
         self.valid = runners[group](value, tests, allRules);
 
         if (self.valid !== true) {
-            throwRuntimeError(1, group, typeof value);
+            return throwRuntimeError(1, group, typeof value);
         }
 
         return self;

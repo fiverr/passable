@@ -16,7 +16,7 @@ class Passable {
 
     constructor(name: string, ...args) {
         if (typeof name !== 'string') {
-            throwRuntimeError(0, typeof name);
+            return throwRuntimeError(0, typeof name);
         }
         const computedArgs: PassableRuntime = passableArgs(args),
             globalRules: Rules = root.customPassableRules || {};
