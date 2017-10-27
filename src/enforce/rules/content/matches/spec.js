@@ -1,10 +1,9 @@
 'use strict';
 
-import chai from 'chai';
+import { expect } from 'chai';
 import matches from './index';
 
-const expect = chai.expect,
-    URL = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.(?=.*[a-z]){1,24}\b([-a-zA-Z0-9@:%_+.~#?&//=()]*)/,
+const URL = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.(?=.*[a-z]){1,24}\b([-a-zA-Z0-9@:%_+.~#?&//=()]*)/,
     LENGTH = /^[a-zA-Z]{3,7}$/,
     NUMBERS = '[0-9]';
 

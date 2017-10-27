@@ -1,7 +1,7 @@
 'use strict';
 
 import onFail from './index';
-import chai from 'chai';
+import { expect } from 'chai';
 
 const initialObject = () => (
     {
@@ -22,8 +22,6 @@ const initialObject = () => (
 
 const fail = onFail('f1', 'should fail', 'fail', initialObject()),
     warn = onFail('f1', 'should warn', 'warn', initialObject());
-
-const expect = chai.expect;
 
 describe('Test onFail function', () => {
 

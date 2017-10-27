@@ -1,9 +1,7 @@
 'use strict';
 
 import passable from '../Passable.js';
-import chai from 'chai';
-
-const expect = chai.expect;
+import { expect } from 'chai';
 
 const oneValidationError = passable('oneValidationError', (pass, enforce) => {
     pass('IsFalse', 'Should Fail', () => false);
@@ -22,6 +20,12 @@ const failSecondTest = passable('failSecondTest', (pass, enforce) => {
 });
 
 describe('Test passable\'s api ', () => {
+    it('Should throw a TypeError for a non-string form name', () => {
+        expect(passable.bind(null, 1)).to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected number, expected string.");
+        expect(passable.bind(null, {})).to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected object, expected string.");
+        expect(passable.bind(null, passable)).to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected function, expected string.");
+    });
+
     it('Should have one validation error', () => {
         expect(oneValidationError.failCount).to.equal(1);
     });

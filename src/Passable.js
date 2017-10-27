@@ -2,7 +2,7 @@
 
 import enforce from './enforce';
 import passRunner from './pass_runner';
-import { passableArgs, initResponseObject, initField, onFail, root } from 'Helpers';
+import { passableArgs, initResponseObject, initField, onFail, root, throwRuntimeError } from 'Helpers';
 
 const FAIL: Severity = 'fail';
 
@@ -16,7 +16,7 @@ class Passable {
 
     constructor(name: string, ...args) {
         if (typeof name !== 'string') {
-            throw new TypeError(`[Passable]: failed to execute 'Passable' constructor: Unexpected ${typeof name}, expected string`);
+            throwRuntimeError(0, typeof name);
         }
         const computedArgs: PassableRuntime = passableArgs(args),
             globalRules: Rules = root.customPassableRules || {};
