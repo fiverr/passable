@@ -1,9 +1,7 @@
 'use strict';
 
 import passable from '../Passable.js';
-import chai from 'chai';
-
-const expect = chai.expect;
+import { expect } from 'chai';
 
 describe('Test running specific tests', () => {
     it('Should only run first test', () => {

@@ -1,6 +1,7 @@
 // @flow
 import rules from './rules';
 import runners from './runners';
+import { throwRuntimeError } from 'Helpers';
 
 function isUntested(valid) {
     return valid === null;
@@ -27,7 +28,7 @@ function enforce(value: mixed, custom: Rules = {}) {
         self.valid = runners[group](value, tests, allRules);
 
         if (self.valid !== true) {
-            throw new Error(`[Passable] 'Enforce': ${group} - invalid ${typeof value} value`);
+            throwRuntimeError(1, group, typeof value);
         }
 
         return self;

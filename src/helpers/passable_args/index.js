@@ -1,4 +1,5 @@
 // @flow
+import { throwRuntimeError } from 'Helpers';
 
 /**
  * The function which runs the validation tests.
@@ -27,11 +28,11 @@ function passableArgs(args: PassableArguments): PassableRuntime {
 
     switch (args.length) {
         case 0:
-            throw new TypeError("[Passable]: Failed to execute 'passableArgs': At least 1 argument required, but only 0 present.");
+            throwRuntimeError(3);
 
         case 1: // [passes] = args;
             if (typeof args[0] !== 'function') {
-                throw new TypeError(`[Passable]: Failed to execute 'passableArgs': Unexpected ${typeof args[0]}, expected function`);
+                throwRuntimeError(4, typeof args[0]);
             } else {
                 res = [specific, args[0], custom];
             }
@@ -44,17 +45,17 @@ function passableArgs(args: PassableArguments): PassableRuntime {
                 // [passes, custom]
                 res = typeof args[1] === 'object' && !Array.isArray(args[1]) ? [specific, args[0], args[1]] : [specific, args[0], custom];
             } else {
-                throw new TypeError("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '1' or '2'");
+                throwRuntimeError(5);
             }
             break;
         case 3: // [specific, passes, custom]
         default:
             if (typeof args[1] !== 'function') {
                 // [specific, ?, custom]
-                throw new TypeError("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '2'");
+                throwRuntimeError(6);
             } else if (!(typeof args[0] === 'string' || Array.isArray(args[0])) || !(typeof args[2] === 'object' && !Array.isArray(args[2]))) {
                 // [?, passes, ?]
-                throw new TypeError("[Passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom");
+                throwRuntimeError(7);
             } else {
                 res = [args[0], args[1], args[2]];
             }

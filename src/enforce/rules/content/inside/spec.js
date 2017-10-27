@@ -1,9 +1,7 @@
 'use strict';
 
-import chai from 'chai';
+import { expect } from 'chai';
 import inside from './index';
-
-const expect = chai.expect;
 
 describe('Inside rule', () => {
     it('Should correctly find a string inside an array', () => {

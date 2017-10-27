@@ -1,9 +1,7 @@
 'use strict';
 
 import passable from '../Passable';
-import chai from 'chai';
-
-const expect = chai.expect;
+import { expect } from 'chai';
 
 describe('Test rule extensions', () => {
     it('Should perform three tests', () => {

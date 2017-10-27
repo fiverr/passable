@@ -1,9 +1,7 @@
 'use strict';
 
 import enforce from './index';
-import chai from 'chai';
-
-const expect = chai.expect;
+import { expect } from 'chai';
 
 describe('Test Passable\'s enforce function', () => {
     it('Should expose all API functions', () => {

@@ -1,10 +1,8 @@
 'use strict';
 
-import chai from 'chai';
+import { expect } from 'chai';
 import anyOf from './index';
 import rules from '../../rules';
-
-const expect = chai.expect;
 
 describe('Test any of Runner', () => {
     it('Should return false since no tests are specified', () => {

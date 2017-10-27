@@ -1,9 +1,7 @@
 'use strict';
 
-import chai from 'chai';
+import { expect } from 'chai';
 import findArrayValuesInObjectKeys from './index';
-
-const expect = chai.expect;
 
 describe('find array values in object keys helper', () => {
 

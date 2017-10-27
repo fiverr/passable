@@ -1,10 +1,8 @@
 'use strict';
 
-import chai from 'chai';
+import { expect } from 'chai';
 import rules from '../../rules';
 import run from './index';
-
-const expect = chai.expect;
 
 describe('Test Run Function', () => {
     it('Should return false when test is not a function', () => {

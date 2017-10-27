@@ -1,9 +1,7 @@
 'use strict';
 
 import passable from '../Passable.js';
-import chai from 'chai';
-
-const expect = chai.expect;
+import { expect } from 'chai';
 
 describe('Test warn flag', () => {
     it('Should warn and not fail', () => {
