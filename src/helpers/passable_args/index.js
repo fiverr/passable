@@ -28,11 +28,11 @@ function passableArgs(args: PassableArguments): PassableRuntime {
 
     switch (args.length) {
         case 0:
-            return throwRuntimeError(3);
+            return throwRuntimeError('3');
 
         case 1: // [passes] = args;
             if (typeof args[0] !== 'function') {
-                return throwRuntimeError(4, typeof args[0]);
+                return throwRuntimeError('4', typeof args[0]);
             } else {
                 res = [specific, args[0], custom];
             }
@@ -45,17 +45,17 @@ function passableArgs(args: PassableArguments): PassableRuntime {
                 // [passes, custom]
                 res = typeof args[1] === 'object' && !Array.isArray(args[1]) ? [specific, args[0], args[1]] : [specific, args[0], custom];
             } else {
-                return throwRuntimeError(5);
+                return throwRuntimeError('5');
             }
             break;
         case 3: // [specific, passes, custom]
         default:
             if (typeof args[1] !== 'function') {
                 // [specific, ?, custom]
-                return throwRuntimeError(6);
+                return throwRuntimeError('6');
             } else if (!(typeof args[0] === 'string' || Array.isArray(args[0])) || !(typeof args[2] === 'object' && !Array.isArray(args[2]))) {
                 // [?, passes, ?]
-                return throwRuntimeError(7);
+                return throwRuntimeError('7');
             } else {
                 res = [args[0], args[1], args[2]];
             }
