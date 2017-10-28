@@ -2,6 +2,7 @@
 import rules from './rules';
 import runners from './runners';
 import { throwRuntimeError } from 'Helpers';
+import { Errors } from 'Constants';
 
 function isUntested(valid) {
     return valid === null;
@@ -28,7 +29,7 @@ function enforce(value: mixed, custom: Rules = {}) {
         self.valid = runners[group](value, tests, allRules);
 
         if (self.valid !== true) {
-            return throwRuntimeError('1', group, typeof value);
+            return throwRuntimeError(Errors.INVALID_FORM_NAME, group, typeof value);
         }
 
         return self;

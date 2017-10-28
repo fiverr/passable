@@ -3,6 +3,7 @@
 import enforce from './enforce';
 import passRunner from './pass_runner';
 import { passableArgs, initResponseObject, initField, onFail, root, throwRuntimeError } from 'Helpers';
+import { Errors } from 'Constants';
 
 const FAIL: Severity = 'fail';
 
@@ -16,7 +17,7 @@ class Passable {
 
     constructor(name: string, ...args) {
         if (typeof name !== 'string') {
-            return throwRuntimeError('0', typeof name);
+            return throwRuntimeError(Errors.INVALID_FORM_NAME, typeof name);
         }
         const computedArgs: PassableRuntime = passableArgs(args),
             globalRules: Rules = root.customPassableRules || {};
