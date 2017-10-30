@@ -1,7 +1,6 @@
 .vscode
 node_modules
 spec
-src
 dev
 .babelrc
 .eslintignore
