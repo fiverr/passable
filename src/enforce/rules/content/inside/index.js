@@ -12,12 +12,12 @@ type Arg = string | Array<NumStrBool>;
 
 function inside(value: Value, arg1: Arg): boolean {
 
-    if (isType(arg1, 'array')) {
+    if (Array.isArray(arg1)) {
 
         if (isType(value, 'string', 'number', 'boolean')) {
             return findValInArrayOrString(value, arg1);
         }
-        if (isType(value, 'array')) {
+        if (Array.isArray(value)) {
             return findArrayValuesInArray(value, arg1);
         }
 

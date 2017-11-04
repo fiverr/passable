@@ -15,7 +15,7 @@ import { Errors } from 'Constants';
 function enforce(value: mixed, custom: Rules = {}) {
     const allRules: Rules = Object.assign({}, rules, custom),
         self: EnforceSelf = {
-            fin() { return !!self.valid; }
+            fin: function fin() { return !!self.valid; }
         };
 
     // use enforce object as proxy to test runners

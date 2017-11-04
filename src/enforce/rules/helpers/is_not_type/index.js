@@ -7,8 +7,8 @@ import isType from '../is_type';
  * @see {@link isType}
  * @see isType
  */
-export function isNotType(...args) {
-    return !isType(...args);
+export function isNotType(value: mixed, ...types: Array<string>): boolean {
+    return !isType(value, ...types);
 }
 
 export default isNotType;

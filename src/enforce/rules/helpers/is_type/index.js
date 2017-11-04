@@ -9,7 +9,7 @@
  * isType(5, 'string')
  * @example
  * // returns true
- * isType([], 'string', 'array') 
+ * isType([], 'string', 'array')
  * @param {any} value Value to match
  * @param {...string} types
  * @return {boolean} true if value matches against any type, false otherwise
