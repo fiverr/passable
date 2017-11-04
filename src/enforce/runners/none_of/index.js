@@ -1,5 +1,6 @@
 // @flow
 import run from '../run';
+import allOf from '../all_of';
 
 export default function noneOf(value: mixed, tests: Tests, rules: Rules): boolean {
 
@@ -9,5 +10,5 @@ export default function noneOf(value: mixed, tests: Tests, rules: Rules): boolea
         return false;
     }
 
-    return validations.every((key) => run(value, key, tests, rules) !== true);
+    return !allOf(value, tests, rules);
 }
