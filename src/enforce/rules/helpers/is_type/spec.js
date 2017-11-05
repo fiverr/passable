@@ -1,10 +1,9 @@
 'use strict';
 
-import chai from 'chai';
+import { expect } from 'chai';
 import isType from './index';
 
-const expect = chai.expect,
-    noop = () => undefined;
+const noop = () => undefined;
 
 describe('Tests isType helper', () => {
 

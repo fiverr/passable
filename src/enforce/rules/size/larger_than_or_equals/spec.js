@@ -1,9 +1,7 @@
 'use strict';
 
-import chai from 'chai';
+import { expect } from 'chai';
 import largerThanOrEquals from './index';
-
-const expect = chai.expect;
 
 describe('Tests largerThanOrEquals rule', () => {
 

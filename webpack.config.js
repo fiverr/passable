@@ -41,7 +41,8 @@ const config = {
     resolve: {
         alias: {
             Root: path.resolve('./src'),
-            Helpers: path.resolve('./src/helpers')
+            Helpers: path.resolve('./src/helpers'),
+            Constants: path.resolve('./src/constants')
         }
     },
     plugins

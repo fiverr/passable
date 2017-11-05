@@ -1,12 +1,11 @@
 'use strict';
 
 import passRunner from './index';
-import chai from 'chai';
+import { expect } from 'chai';
 
 const pr = passRunner.bind({}); // mimicks the `call` wer'e doing in passable 'run' function
 
-const expect = chai.expect,
-    passing = () => true,
+const passing = () => true,
     failing = () => false;
 
 describe('Test Pass Runner Logic', () => {

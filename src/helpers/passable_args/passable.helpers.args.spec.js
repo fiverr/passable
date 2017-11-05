@@ -1,9 +1,7 @@
 'use strict';
 
 import passableArgs from './index';
-import chai from 'chai';
-
-const expect = chai.expect;
+import { expect } from 'chai';
 
 describe('Test Passable arguments logic', () => {
     const noop = () => undefined;
@@ -13,9 +11,9 @@ describe('Test Passable arguments logic', () => {
     });
 
     it('Should throw an exception when given a single argument of the wrong type', () => {
-        expect(passableArgs.bind(null, ['basic'])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected string, expected function");
-        expect(passableArgs.bind(null, [{}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected object, expected function");
-        expect(passableArgs.bind(null, [1])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected number, expected function");
+        expect(passableArgs.bind(null, ['basic'])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected string, expected function.");
+        expect(passableArgs.bind(null, [{}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected object, expected function.");
+        expect(passableArgs.bind(null, [1])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected number, expected function.");
     });
 
     it('Should return a correct passable arguments object when passableArgs recieves only a function as an argument', () => {
@@ -63,17 +61,17 @@ describe('Test Passable arguments logic', () => {
     });
 
     it('Should throw an exception when passes is not a function', () => {
-        expect(passableArgs.bind(null, [[], 'noop', {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '2'");
+        expect(passableArgs.bind(null, [[], 'noop', {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '2'.");
     });
 
     it('Should throw an exception if either specific or custom are of wrong types', () => {
-        expect(passableArgs.bind(null, [true, noop, ''])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom");
-        expect(passableArgs.bind(null, [[], noop, ''])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom");
-        expect(passableArgs.bind(null, [{}, noop, {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom");
+        expect(passableArgs.bind(null, [true, noop, ''])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom.");
+        expect(passableArgs.bind(null, [[], noop, ''])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom.");
+        expect(passableArgs.bind(null, [{}, noop, {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom.");
     });
 
     it('Should throw an exception if two arguments are passed, with no function', () => {
-        expect(passableArgs.bind(null, [[], {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '1' or '2'");
-        expect(passableArgs.bind(null, ['noop', {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '1' or '2'");
+        expect(passableArgs.bind(null, [[], {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '1' or '2'.");
+        expect(passableArgs.bind(null, ['noop', {}])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected argument, expected function at position '1' or '2'.");
     });
 });

@@ -1,11 +1,10 @@
 'use strict';
 
-import chai from 'chai';
+import { expect } from 'chai';
 import reduceArrayToObject from './index';
 import findArrayValuesInObjectKeys from '../find_array_values_in_object_keys';
 
-const expect = chai.expect,
-    reducedArray = reduceArrayToObject(['one', 'two', 'three']);
+const reducedArray = reduceArrayToObject(['one', 'two', 'three']);
 
 describe('reduce array to object helper', () => {
 

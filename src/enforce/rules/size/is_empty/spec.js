@@ -1,9 +1,7 @@
 'use strict';
 
-import chai from 'chai';
+import { expect } from 'chai';
 import isEmpty from './index';
-
-const expect = chai.expect;
 
 describe('Tests isEmpty rule (expect true)', () => {
 

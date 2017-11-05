@@ -1,10 +1,8 @@
 'use strict';
 
 import passable from '../Passable';
-import chai from 'chai';
+import { expect } from 'chai';
 import { root } from 'Helpers';
-
-const expect = chai.expect;
 
 root.customPassableRules = {
     alwaysTrue: () => true,
