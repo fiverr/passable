@@ -9,7 +9,7 @@ const FAIL: Severity = 'fail';
 
 class Passable {
 
-    specific: Array<string> | string;
+    specific: Specific;
     custom: Rules;
     res: PassableResponse;
     pass: Function;
@@ -35,7 +35,7 @@ class Passable {
 
     pass(fieldName: string, statement: string, ...args: Array<Severity | Pass>) {
 
-        if (this.specific.length && this.specific.indexOf(fieldName) === -1) {
+        if (this.specific && this.specific.length && this.specific.indexOf(fieldName) === -1) {
             this.res.skipped.push(fieldName);
             return;
         }
