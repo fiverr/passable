@@ -6,94 +6,76 @@ import isType from './index';
 const noop = () => undefined;
 
 describe('Tests isType helper', () => {
+    let types;
 
-    it('Should return correctly for an array (expecting true)', () => {
-        expect(isType([], 'array', true)).to.equal(true);
-        expect(isType(true, 'array', true)).to.equal(false);
-        expect(isType('false', 'array', true)).to.equal(false);
-        expect(isType(1, 'array', true)).to.equal(false);
-        expect(isType({}, 'array', true)).to.equal(false);
-        expect(isType(noop, 'array', true)).to.equal(false);
+    beforeEach(() => {
+        types = ['array', 'boolean', 'number', 'string', 'object', 'function'];
     });
 
-    it('Should return correctly for an array (expecting false)', () => {
-        expect(isType([], 'array', false)).to.equal(false);
-        expect(isType(true, 'array', false)).to.equal(true);
-        expect(isType('false', 'array', false)).to.equal(true);
-        expect(isType(1, 'array', false)).to.equal(true);
-        expect(isType({}, 'array', false)).to.equal(true);
-        expect(isType(noop, 'array', false)).to.equal(true);
+    it('Should return correctly for an array', () => {
+        types = types.filter((t) => t !== 'object');
+        expect(isType([], 'array')).to.equal(true);
+        expect(isType([], ...types)).to.equal(true);
+
+        expect(isType(true, 'array')).to.equal(false);
+        expect(isType('false', 'array')).to.equal(false);
+        expect(isType(1, 'array')).to.equal(false);
+        expect(isType({}, 'array')).to.equal(false);
+        expect(isType(noop, 'array')).to.equal(false);
+
+        types = types.filter((t) => t !== 'array');
+        expect(isType([], ...types)).to.equal(false);
     });
 
-    it('Should return correctly for a number (expecting true)', () => {
-        expect(isType(1, 'number', true)).to.equal(true);
-        expect(isType([], 'number', true)).to.equal(false);
-        expect(isType(true, 'number', true)).to.equal(false);
-        expect(isType('false', 'number', true)).to.equal(false);
-        expect(isType({}, 'number', true)).to.equal(false);
-        expect(isType(noop, 'number', true)).to.equal(false);
+    it('Should return correctly for a number', () => {
+        expect(isType(1, 'number')).to.equal(true);
+        expect(isType(1, ...types)).to.equal(true);
+        expect(isType([], 'number')).to.equal(false);
+        expect(isType(true, 'number')).to.equal(false);
+        expect(isType('false', 'number')).to.equal(false);
+        expect(isType({}, 'number')).to.equal(false);
+        expect(isType(noop, 'number')).to.equal(false);
+
+        types = types.filter((t) => t !== 'number');
+        expect(isType(1, ...types)).to.equal(false);
     });
 
-    it('Should return correctly for a number (expecting false)', () => {
-        expect(isType(1, 'number', false)).to.equal(false);
-        expect(isType([], 'number', false)).to.equal(true);
-        expect(isType(true, 'number', false)).to.equal(true);
-        expect(isType('false', 'number', false)).to.equal(true);
-        expect(isType({}, 'number', false)).to.equal(true);
-        expect(isType(noop, 'number', false)).to.equal(true);
+    it('Should return correctly for a string', () => {
+        expect(isType('', 'string')).to.equal(true);
+        expect(isType('', ...types)).to.equal(true);
+        expect(isType('text', 'string')).to.equal(true);
+        expect(isType(1, 'string')).to.equal(false);
+        expect(isType([], 'string')).to.equal(false);
+        expect(isType(true, 'string')).to.equal(false);
+        expect(isType({}, 'string')).to.equal(false);
+        expect(isType(noop, 'string')).to.equal(false);
+
+        types = types.filter((t) => t !== 'string');
+        expect(isType('', ...types)).to.equal(false);
     });
 
-    it('Should return correctly for a string (expecting true)', () => {
-        expect(isType('', 'string', true)).to.equal(true);
-        expect(isType('text', 'string', true)).to.equal(true);
-        expect(isType(1, 'string', true)).to.equal(false);
-        expect(isType([], 'string', true)).to.equal(false);
-        expect(isType(true, 'string', true)).to.equal(false);
-        expect(isType({}, 'string', true)).to.equal(false);
-        expect(isType(noop, 'string', true)).to.equal(false);
+    it('Should return correctly for a function', () => {
+        expect(isType(noop, 'function')).to.equal(true);
+        expect(isType(noop, ...types)).to.equal(true);
+        expect(isType('', 'function')).to.equal(false);
+        expect(isType(1, 'function')).to.equal(false);
+        expect(isType([], 'function')).to.equal(false);
+        expect(isType(true, 'function')).to.equal(false);
+        expect(isType({}, 'function')).to.equal(false);
+
+        types = types.filter((t) => t !== 'function');
+        expect(isType(noop, ...types)).to.equal(false);
     });
 
-    it('Should return correctly for a string (expecting false)', () => {
-        expect(isType('', 'string', false)).to.equal(false);
-        expect(isType('text', 'string', false)).to.equal(false);
-        expect(isType(1, 'string', false)).to.equal(true);
-        expect(isType([], 'string', false)).to.equal(true);
-        expect(isType(true, 'string', false)).to.equal(true);
-        expect(isType({}, 'string', false)).to.equal(true);
-        expect(isType(noop, 'string', false)).to.equal(true);
-    });
+    it('Should return correctly for an object', () => {
+        expect(isType({}, 'object')).to.equal(true);
+        expect(isType({}, ...types)).to.equal(true);
+        expect(isType('', 'object')).to.equal(false);
+        expect(isType(1, 'object')).to.equal(false);
+        expect(isType(true, 'object')).to.equal(false);
+        expect(isType(noop, 'object')).to.equal(false);
 
-    it('Should return correctly for a function (expecting true)', () => {
-        expect(isType(noop, 'function', true)).to.equal(true);
-        expect(isType('', 'function', true)).to.equal(false);
-        expect(isType(1, 'function', true)).to.equal(false);
-        expect(isType([], 'function', true)).to.equal(false);
-        expect(isType(true, 'function', true)).to.equal(false);
-        expect(isType({}, 'function', true)).to.equal(false);
-    });
-
-    it('Should return correctly for a function (expecting false)', () => {
-        expect(isType(noop, 'function', false)).to.equal(false);
-        expect(isType('', 'function', false)).to.equal(true);
-        expect(isType(1, 'function', false)).to.equal(true);
-        expect(isType([], 'function', false)).to.equal(true);
-        expect(isType(true, 'function', false)).to.equal(true);
-        expect(isType({}, 'function', false)).to.equal(true);
-    });
-
-    it('Should return correctly for an object (expecting true)', () => {
-        expect(isType({}, 'object', true)).to.equal(true);
-        expect(isType('', 'object', true)).to.equal(false);
-        expect(isType(1, 'object', true)).to.equal(false);
-        expect(isType(true, 'object', true)).to.equal(false);
-        expect(isType(noop, 'object', true)).to.equal(false);
-    });
-
-    it('Should return correctly for an object (expecting false)', () => {
-        expect(isType({}, 'object', false)).to.equal(false);
-        expect(isType('', 'object', false)).to.equal(true);
-        expect(isType(1, 'object', false)).to.equal(true);
-        expect(isType(true, 'object', false)).to.equal(true);
-        expect(isType(noop, 'object', false)).to.equal(true);
+        types = types.filter((t) => t !== 'object');
+        expect(isType({}, ...types)).to.equal(false);
     });
 });

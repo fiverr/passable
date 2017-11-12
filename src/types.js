@@ -23,9 +23,7 @@ declare type ArrayReducedToObject = {
 };
 
 declare type EnforceSelf = {
-    allOf: Function,
-    noneOf: Function,
-    anyOf: Function,
+    [testRunner: string]: Function,
     fin: Function,
     valid?: boolean
 };

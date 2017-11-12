@@ -1,7 +1,7 @@
 // @flow
 export default function run(value: AnyValue, key: string, tests: Tests, rules: Rules): boolean {
 
-    if (!(typeof rules[key] === 'function')) {
+    if (typeof rules[key] !== 'function') {
         return false;
     }
 
