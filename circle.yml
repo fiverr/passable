@@ -1,0 +1,13 @@
+machine:
+  node:
+    version: 6.9.4
+
+dependencies:
+  override:
+    - npm i
+    - nvm install 8.4.0
+
+test:
+  override:
+    - nvm use 6.9.4 && npm test
+    - nvm use 8.4.0 && npm test

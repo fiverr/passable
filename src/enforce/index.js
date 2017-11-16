@@ -4,25 +4,36 @@ import runners from './runners';
 import { runtimeError } from 'Helpers';
 import { Errors } from 'Constants';
 
-function isUntested(valid) {
-    return valid === null;
-}
-
-function isInvalid(valid) {
-    return !isUntested(valid) && valid === false;
-}
-
+/**
+ * Run tests on value using existing test runners and rules
+ *
+ * @throws Will throw an error on failed test
+ * @param {any} value Value to test
+ * @param {object} custom Custom test rules
+ * @return {object} enforce object
+ */
 function enforce(value: mixed, custom: Rules = {}) {
     const allRules: Rules = Object.assign({}, rules, custom),
         self: EnforceSelf = {
-            anyOf: (tests: Tests) => run('anyOf', tests),
-            allOf: (tests: Tests) => run('allOf', tests),
-            noneOf: (tests: Tests) => run('noneOf', tests),
-            fin
+            fin: function fin() { return !!self.valid; }
         };
 
-    function run(group, tests) {
-        if (isInvalid(self.valid)) {
+    // use enforce object as proxy to test runners
+    for (const group: string of Object.keys(runners)) {
+        /** @method */
+        self[group] = (tests: Tests) => run(group, tests);
+    }
+
+    /**
+     * Run group of tests using test runner. (e.g. `anyOf`)
+     *
+     * @private
+     * @param {string} group - name of test runner
+     * @param {object} tests
+     * @return {object} enforce object
+     */
+    function run(group: string, tests: Tests) {
+        if (self.valid === false) {
             return self;
         }
 
@@ -33,10 +44,6 @@ function enforce(value: mixed, custom: Rules = {}) {
         }
 
         return self;
-    }
-
-    function fin() {
-        return !!self.valid;
     }
 
     return self;

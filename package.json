@@ -1,13 +1,16 @@
 {
   "name": "passable",
-  "version": "5.7.9",
+  "version": "5.8.0",
   "description": "Isomorphic Data Model Validations",
   "main": "./dist/Passable.min.js",
   "author": "Evyatar <evyatar.a@fiverr.com>",
   "license": "MIT",
   "scripts": {
+    "prebuild": "node ./make_version_file.js",
+    "prepare": "node ./make_version_file.js",
     "build": "cross-env WEBPACK_ENV=build webpack",
     "build:watch": "webpack --watch",
+    "pretest": "npm run build",
     "dev": "cross-env WEBPACK_ENV=dev webpack --progress --colors --watch",
     "test:custom": "mocha --compilers js:babel-core/register --colors -w './src/**/*custom.spec.js'",
     "test:global_custom": "mocha --compilers js:babel-core/register --colors -w './src/spec/passable.api.global-custom.spec.js'",

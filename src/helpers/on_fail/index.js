@@ -6,15 +6,11 @@ type ObjectName = 'validationErrors' | 'validationWarnings';
 type ValidationName = 'hasValidationErrors' | 'hasValidationWarnings';
 
 function onFail(fieldName: string, statement: string, severity: Severity, prevResObj: PassableResponse): PassableResponse {
-    let countName: CountName = 'failCount',
-        objectName: objectName = 'validationErrors',
-        validationName: ValidationName = 'hasValidationErrors';
+    const isFail: boolean = (severity !== WARN);
 
-    if (severity === WARN) {
-        countName = 'warnCount';
-        objectName = 'validationWarnings';
-        validationName = 'hasValidationWarnings';
-    }
+    const countName: CountName = isFail? 'failCount' : 'warnCount',
+        objectName: objectName = isFail? 'validationErrors' : 'validationWarnings',
+        validationName: ValidationName = isFail? 'hasValidationErrors' : 'hasValidationWarnings';
 
     const res: PassableResponse = prevResObj;
 
