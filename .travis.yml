@@ -4,6 +4,6 @@ node_js:
   - "8"
   - "node"
 before_script:
-- yarn flow
-- yarn eslint
-- yarn build
+- npm run build
+- npm run eslint
+- flow

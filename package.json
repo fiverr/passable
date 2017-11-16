@@ -6,6 +6,7 @@
   "author": "Evyatar <evyatar.a@fiverr.com>",
   "license": "MIT",
   "scripts": {
+    "prebuild": "node ./make_version_file.js",
     "build": "cross-env WEBPACK_ENV=build webpack",
     "build:watch": "webpack --watch",
     "dev": "cross-env WEBPACK_ENV=dev webpack --progress --colors --watch",

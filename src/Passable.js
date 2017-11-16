@@ -4,7 +4,7 @@ import enforce from './enforce';
 import passRunner from './pass_runner';
 import { passableArgs, initResponseObject, initField, onFail, root, runtimeError } from 'Helpers';
 import { Errors } from 'Constants';
-import { version } from '../package.json';
+import { version } from '../version.json';
 
 const FAIL: Severity = 'fail';
 
