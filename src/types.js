@@ -10,7 +10,7 @@ declare type Tests = {
     [name: string]: mixed
 };
 
-declare type Specific = Array<string> | string;
+declare type Specific = Array<string> | string | void;
 
 declare type PassRunnerCallback = {
     valid: boolean

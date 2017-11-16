@@ -25,7 +25,7 @@ function passableArgs(args: PassableArguments): PassableRuntime {
         passes: Passes,
         custom: Rules = {};
 
-    let res: [Array<string> | string, Passes, Rules];
+    let res: [Specific, Passes, Rules];
 
     switch (args.length) {
         case 0:
@@ -39,7 +39,7 @@ function passableArgs(args: PassableArguments): PassableRuntime {
             }
             break;
         case 2:
-            if (typeof args[1] === 'function' && (typeof args[0] === 'string' || Array.isArray(args[0]))) {
+            if (typeof args[1] === 'function' && (args[0] === undefined || typeof args[0] === 'string' || Array.isArray(args[0]))) {
                 // [specific, passes]
                 res = [args[0], args[1], custom];
             } else if (typeof args[0] === 'function') {
@@ -54,7 +54,7 @@ function passableArgs(args: PassableArguments): PassableRuntime {
             if (typeof args[1] !== 'function') {
                 // [specific, ?, custom]
                 throw runtimeError(Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_3);
-            } else if (!(typeof args[0] === 'string' || Array.isArray(args[0])) || !(typeof args[2] === 'object' && !Array.isArray(args[2]))) {
+            } else if (!(args[0] === undefined || typeof args[0] === 'string' || Array.isArray(args[0])) || !(typeof args[2] === 'object' && !Array.isArray(args[2]))) {
                 // [?, passes, ?]
                 throw runtimeError(Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_4);
             } else {
