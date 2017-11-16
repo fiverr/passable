@@ -4,6 +4,7 @@ import enforce from './enforce';
 import passRunner from './pass_runner';
 import { passableArgs, initResponseObject, initField, onFail, root, runtimeError } from 'Helpers';
 import { Errors } from 'Constants';
+import { version } from '../package.json';
 
 const FAIL: Severity = 'fail';
 
@@ -69,5 +70,6 @@ class Passable {
 }
 
 const passable: Function = (name: string, ...args: PassableArguments) => new Passable(name, ...args);
+passable.VERSION = version;
 
 export default passable;
