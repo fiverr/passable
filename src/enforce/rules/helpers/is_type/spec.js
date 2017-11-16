@@ -9,7 +9,7 @@ describe('Tests isType helper', () => {
     let types;
 
     beforeEach(() => {
-        types = ['array', 'boolean', 'number', 'string', 'object', 'function'];
+        types = ['array', 'boolean', 'number', 'string', 'object', 'function', 'symbol'];
     });
 
     it('Should return correctly for an array', () => {
@@ -77,5 +77,17 @@ describe('Tests isType helper', () => {
 
         types = types.filter((t) => t !== 'object');
         expect(isType({}, ...types)).to.equal(false);
+    });
+
+    it('Should return correctly for a symbol', () => {
+        expect(isType(Symbol(), 'symbol')).to.equal(true);
+        expect(isType({}, ...types)).to.equal(true);
+        expect(isType('', 'symbol')).to.equal(false);
+        expect(isType(1, 'symbol')).to.equal(false);
+        expect(isType(true, 'symbol')).to.equal(false);
+        expect(isType(noop, 'symbol')).to.equal(false);
+
+        types = types.filter((t) => t !== 'symbol');
+        expect(isType(Symbol(), ...types)).to.equal(false);
     });
 });
