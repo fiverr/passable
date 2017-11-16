@@ -15,3 +15,4 @@ deploy:
   on:
     repo: fiverr/passable
     branch: master
+    node: '8'
