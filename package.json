@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "node ./make_version_file.js",
-    "prepare": "npm run build",
+    "prepare": "node ./make_version_file.js",
     "build": "cross-env WEBPACK_ENV=build webpack",
     "build:watch": "webpack --watch",
     "pretest": "npm run build",
