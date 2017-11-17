@@ -1,6 +1,6 @@
 {
   "name": "passable",
-  "version": "5.8.0",
+  "version": "5.8.1",
   "description": "Isomorphic Data Model Validations",
   "main": "./dist/Passable.min.js",
   "author": "Evyatar <evyatar.a@fiverr.com>",
