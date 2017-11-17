@@ -9,5 +9,5 @@ To view currently imported version, you can:
 
 ```js
 Passable.VERSION
-// 5.7.8
+// 5.8.0
 ```
