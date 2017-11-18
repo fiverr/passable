@@ -26,6 +26,17 @@ The version number specify `major`.`minor`.`patch`
 |minor | Interface change with full backward compatibility | Adding new features, Full backwards compatibility|
 |major | Interface change without full backward compatibility | Changing a function name or interface, Removing a function|
 
+## Commit message guidelines
+Commit messages should be labeled with the version bump the changes require. For example:
+
+* > [Patch] Fixing a broken runner
+* > [Patch] Documentation update
+* > [Patch] Configuration update
+* > [Minor] Adding a new runner
+* > [Major] Replacing all runners
+
+This is to make it easier to determine which version bump should be done upon adding a new release.
+
 ## Documentation guidelines
 Passable's documentation is present in [https://fiverr.github.io/passable](https://fiverr.github.io/passable). Its source is present as markdown(`.md`) files in the `documentation` folder of the project. Upon releasing a new version, a static html website is generated using [docpress](https://github.com/docpress/docpress). When adding a new page to the documentation, it needs to be added the the `content` first, which is present under: `/documentation/README.md`. Otherwise docpress will not know to look for it.
 
@@ -54,7 +65,7 @@ the All new code has to be tested.
 Which test full Passable usecases, and run both on the source and distribution versions of Passable. When adding new functionality to Passable, make sure to add a corresponding usecase test.
 If your changes are not reflected in the usecase tests, it is probably due to you having the old distribution file in your branch. Please run:
 ```js
-npm run build 
+npm run build
 // or
 yarn build
 ```
@@ -72,7 +83,7 @@ Usecase tests are located under:
 To run all tests:
 ```js
 npm test
-// or 
+// or
 yarn test
 ```
 
@@ -82,7 +93,7 @@ When writing code for Passable, we internally use Facebook's [Flow](https://flow
 To check flow coverage:
 ```js
 npm run flow
-// or 
+// or
 yarn flow
 // or
 npx flow
@@ -93,7 +104,7 @@ Linting is done via eslint and Fiverr's eslint configuration.
 
 ```js
 npm run eslint
-// or 
+// or
 yarn eslint
 ```
 
