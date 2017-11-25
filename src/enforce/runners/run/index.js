@@ -5,8 +5,8 @@
  *
  * @param {any} value - the value being tested
  * @param {string} key the name of the rule being run
- * @param {string} tests an object containing the group of tests in the current run
- * @param {string} rules an object containing all the rules available for the current pass
+ * @param {Object} tests an object containing the group of tests in the current run
+ * @param {Object} rules an object containing all the rules available for the current pass
  * @return {boolean} value validation result
  */
 
