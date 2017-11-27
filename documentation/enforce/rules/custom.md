@@ -55,3 +55,18 @@ Adding your rules so they are available to the enforce function is as simple as 
         });
     }, myCustomRules);
 ```
+
+## Inline Custom Rules
+There is another way to add rules per a single run that does not involve the hassle of creating a new rules object. Instead, the function can be written in-line, along with the other selected rules. Just as in all other rules, the value supplied to the function is the value being enforced.
+
+```js
+    Passable('GroupName', (pass, enforce) => {
+        pass('TestName', 'Must have a valid email', () => {
+            enforce(user.email).allOf({
+                isValidEmail: (value) => value.indexOf('@') > -1
+            });
+        });
+    });
+```
+
+**Note**: If a rule with the selection function name already exists, it will take precedence over the inline function, in which case, your tests may fail as you are supplying function value where it is not expected.

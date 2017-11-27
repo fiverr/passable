@@ -7,7 +7,7 @@ declare type Rules = {
 };
 
 declare type Tests = {
-    [name: string]: mixed
+    [name: string]: AnyValue
 };
 
 declare type Specific = Array<string> | string;
