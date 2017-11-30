@@ -3,6 +3,14 @@ node_js:
 - '6'
 - '8'
 - node
+
+env:
+  global:
+    - GIT_NAME: A1vy
+    - GIT_EMAIL: opensource@fiverr.com
+    - GITHUB_REPO: fiverr/passable
+    - GIT_SOURCE: docs
+
 before_script:
 - npm run build
 - npm run eslint
@@ -16,3 +24,7 @@ deploy:
     repo: fiverr/passable
     branch: master
     node: '8'
+
+after_success:
+- if [ "$TRAVIS_NODE_VERSION" = "8" ]; then npx docpress b; fi
+- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_NODE_VERSION" == "8" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then npx git-update-ghpages -e; fi
