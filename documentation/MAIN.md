@@ -8,7 +8,6 @@ Isomorphic data model validations made easy.
 
 Learn more at:
 * [Documentation](https://fiverr.github.io/passable/)
-* [Try it live](https://fiverr.github.io/passable/try)
 
 # What is Passable
 Passable is a system for javascript applications that allows you to write structured data model validations in a way that's consistent all across your app, and fully reusable.
