@@ -1,4 +1,4 @@
-PASSABLE
+PASSABLE {{PASSABLE_VERSION}}
 ========
 
 * [PASSABLE](./MAIN.md)

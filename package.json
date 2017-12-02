@@ -6,8 +6,8 @@
   "author": "Evyatar <evyatar.a@fiverr.com>",
   "license": "MIT",
   "scripts": {
-    "prebuild": "node ./make_version_file.js",
-    "prepare": "node ./make_version_file.js",
+    "prebuild": "node ./scripts/make_version_file.js",
+    "prepare": "node ./scripts/make_version_file.js",
     "build": "cross-env WEBPACK_ENV=build webpack",
     "build:watch": "webpack --watch",
     "pretest": "npm run build",
