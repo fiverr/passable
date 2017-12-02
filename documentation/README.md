@@ -1,7 +1,7 @@
-PASSABLE
+PASSABLE {{PASSABLE_VERSION}}
 ========
 
-* [PASSABLE](./MAIN.md)
+* [PASSABLE {{PASSABLE_VERSION}}](./MAIN.md)
     * Getting Started
         * [Installation](./getting_started/installation.md)
         * [Writing tests](./getting_started/writing_tests.md)
