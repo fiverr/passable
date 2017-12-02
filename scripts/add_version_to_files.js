@@ -1,7 +1,10 @@
 const fs = require('fs');
 const files = fs.readFileSync('./tree.txt', 'utf8').split('\n');
 const version = require('../version.json').version;
-const pattern = '{{PASSABLE_VERSION}}';
+const pattern = /{{([a-zA-Z0-9_]+)}}/;
+const strings = {
+    'PASSABLE_VERSION': () => version
+};
 const matchedFiles = [];
 
 files.forEach((path) => {
@@ -19,5 +22,10 @@ files.forEach((path) => {
 });
 
 matchedFiles.forEach(({ path, content }) => {
-    fs.writeFileSync(path, content.replace(new RegExp(pattern, 'g'), version));
+    fs.writeFileSync(path, content.replace(new RegExp(pattern, 'g'), (match) => {
+        const noBrackets = match.substr(2, match.length - 4);
+        return strings[noBrackets] ? strings[noBrackets](noBrackets) : match;
+    }));
 });
+
+fs.writeFileSync('./version.txt', version);
