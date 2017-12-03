@@ -26,5 +26,5 @@ deploy:
     node: '8'
 
 after_success:
-- if [ "$TRAVIS_NODE_VERSION" = "8" ]; then npx docpress b; fi
-- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_NODE_VERSION" == "8" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then npx git-update-ghpages -e; fi
+- chmod +x ./scripts/docs.sh
+- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_NODE_VERSION" == "8" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then ./scripts/docs.sh; fi
