@@ -12,6 +12,7 @@ git config --global user.name $GIT_NAME
 git clone -b $DOCS_BRANCH https://github.com/$GITHUB_REPO.git docs
 
 npx docpress b
+rm -rf docs/*
 cd docs
 
 git add .
