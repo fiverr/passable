@@ -40,7 +40,7 @@ function enforce(value: mixed, custom: Rules = {}) {
         self.valid = runners[group](value, tests, allRules);
 
         if (self.valid !== true) {
-            throw runtimeError(Errors.INVALID_FORM_NAME, group, typeof value);
+            throw runtimeError(Errors.ENFORCE_FAILED, group, typeof value);
         }
 
         return self;

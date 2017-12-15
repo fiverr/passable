@@ -10,7 +10,7 @@ function runtimeError(type: string, ...args: Array<string>) {
     switch (type) {
         case Errors.INVALID_FORM_NAME:
             return new TypeError(errorBuilder('Passable constructor', `Unexpected ${args[0]}, expected string.`));
-        case Errors.INVALID_FORM_NAME:
+        case Errors.ENFORCE_FAILED:
             return new Error(errorBuilder('Enforce', `${args[0]} - invalid ${args[1]} value.`));
         case Errors.EXPECT_TYPE_FAILURE:
             const val:string = Array.isArray(args[1]) ? JSON.stringify(args[1]) : args[1];
