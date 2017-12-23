@@ -15,7 +15,7 @@ class Passable {
     pass: Function;
     enforce: Function;
 
-    constructor(name: string, ...args) {
+    constructor(name: string, ...args: PassableArguments) {
         if (typeof name !== 'string') {
             throw runtimeError(Errors.INVALID_FORM_NAME, typeof name);
         }
