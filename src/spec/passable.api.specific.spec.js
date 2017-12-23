@@ -1,6 +1,6 @@
 'use strict';
 
-import passable from '../Passable.js';
+import passable from '../index.js';
 import { expect } from 'chai';
 
 describe('Test running specific tests', () => {
