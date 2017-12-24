@@ -13,7 +13,8 @@ let outputFile,
 
 if (env === 'build') {
     plugins.push(new UglifyJsPlugin({
-        minimize: true
+        minimize: true,
+        sourceMap: true
     }));
     outputFile = `${libraryName}.min.js`;
     outputDir = 'dist';
