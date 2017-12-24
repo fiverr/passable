@@ -1,6 +1,6 @@
 'use strict';
 
-import passable from '../Passable';
+import passable from '../index.js';
 import { expect } from 'chai';
 import { root } from 'Helpers';
 
