@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import dist from '../../../dist/Passable.min';
-import dev from '../../Passable';
+import dev from '../../index';
 import usecase_a from './usecase_a';
 import usecase_b from './usecase_b';
 import usecase_c from './usecase_c';

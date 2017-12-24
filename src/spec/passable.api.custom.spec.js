@@ -1,6 +1,6 @@
 'use strict';
 
-import passable from '../Passable';
+import passable from '../index.js';
 import { expect } from 'chai';
 
 describe('Test rule extensions', () => {
