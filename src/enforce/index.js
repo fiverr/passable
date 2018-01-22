@@ -21,7 +21,7 @@ function enforce(value: mixed, custom: Rules = {}) {
     // use enforce object as proxy to test runners
     for (const group: string of Object.keys(runners)) {
         /** @method */
-        self[group] = (tests: Tests) => run(group, tests);
+        self[group] = (tests: Tests) => multi(group, tests);
     }
 
     /**
@@ -32,7 +32,7 @@ function enforce(value: mixed, custom: Rules = {}) {
      * @param {object} tests
      * @return {object} enforce object
      */
-    function run(group: string, tests: Tests) {
+    function multi(group: string, tests: Tests) {
         if (self.valid === false) {
             return self;
         }
@@ -41,6 +41,34 @@ function enforce(value: mixed, custom: Rules = {}) {
 
         if (self.valid !== true) {
             throw runtimeError(Errors.ENFORCE_FAILED, group, typeof value);
+        }
+
+        return self;
+    }
+
+    // use enforce object as proxy to rules
+    for (const rule: string of Object.keys(allRules)) {
+        /** @method */
+        self[rule] = (...args) => single(rule, ...args);
+    }
+
+    /**
+     * Run a single rule against enforce value (e.g. `isNumber()`)
+     *
+     * @private
+     * @param {string} rule - name of rule to run
+     * @param {array} spread list of arguments sent from consumer
+     * @return {object} enforce object
+     */
+    function single(rule: string, ...args: Array<mixed>) {
+        if (self.valid === false) {
+            return self;
+        }
+
+        self.valid = allRules[rule](value, ...args);
+
+        if (self.valid !== true) {
+            throw runtimeError(Errors.ENFORCE_FAILED, rule, typeof value);
         }
 
         return self;
