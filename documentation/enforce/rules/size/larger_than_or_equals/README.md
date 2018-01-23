@@ -19,57 +19,41 @@ The largerThanOrEquals rule returns a boolean. `true` for larger or equal values
 ## usage examples:
 
 ```js
-enforce([1]).allOf({
-    largerThanOrEquals: 1
-});
+enforce([1]).largerThanOrEquals(1);
 // true
 ```
 
 ```js
-enforce(5).allOf({
-    largerThanOrEquals: 4
-});
+enforce(5).largerThanOrEquals(4);
 // true
 ```
 
 ```js
-enforce({1:1, 2:2, 3:3}).allOf({
-    largerThanOrEquals: [1,2,3]
-});
+enforce({1:1, 2:2, 3:3}).largerThanOrEquals([1,2,3]);
 // true
 ```
 
 ```js
-enforce('hell').allOf({
-    largerThanOrEquals: [1,2,3]
-});
+enforce('hell').largerThanOrEquals([1,2,3]);
 // true
 ```
 
 ```js
-enforce([1]).allOf({
-    largerThanOrEquals: 0
-});
+enforce([1]).largerThanOrEquals(0);
 // true
 ```
 
 ```js
-enforce({1:1}).allOf({
-    largerThanOrEquals: [1, 2]
-});
+enforce({1:1}).largerThanOrEquals([1, 2]);
 // false
 ```
 
 ```js
-enforce('yo').allOf({
-    largerThanOrEquals: ['y', 'o', 'u']
-});
+enforce('yo').largerThanOrEquals(['y', 'o', 'u']);
 // false
 ```
 
 ```js
-enforce(0).allOf({
-    largerThanOrEquals: 1
-});
+enforce(0).largerThanOrEquals(1);
 // false
 ```

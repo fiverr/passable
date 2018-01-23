@@ -19,57 +19,41 @@ The largerThan rule returns a boolean. `true` for larger values
 ## usage examples:
 
 ```js
-enforce([1]).allOf({
-    largerThan: 0
-});
+enforce([1]).largerThan(0);
 // true
 ```
 
 ```js
-enforce(6).allOf({
-    largerThan: 5
-});
+enforce(6).largerThan(5);
 // true
 ```
 
 ```js
-enforce({1:1, 2:2}).allOf({
-    largerThan: [1]
-});
+enforce({1:1, 2:2}).largerThan([1]);
 // true
 ```
 
 ```js
-enforce('hell').allOf({
-    largerThan: []
-});
+enforce('hell').largerThan([]);
 // true
 ```
 
 ```js
-enforce([1]).allOf({
-    largerThan: 1
-});
+enforce([1]).largerThan(1);
 // false
 ```
 
 ```js
-enforce({1:1, 2:2}).allOf({
-    largerThan: [1, 2]
-});
+enforce({1:1, 2:2}).largerThan([1, 2]);
 // false
 ```
 
 ```js
-enforce('').allOf({
-    largerThan: []
-});
+enforce('').largerThan([]);
 // false
 ```
 
 ```js
-enforce('').allOf({
-    largerThan: 0
-});
+enforce('').largerThan(0);
 // false
 ```

@@ -13,57 +13,41 @@ The matches rule returns a boolean. `true` for matched values, and `false` for n
 ## usage examples:
 
 ```js
-enforce(1984).allOf({
-    matches: /[0-9]/
-});
+enforce(1984).matches(/[0-9]/);
 // true
 ```
 
 ```js
-enforce(1984).allOf({
-    matches: '[0-9]'
-});
+enforce(1984).matches('[0-9]');
 // true
 ```
 
 ```js
-enforce('1984').allOf({
-    matches: /[0-9]/
-});
+enforce('1984').matches(/[0-9]/);
 // true
 ```
 
 ```js
-enforce('1984').allOf({
-    matches: '[0-9]'
-});
+enforce('1984').matches('[0-9]');
 // true
 ```
 
 ```js
-enforce('198four').allOf({
-    matches: /[0-9]/
-});
+enforce('198four').matches(/[0-9]/);
 // true
 ```
 
 ```js
-enforce('198four').allOf({
-    matches: '[0-9]'
-});
+enforce('198four').matches('[0-9]');
 // true
 ```
 
 ```js
-enforce('ninety eighty four').allOf({
-    matches: /[0-9]/
-});
+enforce('ninety eighty four').matches(/[0-9]/);
 // false
 ```
 
 ```js
-enforce('ninety eighty four').allOf({
-    matches: '[0-9]'
-});
+enforce('ninety eighty four').matches('[0-9]');
 // false
 ```

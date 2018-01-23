@@ -19,57 +19,41 @@ The smallerThan rule returns a boolean. `true` for smaller values
 ## usage examples:
 
 ```js
-enforce([]).allOf({
-    smallerThan: 1
-});
+enforce([]).smallerThan(1);
 // true
 ```
 
 ```js
-enforce(5).allOf({
-    smallerThan: 6
-});
+enforce(5).smallerThan(6);
 // true
 ```
 
 ```js
-enforce({1:1, 2:2}).allOf({
-    smallerThan: [1,2,3]
-});
+enforce({1:1, 2:2}).smallerThan([1,2,3]);
 // true
 ```
 
 ```js
-enforce('hell').allOf({
-    smallerThan: [1,2,3,4,5,6]
-});
+enforce('hell').smallerThan([1,2,3,4,5,6]);
 // true
 ```
 
 ```js
-enforce([1]).allOf({
-    smallerThan: 1
-});
+enforce([1]).smallerThan(1);
 // false
 ```
 
 ```js
-enforce({1:1, 2:2}).allOf({
-    smallerThan: [1, 2]
-});
+enforce({1:1, 2:2}).smallerThan([1, 2]);
 // false
 ```
 
 ```js
-enforce('').allOf({
-    smallerThan: []
-});
+enforce('').smallerThan([]);
 // false
 ```
 
 ```js
-enforce('').allOf({
-    smallerThan: 0
-});
+enforce('').smallerThan(0);
 // false
 ```

@@ -13,43 +13,31 @@ The isString rule returns a boolean. `true` for matched values, and `false` for 
 ## usage examples:
 
 ```js
-enforce('hello').allOf({
-    isString: true
-});
+enforce('hello').isString(true);
 // true
 ```
 
 ```js
-enforce(['hello']).allOf({
-    isString: true
-});
+enforce(['hello']).isString(true);
 // false
 ```
 
 ```js
-enforce(1984).allOf({
-    isString: true
-});
+enforce(1984).isString(true);
 // false
 ```
 
 ```js
-enforce('hello').allOf({
-    isString: false
-});
+enforce('hello').isString(false);
 // false
 ```
 
 ```js
-enforce(['hello']).allOf({
-    isString: false
-});
+enforce(['hello']).isString(false);
 // true
 ```
 
 ```js
-enforce(1984).allOf({
-    isString: false
-});
+enforce(1984).isString(false);
 // true
 ```

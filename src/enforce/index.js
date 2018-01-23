@@ -49,26 +49,26 @@ function enforce(value: mixed, custom: Rules = {}) {
     // use enforce object as proxy to rules
     for (const rule: string of Object.keys(allRules)) {
         /** @method */
-        self[rule] = (...args) => single(rule, ...args);
+        self[rule] = (...args) => single(allRules[rule], ...args);
     }
 
     /**
-     * Run a single rule against enforce value (e.g. `isNumber()`)
+     * Run a single rule against enforced value (e.g. `isNumber()`)
      *
      * @private
      * @param {string} rule - name of rule to run
      * @param {array} spread list of arguments sent from consumer
      * @return {object} enforce object
      */
-    function single(rule: string, ...args: Array<mixed>) {
+    function single(rule: Function, ...args: Array<mixed>) {
         if (self.valid === false) {
             return self;
         }
 
-        self.valid = allRules[rule](value, ...args);
+        self.valid = rule(value, ...args);
 
         if (self.valid !== true) {
-            throw runtimeError(Errors.ENFORCE_FAILED, rule, typeof value);
+            throw runtimeError(Errors.ENFORCE_FAILED, rule.name, typeof value);
         }
 
         return self;

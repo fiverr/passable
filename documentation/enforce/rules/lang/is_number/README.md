@@ -13,30 +13,22 @@ The isNumber rule returns a boolean. `true` for matched values, and `false` for 
 ## usage examples:
 
 ```js
-enforce(143).allOf({
-    isNumber: true
-});
+enforce(143).isNumber(true);
 // true
 ```
 
 ```js
-enforce(NaN).allOf({
-    isNumber: true
-});
+enforce(NaN).isNumber(true);
 // true
 ```
 
 ```js
-enforce('143').allOf({
-    isNumber: false
-});
+enforce('143').isNumber(false);
 // true
 ```
 
 ```js
-enforce(143).allOf({
-    isNumber: false
-});
+enforce(143).isNumber(false);
 // false
 ```
 

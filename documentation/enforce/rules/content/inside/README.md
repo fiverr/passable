@@ -19,63 +19,47 @@ Checks for membership in an array.
 string: checks if a string is an element in an array
 
 ```js
-enforce('hello').allOf({
-    inside: ['hello', 'world']
-});
+enforce('hello').inside(['hello', 'world']);
 //true
 ```
 
 ```js
-enforce('hello!').allOf({
-    inside: ['hello', 'world']
-});
+enforce('hello!').inside(['hello', 'world']);
 //false
 ```
 number: checks if a number is an element in an array
 
 ```js
-enforce(1).allOf({
-    inside: [1, 2]
-});
+enforce(1).inside([1, 2]);
 //true
 ```
 
 ```js
-enforce(3).allOf({
-    inside: [1, 2]
-});
+enforce(3).inside([1, 2]);
 //false
 ```
 
 boolean: checks if a number is an element in an array
 
 ```js
-enforce(false).allOf({
-    inside: [true, false]
-});
+enforce(false).inside([true, false]);
 //true
 ```
 
 ```js
-enforce(true).allOf({
-    inside: [1,2,3]
-});
+enforce(true).inside([1,2,3]);
 //false
 ```
 
 array: checks if all members of an array are members of another array
 
 ```js
-enforce(['a', 'b', 'c']).allOf({
-    inside: ['a', 'b', 'c', 'd', 'e']
-});
+enforce(['a', 'b', 'c']).inside(['a', 'b', 'c', 'd', 'e']);
 //true
 ```
 
 ```js
-enforce(['a', 'b', 'c', 'd', 'e']).allOf({
-    inside: ['a', 'b', 'c']
-});
+enforce(['a', 'b', 'c', 'd', 'e']).inside(['a', 'b', 'c']);
 //false
 ```
 
@@ -83,15 +67,11 @@ enforce(['a', 'b', 'c', 'd', 'e']).allOf({
 string: checks if a string is inside another string
 
 ```js
-enforce('da').allOf({
-    inside: 'tru dat.'
-});
+enforce('da').inside('tru dat.');
 //true
 ```
 
 ```js
-enforce('ad').allOf({
-    inside: 'tru dat.'
-});
+enforce('ad').inside('tru dat.');
 //false
 ```
