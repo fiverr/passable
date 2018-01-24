@@ -1,4 +1,4 @@
-const passable = require('passable');
+const passable = require('../dist/Passable.min');
 
 console.log('Playground. Lets play!');
 console.log(`passable version: ${passable.VERSION}`);

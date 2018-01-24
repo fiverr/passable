@@ -1,7 +1,9 @@
 node_modules
 .vscode
+.sass-cache
 dev_docpress
 _docpress
 dev
-!playground/node_modules
 version.json
+docs
+documentation/MAIN.md
