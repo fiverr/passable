@@ -1,5 +1,8 @@
 {
   "docs": "documentation",
   "github": "fiverr/passable",
-  "dist": "docs"
+  "dist": "docs",
+  "css": [
+    "documentation/assets/main.css"
+  ]
 }
