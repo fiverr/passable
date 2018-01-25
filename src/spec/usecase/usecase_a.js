@@ -16,9 +16,7 @@ export default (passable) => {
         });
 
         pass('field_3', 'must be either "a" or "b"', () => {
-            enforce('a').allOf({
-                inside: ['a', 'b']
-            });
+            enforce('a').inside(['a', 'b']);
         });
 
         pass('field_4', 'should be either "a" or "b"', 'warn', () => {
@@ -31,9 +29,7 @@ export default (passable) => {
             enforce('log').anyOf({
                 isNumber: true,
                 isString: true
-            }).allOf({
-                smallerThan: 5
-            });
+            }).smallerThan(5);
         });
 
         pass('field_5', 'Must not be larger than 3', () => {

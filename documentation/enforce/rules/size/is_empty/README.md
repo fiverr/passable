@@ -20,148 +20,106 @@ The isEmpty rule returns a boolean. `true` for matched values, and `false` for n
 ## usage examples:
 
 ```js
-enforce([]).allOf({
-    isEmpty: true
-});
+enforce([]).isEmpty(true);
 // true
 ```
 
 ```js
-enforce('').allOf({
-    isEmpty: true
-});
+enforce('').isEmpty(true);
 // true
 ```
 
 ```js
-enforce({}).allOf({
-    isEmpty: true
-});
+enforce({}).isEmpty(true);
 // true
 ```
 
 ```js
-enforce(0).allOf({
-    isEmpty: true
-});
+enforce(0).isEmpty(true);
 // true
 ```
 
 ```js
-enforce(NaN).allOf({
-    isEmpty: true
-});
+enforce(NaN).isEmpty(true);
 // true
 ```
 
 ```js
-enforce(undefined).allOf({
-    isEmpty: true
-});
+enforce(undefined).isEmpty(true);
 // true
 ```
 
 ```js
-enforce(null).allOf({
-    isEmpty: true
-});
+enforce(null).isEmpty(true);
 // true
 ```
 
 ```js
-enforce(false).allOf({
-    isEmpty: true
-});
+enforce(false).isEmpty(true);
 // true
 ```
 
 ```js
-enforce([1]).allOf({
-    isEmpty: true
-});
+enforce([1]).isEmpty(true);
 // false
 ```
 
 ```js
-enforce('1').allOf({
-    isEmpty: true
-});
+enforce('1').isEmpty(true);
 // false
 ```
 
 ```js
-enforce({1:1}).allOf({
-    isEmpty: true
-});
+enforce({1:1}).isEmpty(true);
 // false
 ```
 
 ```js
-enforce(1).allOf({
-    isEmpty: true
-});
+enforce(1).isEmpty(true);
 // false
 ```
 
 ```js
-enforce(true).allOf({
-    isEmpty: true
-});
+enforce(true).isEmpty(true);
 // false
 ```
 
 ```js
-enforce([]).allOf({
-    isEmpty: false
-});
+enforce([]).isEmpty(false);
 // false
 ```
 
 ```js
-enforce('').allOf({
-    isEmpty: false
-});
+enforce('').isEmpty(false);
 // false
 ```
 
 ```js
-enforce({}).allOf({
-    isEmpty: false
-});
+enforce({}).isEmpty(false);
 // false
 ```
 
 ```js
-enforce(0).allOf({
-    isEmpty: false
-});
+enforce(0).isEmpty(false);
 // false
 ```
 
 ```js
-enforce(NaN).allOf({
-    isEmpty: false
-});
+enforce(NaN).isEmpty(false);
 // false
 ```
 
 ```js
-enforce(undefined).allOf({
-    isEmpty: false
-});
+enforce(undefined).isEmpty(false);
 // false
 ```
 
 ```js
-enforce(null).allOf({
-    isEmpty: false
-});
+enforce(null).isEmpty(false);
 // false
 ```
 
 ```js
-enforce(false).allOf({
-    isEmpty: false
-});
+enforce(false).isEmpty(false);
 // false
 ```

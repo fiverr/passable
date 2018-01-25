@@ -49,9 +49,7 @@ Adding your rules so they are available to the enforce function is as simple as 
 ```js
     Passable('GroupName', (pass, enforce) => {
         pass('TestName', 'Must have a valid email', () => {
-            enforce(user.email).allOf({
-                isValidEmail: null
-            });
+            enforce(user.email).isValidEmail();
         });
     }, myCustomRules);
 ```
@@ -63,7 +61,8 @@ There is another way to add rules per a single run that does not involve the has
     Passable('GroupName', (pass, enforce) => {
         pass('TestName', 'Must have a valid email', () => {
             enforce(user.email).allOf({
-                isValidEmail: (value) => value.indexOf('@') > -1
+                isValidEmail: (value) => value.indexOf('@') > -1,
+                isEmpty: false
             });
         });
     });

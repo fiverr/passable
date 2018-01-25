@@ -1,5 +1,11 @@
 export default (passable) => {
 
+    /*
+        Test cases:
+            * chained Rules
+            * Chained custom rules
+    */
+
     const response = passable('case_c', (pass, enforce) => {
         pass('field_1', 'should be a string of 5 chars', () => {
             enforce('hello').allOf({
@@ -9,16 +15,11 @@ export default (passable) => {
         });
 
         pass('field_2', 'must be a number smaller than 90', () => {
-            enforce(99).allOf({
-                smallerThan: 90,
-                isNumber: true
-            });
+            enforce(99).smallerThan(90).isNumber();
         });
 
         pass('field_3', 'must be the string "hi"', () => {
-            enforce('a').allOf({
-                stringEquals: 'hi'
-            });
+            enforce('a').stringEquals('hi');
         });
 
         pass('field_4', 'should be the string "c"', () => {

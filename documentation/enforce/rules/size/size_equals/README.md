@@ -19,57 +19,41 @@ The sizeEquals rule returns a boolean. `true` for equals values
 ## usage examples:
 
 ```js
-enforce([1]).allOf({
-    sizeEquals: 0
-});
+enforce([1]).sizeEquals(0);
 // true
 ```
 
 ```js
-enforce(5).allOf({
-    sizeEquals: 5
-});
+enforce(5).sizeEquals(5);
 // true
 ```
 
 ```js
-enforce({1:1, 2:2}).allOf({
-    sizeEquals: [1, 7]
-});
+enforce({1:1, 2:2}).sizeEquals([1, 7]);
 // true
 ```
 
 ```js
-enforce('hell').allOf({
-    sizeEquals: [1,2,3,4]
-});
+enforce('hell').sizeEquals([1,2,3,4]);
 // true
 ```
 
 ```js
-enforce([1]).allOf({
-    sizeEquals: 2
-});
+enforce([1]).sizeEquals(2);
 // false
 ```
 
 ```js
-enforce({1:1, 2:2}).allOf({
-    sizeEquals: [1, 2, 3]
-});
+enforce({1:1, 2:2}).sizeEquals([1, 2, 3]);
 // false
 ```
 
 ```js
-enforce('wow!').allOf({
-    sizeEquals: []
-});
+enforce('wow!').sizeEquals([]);
 // false
 ```
 
 ```js
-enforce('').allOf({
-    sizeEquals: 7
-});
+enforce('').sizeEquals(7);
 // false
 ```

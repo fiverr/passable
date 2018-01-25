@@ -12,7 +12,6 @@ PASSABLE {{PASSABLE_VERSION}}
             * [Warn only passes](./getting_started/pass/warn_only_passes.md)
             * [Running a specific pass](./getting_started/pass/specific.md)
     * [The Enforce Function](./enforce/README.md)
-        * [Enforce relationships](./enforce/relationships/README.md)
         * [Enforce Rules](./enforce/rules/README.md)
             * [content/matches](./enforce/rules/content/matches/README.md)
             * [content/inside](./enforce/rules/content/inside/README.md)
@@ -26,4 +25,5 @@ PASSABLE {{PASSABLE_VERSION}}
             * [size/smallerThan](./enforce/rules/size/smaller_than/README.md)
             * [size/smallerThanOrEquals](./enforce/rules/size/smaller_than_or_equals/README.md)
         * [Custom Enforce Rules](./enforce/rules/custom.md)
+        * [Compound Enforcements](./enforce/compound/README.md)
     * [Using with assertions libraries](./compatability/assertions.md)

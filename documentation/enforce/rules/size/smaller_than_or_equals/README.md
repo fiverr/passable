@@ -19,57 +19,41 @@ The smallerThanOrEquals rule returns a boolean. `true` for smaller or equal valu
 ## usage examples:
 
 ```js
-enforce([]).allOf({
-    smallerThanOrEquals: 1
-});
+enforce([]).smallerThanOrEquals(1);
 // true
 ```
 
 ```js
-enforce(5).allOf({
-    smallerThanOrEquals: 6
-});
+enforce(5).smallerThanOrEquals(6);
 // true
 ```
 
 ```js
-enforce({1:1, 2:2, 3:3}).allOf({
-    smallerThanOrEquals: [1,2,3]
-});
+enforce({1:1, 2:2, 3:3}).smallerThanOrEquals([1,2,3]);
 // true
 ```
 
 ```js
-enforce('hell').allOf({
-    smallerThanOrEquals: [1,2,3,4]
-});
+enforce('hell').smallerThanOrEquals([1,2,3,4]);
 // true
 ```
 
 ```js
-enforce([1]).allOf({
-    smallerThanOrEquals: 1
-});
+enforce([1]).smallerThanOrEquals(1);
 // true
 ```
 
 ```js
-enforce({1:1, 2:2, 3:3}).allOf({
-    smallerThanOrEquals: [1, 2]
-});
+enforce({1:1, 2:2, 3:3}).smallerThanOrEquals([1, 2]);
 // false
 ```
 
 ```js
-enforce('yo').allOf({
-    smallerThanOrEquals: []
-});
+enforce('yo').smallerThanOrEquals([]);
 // false
 ```
 
 ```js
-enforce('0').allOf({
-    smallerThanOrEquals: 0
-});
+enforce('0').smallerThanOrEquals(0);
 // false
 ```

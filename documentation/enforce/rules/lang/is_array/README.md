@@ -13,29 +13,21 @@ The isArray rule returns a boolean. `true` for matched values, and `false` for n
 ## usage examples:
 
 ```js
-enforce(['hello']).allOf({
-    isArray: true
-});
+enforce(['hello']).isArray(true);
 // true
 ```
 
 ```js
-enforce('hello').allOf({
-    isArray: true
-});
+enforce('hello').isArray(true);
 // false
 ```
 
 ```js
-enforce(['hello']).allOf({
-    isArray: false
-});
+enforce(['hello']).isArray(false);
 // false
 ```
 
 ```js
-enforce('hello').allOf({
-    isArray: false
-});
+enforce('hello').isArray(false);
 // true
 ```
