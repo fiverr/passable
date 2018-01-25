@@ -1,0 +1,19 @@
+// Colors
+$white: #fff;
+$black: #111;
+$grey-light: #eee;
+$grey-lightest: #fafafa;
+$teal: #28b5ac;
+
+// Breakpoints
+$small-screens: 769px;
+
+@mixin transition {
+    transition: 400ms;
+}
+
+@mixin small-screens {
+	@media screen and (max-width: $small-screens), (max-device-width: $small-screens) {
+		@content;
+	}
+}

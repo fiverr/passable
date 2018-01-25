@@ -1,0 +1,83 @@
+.menu-toggle {
+    @include transition;
+    position: absolute;
+    top: 0;
+    bottom: auto;
+    width: 33px;
+    padding: 0;
+    text-align: right;
+
+    &:before {
+        @include transition;
+        font-size: 26px;
+        text-align: center;
+        width: 25px;
+        opacity: .5;
+    }
+
+    &:hover {
+        color: $black;
+
+        &:before {
+            opacity: 1;
+        }
+    }
+}
+
+.-menu-visible {
+    .menu-toggle {
+        @include transition;
+        left: 206px;
+        width: 33px;
+        background: transparent;
+
+        &:before {
+            content: "\f404";
+        }
+    }
+
+    .doc-layout {
+        .menu {
+            &:after {
+                display: none;
+            }
+        }
+    }
+}
+
+.toc-menu {
+    background: $grey-lightest;
+    box-shadow: 1px 0 5px rgba(0, 0, 0, .1);
+
+    .link,
+    .hlink {
+        &.-active {
+            box-shadow: inset 3px 0 $teal;
+        }
+
+        &:not(.link-index):hover {
+            background: rgba(0, 0, 0, .05);
+        }
+    }
+
+    .link-index {
+        &:hover {
+            background: transparent;
+        }
+    }
+
+    .-level-2 > .title {
+        font-size: 16px;
+    }
+}
+
+ul.heading-list {
+    .hlink {
+        &:before {
+            background: $teal;
+            width: 7px;
+            margin-left: 17px;
+            opacity: 1;
+        }
+    }
+}
