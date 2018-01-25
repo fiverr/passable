@@ -11,7 +11,7 @@
     "build": "cross-env WEBPACK_ENV=build webpack",
     "build:watch": "webpack --watch",
     "pretest": "npm run build",
-    "docs:dev": "cp README.md documentation/MAIN.md && docpress s & sass --watch documentation/assets:documentation/assets --sourcemap=none",
+    "docs:dev": "cp README.md documentation/MAIN.md && docpress s --port 9455 & sass --watch documentation/assets/style:documentation/assets/style --sourcemap=none",
     "dev": "cross-env WEBPACK_ENV=dev webpack --progress --colors --watch",
     "test:custom": "mocha --compilers js:babel-core/register --colors -w \"./src/**/*custom.spec.js\"",
     "test:global_custom": "mocha --compilers js:babel-core/register --colors -w \"./src/spec/passable.api.global-custom.spec.js\"",
