@@ -6,7 +6,6 @@ import { runtimeError } from 'Helpers';
 /**
  * Run a single rule against enforced value (e.g. `isNumber()`)
  *
- * @private
  * @param {string} rule - name of rule to run
  * @param {array} spread list of arguments sent from consumer
  * @return {object} enforce object

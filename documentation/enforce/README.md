@@ -16,7 +16,7 @@ Passable('enforcement', (pass, enforce) => {
 
 ## Chaining enforce functions
 
-All of these functions are chainable. All functions other can be used more than once.
+All of these functions are chainable and can be used more than once in the same chain.
 When chained, all blocks share an `AND` relationship, meaning that if one block fails, the whole test fails as well.
 
 All the following are valid uses of enforce.

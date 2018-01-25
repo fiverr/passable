@@ -6,7 +6,6 @@ import { runtimeError } from 'Helpers';
 /**
  * Run group of tests using test runner. (e.g. `anyOf`)
  *
- * @private
  * @param {string} group - name of test runner
  * @param {object} tests
  * @return {object} enforce object
