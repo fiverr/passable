@@ -5,10 +5,11 @@ When running validations against your data, you may want to bundle multiple test
 
 You can use all rules (both custom and predefined) as members of a compound enforcement.
 
-
-* `allOf`  | `AND` | makes sure all rules specified are true.
-* `anyOf`  | `OR`  | makes sure at least one rule is true.
-* `noneOf` | `NOT` | makes sure no rule is true.
+| Statement | Relationship | Description |
+|-----------|--------------|-------------|
+| `allOf`  | `AND` | makes sure all rules specified are true. |
+| `anyOf`  | `OR`  | makes sure at least one rule is true. |
+| `noneOf` | `NOT` | makes sure no rule is true. |
 
 ## allOf  |  AND Relationship
 You should use `allOf` when you need all your rules to be true in order for the validation to pass. For example, if any of the following is NOT TRUE, the validation should fail:
