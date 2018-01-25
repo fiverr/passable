@@ -7,4 +7,4 @@ dev
 version.json
 docs
 documentation/MAIN.md
-documentation/**/*.css
+documentation/assets/**/*.css
