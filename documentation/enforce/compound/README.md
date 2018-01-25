@@ -1,4 +1,4 @@
-# Compound enforce statements
+# Compound `enforce` statements
 When running validations against your data, you may want to bundle multiple tests in the same statement - for example, when they interact with each other.
 
 `enforce` provides three grouping methods that allow you to bundle one or more statements. You may use them as is, or in conjunction with regular [rule-based validation](../rules/README.md) via [enforcement chaining](../README.md#chaining-enforce-functions).
