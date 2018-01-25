@@ -48,34 +48,41 @@ All the following are valid uses of enforce.
 
 ```js
 enforce([1,2,3,4,5,6]).anyOf({
-        largerThan: 5, // in anyOf - this one is enough to set the anyOf block to true
-        smallerThan: 6,
-    }).noneOf({
-        isString: true, // in noneOf, all must be false
-        isNumber: true
-    }).isArray(); // true
+    largerThan: 5, // in anyOf - this one is enough to set the anyOf block to true
+    smallerThan: 6,
+}).noneOf({
+    isString: true, // in noneOf, all must be false
+    isNumber: true
+}).isArray(); // true
+```
 
-    -------------
+```js
+enforce('North Dakota, por favor').noneOf({
+    largerThan: 5,
+    smallerThan: 2,
+    matches: /[0-9]/
+}); // false
+```
 
-    enforce('North Dakota, por favor').noneOf({
-        largerThan: 5,
-        smallerThan: 2,
-        matches: /[0-9]/
-    }); // false
+```js
+enforce('Toto, I\'ve a feeling we\'re not in Kansas anymore').anyOf({
+    largerThan: 5,
+    smallerThan: 2
+}).anyOf({
+    smallerThan: 150
+}); // true
+```
 
-    -------------
-
-    enforce('Toto, I\'ve a feeling we\'re not in Kansas anymore').anyOf({
-        largerThan: 5,
-        smallerThan: 2
-    }).anyOf({
-        smallerThan: 150
-    }); // true
-
-    enforce('Toto, I\'ve a feeling we\'re not in Kansas anymore').anyOf({
-        largerThan: 5,
-        smallerThan: 2
-    }).smallerThan(150);
+```js
+enforce('Toto, I\'ve a feeling we\'re not in Kansas anymore').anyOf({
+    largerThan: 5,
+    smallerThan: 2
+}).smallerThan(150);
 ```
 
 Enforce exposes all [predefined](./rules/README.md) and [custom](./rules/custom.md) rules, and the [compound enforcement methods](./compound/README.md). You may use chaining to make multiple enfocements for the same value.
+
+### Table of Contents
+* [Enforce relationships](./relationships/README.md)
+* [Enforce Rules](./rules/README.md)
+* [Custom Enforce Rules](./rules/custom.md)
