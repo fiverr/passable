@@ -9,7 +9,7 @@ In the following example, only First pass is going to run. Second will be skippe
 const result = SpecificTests(['First']);
 
 function SpecificTests (specific) {
-    return Passable('SpecificTests', specific, (pass, enforce) => {
+    return Passable('SpecificTests', specific, (pass) => {
         pass('First',  'should pass', () => {...});
         pass('Second', 'should be skipped', () => {...});
     });
