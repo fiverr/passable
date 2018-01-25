@@ -8,3 +8,4 @@ function passable(name: string, ...args: PassableArguments) {
 passable.VERSION = version;
 
 export default passable;
+export { default as enforce } from './enforce';
