@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import dist from '../../../dist/Passable.min';
-import dev from '../../index';
+import dist, * as distExports from '../../../dist/Passable.min';
+import dev, * as devExports from '../../index';
 import usecase_a from './usecase_a';
 import usecase_b from './usecase_b';
 import usecase_c from './usecase_c';
@@ -33,8 +33,8 @@ describe('Test Passable full usecase', () => {
     });
 
     it('should return correct response object for case: d', () => {
-        const devData = usecase_d(dev),
-            distData = usecase_d(dist);
+        const devData = usecase_d(dev, devExports.enforce),
+            distData = usecase_d(dist, distExports.enforce);
 
         expect(devData.response).to.deep.equal(devData.expect);
         expect(distData.response).to.deep.equal(devData.expect);

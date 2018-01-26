@@ -4,8 +4,8 @@ This will leave `hasValidationErrors` unchanged (other tests may have set it to 
 
 If no flag is added, your pass function will default to `fail`.
 
-```
-Passable('WarnAndPass', (pass, enforce) => {
+```js
+Passable('WarnAndPass', (pass) => {
     pass('WarnMe', 'Should warn and not fail', 'warn', () => false);
 });
 ```

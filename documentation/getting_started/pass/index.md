@@ -4,7 +4,7 @@ The pass function is a single test in your validations. It is similar to unit te
 You can have multipe `pass` functions for each field, each with a different error.
 
 ```js
-Passable('MyForm', (pass, enforce) => {
+Passable('MyForm', (pass) => {
     pass('name',  'should be ...', () => {...});
     pass('name',  'should be ...', () => {...});
     pass('age', 'should be ...', () => {...});

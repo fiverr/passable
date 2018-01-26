@@ -3,6 +3,31 @@ The `enforce` function runs your data against different rules and conditions. It
 
 When using enforce, you do not have to return the result (although you may), each of your enforce tests updates the result of the whole pass. You may also use multiple enforces in the same pass function, they will run in sequence.
 
+## Consuming `enforce`
+You can consume the `enforce` function in two ways:
+
+* Manually importing `enforce` along with `passable`
+
+```js
+import passable, {enforce} from 'passable';
+
+Passable('enforcement', (pass) => {
+    pass('test', 'enforce example', () => {
+        enforce(4).isNumber();
+    });
+});
+```
+Direct import is the newer standard, and is intended to support future functionality of leaner validation syntax.
+
+* `enforce` is the second argument of the passable function
+```js
+Passable('enforcement', (pass, enforce) => {
+    pass('test', 'enforce example', () => {
+        enforce(4).isNumber();
+    });
+});
+```
+
 ```js
 Passable('enforcement', (pass, enforce) => {
     pass('test', 'multiple enforces', () => {
