@@ -7,6 +7,7 @@ When using enforce, you do not have to return the result (although you may), eac
 You can consume the `enforce` function in two ways:
 
 * Manually importing `enforce` along with `passable`
+> Since 5.10.0
 
 ```js
 import passable, {enforce} from 'passable';
