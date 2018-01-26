@@ -1,4 +1,4 @@
-# The response object
+# The result object
 
 ## Properties
 | Name                             | Type       | Description                                         |
@@ -15,6 +15,8 @@
 | `validationWarnings`             | `Object[]` | Actual errors per each field                        |
 | `validationWarnings[field-name]` | `Object[]` | All warning strings for this field                  |
 | `skipped`                        | `Array`    | All skipped fields (empty, unless the `specific` option is used) |
+| `getErrors`                      | `Function` | Getter function which allows accessing the errors array of one or all fields |
+| `getWarnings`                      | `Function` | Getter function which allows accessing the warnings array of one or all fields |
 
 ### `testsPerformed` field structure
 | Name        | Type     | Description                           |
@@ -23,10 +25,35 @@
 | `warnCount` | `Number` | Overall warnings count for this field |
 | `testCount` | `Number` | Overall test count in this field      |
 
-## Why No `isValid` prop?
-There is **no** `isValid` prop, this is by design. Passable cannot know your business logic, nor can it ever assume that `0` errors means valid response. `0` errors can be due to skipped fields. Same goes for isInvalid. Even though, usually, errors mean invalidity, it is not always the case. This is why Passable gives you all the information about the tests, but it is your job to decide whether it means that the validation failed or not.
+## `getErrors` and `getWarnings` functions
+> since 5.10.0
+You can easily traverse the object tree to acess the field errors and warnings, but when accessing many fields, it can get pretty messy:
+```js
+resultObject.validationErrors.myField && resultObject.validationErrors.myField[0];
+```
+This is clearly not ideal. There is a shortcut to getting to a specific field:
 
-## ![success](../assets/img/success.svg "success") Passing Example
+```js
+resultObject.getErrors('fieldName');
+// ['Error string 1', `Error string 2`]
+
+resultObject.getWarnings('fieldName');
+// ['Warning string 1', `Warning string 2`]
+```
+
+If there are no errors for the field, the function returns an empty array:
+```js
+resultObject.getErrors('fieldName');
+// []
+
+resultObject.getWarnings('fieldName');
+// []
+```
+
+## Why No `isValid` prop?
+There is **no** `isValid` prop, this is by design. Passable cannot know your business logic, nor can it ever assume that `0` errors means valid result. `0` errors can be due to skipped fields. Same goes for isInvalid. Even though, usually, errors mean invalidity, it is not always the case. This is why Passable gives you all the information about the tests, but it is your job to decide whether it means that the validation failed or not.
+
+## Passing Example
 ```js
 {
   "name": "NewUserForm",
@@ -53,7 +80,7 @@ There is **no** `isValid` prop, this is by design. Passable cannot know your bus
 }
 ```
 
-## ![error](../assets/img/error.svg "error") Failing Example
+## Failing Example
 ```js
 {
   "name": "NewUserForm",
