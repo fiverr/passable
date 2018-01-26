@@ -1,32 +1,29 @@
 'use strict';
 
-import onFail from './index';
+import fail from './index';
+import ResultObject from '../../index';
 import { expect } from 'chai';
 
-const initialObject = () => (
-    {
-        validationErrors: {},
-        validationWarnings: {},
-        hasValidationErrors: false,
-        hasValidationWarnings: false,
-        warnCount: 0,
-        failCount: 0,
-        testsPerformed: {
+describe('Test fail function', () => {
+
+    let testObject;
+
+    beforeEach(() => {
+        testObject = new ResultObject('FormName');
+        testObject.testsPerformed = {
             f1: {
                 failCount: 0,
                 warnCount: 0
             }
-        }
-    }
-);
-
-const fail = onFail('f1', 'should fail', 'fail', initialObject()),
-    warn = onFail('f1', 'should warn', 'warn', initialObject());
-
-describe('Test onFail function', () => {
+        };
+    });
 
     it('Should return correct failing object', () => {
+        const fail = testObject.fail('f1', 'should fail', 'fail');
+
         expect(fail).to.deep.equal({
+            name: 'FormName',
+            testCount: 0,
             failCount: 1,
             warnCount: 0,
             hasValidationErrors: true,
@@ -35,12 +32,16 @@ describe('Test onFail function', () => {
                 f1: { failCount: 1, warnCount: 0 }
             },
             validationErrors: { f1: ['should fail'] },
-            validationWarnings: {}
+            validationWarnings: {},
+            skipped: []
         });
     });
 
     it('Should return correct warning object', () => {
+        const warn = testObject.fail('f1', 'should warn', 'warn');
         expect(warn).to.deep.equal({
+            name: 'FormName',
+            testCount: 0,
             failCount: 0,
             warnCount: 1,
             hasValidationErrors: false,
@@ -49,7 +50,8 @@ describe('Test onFail function', () => {
                 f1: { failCount: 0, warnCount: 1 }
             },
             validationErrors: {},
-            validationWarnings: { f1: ['should warn'] }
+            validationWarnings: { f1: ['should warn'] },
+            skipped: []
         });
     });
 });

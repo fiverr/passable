@@ -2,7 +2,8 @@
 
 import enforce from './enforce';
 import passRunner from './pass_runner';
-import { passableArgs, initResponseObject, initField, onFail, root, runtimeError } from 'Helpers';
+import ResultObject from './result_object';
+import { passableArgs, root, runtimeError } from 'Helpers';
 import { Errors } from 'Constants';
 
 const FAIL: Severity = 'fail';
@@ -11,7 +12,7 @@ class Passable {
 
     specific: Array<string> | string;
     custom: Rules;
-    res: PassableResponse;
+    res: ResultObject;
     pass: Function;
     enforce: Function;
 
@@ -24,7 +25,7 @@ class Passable {
 
         this.specific = computedArgs.specific;
         this.custom = Object.assign({}, globalRules, computedArgs.custom);
-        this.res = initResponseObject(name);
+        this.res = new ResultObject(name);
         this.pass = this.pass.bind(this);
         this.enforce = this.enforce.bind(this);
 
@@ -40,7 +41,7 @@ class Passable {
             return;
         }
 
-        this.res.testsPerformed[fieldName] = this.res.testsPerformed[fieldName] || initField();
+        this.res.initFieldCounters(fieldName);
 
         // callback is always the last argument -- $FlowFixMe (we DO know it is a function)
         const callback: Function = args.pop(),
@@ -50,21 +51,15 @@ class Passable {
             const severity: Severity = args[0] || FAIL;
 
             // on failure/error, bump up the counters
-            this.res = onFail(fieldName, statement, severity, this.res);
+            this.res.fail(fieldName, statement, severity);
         }
 
-        this.bumpCounters(fieldName);
+        this.res.bumpTestCounter(fieldName);
         return isValid;
     }
 
     enforce(value: AnyValue) {
         return enforce(value, this.custom);
-    }
-
-    bumpCounters(fieldName: string) {
-        // bump overall counters
-        this.res.testsPerformed[fieldName].testCount++;
-        this.res.testCount++;
     }
 }
 
