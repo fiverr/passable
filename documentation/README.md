@@ -12,7 +12,6 @@ PASSABLE {{PASSABLE_VERSION}}
         * [Warn only passes](./pass/warn_only_passes.md)
         * [Running a specific pass](./pass/specific.md)
     * [The `enforce` Function](./enforce/README.md)
-        * [Enforce relationships](./enforce/relationships/README.md)
         * [Enforce Rules](./enforce/rules/README.md)
             * [content/matches](./enforce/rules/content/matches/README.md)
             * [content/inside](./enforce/rules/content/inside/README.md)
