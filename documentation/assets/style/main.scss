@@ -1,0 +1,61 @@
+@import 'vars';
+@import 'typography';
+@import 'sidemenu';
+
+$title-margin: .5em;
+
+.markdown-body {
+    h1,
+    h2 {
+        position: relative;
+        border-bottom: none;
+
+        &:after {
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            content: '';
+        }
+    }
+
+    h1 {
+        &:after {
+            background: linear-gradient(90deg, $teal, transparent);
+        }
+    }
+
+    h2 {
+        &:after {
+            background: linear-gradient(90deg, $grey-light, transparent);
+        }
+    }
+
+    @include small-screens {
+        padding-bottom: 60px;
+    }
+}
+
+.footer-nav {
+    &.-expanded {
+        background: transparent;
+    }
+
+    @include small-screens {
+        background: $white;
+        &.-expanded {
+
+            .left,
+            .right {
+                width: 50%;
+
+                a {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+    }
+}
