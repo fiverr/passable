@@ -83,6 +83,5 @@ enforce('Toto, I\'ve a feeling we\'re not in Kansas anymore').anyOf({
 Enforce exposes all [predefined](./rules/README.md) and [custom](./rules/custom.md) rules, and the [compound enforcement methods](./compound/README.md). You may use chaining to make multiple enfocements for the same value.
 
 ### Table of Contents
-* [Enforce relationships](./relationships/README.md)
 * [Enforce Rules](./rules/README.md)
 * [Custom Enforce Rules](./rules/custom.md)
