@@ -1,9 +1,10 @@
 const passable = require('../dist/Passable.min');
+const enforce = passable.enforce;
 
 console.log('Playground. Lets play!');
 console.log(`passable version: ${passable.VERSION}`);
 
-const validity = passable('TestForm', (pass, enforce) => {
+const validity = passable('TestForm', (pass) => {
     pass('Field1', 'Should be valid', () => {
         enforce('string').allOf({
             isString: true,
