@@ -1,13 +1,17 @@
-## Installation
+# Installation
 You can use npm to install Passable as a package and include it in your app
 
-```npm install passable --save```
+```shell
+npm install passable --save
+```
 
-Or import Passable as a script tag to your page.
+Or import Passable as a script tag to your page:
+```html
+<script src="https://unpkg.com/passable"></script>
+```
 
-To view currently imported version, you can:
+To view the currently running version, you can use:
 
 ```js
-Passable.VERSION
-// {{PASSABLE_VERSION}}
+console.log(Passable.VERSION) // {{PASSABLE_VERSION}}
 ```

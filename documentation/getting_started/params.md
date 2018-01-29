@@ -1,10 +1,10 @@
-# Passable params
+# Passable Parameters
 
-| Name       | Optional? | type     | Description                                                               |
+| Name       | Optional? | Type     | Description                                                               |
 |------------|:---------:|:--------:|---------------------------------------------------------------------------|
 | `name`     | No        | String   | A name for the group of tests. E.G - form name                            |
-| `specific` | Yes       | Array    | Whitelist of tests to run. Can be completely omitted                     |
+| `specific` | Yes       | Array    | Whitelist of tests to run.                 |
 | `passes`   | No        | Function | A function containing the actual validation logic.                        |
-| `custom`   | Yes       | Object   | Custom rules to extend the basic ruleset with. Can be completely omitted |
+| `custom`   | Yes       | Object   | Custom rules to extend the basic ruleset with. |
 
-![alt tag](https://raw.githubusercontent.com/fiverr/passable/master/documentation/assets/passable-api.jpg)
+![api](../assets/img/passable-api.jpg)

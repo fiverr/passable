@@ -1,5 +1,4 @@
-PASSABLE
-========
+# ![Passable](./assets/img/logo.png "Passable")
 
 Isomorphic data model validations made easy.
 
@@ -9,12 +8,12 @@ Isomorphic data model validations made easy.
 Learn more at:
 * [Documentation](https://fiverr.github.io/passable/)
 
-# What is Passable
+## What is Passable?
 Passable is a system for javascript applications that allows you to write structured data model validations in a way that's consistent all across your app, and fully reusable.
 
 Inspired by the world of unit testing, Passable validations are written like actual specs that need to be passed, and are considered to be an enforceable contract between the backend and the client. The syntax is very similar, adapted to be more suitable for testing data model, and runs in production code - not in testing environment.
 
-![alt tag](https://raw.githubusercontent.com/fiverr/passable/master/documentation/assets/passable_diagram.png)
+![passable diagram](./assets/img/passable_diagram.png)
 
 ## Key Benefits
 ### Structured Validations
