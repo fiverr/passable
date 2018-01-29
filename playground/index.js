@@ -1,4 +1,4 @@
-const passable = require('passable');
+const passable = require('../dist/Passable.min');
 const enforce = passable.enforce;
 
 console.log('Playground. Lets play!');

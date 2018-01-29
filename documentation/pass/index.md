@@ -10,3 +10,8 @@ Passable('MyForm', (pass) => {
     pass('age', 'should be ...', () => {...});
 });
 ```
+
+### Table of Contents
+* [How to fail a pass](./how_to_fail.md)
+* [Warn only passes](./warn_only_passes.md)
+* [Running a specific pass](./specific.md)
