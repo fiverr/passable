@@ -5,7 +5,7 @@ PASSABLE {{PASSABLE_VERSION}}
     * Getting Started
         * [Installation](./getting_started/installation.md)
         * [Writing tests](./getting_started/writing_tests.md)
-        * [The `response` object](./getting_started/response.md)
+        * [The `result` object](./getting_started/result.md)
         * [Passable Parameters](./getting_started/params.md)
     * [The `pass` Function](./pass/index.md)
         * [How to fail a pass](./pass/how_to_fail.md)
