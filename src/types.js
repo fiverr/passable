@@ -42,6 +42,11 @@ declare type PassableRuntime = {
     custom: Rules
 };
 
+declare type ValidityObject = {
+    valid: boolean,
+    message?: string
+};
+
 declare type PassableResponse = {
     [name: string]: string,
     hasValidationErrors: boolean,

@@ -11,6 +11,7 @@ PASSABLE {{PASSABLE_VERSION}}
         * [How to fail a pass](./pass/how_to_fail.md)
         * [Warn only passes](./pass/warn_only_passes.md)
         * [Running a specific pass](./pass/specific.md)
+    * [The `validate` Function](./validate/README.md)
     * [The `enforce` Function](./enforce/README.md)
         * [Enforce Rules](./enforce/rules/README.md)
             * [content/matches](./enforce/rules/content/matches/README.md)

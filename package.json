@@ -18,6 +18,7 @@
     "test:enforce": "mocha --compilers js:babel-core/register --colors -w \"./src/enforce/spec.js\"",
     "test:pass_runner": "mocha --compilers js:babel-core/register --colors -w \"./src/pass_runner/spec.js\"",
     "test:watch": "mocha --compilers js:babel-core/register --colors -w \"./src/**/*spec.js\"",
+    "test:match": "mocha --compilers js:babel-core/register --colors -w",
     "test": "mocha --compilers js:babel-core/register --colors \"./src/**/*spec.js\"",
     "eslint": "eslint -c .eslintrc \"./src/**/*.js\"; exit 0"
   },
