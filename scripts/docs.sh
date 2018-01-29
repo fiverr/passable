@@ -13,9 +13,9 @@ git config --global user.name $GIT_NAME
 git clone -b $DOCS_BRANCH https://github.com/$GITHUB_REPO.git docs
 rm -rf docs/*
 
+node-sass assets/style -o assets/style --output-style compressed
 npx docpress b
 cd docs
-node-sass assets/style -o assets/style --output-style compressed
 rm -rf assets/style/**/*.scss
 
 git add .
