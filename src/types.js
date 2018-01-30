@@ -34,7 +34,7 @@ declare type EnforceSelf = {
 declare type Severity = 'warn' | 'fail';
 
 declare type Pass = () => void;
-declare type Enforce = (AnyValue) => void;
+declare type Enforce = (AnyValue, Rules) => EnforceSelf;
 declare type Passes = (pass: Pass, enforce: Enforce) => void;
 
 declare type PassableRuntime = {

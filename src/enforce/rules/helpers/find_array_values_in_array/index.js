@@ -1,7 +1,9 @@
 // @flow
 
-import { reduceArrayToMap,
-    findArrayValuesInMapKeys } from '../index';
+import {
+    reduceArrayToMap,
+    findArrayValuesInMapKeys
+} from '../index';
 
 type Value = Array<NumStrBool>;
 
