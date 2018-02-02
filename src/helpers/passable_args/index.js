@@ -27,10 +27,8 @@ function passableArgs(specific: Specific, passes: Passes, custom?: Rules = {}): 
         throw runtimeError(Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_2);
     }
 
-    specific = specific || [];
-
     return {
-        specific,
+        specific: specific || [],
         passes,
         custom
     };

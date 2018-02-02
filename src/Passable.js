@@ -3,14 +3,14 @@
 import enforce from './enforce';
 import passRunner from './pass_runner';
 import ResultObject from './result_object';
-import { passableArgs, root, runtimeError } from 'Helpers';
+import { passableArgs, root, runtimeError, buildSpecificObject } from 'Helpers';
 import { Errors } from 'Constants';
 
 const FAIL: Severity = 'fail';
 
 class Passable {
 
-    specific: Array<string> | string;
+    specific: SpecificSelf;
     custom: Rules;
     res: ResultObject;
     pass: Function;
@@ -23,7 +23,7 @@ class Passable {
         const computedArgs: PassableRuntime = passableArgs(specific, passes, custom),
             globalRules: Rules = root.customPassableRules || {};
 
-        this.specific = computedArgs.specific;
+        this.specific = buildSpecificObject(computedArgs.specific);
         this.custom = Object.assign({}, globalRules, computedArgs.custom);
         this.res = new ResultObject(name);
         this.pass = this.pass.bind(this);
@@ -35,10 +35,12 @@ class Passable {
     }
 
     pass(fieldName: string, statement: string, ...args: Array<Severity | Pass>) {
+        const { only, not }: { [filter: string]: Set<string>} = this.specific;
+        const notInOnly: boolean = only.size > 0 && !only.has(fieldName);
 
-        if (this.specific.length && this.specific.indexOf(fieldName) === -1) {
-            this.res.skipped.push(fieldName);
-            return;
+        if (notInOnly || not.has(fieldName)) {
+            this.res.skip(fieldName);
+            return null;
         }
 
         this.res.initFieldCounters(fieldName);

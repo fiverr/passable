@@ -49,3 +49,8 @@ declare type ValidityObject = {
     valid: boolean,
     message?: string
 };
+
+declare type SpecificSelf = {
+    only: Set<string>,
+    not: Set<string>
+};
