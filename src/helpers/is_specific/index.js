@@ -8,9 +8,13 @@
  * @return {boolean}
  */
 export default function isSpecific(specific: mixed): boolean {
+    if (Array.isArray(specific)) {
+        return specific.every((item) => typeof item === 'string');
+    }
+
     return (
-        Array.isArray(specific)
-        || specific === null
+        specific === null
         || typeof specific === 'object'
+        || typeof specific === 'string'
     );
 }
