@@ -71,6 +71,31 @@ describe('Test PassableResponse class', () => {
         });
     });
 
+    describe('Test addToSkipped method', () => {
+        let testObject;
+        beforeEach(() => testObject = new ResultObject('FormName'));
+
+        it('Should have added field in skipped list', () => {
+            testObject.addToSkipped('field_1');
+            expect(testObject.skipped).to.include('field_1');
+        });
+
+        it('Should have added fields in skipped list', () => {
+            testObject.addToSkipped('field_1').addToSkipped('field_2');
+            expect(testObject.skipped).to.include('field_1');
+            expect(testObject.skipped).to.include('field_2');
+        });
+
+        it('Should uniquely add each field', () => {
+            testObject
+                .addToSkipped('field_1')
+                .addToSkipped('field_2')
+                .addToSkipped('field_1')
+                .addToSkipped('field_2');
+            expect(testObject.skipped).to.have.lengthOf(2);
+        });
+    });
+
     describe('Test getErrors method', () => {
         let testObject;
         beforeEach(() => {

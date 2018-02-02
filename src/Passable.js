@@ -39,7 +39,7 @@ class Passable {
         const notInOnly: boolean = only.size > 0 && !only.has(fieldName);
 
         if (notInOnly || not.has(fieldName)) {
-            this.res.skip(fieldName);
+            this.res.addToSkipped(fieldName);
             return null;
         }
 

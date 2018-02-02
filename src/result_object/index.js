@@ -78,7 +78,7 @@ class ResultObject {
      * @param {string} fieldName
      * @return {Object} Current instance
      */
-    skip(fieldName: string) {
+    addToSkipped(fieldName: string): this {
         this.skipped = [...new Set([...this.skipped, fieldName])];
 
         return this;
