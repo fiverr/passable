@@ -26,10 +26,9 @@ function addSpecificItemsToSet(set: Set<string>, items: Specific): Set<string> {
  * @param {String | Array<String> | Object} specific
  * @return {Object}
  */
+export default function buildSpecificObject(specific: Specific = []): SpecificObject {
 
-export default function buildSpecificObject(specific: Specific): SpecificSelf {
-
-    const result: SpecificSelf = {
+    const result: SpecificObject = {
         only: new Set(),
         not: new Set()
     };

@@ -40,7 +40,7 @@ declare type Enforce = (AnyValue) => void;
 declare type Passes = (pass: Pass, enforce: Enforce) => void;
 
 declare type PassableRuntime = {
-    specific: Specific,
+    specific: SpecificObject,
     passes: Passes,
     custom: Rules
 };
@@ -50,7 +50,7 @@ declare type ValidityObject = {
     message?: string
 };
 
-declare type SpecificSelf = {
+declare type SpecificObject = {
     only: Set<string>,
     not: Set<string>
 };

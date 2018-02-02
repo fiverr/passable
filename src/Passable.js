@@ -10,7 +10,7 @@ const FAIL: Severity = 'fail';
 
 class Passable {
 
-    specific: SpecificSelf;
+    specific: SpecificObject;
     custom: Rules;
     res: ResultObject;
     pass: Function;
@@ -23,7 +23,7 @@ class Passable {
         const computedArgs: PassableRuntime = passableArgs(specific, passes, custom),
             globalRules: Rules = root.customPassableRules || {};
 
-        this.specific = buildSpecificObject(computedArgs.specific);
+        this.specific = computedArgs.specific;
         this.custom = Object.assign({}, globalRules, computedArgs.custom);
         this.res = new ResultObject(name);
         this.pass = this.pass.bind(this);

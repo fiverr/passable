@@ -1,5 +1,5 @@
 // @flow
-import { runtimeError, isSpecific } from 'Helpers';
+import { runtimeError, isSpecific, buildSpecificObject } from 'Helpers';
 import { Errors } from 'Constants';
 
 /**
@@ -28,7 +28,7 @@ function passableArgs(specific: Specific, passes: Passes, custom?: Rules = {}): 
     }
 
     return {
-        specific: specific || [],
+        specific: buildSpecificObject(specific),
         passes,
         custom
     };
