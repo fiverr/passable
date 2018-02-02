@@ -12,7 +12,7 @@ describe('reduce array to object helper', () => {
         expect(findArrayValuesInObjectKeys(['one', 'two', 'three'], reducedArray)).to.equal(true);
     });
 
-    it('Should not be larger than original array', () => {
+    it('Should be equal in size or larger than original array', () => {
         expect(Object.keys(reducedArray).length).to.equal(3);
     });
 });
