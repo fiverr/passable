@@ -16,11 +16,11 @@ class Passable {
     pass: Function;
     enforce: Function;
 
-    constructor(name: string, ...args: PassableArguments) {
+    constructor(name: string, specific: Specific, passes: Passes, custom?: Rules) {
         if (typeof name !== 'string') {
             throw runtimeError(Errors.INVALID_FORM_NAME, typeof name);
         }
-        const computedArgs: PassableRuntime = passableArgs(args),
+        const computedArgs: PassableRuntime = passableArgs(specific, passes, custom),
             globalRules: Rules = root.customPassableRules || {};
 
         this.specific = computedArgs.specific;

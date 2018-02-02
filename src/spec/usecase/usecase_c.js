@@ -6,7 +6,7 @@ export default (passable) => {
             * Chained custom rules
     */
 
-    const response = passable('case_c', (pass, enforce) => {
+    const response = passable('case_c', null, (pass, enforce) => {
         pass('field_1', 'should be a string of 5 chars', () => {
             enforce('hello').allOf({
                 sizeEquals: 5,
