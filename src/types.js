@@ -23,9 +23,7 @@ declare type PassRunnerCallback = {
 
 declare type NumStrBool = number | string | boolean;
 
-declare type ArrayReducedToObject = {
-    [name: string]: mixed
-};
+declare type MapType = Map<mixed, mixed>;
 
 declare type EnforceSelf = {
     [testRunner: string]: Function,
@@ -36,7 +34,7 @@ declare type EnforceSelf = {
 declare type Severity = 'warn' | 'fail';
 
 declare type Pass = () => void;
-declare type Enforce = (AnyValue) => void;
+declare type Enforce = (AnyValue, Rules) => EnforceSelf;
 declare type Passes = (pass: Pass, enforce: Enforce) => void;
 
 declare type PassableRuntime = {
