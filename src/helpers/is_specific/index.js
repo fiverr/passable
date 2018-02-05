@@ -13,8 +13,7 @@ export default function isSpecific(specific: mixed): boolean {
     }
 
     return (
-        specific === null
-        || typeof specific === 'object'
-        || typeof specific === 'string'
+        specific === null ||
+        ['object', 'string'].includes(typeof specific)
     );
 }

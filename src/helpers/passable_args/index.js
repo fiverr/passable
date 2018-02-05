@@ -15,7 +15,7 @@ import { Errors } from 'Constants';
  */
 function passableArgs(specific: Specific, passes: Passes, custom?: Rules = {}): PassableRuntime {
 
-    if (arguments.length === 0) {
+    if (!arguments.length) {
         throw runtimeError(Errors.PASSABLE_ARGS_NO_ARGS);
     }
 

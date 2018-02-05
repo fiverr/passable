@@ -79,7 +79,7 @@ class ResultObject {
      * @return {Object} Current instance
      */
     addToSkipped(fieldName: string): this {
-        this.skipped = [...new Set([...this.skipped, fieldName])];
+        !this.skipped.includes(fieldName) && this.skipped.push(fieldName);
 
         return this;
     }
