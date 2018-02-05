@@ -74,6 +74,17 @@ class ResultObject {
     }
 
     /**
+     * Uniquely add a field to the `skipped` list
+     * @param {string} fieldName
+     * @return {Object} Current instance
+     */
+    addToSkipped(fieldName: string): this {
+        !this.skipped.includes(fieldName) && this.skipped.push(fieldName);
+
+        return this;
+    }
+
+    /**
      * Getall the errors of a field, or of the whole object
      * @param {string} [fieldName] - The name of the field.
      * @return {Array | Object} The field's errors, or all errors

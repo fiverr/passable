@@ -10,7 +10,12 @@ declare type Tests = {
     [name: string]: AnyValue
 };
 
-declare type Specific = Array<string> | string;
+declare type ArrayOrStringOfArrays = Array<string> | string;
+
+declare type Specific = Array<string> | string | {
+    only?: ArrayOrStringOfArrays,
+    not?: ArrayOrStringOfArrays
+};
 
 declare type PassRunnerCallback = {
     valid: boolean
@@ -30,14 +35,12 @@ declare type EnforceSelf = {
 
 declare type Severity = 'warn' | 'fail';
 
-declare type PassableArguments = Array<Passes | Specific | Rules>;
-
 declare type Pass = () => void;
 declare type Enforce = (AnyValue) => void;
 declare type Passes = (pass: Pass, enforce: Enforce) => void;
 
 declare type PassableRuntime = {
-    specific: Specific,
+    specific: SpecificObject,
     passes: Passes,
     custom: Rules
 };
@@ -45,4 +48,9 @@ declare type PassableRuntime = {
 declare type ValidityObject = {
     valid: boolean,
     message?: string
+};
+
+declare type SpecificObject = {
+    only: Set<string>,
+    not: Set<string>
 };

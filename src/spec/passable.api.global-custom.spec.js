@@ -10,7 +10,7 @@ root.customPassableRules = {
     largerEquals: (v, arg) => v >= arg
 };
 
-const globalCustom = passable('GlobalCustom', (pass, enforce) => {
+const globalCustom = passable('GlobalCustom', null, (pass, enforce) => {
     pass('alwaysTrue', 'Should always pass', () => {
         enforce(false).allOf({ alwaysTrue: null });
         enforce(true).allOf({ alwaysTrue: null });
