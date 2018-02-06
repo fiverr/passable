@@ -1,7 +1,9 @@
 export default (passable) => {
     const WARN = passable.WARN;
 
-    const response = passable('case_b', ['field_1', 'field_4'], (test, enforce) => {
+    const enforce = passable.enforce;
+
+    const response = passable('case_b', ['field_1', 'field_4'], (test) => {
         test('field_1', 'should be a string of 5 chars', () => {
             enforce('hello').allOf({
                 sizeEquals: 5,

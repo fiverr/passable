@@ -10,14 +10,10 @@ import { runtimeError } from 'Helpers';
  * @param {object} tests
  * @return {object} enforce object
  */
-function compound(value: AnyValue, group: string, tests: CompoundTestObject, allRules: Rules = {}): EnforceSelf {
-    if (this.valid === false) {
-        return this;
-    }
+function compound(value: AnyValue, group: string, tests: CompoundTestObject, allRules: EnforceRules = {}): EnforceProxy {
+    const isValid: boolean = runners[group](value, tests, allRules);
 
-    this.valid = runners[group](value, tests, allRules);
-
-    if (this.valid !== true) {
+    if (isValid !== true) {
         throw runtimeError(Errors.ENFORCE_FAILED, group, typeof value);
     }
 

@@ -25,22 +25,15 @@ declare type NumStrBool = number | string | boolean;
 
 declare type MapType = Map<mixed, mixed>;
 
-declare type EnforceSelf = {
-    [testRunner: string]: Function,
-    fin: Function,
-    valid?: boolean
-};
-
 declare type Severity = 'warn' | 'fail';
 declare type Enforce = (AnyValue, Rules) => EnforceSelf;
-declare type TestsWrapper = (test: TestProvider, enforce: Enforce) => void;
+declare type TestsWrapper = (test: TestProvider,) => void;
 declare type TestProvider = (fieldName: string, statemenpt: string, test: TestFn, severity: Severity) => void;
 declare type TestFn = () => void;
 
 declare type PassableRuntime = {
     specific: SpecificObject,
-    tests: TestsWrapper,
-    custom: Rules
+    tests: TestsWrapper
 };
 
 declare type ValidityObject = {
@@ -56,3 +49,12 @@ declare type SpecificObject = {
 declare type ErrorAndWarningObject = {
     [name: string]: Array<string>
 };
+declare type EnforceRule = (value: AnyValue, ...args: AnyValue) => boolean;
+declare type EnforceRules = {
+    [rule: string]: EnforceRule
+};
+declare type EnforceProxy = {
+    [rule: string]: (value: AnyValue, ...args: AnyValue) => EnforceProxy;
+};
+declare type ProxiedRule = (value: AnyValue, ...args: AnyValue) => EnforceProxy;
+declare type EnforceFunc = (AnyValue) => EnforceRules;

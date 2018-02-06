@@ -10,14 +10,10 @@ import { runtimeError } from 'Helpers';
  * @param {array} spread list of arguments sent from consumer
  * @return {object} enforce object
  */
-function single(value: AnyValue, rule: Function, ...args: Array<mixed>): EnforceSelf {
-    if (this.valid === false) {
-        return this;
-    }
+function single(value: AnyValue, rule: Function, ...args: Array<mixed>): EnforceProxy {
+    const isValid: boolean = rule(value, ...args);
 
-    this.valid = rule(value, ...args);
-
-    if (this.valid !== true) {
+    if (isValid !== true) {
         throw runtimeError(Errors.ENFORCE_FAILED, rule.name, typeof value);
     }
 

@@ -2,7 +2,7 @@
 import { Errors } from 'Constants';
 const passableArgs: string = 'passableArgs';
 
-const passableArgsExpected: string = 'Expected: Specific, Tests, Custom';
+const passableArgsExpected: string = 'Expected: Specific, Tests';
 
 function errorBuilder(functionName, errorMessage) {
     return `[Passable]: Failed to execute '${functionName}': ${errorMessage}`;

@@ -1,6 +1,6 @@
 'use strict';
 import { expect } from 'chai';
-import passable, { enforce, validate } from '../index';
+import passable, { Enforce, enforce, validate } from '../index';
 const passableExports = require('../index');
 import { version } from '../../package.json';
 
@@ -32,25 +32,29 @@ describe('Test Passable\'s exports', () => {
         });
     });
 
-    describe('Test enforce import', () => {
-        it('enforce should be assigned to passable (commonjs)', () => {
+    describe('Test Enforce import', () => {
+        it('enforce instance should be on passable (commonjs)', () => {
             expect(passableExports.enforce).to.be.a('function');
         });
 
-        it('enforce should be assigned to passable (es6 imports)', () => {
+        it('enforce constructor should be assigned to passable (commonjs)', () => {
+            expect(passableExports.Enforce).to.be.a('function');
+        });
+
+        it('enforce instance should be on passable (es6 imports)', () => {
             expect(passable.enforce).to.be.a('function');
         });
 
-        it('enforce should be destrucurable directly from passable', () => {
+        it('enforce constructor should be on passable (es6 imports)', () => {
+            expect(passable.Enforce).to.be.a('function');
+        });
+
+        it('enforce instance should be destructurable directly from passable', () => {
             expect(enforce).to.be.a('function');
         });
 
-        it('enforce function name should be enforce (es6 imports)', () => {
-            expect(passable.enforce.name).to.equal('enforce');
-        });
-
-        it('enforce function name should be enforce (commonjs)', () => {
-            expect(passableExports.enforce.name).to.equal('enforce');
+        it('enforce constructor should be destructurable directly from passable', () => {
+            expect(Enforce).to.be.a('function');
         });
     });
 
@@ -63,7 +67,7 @@ describe('Test Passable\'s exports', () => {
             expect(passable.validate).to.be.a('function');
         });
 
-        it('validate should be destrucurable directly from passable', () => {
+        it('validate should be destructurable directly from passable', () => {
             expect(validate).to.be.a('function');
         });
 

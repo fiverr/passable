@@ -1,6 +1,6 @@
 'use strict';
 
-import passable from '../index.js';
+import passable, {Enforce} from '../index.js';
 import { expect } from 'chai';
 import { root } from 'Helpers';
 
@@ -10,7 +10,9 @@ root.customPassableRules = {
     largerEquals: (v, arg) => v >= arg
 };
 
-const globalCustom = passable('GlobalCustom', null, (test, enforce) => {
+const enforce = new Enforce();
+
+const globalCustom = passable('GlobalCustom', null, (test) => {
     test('alwaysTrue', 'Should always pass', () => {
         enforce(false).allOf({ alwaysTrue: null });
         enforce(true).allOf({ alwaysTrue: null });
