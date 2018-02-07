@@ -12,7 +12,7 @@ The most basic test would look somewhat like this:
 //     username: 'ealush',
 //     age: 27
 // }
-Passable('NewUserForm', (test, enforce) => {
+passable('NewUserForm', (test) => {
     test('username', 'Must be a string between 2 and 10 chars', () => {
         enforce(data.username).allOf({
             isString: true,
