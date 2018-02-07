@@ -31,7 +31,7 @@ class Enforce {
     }
 
     enforce = (value: AnyValue) => {
-        const proxy: EnforceRules = new Proxy(this.boundRules, {
+        const proxy: EnforceProxy = new Proxy(this.boundRules, {
             get: (boundRules, rule) => {
                 const ruleUsed: ProxiedRule = boundRules[rule];
                 if (boundRules.hasOwnProperty(rule)) {

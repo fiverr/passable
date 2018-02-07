@@ -6,7 +6,7 @@ The way `enforce` operates is similar to most common assertion libraries - if th
 ## Consuming `enforce`
 You can consume `enforce` in two ways:
 
-* Require `enforce` directly from Passable:
+### Require `enforce` directly from Passable:
 > Since 5.10.0
 
 ```js
@@ -24,7 +24,7 @@ passable('enforcement', (test) => {
 });
 ```
 
-* Creating a new `enforce`  instance with custom functions
+### Create a new `enforce`  instance with custom functions
 > Since 6.0.0
 
 This is a slightly more advanced use case for `enforce` , use it if you have repeated custom logic (for example `isValidOrgEmail`).

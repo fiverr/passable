@@ -54,7 +54,7 @@ declare type EnforceRules = {
     [rule: string]: EnforceRule
 };
 declare type EnforceProxy = {
-    [rule: string]: (value: AnyValue, ...args: AnyValue) => EnforceProxy;
+    [ruleName: string]: (value: AnyValue, ...args: AnyValue) => EnforceProxy;
 };
 declare type ProxiedRule = (value: AnyValue, ...args: AnyValue) => EnforceProxy;
-declare type EnforceFunc = (AnyValue) => EnforceRules;
+declare type EnforceFunc = (AnyValue) => EnforceProxy;
