@@ -6,8 +6,8 @@ declare type Rules = {
     [name: string]: Function
 };
 
-declare type Tests = {
-    [name: string]: AnyValue
+declare type CompoundTestObject = {
+    [rule: string]: AnyValue
 };
 
 declare type ArrayOrStringOfArrays = Array<string> | string;
@@ -17,7 +17,7 @@ declare type Specific = Array<string> | string | {
     not?: ArrayOrStringOfArrays
 };
 
-declare type PassRunnerCallback = {
+declare type testRunnerCallback = {
     valid: boolean
 } | void | null;
 
@@ -32,14 +32,14 @@ declare type EnforceSelf = {
 };
 
 declare type Severity = 'warn' | 'fail';
-
-declare type Pass = () => void;
 declare type Enforce = (AnyValue, Rules) => EnforceSelf;
-declare type Passes = (pass: Pass, enforce: Enforce) => void;
+declare type TestsWrapper = (test: TestProvider, enforce: Enforce) => void;
+declare type TestProvider = (fieldName: string, statemenpt: string, ...args: [Severity, TestFn]) => void;
+declare type TestFn = () => void;
 
 declare type PassableRuntime = {
     specific: SpecificObject,
-    passes: Passes,
+    tests: TestsWrapper,
     custom: Rules
 };
 

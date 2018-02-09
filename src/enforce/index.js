@@ -19,7 +19,7 @@ function enforce(value: mixed, custom: Rules = {}): EnforceSelf {
 
     // use enforce object as proxy to test runners
     Object.keys(runners).forEach((group: string) => {
-        self[group] = (tests: Tests) => compound.bind(self)(value, group, tests, allRules);
+        self[group] = (tests: CompoundTestObject) => compound.bind(self)(value, group, tests, allRules);
     });
 
     // use enforce object as proxy to rules

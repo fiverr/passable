@@ -1,14 +1,14 @@
 'use strict';
 
-import passRunner from './index';
+import testRunner from './index';
 import { expect } from 'chai';
 
-const pr = passRunner.bind({}); // mimicks the `call` wer'e doing in passable 'run' function
+const pr = testRunner.bind({}); // mimicks the `call` wer'e doing in passable 'run' function
 
 const passing = () => true,
     failing = () => false;
 
-describe('Test Pass Runner Logic', () => {
+describe('Test `testRunner` Logic', () => {
 
     it('Should default to true if not thrown', () => {
         expect(pr(() => undefined)).to.equal(true);

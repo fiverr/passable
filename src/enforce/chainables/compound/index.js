@@ -10,7 +10,7 @@ import { runtimeError } from 'Helpers';
  * @param {object} tests
  * @return {object} enforce object
  */
-function compound(value: AnyValue, group: string, tests: Tests, allRules: Rules = {}): EnforceSelf {
+function compound(value: AnyValue, group: string, tests: CompoundTestObject, allRules: Rules = {}): EnforceSelf {
     if (this.valid === false) {
         return this;
     }

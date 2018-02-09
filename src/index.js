@@ -4,8 +4,8 @@ import enforce from './enforce';
 import validate from './validate';
 import { version } from '../version.json';
 
-function passable(name: string, specific: Specific, passes: Passes, custom?: Rules) {
-    return new Passable(name, specific, passes, custom);
+function passable(name: string, specific: Specific, tests: TestsWrapper, custom?: Rules) {
+    return new Passable(name, specific, tests, custom);
 }
 passable.VERSION = version;
 passable.enforce = enforce;

@@ -1,7 +1,8 @@
 // @flow
 import PassableResponse from '../../index';
 
-const WARN: string = 'warn';
+export const WARN: string = 'warn';
+
 type CountName = 'failCount' | 'warnCount';
 type ObjectName = 'validationErrors' | 'validationWarnings';
 type ValidationName = 'hasValidationErrors' | 'hasValidationWarnings';

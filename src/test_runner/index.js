@@ -1,5 +1,5 @@
 // @flow
-function passRunner(callback: Function): boolean {
+function testRunner(callback: Function): boolean {
 
     let isValid: null | boolean = null;
 
@@ -8,7 +8,7 @@ function passRunner(callback: Function): boolean {
     }
 
     try {
-        const res: PassRunnerCallback = callback();
+        const res: testRunnerCallback = callback();
 
         if (typeof res !== 'undefined' && res !== null && res.hasOwnProperty('valid')) {
             isValid = res.valid;
@@ -24,4 +24,4 @@ function passRunner(callback: Function): boolean {
     return !!isValid;
 }
 
-export default passRunner;
+export default testRunner;

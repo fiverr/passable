@@ -5,22 +5,22 @@ import { Errors } from 'Constants';
 /**
  * Get Passable configuration settings
  * specific - whitelist of tests to run
- * passes - The function which runs the validations
+ * tests - The function which runs the validations
  * custom - custom validation rules
  *
  * @param {Array | String | Object} specific
- * @param {passes} Function
+ * @param {tests} Function
  * @param {custom} Object
  * @return {object} Passable configuration settings
  */
-function passableArgs(specific: Specific, passes: Passes, custom?: Rules = {}): PassableRuntime {
+function passableArgs(specific: Specific, tests: CompoundTestObject, custom?: Rules = {}): PassableRuntime {
 
     if (!arguments.length) {
         throw runtimeError(Errors.PASSABLE_ARGS_NO_ARGS);
     }
 
-    if (typeof passes !== 'function') {
-        throw runtimeError(Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_1, typeof passes);
+    if (typeof tests !== 'function') {
+        throw runtimeError(Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_1, typeof tests);
     }
 
     if (!isSpecific(specific) || typeof custom !== 'object') {
@@ -29,7 +29,7 @@ function passableArgs(specific: Specific, passes: Passes, custom?: Rules = {}): 
 
     return {
         specific: buildSpecificObject(specific),
-        passes,
+        tests,
         custom
     };
 };

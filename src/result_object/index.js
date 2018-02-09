@@ -1,14 +1,9 @@
 // @flow
-import { fail } from './helpers';
+import fail from './helpers/fail';
 
 declare type ErrorAndWarningObject = {
     [name: string]: Array<string>
 };
-
-const WARN: string = 'warn';
-declare type CountName = 'failCount' | 'warnCount';
-declare type ObjectName = 'validationErrors' | 'validationWarnings';
-declare type ValidationName = 'hasValidationErrors' | 'hasValidationWarnings';
 
 /** Class representing validation state. */
 class ResultObject {

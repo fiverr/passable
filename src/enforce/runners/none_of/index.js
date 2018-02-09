@@ -1,7 +1,7 @@
 // @flow
 import run from '../run';
 
-export default function noneOf(value: mixed, tests: Tests, rules: Rules): boolean {
+export default function noneOf(value: mixed, tests: CompoundTestObject, rules: Rules): boolean {
 
     const validations: Array<string> = Object.keys(tests);
 
