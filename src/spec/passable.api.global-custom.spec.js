@@ -10,34 +10,34 @@ root.customPassableRules = {
     largerEquals: (v, arg) => v >= arg
 };
 
-const globalCustom = passable('GlobalCustom', null, (pass, enforce) => {
-    pass('alwaysTrue', 'Should always pass', () => {
+const globalCustom = passable('GlobalCustom', null, (test, enforce) => {
+    test('alwaysTrue', 'Should always pass', () => {
         enforce(false).allOf({ alwaysTrue: null });
         enforce(true).allOf({ alwaysTrue: null });
         enforce(12).allOf({ alwaysTrue: null });
         enforce('mindblown').allOf({ alwaysTrue: null });
     });
 
-    pass('alwaysFalse', 'Should always fail', () => {
+    test('alwaysFalse', 'Should always fail', () => {
         enforce(true).allOf({ alwaysFalse: null });
         enforce(false).allOf({ alwaysFalse: null });
         enforce(12).allOf({ alwaysFalse: null });
         enforce('mindblown').allOf({ alwaysFalse: null });
     });
 
-    pass('largerEquals', 'Should pass', () => {
+    test('largerEquals', 'Should pass', () => {
         enforce(1).allOf({ largerEquals: 1 });
         enforce(1).allOf({ largerEquals: 0 });
         enforce('ab').allOf({ largerEquals: 'ab' });
     });
 
-    pass('largerEquals', 'Should fail', () => {
+    test('largerEquals', 'Should fail', () => {
         enforce(1).allOf({ largerEquals: 0 });
         enforce(1).allOf({ largerEquals: 2 });
         enforce('ab').allOf({ largerEquals: 'abo' });
     });
 
-    pass('Together', 'should play nicely with others', () => {
+    test('Together', 'should play nicely with others', () => {
         enforce(5).allOf({
             largerEquals: 4,
             largerThan: 3,
@@ -52,7 +52,7 @@ const globalCustom = passable('GlobalCustom', null, (pass, enforce) => {
 });
 
 describe('Test global rule extensions', () => {
-    it('Should run all 5 passes', () => {
+    it('Should run all 5 tests', () => {
         expect(globalCustom.testCount).to.equal(5);
     });
 
@@ -60,7 +60,7 @@ describe('Test global rule extensions', () => {
         expect(globalCustom.failCount).to.equal(2);
     });
 
-    it('Should fail on the correct passes', () => {
+    it('Should fail on the correct tests', () => {
         expect(globalCustom.validationErrors).to.deep.equal({
             alwaysFalse: ['Should always fail'],
             largerEquals: ['Should fail']

@@ -12,7 +12,7 @@ The `validate` function accepts two arguments:
 | `message`  | `string`   | No        | The error to display on failure |
 | `test`     | `function` | Yes       | The test function to run |
 
-Just like the [pass](../pass/index.md) function, `validate` will fail your tests on [three situations](../pass/how_to_fail.md):
+Just like the [test](../test/index.md) function, `validate` will fail your tests on [three situations](../test/how_to_fail.md):
 * When your enforce statement fails.
 * When your code throws an Error.
 * When you return `false` in your test function.

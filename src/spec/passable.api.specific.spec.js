@@ -116,14 +116,14 @@ describe('Test running specific tests', () => {
 });
 
 function specificTests(specific) {
-    return passable('specificTests', specific, (pass, enforce) => {
-        pass('First', 'should pass', () => true);
-        pass('Second', 'should pass', () => true);
-        pass('Third', 'should fail', () => false);
-        pass('Fourth', 'should fail', () => false);
-        pass('Fifth', 'should fail', () => false);
-        pass('Sixth', 'should pass', () => true);
-        pass('Sixth', 'should pass', () => true); // twice!
-        pass('Seventh', 'should pass', () => true);
+    return passable('specificTests', specific, (test, enforce) => {
+        test('First', 'should pass', () => true);
+        test('Second', 'should pass', () => true);
+        test('Third', 'should fail', () => false);
+        test('Fourth', 'should fail', () => false);
+        test('Fifth', 'should fail', () => false);
+        test('Sixth', 'should pass', () => true);
+        test('Sixth', 'should pass', () => true); // twice!
+        test('Seventh', 'should pass', () => true);
     });
 };

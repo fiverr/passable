@@ -4,7 +4,7 @@ const enforce = passable.enforce;
 console.log('Playground. Lets play!');
 console.log(`passable version: ${passable.VERSION}`);
 
-const validity = passable('TestForm', null, (pass) => {
+const validity = passable('TestForm', null, (test) => {
     pass('Field1', 'Should be valid', () => {
         enforce('string').allOf({
             isString: true,

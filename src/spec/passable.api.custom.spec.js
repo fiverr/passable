@@ -13,15 +13,15 @@ describe('Test rule extensions', () => {
     });
 });
 
-const noSnuffles = passable('ExtendTests', null, (pass, enforce) => {
-    pass('NoSnuffles', 'should pass', () => (
+const noSnuffles = passable('ExtendTests', null, (test, enforce) => {
+    test('NoSnuffles', 'should pass', () => (
 
         enforce('The name is Snowball').allOf({
             no_slave_name: {}
         }).fin()
     ));
 
-    pass('NoSnuffles', 'should Fail', () => {
+    test('NoSnuffles', 'should Fail', () => {
 
         enforce('The name is Snuffles').allOf({
             no_slave_name: {},
@@ -29,7 +29,7 @@ const noSnuffles = passable('ExtendTests', null, (pass, enforce) => {
         }, 'here').fin();
     });
 
-    pass('regularTest', 'should pass', () => enforce(55).allOf({
+    test('regularTest', 'should pass', () => enforce(55).allOf({
         largerThan: 42
     }).fin());
 

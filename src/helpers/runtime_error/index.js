@@ -2,7 +2,7 @@
 import { Errors } from 'Constants';
 const passableArgs: string = 'passableArgs';
 
-const passableArgsExpected: string = 'Expected: Specific, Passes, Custom';
+const passableArgsExpected: string = 'Expected: Specific, Tests, Custom';
 
 function errorBuilder(functionName, errorMessage) {
     return `[Passable]: Failed to execute '${functionName}': ${errorMessage}`;
@@ -20,7 +20,7 @@ function runtimeError(type: string, ...args: Array<string>) {
         case Errors.PASSABLE_ARGS_NO_ARGS:
             return new TypeError(errorBuilder(passableArgs, `Missing arguments. ${passableArgsExpected}.`));
         case Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_1:
-            return new TypeError(errorBuilder(passableArgs, `Unexpected '${args[0]}', expected passes to be a function.`));
+            return new TypeError(errorBuilder(passableArgs, `Unexpected '${args[0]}', expected tests to be a function.`));
         case Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_2:
             return new TypeError(errorBuilder(passableArgs, `Unexpected set of arguments. ${passableArgsExpected}.`));
         default:

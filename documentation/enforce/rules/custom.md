@@ -47,8 +47,8 @@ Adding your rules so they are available to the enforce function is as simple as 
     Passable('GroupName', () => {...}, myCustomRules);
 ```
 ```js
-    Passable('GroupName', (pass, enforce) => {
-        pass('TestName', 'Must have a valid email', () => {
+    Passable('GroupName', (test, enforce) => {
+        test('TestName', 'Must have a valid email', () => {
             enforce(user.email).isValidEmail();
         });
     }, myCustomRules);
@@ -58,8 +58,8 @@ Adding your rules so they are available to the enforce function is as simple as 
 There is another way to add rules per a single run that does not involve the hassle of creating a new rules object. Instead, the function can be written in-line, along with the other selected rules. Just as in all other rules, the value supplied to the function is the value being enforced.
 
 ```js
-    Passable('GroupName', (pass, enforce) => {
-        pass('TestName', 'Must have a valid email', () => {
+    Passable('GroupName', (test, enforce) => {
+        test('TestName', 'Must have a valid email', () => {
             enforce(user.email).allOf({
                 isValidEmail: (value) => value.indexOf('@') > -1,
                 isEmpty: false

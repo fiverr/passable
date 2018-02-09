@@ -9,12 +9,12 @@ import { expect } from chai; // you can also just embed chai as a script tag if 
 //     age: 27
 // }
 
-Passable('FormWithChai', (pass, enforce) => {
-    pass('username', 'Should be a string', () => {
+Passable('FormWithChai', (test, enforce) => {
+    test('username', 'Should be a string', () => {
         expect(data.username).to.be.a('string');
     });
 
-    pass('age', 'Should be a number and larger than 18', () => {
+    test('age', 'Should be a number and larger than 18', () => {
         expect(data.age).to.be.a('number');
         enforce(data.age).allOf({
             largerThan: 18

@@ -6,20 +6,20 @@ export default (passable, enforce) => {
             * Import enforce directly from passable
     */
 
-    const response = passable('case_d', null, (pass) => {
-        pass('field_1', 'hello should equal hello', () => {
+    const response = passable('case_d', null, (test) => {
+        test('field_1', 'hello should equal hello', () => {
             enforce('hello').allOf({
                 stringEquals: (value) => typeof value === 'string' && 'hello' === value
             });
         });
 
-        pass('field_2', 'hello should equal hello', () => {
+        test('field_2', 'hello should equal hello', () => {
             enforce('hello').allOf({
                 stringEquals: (value) => typeof value === 'string' && 'hell no' === value
             });
         });
 
-        pass('field_3', 'should be longer than 2', () => {
+        test('field_3', 'should be longer than 2', () => {
             enforce(4).largerThan(2);
         });
     });

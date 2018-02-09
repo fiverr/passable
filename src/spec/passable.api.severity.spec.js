@@ -19,16 +19,16 @@ describe('Test warn flag', () => {
 
 // Actual test data
 
-const warnPass = passable('WarnPass', null, (pass, enforce) => {
-        pass('WarnPass', 'should warn', 'warn', () => false);
+const warnPass = passable('WarnPass', null, (test, enforce) => {
+        test('WarnPass', 'should warn', 'warn', () => false);
     }),
-    warnFail = passable('WarnFail', null, (pass, enforce) => {
-        pass('Warn', 'should warn', 'warn', () => false);
-        pass('Fail', 'should Fail', () => false);
+    warnFail = passable('WarnFail', null, (test, enforce) => {
+        test('Warn', 'should warn', 'warn', () => false);
+        test('Fail', 'should Fail', () => false);
     }),
-    fail = passable('Fail', null, (pass, enforce) => {
-        pass('Warn', 'should not warn', 'warn', () => true);
-        pass('Fail', 'should Fail', () => false);
+    fail = passable('Fail', null, (test, enforce) => {
+        test('Warn', 'should not warn', 'warn', () => true);
+        test('Fail', 'should Fail', () => false);
     });
 
 const warnPassExpected = {

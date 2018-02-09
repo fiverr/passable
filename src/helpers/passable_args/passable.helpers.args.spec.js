@@ -3,22 +3,22 @@
 import passableArgs from './index';
 import { expect } from 'chai';
 
-const generalArgsError = "[Passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Passes, Custom.";
+const generalArgsError = "[Passable]: Failed to execute 'passableArgs': Unexpected set of arguments. Expected: Specific, Tests, Custom.";
 
 describe('Test Passable arguments logic', () => {
     const noop = () => undefined;
 
     it('Should throw an exception when given no arguments', () => {
-        expect(passableArgs.bind(null, [])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected 'undefined', expected passes to be a function.");
+        expect(passableArgs.bind(null, [])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected 'undefined', expected tests to be a function.");
     });
 
     it('Should throw an exception when given only a single argument', () => {
-        expect(passableArgs.bind(null, ['basic'])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected 'undefined', expected passes to be a function.");
+        expect(passableArgs.bind(null, ['basic'])).to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected 'undefined', expected tests to be a function.");
     });
 
-    it('Should throw an exception when passes is not a function', () => {
+    it('Should throw an exception when tests is not a function', () => {
         expect(passableArgs.bind(null, [], 'noop', {}))
-            .to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected 'string', expected passes to be a function.");
+            .to.throw("[Passable]: Failed to execute 'passableArgs': Unexpected 'string', expected tests to be a function.");
     });
 
     it('Should throw an exception when specific does not follow convention', () => {
@@ -27,10 +27,10 @@ describe('Test Passable arguments logic', () => {
         expect(passableArgs.bind(null, true, noop, {})).to.throw(generalArgsError);
     });
 
-    it('Should return given "passes", default specific to an array and custom to object', () => {
+    it('Should return given "tests", default specific to an array and custom to object', () => {
         const value = passableArgs(null, noop);
         expect(value).to.deep.equal({
-            passes: noop,
+            tests: noop,
             custom: {},
             specific: {
                 only: new Set(),
@@ -46,31 +46,31 @@ describe('Test Passable arguments logic', () => {
                 only: new Set(['noop']),
                 not: new Set()
             },
-            passes: noop,
+            tests: noop,
             custom: {noop}
         });
     });
 
-    it('Should return specific and passes, default on custom', () => {
+    it('Should return specific and tests, default on custom', () => {
         const value = passableArgs(['Yo'], noop);
         expect(value).to.deep.equal({
             specific: {
                 only: new Set(['Yo']),
                 not: new Set()
             },
-            passes: noop,
+            tests: noop,
             custom: {}
         });
     });
 
-    it('Should return custom and passes, default on specific', () => {
+    it('Should return custom and tests, default on specific', () => {
         const value = passableArgs(null, noop, {t: noop});
         expect(value).to.deep.equal({
             specific: {
                 only: new Set(),
                 not: new Set()
             },
-            passes: noop,
+            tests: noop,
             custom: {t: noop}
         });
     });

@@ -3,20 +3,20 @@
 import passable from '../index.js';
 import { expect } from 'chai';
 
-const oneValidationError = passable('oneValidationError', null, (pass, enforce) => {
-    pass('IsFalse', 'Should Fail', () => false);
-    pass('IsTrue', 'Should Pass', () => true);
+const oneValidationError = passable('oneValidationError', null, (test, enforce) => {
+    test('IsFalse', 'Should Fail', () => false);
+    test('IsTrue', 'Should Pass', () => true);
 });
 
-const noValidationErrors = passable('noValidationErrors', null, (pass, enforce) => {
-    pass('IsTrue', 'Should Pass', () => true);
-    pass('IsTrue', 'ShouldPass', () => true);
+const noValidationErrors = passable('noValidationErrors', null, (test, enforce) => {
+    test('IsTrue', 'Should Pass', () => true);
+    test('IsTrue', 'ShouldPass', () => true);
 });
 
-const failSecondTest = passable('failSecondTest', null, (pass, enforce) => {
-    pass('FirstTest', 'Should Pass ', () => true);
-    pass('SecondTest', 'Should Fail', () => false);
-    pass('ThirdTest', 'Should Pass', () => true);
+const failSecondTest = passable('failSecondTest', null, (test, enforce) => {
+    test('FirstTest', 'Should Pass ', () => true);
+    test('SecondTest', 'Should Fail', () => false);
+    test('ThirdTest', 'Should Pass', () => true);
 });
 
 describe('Test passable\'s api ', () => {
