@@ -26,10 +26,10 @@ class Passable {
     }
 
     test = (fieldName: string, statement: string, test: TestFn, severity: Severity) => {
-        const { only, not }: { [filter: string]: Set<string>} = this.specific;
-        const notInOnly: boolean = only.size > 0 && !only.has(fieldName);
+        const { only, not }: SpecificObject = this.specific;
+        const notInOnly: boolean | void = only && !only[fieldName];
 
-        if (notInOnly || not.has(fieldName)) {
+        if (notInOnly || (not && not[fieldName])) {
             this.res.addToSkipped(fieldName);
             return;
         }

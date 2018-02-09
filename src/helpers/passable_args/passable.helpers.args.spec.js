@@ -32,8 +32,6 @@ describe('Test Passable arguments logic', () => {
         expect(value).to.deep.equal({
             tests: noop,
             specific: {
-                only: new Set(),
-                not: new Set()
             }
         });
     });
@@ -42,8 +40,9 @@ describe('Test Passable arguments logic', () => {
         const value = passableArgs(['noop'], noop);
         expect(value).to.deep.equal({
             specific: {
-                only: new Set(['noop']),
-                not: new Set()
+                only: {
+                    noop: true
+                }
             },
             tests: noop
         });
@@ -53,8 +52,9 @@ describe('Test Passable arguments logic', () => {
         const value = passableArgs(['Yo'], noop);
         expect(value).to.deep.equal({
             specific: {
-                only: new Set(['Yo']),
-                not: new Set()
+                only: {
+                    Yo: true
+                }
             },
             tests: noop
         });
@@ -63,10 +63,7 @@ describe('Test Passable arguments logic', () => {
     it('Should return tests, default on specific', () => {
         const value = passableArgs(null, noop);
         expect(value).to.deep.equal({
-            specific: {
-                only: new Set(),
-                not: new Set()
-            },
+            specific: {},
             tests: noop
         });
     });

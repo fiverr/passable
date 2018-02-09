@@ -1,23 +1,24 @@
 // @flow
 
 /**
- * Add array items or strings to set
+ * Add array items or strings to object
  *
  * @private
- * @param {Set} set
+ * @param {Object} group
  * @param {Array | String} items
- * @return {Set}
+ * @return {Object}
  */
-function addSpecificItemsToSet(set: Set<string>, items: Specific): Set<string> {
-    if (typeof items === 'string') {
-        return set.add(items);
+function addSpecificItemsToGroup(group: SpecificGroup, specific: Specific): SpecificGroup {
+    if (typeof specific === 'string') {
+        group[specific] = true;
+        return group;
     }
 
-    if (Array.isArray(items)) {
-        items.forEach(set.add, set);
+    if (Array.isArray(specific)) {
+        specific.forEach((field) => group[field] = true);
     }
 
-    return set;
+    return group;
 }
 
 /**
@@ -28,10 +29,7 @@ function addSpecificItemsToSet(set: Set<string>, items: Specific): Set<string> {
  */
 export default function buildSpecificObject(specific: Specific = []): SpecificObject {
 
-    const result: SpecificObject = {
-        only: new Set(),
-        not: new Set()
-    };
+    const result: SpecificObject = {};
 
     if (!specific) { return result; }
 
@@ -39,16 +37,21 @@ export default function buildSpecificObject(specific: Specific = []): SpecificOb
         typeof specific === 'string'
         || Array.isArray(specific)
     ) {
-        addSpecificItemsToSet(result.only, specific);
+        if (specific.length === 0) { return result; }
+
+        result.only = {};
+        addSpecificItemsToGroup(result.only, specific);
         return result;
     }
 
     if (specific.only) {
-        addSpecificItemsToSet(result.only, specific.only);
+        result.only = {};
+        addSpecificItemsToGroup(result.only, specific.only);
     }
 
     if (specific.not) {
-        addSpecificItemsToSet(result.not, specific.not);
+        result.not = {};
+        addSpecificItemsToGroup(result.not, specific.not);
     }
 
     return result;

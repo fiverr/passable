@@ -6,10 +6,7 @@ import { expect } from 'chai';
 describe('Test buildSpecificObject function', () => {
     describe('Test default value fallback', () => {
 
-        const defaultObject = {
-            only: new Set(),
-            not: new Set()
-        };
+        const defaultObject = {};
 
         it('Should return default object when no args passed', () => {
             expect(buildSpecificObject()).to.deep.equal(defaultObject);
@@ -38,15 +35,18 @@ describe('Test buildSpecificObject function', () => {
     describe('Test legacy api', () => {
         it('Should store array values in `only`', () => {
             expect(buildSpecificObject(['field_1', 'field_2'])).to.deep.equal({
-                only: new Set(['field_1', 'field_2']),
-                not: new Set()
+                only: {
+                    field_1: true,
+                    field_2: true
+                }
             });
         });
 
         it('Should store string value in `only`', () => {
             expect(buildSpecificObject('field_1')).to.deep.equal({
-                only: new Set(['field_1']),
-                not: new Set()
+                only: {
+                    field_1: true
+                }
             });
         });
     });
@@ -56,8 +56,10 @@ describe('Test buildSpecificObject function', () => {
             expect(buildSpecificObject({
                 only: ['f1', 'f2']
             })).to.deep.equal({
-                only: new Set(['f1', 'f2']),
-                not: new Set()
+                only: {
+                    f1: true,
+                    f2: true
+                }
             });
         });
 
@@ -65,8 +67,10 @@ describe('Test buildSpecificObject function', () => {
             expect(buildSpecificObject({
                 not: ['f1', 'f2']
             })).to.deep.equal({
-                only: new Set(),
-                not: new Set(['f1', 'f2'])
+                not: {
+                    f1: true,
+                    f2: true
+                }
             });
         });
 
@@ -75,8 +79,14 @@ describe('Test buildSpecificObject function', () => {
                 only: ['f1', 'f2'],
                 not: ['f3', 'f4']
             })).to.deep.equal({
-                only: new Set(['f1', 'f2']),
-                not: new Set(['f3', 'f4'])
+                only: {
+                    f1: true,
+                    f2: true
+                },
+                not: {
+                    f3: true,
+                    f4: true
+                }
             });
         });
 
@@ -84,8 +94,9 @@ describe('Test buildSpecificObject function', () => {
             expect(buildSpecificObject({
                 only: 'f1'
             })).to.deep.equal({
-                only: new Set(['f1']),
-                not: new Set()
+                only: {
+                    f1: true
+                }
             });
         });
 
@@ -93,8 +104,9 @@ describe('Test buildSpecificObject function', () => {
             expect(buildSpecificObject({
                 not: 'f1'
             })).to.deep.equal({
-                only: new Set(),
-                not: new Set(['f1'])
+                not: {
+                    f1:true
+                }
             });
         });
 
@@ -103,8 +115,12 @@ describe('Test buildSpecificObject function', () => {
                 only: 'f1',
                 not: 'f3'
             })).to.deep.equal({
-                only: new Set(['f1']),
-                not: new Set(['f3'])
+                only: {
+                    f1: true
+                },
+                not: {
+                    f3: true
+                }
             });
         });
     });
