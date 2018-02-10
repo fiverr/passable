@@ -16,12 +16,6 @@ class Enforce {
 
         this.boundRules = {};
 
-        Object.keys(runners).forEach((group: string) => {
-            this.boundRules[group] = function(value: AnyValue, tests: CompoundTestObject) {
-                return compound.call(this, value, group, tests, allRules);
-            };
-        });
-
         return this.enforce;
     }
 
@@ -30,11 +24,18 @@ class Enforce {
         return single.call(ctx, value, this.allRules[rule], ...args);
     }
 
+    runCompound(ctx: EnforceProxy, value: AnyValue, group: string, tests: CompoundTestObject) {
+        return compound.call(ctx, value, group, tests, this.allRules);
+    }
+
     enforce = (value: AnyValue) => {
         const proxy: EnforceProxy = new Proxy(this.boundRules, {
             get: (boundRules, rule) => {
                 const ruleUsed: ProxiedRule = boundRules[rule];
-                if (boundRules.hasOwnProperty(rule)) {
+
+                if (runners.hasOwnProperty(rule)) {
+                    return (tests) => this.runCompound(proxy, value, rule, tests);
+                } else if (boundRules.hasOwnProperty(rule)) {
                     return (...args) => ruleUsed.call(proxy, value, ...args);
                 } else if (this.allRules.hasOwnProperty(rule)) {
                     return (...args) => this.runSingle(proxy, rule, value, ...args);

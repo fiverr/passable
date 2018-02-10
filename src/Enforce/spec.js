@@ -19,11 +19,6 @@ describe('Test Passable\'s enforce function', () => {
         allRules.forEach((rule) => expect(en[rule]).to.be.a('function'));
     });
 
-    it('Enforce constructor should return a proxy object', () => {
-        const enforce = new Enforce();
-        expect(enforce instanceof Proxy).to.equal(true);
-    });
-
     describe('Test custom rule extensions', () => {
 
         let enforce;
