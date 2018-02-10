@@ -1,6 +1,6 @@
 'use strict';
 
-import { enforce } from './index';
+import Enforce, { enforce } from './index';
 import rules from './rules';
 import runners from './runners';
 import { expect } from 'chai';
@@ -17,6 +17,49 @@ describe('Test Passable\'s enforce function', () => {
     it('Should expose rules as functions', () => {
         const en = enforce();
         allRules.forEach((rule) => expect(en[rule]).to.be.a('function'));
+    });
+
+    it('Enforce constructor should return a proxy object', () => {
+        const enforce = new Enforce();
+        expect(enforce instanceof Proxy).to.equal(true);
+    });
+
+    describe('Test custom rule extensions', () => {
+
+        let enforce;
+
+        beforeEach(() => {
+            enforce = new Enforce({
+                isImpossible: (v) => !!v.match(/impossible/i),
+                endsWith: (v, arg1) => v.slice(-arg1.length) === arg1
+            });
+        });
+
+        it('Should throw on failing custom rule in compound test', () => {
+            const t = () => enforce('The name is Snowball').allOf({ endsWith: 'Snuffles' });
+            expect(t).to.throw(Error);
+        });
+
+        it('Should throw on failing custom rule in compound test', () => {
+            const t = () => enforce('impossible').noneOf({ isImpossible: null });
+            expect(t).to.throw(Error);
+        });
+
+        it('Should throw on failing custom rule in regular test', () => {
+            const t = () => enforce('The name is Snowball').endsWith('Snuffles');
+            expect(t).to.throw(Error);
+        });
+
+        it('Should return silently for custom rule in compound test', () => {
+            enforce('The name is Snowball').anyOf({
+                endsWith: 'Snowball',
+                isImpossible: null
+            });
+        });
+
+        it('Should return silently for custom rule in regular test', () => {
+            enforce('Impossible! The name is Snowball').endsWith('Snowball').isImpossible();
+        });
     });
 
     describe('Test function chaining', () => {
@@ -61,8 +104,6 @@ describe('Test Passable\'s enforce function', () => {
         expect(noneOf).to.throw(Error);
         expect(isNumber).to.throw(Error);
     });
-
-
 });
 
 describe('Test Enforce rules', () => {
