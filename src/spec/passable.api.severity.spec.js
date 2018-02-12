@@ -1,6 +1,6 @@
 'use strict';
 
-import passable from '../index.js';
+import passable, { WARN } from '../index.js';
 import { expect } from 'chai';
 
 describe('Test warn flag', () => {
@@ -20,14 +20,14 @@ describe('Test warn flag', () => {
 // Actual test data
 
 const warnPass = passable('WarnPass', null, (test, enforce) => {
-        test('WarnPass', 'should warn', 'warn', () => false);
+        test('WarnPass', 'should warn', () => false, WARN);
     }),
     warnFail = passable('WarnFail', null, (test, enforce) => {
-        test('Warn', 'should warn', 'warn', () => false);
+        test('Warn', 'should warn', () => false, WARN);
         test('Fail', 'should Fail', () => false);
     }),
     fail = passable('Fail', null, (test, enforce) => {
-        test('Warn', 'should not warn', 'warn', () => true);
+        test('Warn', 'should not warn', () => true, WARN);
         test('Fail', 'should Fail', () => false);
     });
 

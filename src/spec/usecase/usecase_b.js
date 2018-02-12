@@ -1,4 +1,5 @@
 export default (passable) => {
+    const WARN = passable.WARN;
 
     const response = passable('case_b', ['field_1', 'field_4'], (test, enforce) => {
         test('field_1', 'should be a string of 5 chars', () => {
@@ -21,11 +22,11 @@ export default (passable) => {
             });
         });
 
-        test('field_4', 'should be either "a" or "b"', 'warn', () => {
+        test('field_4', 'should be either "a" or "b"', () => {
             enforce('c').allOf({
                 inside: ['a', 'b']
             });
-        });
+        }, WARN);
 
         test('field_5', 'Must either be a number or a string. Always smaller than 5', () => {
             enforce('log').anyOf({
