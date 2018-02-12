@@ -34,7 +34,7 @@ declare type EnforceSelf = {
 declare type Severity = 'warn' | 'fail';
 declare type Enforce = (AnyValue, Rules) => EnforceSelf;
 declare type TestsWrapper = (test: TestProvider, enforce: Enforce) => void;
-declare type TestProvider = (fieldName: string, statemenpt: string, ...args: [Severity, TestFn]) => void;
+declare type TestProvider = (fieldName: string, statemenpt: string, test: TestFn, severity: Severity) => void;
 declare type TestFn = () => void;
 
 declare type PassableRuntime = {
@@ -51,4 +51,8 @@ declare type ValidityObject = {
 declare type SpecificObject = {
     only: Set<string>,
     not: Set<string>
+};
+
+declare type ErrorAndWarningObject = {
+    [name: string]: Array<string>
 };

@@ -75,4 +75,22 @@ describe('Test Passable\'s exports', () => {
             expect(passableExports.validate.name).to.equal('validate');
         });
     });
+
+    describe('Test severity imports', () => {
+        it('WARN should be assigned to passable (commonjs)', () => {
+            expect(passableExports.WARN).to.equal('warn');
+        });
+
+        it('WARN should be assigned to passable (es6 imports)', () => {
+            expect(passable.WARN).to.equal('warn');
+        });
+
+        it('FAIL should be assigned to passable (commonjs)', () => {
+            expect(passableExports.FAIL).to.equal('fail');
+        });
+
+        it('FAIL should be assigned to passable (es6 imports)', () => {
+            expect(passable.FAIL).to.equal('fail');
+        });
+    });
 });

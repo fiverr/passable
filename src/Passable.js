@@ -6,8 +6,6 @@ import ResultObject from './result_object';
 import { passableArgs, root, runtimeError, buildSpecificObject } from 'Helpers';
 import { Errors } from 'Constants';
 
-const FAIL: Severity = 'fail';
-
 class Passable {
 
     specific: SpecificObject;
@@ -31,7 +29,7 @@ class Passable {
         return this.res;
     }
 
-    test = (fieldName: string, statement: string, ...args: [Severity, TestFn]) => {
+    test = (fieldName: string, statement: string, test: TestFn, severity: Severity) => {
         const { only, not }: { [filter: string]: Set<string>} = this.specific;
         const notInOnly: boolean = only.size > 0 && !only.has(fieldName);
 
@@ -40,21 +38,15 @@ class Passable {
             return;
         }
 
-        const lastIndex: number = args.length - 1;
-        let callback: Function;
+        this.res.initFieldCounters(fieldName);
 
-        if (typeof args[lastIndex] === 'function') {
-            callback = args[lastIndex];
-        } else {
+        if (typeof test !== 'function') {
             return;
         }
 
-        this.res.initFieldCounters(fieldName);
-
-        const isValid: boolean = testRunner(callback);
+        const isValid: boolean = testRunner(test);
 
         if (!isValid) {
-            const severity: Severity = lastIndex !== 0 ? args[0] : FAIL;
             this.res.fail(fieldName, statement, severity);
         }
 

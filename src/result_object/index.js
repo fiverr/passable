@@ -1,9 +1,8 @@
 // @flow
-import fail from './helpers/fail';
 
-declare type ErrorAndWarningObject = {
-    [name: string]: Array<string>
-};
+export const WARN: Severity = 'warn';
+export const FAIL: Severity = 'fail';
+const severities: Array<Severity> = [WARN, FAIL];
 
 /** Class representing validation state. */
 class ResultObject {
@@ -23,7 +22,6 @@ class ResultObject {
         this.validationErrors = {};
         this.validationWarnings = {};
         this.skipped = [];
-        return this;
     }
 
     /**
@@ -58,14 +56,48 @@ class ResultObject {
     }
 
     /**
+     * Bumps field's warning counts and adds warning string
+     * @param {string} fieldName - The name of the field.
+     * @param {string} statement - The error string to add to the object.
+     */
+    bumpTestWarning(fieldName: string, statement: string) {
+        this.hasValidationWarnings = true;
+        this.validationWarnings[fieldName] = this.validationWarnings[fieldName] || [];
+        this.validationWarnings[fieldName].push(statement);
+        this.warnCount++;
+        this.testsPerformed[fieldName].warnCount++;
+    }
+
+    /**
+     * Bumps field's error counts and adds error string
+     * @param {string} fieldName - The name of the field.
+     * @param {string} statement - The error string to add to the object.
+     */
+    bumpTestError(fieldName: string, statement: string) {
+        this.hasValidationErrors = true;
+        this.validationErrors[fieldName] = this.validationErrors[fieldName] || [];
+        this.validationErrors[fieldName].push(statement);
+        this.failCount++;
+        this.testsPerformed[fieldName].failCount++;
+    }
+
+    /**
      * Fails a field and updates object accordingly
      * @param {string} fieldName - The name of the field.
      * @param {string} statement - The error string to add to the object.
      * @param {string} severity - Whether it is a `fail` or `warn` test.
-     * @return {Function} Calling a helper function
+     * @return {Object} Current instance
      */
     fail(fieldName: string, statement: string, severity: Severity) {
-        return fail.call(this, fieldName, statement, severity);
+        if (!this.testsPerformed[fieldName]) { return this; }
+
+        const selectedSeverity: Severity = severity && severities.includes(severity) ? severity : FAIL;
+
+        selectedSeverity === WARN
+            ? this.bumpTestWarning(fieldName, statement)
+            : this.bumpTestError(fieldName, statement);
+
+        return this;
     }
 
     /**
