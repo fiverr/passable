@@ -25,3 +25,11 @@ The basic notion behind Passable is that you would want to structure your data m
 The other use of Passable is server side validations. Since most of the times we perform validations, we send the data back to the server, we would like to perform the tests there as well. This causes a great deal of confusion and error. It is hard to keep the validations in the server and the client synced, so if we update a validation in the client side, or the server, it is easy to neglect and change it on the other side as well. Even if we do keep them up to date, it is easy, especially if the server and the client are written in different languages, to have a slightly different interpretation of the logic on each end, which, eventually, causes inconsistencies and bugs.
 
 Instead, with Passable, you could just as easily set up a data model validations server that would run the same exact validation code that runs in the browser. No duplication, no sync problems.
+
+## Contributers
+Thanks goes to these people:
+* [Evyatar Alush (ealush)](https://github.com/ealush)
+* [Ronen Elster (ronen-e)](https://github.com/ronen-e)
+* [Sahar Brodbeker (sahariko)](https://github.com/sahariko)
+* [Omri Lotan (omrilotan)](https://github.com/omrilotan)
+* [Netanel Ben (netanelben)](https://github.com/netanelben)

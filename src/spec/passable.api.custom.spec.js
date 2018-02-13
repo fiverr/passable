@@ -13,7 +13,7 @@ describe('Test rule extensions', () => {
     });
 });
 
-const noSnuffles = passable('ExtendTests', (pass, enforce) => {
+const noSnuffles = passable('ExtendTests', null, (pass, enforce) => {
     pass('NoSnuffles', 'should pass', () => (
 
         enforce('The name is Snowball').allOf({

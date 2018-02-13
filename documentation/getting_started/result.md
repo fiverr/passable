@@ -27,6 +27,7 @@
 
 ## `getErrors` and `getWarnings` functions
 > since 5.10.0
+
 You can easily traverse the object tree to acess the field errors and warnings, but when accessing many fields, it can get pretty messy:
 ```js
 resultObject.validationErrors.myField && resultObject.validationErrors.myField[0];

@@ -3,17 +3,17 @@
 import passable from '../index.js';
 import { expect } from 'chai';
 
-const oneValidationError = passable('oneValidationError', (pass, enforce) => {
+const oneValidationError = passable('oneValidationError', null, (pass, enforce) => {
     pass('IsFalse', 'Should Fail', () => false);
     pass('IsTrue', 'Should Pass', () => true);
 });
 
-const noValidationErrors = passable('noValidationErrors', (pass, enforce) => {
+const noValidationErrors = passable('noValidationErrors', null, (pass, enforce) => {
     pass('IsTrue', 'Should Pass', () => true);
     pass('IsTrue', 'ShouldPass', () => true);
 });
 
-const failSecondTest = passable('failSecondTest', (pass, enforce) => {
+const failSecondTest = passable('failSecondTest', null, (pass, enforce) => {
     pass('FirstTest', 'Should Pass ', () => true);
     pass('SecondTest', 'Should Fail', () => false);
     pass('ThirdTest', 'Should Pass', () => true);
@@ -21,9 +21,13 @@ const failSecondTest = passable('failSecondTest', (pass, enforce) => {
 
 describe('Test passable\'s api ', () => {
     it('Should throw a TypeError for a non-string form name', () => {
-        expect(passable.bind(null, 1)).to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected number, expected string.");
-        expect(passable.bind(null, {})).to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected object, expected string.");
-        expect(passable.bind(null, passable)).to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected function, expected string.");
+        const noop = () => null;
+        expect(passable.bind(null, 1, null, noop))
+            .to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'number', expected string.");
+        expect(passable.bind(null, {}, null, noop))
+            .to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'object', expected string.");
+        expect(passable.bind(null, noop, null, noop))
+            .to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'function', expected string.");
     });
 
     it('Should have one validation error', () => {
