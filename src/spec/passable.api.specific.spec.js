@@ -116,7 +116,7 @@ describe('Test running specific tests', () => {
 });
 
 function specificTests(specific) {
-    return passable('specificTests', specific, (test, enforce) => {
+    return passable('specificTests', specific, (test) => {
         test('First', 'should pass', () => true);
         test('Second', 'should pass', () => true);
         test('Third', 'should fail', () => false);

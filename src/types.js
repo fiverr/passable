@@ -26,8 +26,7 @@ declare type NumStrBool = number | string | boolean;
 declare type MapType = Map<mixed, mixed>;
 
 declare type Severity = 'warn' | 'fail';
-declare type Enforce = (AnyValue, Rules) => EnforceSelf;
-declare type TestsWrapper = (test: TestProvider,) => void;
+declare type TestsWrapper = (test: TestProvider) => void;
 declare type TestProvider = (fieldName: string, statemenpt: string, test: TestFn, severity: Severity) => void;
 declare type TestFn = () => void;
 
