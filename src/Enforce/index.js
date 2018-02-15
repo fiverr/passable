@@ -1,37 +1,35 @@
 // @flow
 
-import rules from './rules';
+import baseRules from './rules';
 import runners from './runners';
 import { compound, single } from './chainables';
 
 class Enforce {
     enforce: EnforceInstance;
-    allRules: EnforceRules;
+    rules: EnforceRules;
 
-    constructor(custom: EnforceRules = {}) {
-
-        const allRules: EnforceRules = Object.assign({}, rules, custom);
-        this.allRules = allRules;
+    constructor(customRules: EnforceRules = {}) {
+        this.rules = Object.assign({}, baseRules, customRules);
 
         return this.enforce;
     }
 
     enforce = (value: AnyValue) => {
-        const proxy: EnforceRules = new Proxy(this.allRules, {
-            get: (allRules, fnName) => {
+        const proxy: EnforceRules = new Proxy(this.rules, {
+            get: (rules, fnName) => {
 
-                if (runners.hasOwnProperty(fnName)) {
-                    return (tests) => {
-                        compound(allRules, runners[fnName], value, tests);
+                if (rules.hasOwnProperty(fnName)) {
+                    return (...args) => {
+                        single(rules[fnName], value, ...args);
                         return proxy;
                     };
-                } else if (allRules.hasOwnProperty(fnName)) {
-                    return (...args) => {
-                        single(allRules[fnName], value, ...args);
+                } else if (runners.hasOwnProperty(fnName)) {
+                    return (tests) => {
+                        compound(rules, runners[fnName], value, tests);
                         return proxy;
                     };
                 } else {
-                    return allRules[fnName];
+                    return rules[fnName];
                 }
             }
         });
