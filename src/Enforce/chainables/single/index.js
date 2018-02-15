@@ -6,18 +6,17 @@ import { runtimeError } from 'Helpers';
 /**
  * Run a single rule against enforced value (e.g. `isNumber()`)
  *
- * @param {string} rule - name of rule to run
- * @param {array} spread list of arguments sent from consumer
- * @return {object} enforce object
+ * @param {Function} rule - rule to run
+ * @param {Any} value
+ * @param {Array} args list of arguments sent from consumer
  */
-function single(value: AnyValue, rule: Function, ...args: Array<mixed>): EnforceProxy {
-    const isValid: boolean = rule(value, ...args);
+function single(rule: EnforceRule, value: AnyValue, ...args: RuleArgs): void {
 
-    if (isValid !== true) {
+    if (typeof rule !== 'function') { return; }
+
+    if (rule(value, ...args) !== true) {
         throw runtimeError(Errors.ENFORCE_FAILED, rule.name, typeof value);
     }
-
-    return this;
 }
 
 export default single;

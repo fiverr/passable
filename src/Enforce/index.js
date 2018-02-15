@@ -17,26 +17,22 @@ class Enforce {
         return this.enforce;
     }
 
-    runSingle(ctx: EnforceProxy, rule: string, value: AnyValue, ...args: AnyValue) {
-        if (typeof this.allRules[rule] !== 'function') { return; }
-        return single.call(ctx, value, this.allRules[rule], ...args);
-    }
-
-    runCompound(ctx: EnforceProxy, value: AnyValue, group: string, tests: CompoundTestObject) {
-        return compound.call(ctx, value, group, tests, this.allRules);
-    }
-
     enforce = (value: AnyValue) => {
         const proxy: EnforceProxy = new Proxy(this.allRules, {
-            get: (allRules, rule) => {
-                const ruleUsed: ProxiedRule = allRules[rule];
+            get: (allRules, fnName) => {
 
-                if (runners.hasOwnProperty(rule)) {
-                    return (tests) => this.runCompound(proxy, value, rule, tests);
-                } else if (allRules.hasOwnProperty(rule)) {
-                    return (...args) => this.runSingle(proxy, rule, value, ...args);
+                if (runners.hasOwnProperty(fnName)) {
+                    return (tests) => {
+                        compound(allRules, runners[fnName], value, tests);
+                        return proxy;
+                    };
+                } else if (allRules.hasOwnProperty(fnName)) {
+                    return (...args) => {
+                        single(allRules[fnName], value, ...args);
+                        return proxy;
+                    };
                 } else {
-                    return allRules[rule];
+                    return allRules[fnName];
                 }
             }
         });

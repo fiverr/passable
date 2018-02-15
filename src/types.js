@@ -2,14 +2,6 @@
 
 declare type AnyValue = any; // eslint-disable-line flowtype/no-weak-types
 
-declare type Rules = {
-    [name: string]: Function
-};
-
-declare type CompoundTestObject = {
-    [rule: string]: AnyValue
-};
-
 declare type ArrayOrStringOfArrays = Array<string> | string;
 
 declare type Specific = Array<string> | string | {
@@ -53,7 +45,13 @@ declare type EnforceRules = {
     [rule: string]: EnforceRule
 };
 declare type EnforceProxy = {
-    [ruleName: string]: (value: AnyValue, ...args: AnyValue) => EnforceProxy;
+    [ruleName: string]: EnforceRule;
 };
-declare type ProxiedRule = (value: AnyValue, ...args: AnyValue) => EnforceProxy;
 declare type EnforceFunc = (AnyValue) => EnforceProxy;
+
+declare type RuleArgs = Array<AnyValue>;
+declare type Runner = (value: AnyValue, tests: CompoundTestObject, rules: EnforceRules) => boolean;
+
+declare type CompoundTestObject = {
+    [rule: string]: AnyValue
+};

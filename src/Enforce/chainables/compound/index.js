@@ -1,23 +1,22 @@
 // @flow
-import runners from '../../runners';
 import { Errors } from 'Constants';
 import { runtimeError } from 'Helpers';
 
 /**
  * Run group of tests using test runner. (e.g. `anyOf`)
  *
- * @param {string} group - name of test runner
- * @param {object} tests
+ * @param {Object} allRules
+ * @param {Function} runner - test runner
+ * @param {Any} value
+ * @param {Object} tests
  * @return {object} enforce object
  */
-function compound(value: AnyValue, group: string, tests: CompoundTestObject, allRules: EnforceRules = {}): EnforceProxy {
-    const isValid: boolean = runners[group](value, tests, allRules);
+function compound(allRules: EnforceRules, runner: Runner, value: AnyValue, tests: CompoundTestObject): void {
+    if (typeof runner !== 'function') { return; }
 
-    if (isValid !== true) {
-        throw runtimeError(Errors.ENFORCE_FAILED, group, typeof value);
+    if (runner(value, tests, allRules) !== true) {
+        throw runtimeError(Errors.ENFORCE_FAILED, runner.name, typeof value);
     }
-
-    return this;
 }
 
 export default compound;
