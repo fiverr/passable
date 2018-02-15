@@ -5,8 +5,7 @@ import runners from './runners';
 import { compound, single } from './chainables';
 
 class Enforce {
-    boundRules: EnforceProxy;
-    enforce: EnforceFunc;
+    enforce: EnforceInstance;
     allRules: EnforceRules;
 
     constructor(custom: EnforceRules = {}) {
@@ -18,7 +17,7 @@ class Enforce {
     }
 
     enforce = (value: AnyValue) => {
-        const proxy: EnforceProxy = new Proxy(this.allRules, {
+        const proxy: EnforceRules = new Proxy(this.allRules, {
             get: (allRules, fnName) => {
 
                 if (runners.hasOwnProperty(fnName)) {
@@ -40,7 +39,7 @@ class Enforce {
     }
 }
 
-const enforce: EnforceFunc = new Enforce({});
+const enforce: EnforceInstance = new Enforce({});
 
 export default Enforce;
 
