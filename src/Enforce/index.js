@@ -1,15 +1,14 @@
 // @flow
 
-import baseRules from './rules';
-import runners from './runners';
-import { compound, single } from './chainables';
+import * as runnables from './runnables';
+import * as runners from './runners';
 
 class Enforce {
     enforce: EnforceInstance;
     rules: EnforceRules;
 
     constructor(customRules: EnforceRules = {}) {
-        this.rules = Object.assign({}, baseRules, customRules);
+        this.rules = Object.assign({}, runnables.rules, customRules);
 
         return this.enforce;
     }
@@ -20,12 +19,12 @@ class Enforce {
 
                 if (rules.hasOwnProperty(fnName)) {
                     return (...args) => {
-                        single(rules[fnName], value, ...args);
+                        runners.rule(rules[fnName], value, ...args);
                         return proxy;
                     };
-                } else if (runners.hasOwnProperty(fnName)) {
+                } else if (runnables.compounds.hasOwnProperty(fnName)) {
                     return (tests) => {
-                        compound(rules, runners[fnName], value, tests);
+                        runners.compound(rules, runnables.compounds[fnName], value, tests);
                         return proxy;
                     };
                 } else {

@@ -1,17 +1,16 @@
 'use strict';
 
 import Enforce, { enforce } from './index';
-import rules from './rules';
-import runners from './runners';
+import { rules, compounds } from './runnables';
 import { expect } from 'chai';
 
 const allRules = Object.keys(rules);
-const allRunners = Object.keys(runners);
+const allCompounds = Object.keys(compounds);
 
 describe('Test Passable\'s enforce function', () => {
     it('Should expose all API functions', () => {
         const en = enforce();
-        allRunners.forEach((runner) => expect(en[runner]).to.be.a('function'));
+        allCompounds.forEach((compound) => expect(en[compound]).to.be.a('function'));
     });
 
     it('Should expose rules as functions', () => {
@@ -58,9 +57,9 @@ describe('Test Passable\'s enforce function', () => {
     });
 
     describe('Test function chaining', () => {
-        it('Should allow chaining all runners after allOf if not thrown', () => {
+        it('Should allow chaining all compounds after allOf if not thrown', () => {
             const allOf = enforce(1).allOf({ largerThan: 0 });
-            allRunners.forEach((runner) => expect(allOf[runner]).to.be.a('function'));
+            allCompounds.forEach((compound) => expect(allOf[compound]).to.be.a('function'));
         });
 
         it('Should allow chaining all rules after allOf if not thrown', () => {
@@ -68,9 +67,9 @@ describe('Test Passable\'s enforce function', () => {
             allRules.forEach((rule) => expect(allOf[rule]).to.be.a('function'));
         });
 
-        it('Should allow chaining all runners after anyOf if not thrown', () => {
+        it('Should allow chaining all compounds after anyOf if not thrown', () => {
             const anyOf = enforce(1).anyOf({ largerThan: 0 });
-            allRunners.forEach((runner) => expect(anyOf[runner]).to.be.a('function'));
+            allCompounds.forEach((compound) => expect(anyOf[compound]).to.be.a('function'));
         });
 
         it('Should allow chaining all rules after anyOf if not thrown', () => {
@@ -78,9 +77,9 @@ describe('Test Passable\'s enforce function', () => {
             allRules.forEach((rules) => expect(anyOf[rules]).to.be.a('function'));
         });
 
-        it('Should allow chaining all runners after noneOf if not thrown', () => {
+        it('Should allow chaining all compounds after noneOf if not thrown', () => {
             const noneOf = enforce(1).noneOf({ largerThan: 2 });
-            allRunners.forEach((runner) => expect(noneOf[runner]).to.be.a('function'));
+            allCompounds.forEach((compound) => expect(noneOf[compound]).to.be.a('function'));
         });
 
         it('Should allow chaining all rules after noneOf if not thrown', () => {
@@ -103,7 +102,7 @@ describe('Test Passable\'s enforce function', () => {
 
 describe('Test Enforce rules', () => {
     describe('Test size rules', () => {
-        it('Should give back correct responses for size rules inside runners', () => {
+        it('Should give back correct responses for size rules inside compounds', () => {
             const res1 = () => enforce(5).allOf({ largerThan: 4 }),
                 res2 = () => enforce([]).allOf({ largerThan: 4 }),
                 res3 = () => enforce(5).allOf({ smallerThan: 4 }),
@@ -136,7 +135,7 @@ describe('Test Enforce rules', () => {
     });
 
     describe('Test lang rules', () => {
-        it('Should give back correct responses for lang rules inside runners', () => {
+        it('Should give back correct responses for lang rules inside compounds', () => {
             const res1 = () => enforce(5).allOf({ isArray: true }),
                 res2 = () => enforce([]).allOf({ isArray: true }),
                 res3 = () => enforce([]).allOf({ isArray: false }),
@@ -168,7 +167,7 @@ describe('Test Enforce rules', () => {
     });
 
     describe('Test content rules', () => {
-        it('Should give back correct responses for content rules inside runners', () => {
+        it('Should give back correct responses for content rules inside compounds', () => {
             const res1 = () => enforce('hello').allOf({ matches: /^[a-zA-Z]{4,7}$/ }),
                 res2 = () => enforce('foo').allOf({ matches: /^[a-zA-Z]{4,7}$/ }),
                 res3 = () => enforce(44).allOf({ matches: '[0-9]' }),

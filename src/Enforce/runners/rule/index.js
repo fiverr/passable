@@ -10,7 +10,7 @@ import { runtimeError } from 'Helpers';
  * @param {Any} value
  * @param {Array} args list of arguments sent from consumer
  */
-function single(rule: EnforceRule, value: AnyValue, ...args: RuleArgs): void {
+function rule(rule: EnforceRule, value: AnyValue, ...args: RuleArgs): void {
 
     if (typeof rule !== 'function') { return; }
 
@@ -19,4 +19,4 @@ function single(rule: EnforceRule, value: AnyValue, ...args: RuleArgs): void {
     }
 }
 
-export default single;
+export default rule;
