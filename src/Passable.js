@@ -1,30 +1,26 @@
 // @flow
 
-import enforce from './enforce';
 import testRunner from './test_runner';
 import ResultObject from './result_object';
-import { passableArgs, root, runtimeError, buildSpecificObject } from 'Helpers';
+import { passableArgs, runtimeError, buildSpecificObject } from 'Helpers';
 import { Errors } from 'Constants';
 
 class Passable {
 
     specific: SpecificObject;
-    custom: Rules;
     res: ResultObject;
     test: TestProvider;
 
-    constructor(name: string, specific: Specific, tests: TestsWrapper, custom?: Rules) {
+    constructor(name: string, specific: Specific, tests: TestsWrapper) {
         if (typeof name !== 'string') {
             throw runtimeError(Errors.INVALID_FORM_NAME, typeof name);
         }
-        const computedArgs: PassableRuntime = passableArgs(specific, tests, custom),
-            globalRules: Rules = root.customPassableRules || {};
+        const computedArgs: PassableRuntime = passableArgs(specific, tests);
 
         this.specific = computedArgs.specific;
-        this.custom = Object.assign({}, globalRules, computedArgs.custom);
         this.res = new ResultObject(name);
 
-        computedArgs.tests(this.test, (value) => enforce(value, this.custom));
+        computedArgs.tests(this.test);
 
         return this.res;
     }

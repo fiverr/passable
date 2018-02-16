@@ -1,8 +1,8 @@
 // @flow
 import compound from './compound';
-import single from './single';
+import rule from './rule';
 
 export {
     compound,
-    single
+    rule
 };

@@ -1,12 +1,17 @@
 export default (passable) => {
 
+    const Enforce = passable.Enforce;
+    const enforce = new Enforce({
+        stringEquals: (value, arg1) => typeof value === 'string' && arg1 === value
+    });
+
     /*
         Test cases:
             * chained Rules
             * Chained custom rules
     */
 
-    const response = passable('case_c', null, (test, enforce) => {
+    const response = passable('case_c', null, (test) => {
         test('field_1', 'should be a string of 5 chars', () => {
             enforce('hello').allOf({
                 sizeEquals: 5,
@@ -43,8 +48,6 @@ export default (passable) => {
                 largerThanOrEquals: 4
             });
         });
-    }, {
-        stringEquals: (value, arg1) => typeof value === 'string' && arg1 === value
     });
 
     const expect = {

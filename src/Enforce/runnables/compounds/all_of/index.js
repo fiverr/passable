@@ -1,7 +1,7 @@
 // @flow
 import run from '../run';
 
-export default function allOf(value: mixed, tests: CompoundTestObject, rules: Rules): boolean {
+export default function allOf(value: mixed, tests: CompoundTestObject, rules: EnforceRules): boolean {
 
     const validations: Array<string> = Object.keys(tests);
 
