@@ -2,34 +2,38 @@
 
 import testRunner from './test_runner';
 import ResultObject from './result_object';
-import { passableArgs, runtimeError, buildSpecificObject } from 'Helpers';
+import { runtimeError } from 'Helpers';
+import Specific from './Specific';
 import { Errors } from 'Constants';
 
 class Passable {
 
-    specific: SpecificObject;
+    specific: Specific;
     res: ResultObject;
     test: TestProvider;
 
-    constructor(name: string, specific: Specific, tests: TestsWrapper) {
+    constructor(name: string, specific: SpecificArgs, tests: TestsWrapper) {
+
         if (typeof name !== 'string') {
             throw runtimeError(Errors.INVALID_FORM_NAME, typeof name);
         }
-        const computedArgs: PassableRuntime = passableArgs(specific, tests);
 
-        this.specific = computedArgs.specific;
+        this.specific = new Specific(specific);
+
+        if (typeof tests !== 'function') {
+            throw runtimeError(Errors.MISSING_ARGUMENT_TESTS, typeof tests);
+        }
+
         this.res = new ResultObject(name);
 
-        computedArgs.tests(this.test);
+        tests(this.test);
 
         return this.res;
     }
 
     test = (fieldName: string, statement: string, test: TestFn, severity: Severity) => {
-        const { only, not }: { [filter: string]: Set<string>} = this.specific;
-        const notInOnly: boolean = only.size > 0 && !only.has(fieldName);
 
-        if (notInOnly || not.has(fieldName)) {
+        if (this.specific.excludes(fieldName)) {
             this.res.addToSkipped(fieldName);
             return;
         }

@@ -13,7 +13,6 @@ declare type ValidityObject = {
 
 // Passable
 declare type PassableRuntime = {
-    specific: SpecificObject,
     tests: TestsWrapper
 };
 
@@ -22,20 +21,25 @@ declare type testRunnerCallback = {
 } | void | null;
 
 // Passable: Specific
-declare type SpecificObject = {
-    only: Set<string>,
-    not: Set<string>
+declare type SpecificGroup = {
+    [name: string]: boolean
 };
 
-declare type Specific = Array<string> | string | {
-    only?: ArrayOrStringOfArrays,
-    not?: ArrayOrStringOfArrays
+declare type SpecificObject = {
+    only?: SpecificGroup,
+    not?: SpecificGroup
+};
+
+declare type SpecificField = Array<string> | string;
+declare type SpecificArgs = SpecificField | {
+    only: SpecificField,
+    not: SpecificField
 };
 
 // Passable: Result Object
 declare type ErrorAndWarningObject = {
     [name: string]: Array<string>
-};
+}
 
 // Test
 declare type TestsWrapper = (test: TestProvider) => void;
@@ -60,4 +64,4 @@ declare type EnforceRules = {
 declare type Runner = (value: AnyValue, tests: CompoundTestObject, rules: EnforceRules) => boolean;
 declare type CompoundTestObject = {
     [rule: string]: AnyValue
-};
+}
