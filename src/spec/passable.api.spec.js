@@ -20,16 +20,6 @@ const failSecondTest = passable('failSecondTest', null, (test) => {
 });
 
 describe('Test passable\'s api ', () => {
-    it('Should throw a TypeError for a non-string form name', () => {
-        const noop = () => null;
-        expect(passable.bind(null, 1, null, noop))
-            .to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'number', expected string.");
-        expect(passable.bind(null, {}, null, noop))
-            .to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'object', expected string.");
-        expect(passable.bind(null, noop, null, noop))
-            .to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'function', expected string.");
-    });
-
     it('Should have one validation error', () => {
         expect(oneValidationError.failCount).to.equal(1);
     });

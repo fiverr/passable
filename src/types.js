@@ -13,7 +13,6 @@ declare type ValidityObject = {
 
 // Passable
 declare type PassableRuntime = {
-    specific: SpecificObject,
     tests: TestsWrapper
 };
 
@@ -32,7 +31,7 @@ declare type SpecificObject = {
 };
 
 declare type SpecificField = Array<string> | string;
-declare type Specific = SpecificField | {
+declare type SpecificArgs = SpecificField | {
     only: SpecificField,
     not: SpecificField
 };
