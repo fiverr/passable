@@ -21,7 +21,7 @@ Use it like this:
 ```js
 import passable, { WARN, enforce } from 'passable';
 
-passable('WarnAndPass', [], (test) => {
+passable('WarnAndPass', (test) => {
     test('WarnMe', 'Should warn and not fail', () => {
         enforce(5).largerThan(500);
     }, WARN);

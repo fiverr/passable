@@ -1,7 +1,7 @@
 # Lean tests with the `validate` function
 > Since 5.10.0
 
-Along with the more verbose `Passable()` validation, passable supports a leaner syntax, aimed to bring Passable into less complex forms, where only one field is being validated, or that only a few rules are needed.
+Along with the more verbose `passable()` validation, passable supports a leaner syntax, aimed to bring Passable into less complex forms, where only one field is being validated, or that only a few rules are needed.
 
 ## Usage
 

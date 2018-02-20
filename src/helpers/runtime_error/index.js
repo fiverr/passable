@@ -7,7 +7,7 @@ function errorBuilder(functionName, errorMessage) {
 }
 
 function unexpectedArgs(type, name, position) {
-    return `Unexpected '${type}'. Expected \`${name}\` at position ${position}.`;
+    return `Unexpected '${type}'. Expected \`${name}\` at position ${position}. See documentation for more info.`;
 }
 
 function runtimeError(type: string, ...args: Array<string>) {
@@ -20,9 +20,9 @@ function runtimeError(type: string, ...args: Array<string>) {
             const val:string = Array.isArray(args[1]) ? JSON.stringify(args[1]) : args[1];
             return new TypeError(errorBuilder(args[0], `expected ${val} to be a ${args[2]}.`));
         case Errors.MISSING_ARGUMENT_TESTS:
-            return new TypeError(errorBuilder(passableConstructor, unexpectedArgs(args[0], 'tests', 2)));
-        case Errors.MISSING_ARGUMENT_SPECIFIC:
-            return new TypeError(errorBuilder(passableConstructor, unexpectedArgs(args[0], 'specific', 1)));
+            return new TypeError(errorBuilder(passableConstructor, unexpectedArgs(args[0], 'tests', 1)));
+        case Errors.UNEXPECTED_ARGUMENT_SPECIFIC:
+            return new TypeError(errorBuilder(passableConstructor, unexpectedArgs(args[0], 'specific', 2)));
         default:
             return new Error(errorBuilder('Passable', 'General exception.'));
     }

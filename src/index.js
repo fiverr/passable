@@ -5,8 +5,8 @@ import validate from './validate';
 import { WARN, FAIL } from './result_object';
 import { version } from '../version.json';
 
-function passable(name: string, specific: SpecificArgs, tests: TestsWrapper) {
-    return new Passable(name, specific, tests);
+function passable(name: string, tests: TestsWrapper, specific: ?SpecificArgs) {
+    return new Passable(name, tests, specific);
 }
 
 passable.VERSION = version;

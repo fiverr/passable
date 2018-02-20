@@ -9,7 +9,7 @@ describe('Test Specific class constructor', () => {
         const defaultObject = {};
 
         it('Should return default object when no args passed', () => {
-            expect(() => new Specific()).to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'undefined'. Expected `specific` at position 1.");
+            expect(new Specific()).to.deep.equal({});
         });
 
         it('Should return default object when specific is explicitly null', () => {
@@ -144,14 +144,6 @@ describe('Test `is` (specific) function', () => {
             expect(Specific.is({not: ''})).to.equal(true);
         });
 
-        it('Should return false for an Object without `not` or `only`', () => {
-            expect(Specific.is({})).to.equal(false);
-        });
-
-        it('Should return true for null', () => {
-            expect(Specific.is(null)).to.equal(true);
-        });
-
         it('Should return true for an array of strings', () => {
             expect(Specific.is(['a', 'b', 'c'])).to.equal(true);
         });
@@ -172,6 +164,18 @@ describe('Test `is` (specific) function', () => {
 
         it('Should return false for a boolean', () => {
             expect(Specific.is(true)).to.equal(false);
+        });
+
+        it('Should return false for an Object without `not` or `only`', () => {
+            expect(Specific.is({})).to.equal(false);
+        });
+
+        it('Should return false for null', () => {
+            expect(Specific.is(null)).to.equal(false);
+        });
+
+        it('Should return false for undefined', () => {
+            expect(Specific.is(null)).to.equal(false);
         });
     });
 });

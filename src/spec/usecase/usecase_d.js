@@ -6,7 +6,7 @@ export default (passable, enforce) => {
             * Import enforce directly from passable
     */
 
-    const response = passable('case_d', null, (test) => {
+    const response = passable('case_d', (test) => {
         test('field_1', 'hello should equal hello', () => {
             enforce('hello').allOf({
                 stringEquals: (value) => typeof value === 'string' && 'hello' === value

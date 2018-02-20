@@ -12,17 +12,17 @@ class Passable {
     res: ResultObject;
     test: TestProvider;
 
-    constructor(name: string, specific: SpecificArgs, tests: TestsWrapper) {
+    constructor(name: string, tests: TestsWrapper, specific: ?SpecificArgs) {
 
         if (typeof name !== 'string') {
             throw runtimeError(Errors.INVALID_FORM_NAME, typeof name);
         }
 
-        this.specific = new Specific(specific);
-
         if (typeof tests !== 'function') {
             throw runtimeError(Errors.MISSING_ARGUMENT_TESTS, typeof tests);
         }
+
+        this.specific = new Specific(specific);
 
         this.res = new ResultObject(name);
 
