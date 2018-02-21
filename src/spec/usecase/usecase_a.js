@@ -6,7 +6,7 @@ export default (passable) => {
     *   warn
     */
 
-    const response = passable('case_a', null, (test) => {
+    const response = passable('case_a', (test) => {
 
         const enforce = passable.enforce;
 

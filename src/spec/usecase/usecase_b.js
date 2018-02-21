@@ -3,7 +3,7 @@ export default (passable) => {
 
     const enforce = passable.enforce;
 
-    const response = passable('case_b', ['field_1', 'field_4'], (test) => {
+    const response = passable('case_b', (test) => {
         test('field_1', 'should be a string of 5 chars', () => {
             enforce('hello').allOf({
                 sizeEquals: 5,
@@ -44,7 +44,7 @@ export default (passable) => {
                 largerThan: 3
             });
         });
-    });
+    }, ['field_1', 'field_4']);
 
     const expect = {
         name: 'case_b',

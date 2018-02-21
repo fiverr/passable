@@ -3,17 +3,17 @@
 import passable from '../index.js';
 import { expect } from 'chai';
 
-const oneValidationError = passable('oneValidationError', null, (test) => {
+const oneValidationError = passable('oneValidationError', (test) => {
     test('IsFalse', 'Should Fail', () => false);
     test('IsTrue', 'Should Pass', () => true);
 });
 
-const noValidationErrors = passable('noValidationErrors', null, (test) => {
+const noValidationErrors = passable('noValidationErrors', (test) => {
     test('IsTrue', 'Should Pass', () => true);
     test('IsTrue', 'ShouldPass', () => true);
 });
 
-const failSecondTest = passable('failSecondTest', null, (test) => {
+const failSecondTest = passable('failSecondTest', (test) => {
     test('FirstTest', 'Should Pass ', () => true);
     test('SecondTest', 'Should Fail', () => false);
     test('ThirdTest', 'Should Pass', () => true);

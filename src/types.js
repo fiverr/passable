@@ -12,10 +12,6 @@ declare type ValidityObject = {
 };
 
 // Passable
-declare type PassableRuntime = {
-    tests: TestsWrapper
-};
-
 declare type testRunnerCallback = {
     valid: boolean
 } | void | null;
@@ -31,7 +27,7 @@ declare type SpecificObject = {
 };
 
 declare type SpecificField = Array<string> | string;
-declare type SpecificArgs = SpecificField | {
+declare type SpecificArgs = void | SpecificField | {
     only: SpecificField,
     not: SpecificField
 };

@@ -10,15 +10,15 @@ class Specific {
     /**
      * Initialize Specific object
      *
-     * @param {String | Array | Object | null} specific
+     * @param {String | Array | Object | undefined} specific
      */
-    constructor(specific: SpecificArgs) {
+    constructor(specific: ?SpecificArgs) {
+
+        if (!specific) { return; }
 
         if (!Specific.is(specific)) {
-            throw runtimeError(Errors.MISSING_ARGUMENT_SPECIFIC, typeof specific);
+            throw runtimeError(Errors.UNEXPECTED_ARGUMENT_SPECIFIC, typeof specific);
         }
-
-        if (!specific) { return;}
 
         if (typeof specific === 'string' || Array.isArray(specific)) {
             if (specific.length === 0) { return; }
@@ -85,9 +85,9 @@ class Specific {
             return item.every((item) => typeof item === 'string');
         }
 
-        if (item === null || typeof item === 'string') { return true; }
+        if (typeof item === 'string') { return true; }
 
-        if (typeof item === 'object' && (
+        if (item !== null && typeof item === 'object' && (
             item.hasOwnProperty('only')
             || item.hasOwnProperty('not')
         )) {
