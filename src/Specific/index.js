@@ -14,13 +14,11 @@ class Specific {
      */
     constructor(specific: ?SpecificArgs) {
 
-        if (!specific) { return;}
+        if (!specific) { return; }
 
         if (!Specific.is(specific)) {
             throw runtimeError(Errors.UNEXPECTED_ARGUMENT_SPECIFIC, typeof specific);
         }
-
-        if (!specific) { return;}
 
         if (typeof specific === 'string' || Array.isArray(specific)) {
             if (specific.length === 0) { return; }

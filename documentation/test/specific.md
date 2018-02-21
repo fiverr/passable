@@ -7,7 +7,7 @@ To specify which fields should or should not run, use the `specific` param. It i
 
 | Type            | Description
 |-----------------|------------
-| `null`          | No `test` will be skipped (same as empty array or empty string `[] | ''`)
+| `undefined`     | No `test` will be skipped (same as empty array or empty string `[] | ''`)
 | `string`        | The names of the `test` function that will run. All the rest will be skipped.
 | `Array<string>` | Array with the names of the `test` functions that should run. All the rest will be skipped.
 | `Object`        | Allows both setting `test` functions that should run, or not run
