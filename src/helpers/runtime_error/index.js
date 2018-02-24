@@ -23,6 +23,8 @@ function runtimeError(type: string, ...args: Array<string>) {
             return new TypeError(errorBuilder(passableConstructor, unexpectedArgs(args[0], 'tests', 1)));
         case Errors.UNEXPECTED_ARGUMENT_SPECIFIC:
             return new TypeError(errorBuilder(passableConstructor, unexpectedArgs(args[0], 'specific', 2)));
+        case Errors.VALIDATE_UNEXPECTED_TEST:
+            return new TypeError(errorBuilder('Validate', `Expected ${args[0]} \`test\` to be a function.`));
         default:
             return new Error(errorBuilder('Passable', 'General exception.'));
     }
