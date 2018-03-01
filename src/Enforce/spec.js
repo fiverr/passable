@@ -191,4 +191,18 @@ describe('Test Enforce rules', () => {
             [res2, res6].forEach((test) => expect(test).to.throw(Error));
         });
     });
+
+    describe('Bad chain fallbacks', () => {
+        it('Shoul return original property when chained item is not `runnable`', () => {
+            expect(enforce().iDoNotExist).to.equal(undefined);
+        });
+
+        it('Shoul return original property when chained item is not a function', () => {
+            const enforce = new Enforce({
+                notAFunction: 'iAmNotAFunction'
+            });
+
+            expect(enforce().notAFunction).to.equal('iAmNotAFunction');
+        });
+    });
 });
