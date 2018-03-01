@@ -1,5 +1,5 @@
 // @flow
-import { runtimeError } from '../helpers/runtime_error';
+import runtimeError from '../helpers/runtime_error';
 import { Errors } from '../constants';
 
 /**
