@@ -1,65 +1,56 @@
 // @flow
 
-import enforce from './enforce';
-import passRunner from './pass_runner';
+import testRunner from './test_runner';
 import ResultObject from './result_object';
-import { passableArgs, root, runtimeError } from 'Helpers';
+import { runtimeError } from 'Helpers';
+import Specific from './Specific';
 import { Errors } from 'Constants';
-
-const FAIL: Severity = 'fail';
 
 class Passable {
 
-    specific: Array<string> | string;
-    custom: Rules;
+    specific: Specific;
     res: ResultObject;
-    pass: Function;
-    enforce: Function;
+    test: TestProvider;
 
-    constructor(name: string, ...args: PassableArguments) {
+    constructor(name: string, tests: TestsWrapper, specific: ?SpecificArgs) {
+
         if (typeof name !== 'string') {
             throw runtimeError(Errors.INVALID_FORM_NAME, typeof name);
         }
-        const computedArgs: PassableRuntime = passableArgs(args),
-            globalRules: Rules = root.customPassableRules || {};
 
-        this.specific = computedArgs.specific;
-        this.custom = Object.assign({}, globalRules, computedArgs.custom);
+        if (typeof tests !== 'function') {
+            throw runtimeError(Errors.MISSING_ARGUMENT_TESTS, typeof tests);
+        }
+
+        this.specific = new Specific(specific);
+
         this.res = new ResultObject(name);
-        this.pass = this.pass.bind(this);
-        this.enforce = this.enforce.bind(this);
 
-        computedArgs.passes(this.pass, this.enforce);
+        tests(this.test);
 
         return this.res;
     }
 
-    pass(fieldName: string, statement: string, ...args: Array<Severity | Pass>) {
+    test = (fieldName: string, statement: string, test: TestFn, severity: Severity) => {
 
-        if (this.specific.length && this.specific.indexOf(fieldName) === -1) {
-            this.res.skipped.push(fieldName);
+        if (this.specific.excludes(fieldName)) {
+            this.res.addToSkipped(fieldName);
             return;
         }
 
         this.res.initFieldCounters(fieldName);
 
-        // callback is always the last argument -- $FlowFixMe (we DO know it is a function)
-        const callback: Function = args.pop(),
-            isValid: boolean = passRunner(callback);
+        if (typeof test !== 'function') {
+            return;
+        }
 
-        if (!isValid) { // $FlowFixMe (we DO know it is a string)
-            const severity: Severity = args[0] || FAIL;
+        const isValid: boolean = testRunner(test);
 
-            // on failure/error, bump up the counters
+        if (!isValid) {
             this.res.fail(fieldName, statement, severity);
         }
 
         this.res.bumpTestCounter(fieldName);
-        return isValid;
-    }
-
-    enforce(value: AnyValue) {
-        return enforce(value, this.custom);
     }
 }
 

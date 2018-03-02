@@ -1,41 +1,46 @@
 export default (passable) => {
 
+    const Enforce = passable.Enforce;
+    const enforce = new Enforce({
+        stringEquals: (value, arg1) => typeof value === 'string' && arg1 === value
+    });
+
     /*
         Test cases:
             * chained Rules
             * Chained custom rules
     */
 
-    const response = passable('case_c', (pass, enforce) => {
-        pass('field_1', 'should be a string of 5 chars', () => {
+    const response = passable('case_c', (test) => {
+        test('field_1', 'should be a string of 5 chars', () => {
             enforce('hello').allOf({
                 sizeEquals: 5,
                 isString: true
             });
         });
 
-        pass('field_2', 'must be a number smaller than 90', () => {
+        test('field_2', 'must be a number smaller than 90', () => {
             enforce(99).smallerThan(90).isNumber();
         });
 
-        pass('field_3', 'must be the string "hi"', () => {
+        test('field_3', 'must be the string "hi"', () => {
             enforce('a').stringEquals('hi');
         });
 
-        pass('field_4', 'should be the string "c"', () => {
+        test('field_4', 'should be the string "c"', () => {
             enforce('c').allOf({
                 matches: /c/
             });
         });
 
-        pass('field_5', 'Must be an empty array', () => {
+        test('field_5', 'Must be an empty array', () => {
             enforce(['log']).allOf({
                 isArray: true,
                 isEmpty: true
             });
         });
 
-        pass('field_5', 'May either be an empty array or larger than 3', () => {
+        test('field_5', 'May either be an empty array or larger than 3', () => {
             enforce([0, 1, 2, 3, 4, 5]).allOf({
                 isArray: true
             }).anyOf({
@@ -43,8 +48,6 @@ export default (passable) => {
                 largerThanOrEquals: 4
             });
         });
-    }, {
-        stringEquals: (value, arg1) => typeof value === 'string' && arg1 === value
     });
 
     const expect = {

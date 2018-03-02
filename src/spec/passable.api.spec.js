@@ -3,29 +3,23 @@
 import passable from '../index.js';
 import { expect } from 'chai';
 
-const oneValidationError = passable('oneValidationError', (pass, enforce) => {
-    pass('IsFalse', 'Should Fail', () => false);
-    pass('IsTrue', 'Should Pass', () => true);
+const oneValidationError = passable('oneValidationError', (test) => {
+    test('IsFalse', 'Should Fail', () => false);
+    test('IsTrue', 'Should Pass', () => true);
 });
 
-const noValidationErrors = passable('noValidationErrors', (pass, enforce) => {
-    pass('IsTrue', 'Should Pass', () => true);
-    pass('IsTrue', 'ShouldPass', () => true);
+const noValidationErrors = passable('noValidationErrors', (test) => {
+    test('IsTrue', 'Should Pass', () => true);
+    test('IsTrue', 'ShouldPass', () => true);
 });
 
-const failSecondTest = passable('failSecondTest', (pass, enforce) => {
-    pass('FirstTest', 'Should Pass ', () => true);
-    pass('SecondTest', 'Should Fail', () => false);
-    pass('ThirdTest', 'Should Pass', () => true);
+const failSecondTest = passable('failSecondTest', (test) => {
+    test('FirstTest', 'Should Pass ', () => true);
+    test('SecondTest', 'Should Fail', () => false);
+    test('ThirdTest', 'Should Pass', () => true);
 });
 
 describe('Test passable\'s api ', () => {
-    it('Should throw a TypeError for a non-string form name', () => {
-        expect(passable.bind(null, 1)).to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected number, expected string.");
-        expect(passable.bind(null, {})).to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected object, expected string.");
-        expect(passable.bind(null, passable)).to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected function, expected string.");
-    });
-
     it('Should have one validation error', () => {
         expect(oneValidationError.failCount).to.equal(1);
     });

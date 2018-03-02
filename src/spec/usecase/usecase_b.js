@@ -1,33 +1,36 @@
 export default (passable) => {
+    const WARN = passable.WARN;
 
-    const response = passable('case_b', ['field_1', 'field_4'], (pass, enforce) => {
-        pass('field_1', 'should be a string of 5 chars', () => {
+    const enforce = passable.enforce;
+
+    const response = passable('case_b', (test) => {
+        test('field_1', 'should be a string of 5 chars', () => {
             enforce('hello').allOf({
                 sizeEquals: 5,
                 isString: true
             });
         });
 
-        pass('field_2', 'must be a number smaller than 90', () => {
+        test('field_2', 'must be a number smaller than 90', () => {
             enforce(99).allOf({
                 smallerThan: 90,
                 isNumber: true
             });
         });
 
-        pass('field_3', 'must be either "a" or "b"', () => {
+        test('field_3', 'must be either "a" or "b"', () => {
             enforce('a').allOf({
                 inside: ['a', 'b']
             });
         });
 
-        pass('field_4', 'should be either "a" or "b"', 'warn', () => {
+        test('field_4', 'should be either "a" or "b"', () => {
             enforce('c').allOf({
                 inside: ['a', 'b']
             });
-        });
+        }, WARN);
 
-        pass('field_5', 'Must either be a number or a string. Always smaller than 5', () => {
+        test('field_5', 'Must either be a number or a string. Always smaller than 5', () => {
             enforce('log').anyOf({
                 isNumber: true,
                 isString: true
@@ -36,12 +39,12 @@ export default (passable) => {
             });
         });
 
-        pass('field_5', 'Must not be larger than 3', () => {
+        test('field_5', 'Must not be larger than 3', () => {
             enforce('log').noneOf({
                 largerThan: 3
             });
         });
-    });
+    }, ['field_1', 'field_4']);
 
     const expect = {
         name: 'case_b',
@@ -69,7 +72,7 @@ export default (passable) => {
                 'should be either "a" or "b"'
             ]
         },
-        skipped: ['field_2', 'field_3', 'field_5', 'field_5']
+        skipped: ['field_2', 'field_3', 'field_5']
     };
 
     return {
