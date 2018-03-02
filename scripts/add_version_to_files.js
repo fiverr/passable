@@ -27,5 +27,3 @@ matchedFiles.forEach(({ path, content }) => {
         return strings[noBrackets] ? strings[noBrackets](noBrackets) : match;
     }));
 });
-
-fs.writeFileSync('./version.txt', version);
