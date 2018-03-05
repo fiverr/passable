@@ -13,7 +13,7 @@ The isNumeric rule returns a boolean. `true` for matched values, and `false` for
 ## usage examples:
 
 ```js
-enforce(143).isNumeric(true);
+enforce(143).isNumeric();
 // true
 ```
 
@@ -23,7 +23,7 @@ enforce(NaN).isNumeric(false);
 ```
 
 ```js
-enforce('143').isNumeric(true);
+enforce('143').isNumeric();
 // true
 ```
 
