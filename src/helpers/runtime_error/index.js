@@ -1,32 +1,32 @@
 // @flow
-import { Errors } from 'Constants';
-const passableArgs:string = 'passableArgs';
+import { Errors, Modules } from 'Constants';
+const passableConstructor: string = `${Modules.PASSABLE} constructor`;
 
 function errorBuilder(functionName, errorMessage) {
-    return `[Passable]: Failed to execute '${functionName}': ${errorMessage}`;
+    return `[${Modules.PASSABLE}]: Failed to execute '${functionName}': ${errorMessage}`;
+}
+
+function unexpectedArgs(type, name, position) {
+    return `Unexpected '${type}'. Expected \`${name}\` at position ${position}. See documentation for more info.`;
 }
 
 function runtimeError(type: string, ...args: Array<string>) {
     switch (type) {
         case Errors.INVALID_FORM_NAME:
-            return new TypeError(errorBuilder('Passable constructor', `Unexpected ${args[0]}, expected string.`));
+            return new TypeError(errorBuilder(passableConstructor, `Unexpected '${args[0]}', expected string.`));
         case Errors.ENFORCE_FAILED:
-            return new Error(errorBuilder('Enforce', `${args[0]} - invalid ${args[1]} value.`));
+            return new Error(errorBuilder(Modules.ENFORCE, `${args[0]} - invalid ${args[1]} value.`));
         case Errors.EXPECT_TYPE_FAILURE:
             const val:string = Array.isArray(args[1]) ? JSON.stringify(args[1]) : args[1];
             return new TypeError(errorBuilder(args[0], `expected ${val} to be a ${args[2]}.`));
-        case Errors.PASSABLE_ARGS_NO_ARGS:
-            return new TypeError(errorBuilder(passableArgs, 'At least 1 argument required, but only 0 present.'));
-        case Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_1:
-            return new TypeError(errorBuilder(passableArgs, `Unexpected ${args[0]}, expected function.`));
-        case Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_2:
-            return new TypeError(errorBuilder(passableArgs, "Unexpected argument, expected function at position '1' or '2'."));
-        case Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_3:
-            return new TypeError(errorBuilder(passableArgs, "Unexpected argument, expected function at position '2'."));
-        case Errors.PASSABLE_ARGS_UNEXPECTED_ARGS_4:
-            return new TypeError(errorBuilder(passableArgs, 'Unexpected set of arguments. Expected: Specific, Passes, Custom.'));
+        case Errors.MISSING_ARGUMENT_TESTS:
+            return new TypeError(errorBuilder(passableConstructor, unexpectedArgs(args[0], 'tests', 1)));
+        case Errors.UNEXPECTED_ARGUMENT_SPECIFIC:
+            return new TypeError(errorBuilder(passableConstructor, unexpectedArgs(args[0], 'specific', 2)));
+        case Errors.VALIDATE_UNEXPECTED_TEST:
+            return new TypeError(errorBuilder(Modules.VALIDATE, `Expected ${args[0]} \`test\` to be a function.`));
         default:
-            return new Error(errorBuilder('Passable', 'General exception.'));
+            return new Error(errorBuilder(Modules.PASSABLE, 'General exception.'));
     }
 }
 

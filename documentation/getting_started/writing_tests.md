@@ -1,8 +1,8 @@
 # Writing tests
- Much like when writing unit-tests, writing validations with Passable is all about knowing in advance which values you expect to get. The structure is very similar to the familiar unit test `describe/it/expect` combo, only that with Passable the functions you will mostly run are `Passable/pass/enforce`.
+ Much like when writing unit-tests, writing validations with Passable is all about knowing in advance which values you expect to get. The structure is very similar to the familiar unit test `describe/it/expect` combo, only that with Passable the functions you will mostly run are `Passable/test/enforce`.
 
  * `Passable` - the wrapper for your form validation, much like the describe function in unit tests.
- * `pass` - a single tests, most commonly a single field, much like the it function in unit tests. [More about pass](../pass/index.md)
+ * `test` - a single tests, most commonly a single field, much like the it function in unit tests. [More about test](../test/index.md)
  * `enforce` - the function which gets and enforces the data model compliance, similar to the expect function in unit tests. [More about enforce](../enforce/README.md);
 
 The most basic test would look somewhat like this:
@@ -12,8 +12,8 @@ The most basic test would look somewhat like this:
 //     username: 'ealush',
 //     age: 27
 // }
-Passable('NewUserForm', (pass, enforce) => {
-    pass('username', 'Must be a string between 2 and 10 chars', () => {
+passable('NewUserForm', (test) => {
+    test('username', 'Must be a string between 2 and 10 chars', () => {
         enforce(data.username).allOf({
             isString: true,
             largerThan: 1,
@@ -21,7 +21,7 @@ Passable('NewUserForm', (pass, enforce) => {
         });
     });
 
-    pass('age', 'Can either be empty, or larger than 18', () => {
+    test('age', 'Can either be empty, or larger than 18', () => {
         enforce(data.age).anyOf({
             isEmpty: true,
             largerThan: 18
