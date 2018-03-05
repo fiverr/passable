@@ -4,6 +4,7 @@ import isNumber from './lang/is_number';
 import isString from './lang/is_string';
 import matches from './content/matches';
 import inside from './content/inside';
+import isNumeric from './content/is_numeric';
 import isEmpty from './size/is_empty';
 import sizeEquals from './size/size_equals';
 import largerThan from './size/larger_than';
@@ -17,6 +18,7 @@ export default {
     isString,
     matches,
     inside,
+    isNumeric,
     isEmpty,
     largerThan,
     smallerThan,
