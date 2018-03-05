@@ -17,7 +17,7 @@ class Enforce {
 
     enforce = (value: AnyValue) => {
         const proxy: EnforceRules = new Proxy(this.allRunnables, {
-            get: (rules, fnName) => {
+            get: (allRunnables, fnName) => {
 
                 if (this.rules.hasOwnProperty(fnName) && typeof this.rules[fnName] === 'function') {
                     return (...args) => {
@@ -30,7 +30,7 @@ class Enforce {
                         return proxy;
                     };
                 } else {
-                    return rules[fnName];
+                    return allRunnables[fnName];
                 }
             }
         });
