@@ -1,49 +1,24 @@
 // @flow
-
-/**
- * @typedef {Object} ValidityObject
- * @property {boolean} valid Representing the validity of the object
- * @property {string} [message] The message passed by the consumer. Used to indicate error.
- */
+import runtimeError from '../helpers/runtime_error';
+import { Errors } from '../constants';
 
 /**
  * Run tests and catch errors
  *
- * @param {string} [message] Message to return on failed validation
  * @param {function} callback The test content
- * @return {ValidityObject} enforce object
+ * @return {boolean}
  */
-function validate(...args: [string, Function]): ValidityObject {
-    const result: ValidityObject = { valid: true };
-    const length: number = args.length;
+function validate(test: TestFn): boolean {
 
-    if (!length) { return result; }
-
-    const last: number = length - 1;
-    let callback: Function;
-    let message: ?string;
-
-    if (typeof args[last] !== 'function') {
-        return result;
-    } else {
-        callback = args[last];
-    }
-
-    if (typeof args[0] === 'string') {
-        message = args[0];
+    if (typeof test !== 'function') {
+        throw runtimeError(Errors.VALIDATE_UNEXPECTED_TEST, typeof test);
     }
 
     try {
-        result.valid = callback() !== false;
+        return test() !== false;
     } catch (_) {
-        result.valid = false;
+        return false;
     }
-
-    if (!result.valid && message) {
-        result.message = message;
-    }
-
-    return result;
 }
 
 export default validate;
