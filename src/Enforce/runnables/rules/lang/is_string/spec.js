@@ -28,4 +28,8 @@ describe('Tests isString rule', () => {
     it('Should return false a string when expecting a negative result', () => {
         expect(isString('I love you', false)).to.equal(false);
     });
+
+    it('Should expose negativeForm property', () => {
+        expect(isString.negativeForm).to.equal('isNotString');
+    });
 });

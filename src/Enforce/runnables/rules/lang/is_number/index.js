@@ -7,4 +7,6 @@ function isNumber(value: mixed, expect: boolean = true): boolean {
     return isType(value, 'number') === expect;
 }
 
+isNumber.negativeForm = 'isNotNumber';
+
 export default isNumber;

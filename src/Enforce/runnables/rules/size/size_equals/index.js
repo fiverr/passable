@@ -1,6 +1,10 @@
 // @flow
-import {getSize} from '../../helpers';
+import { getSize } from '../../helpers';
 
-const sizeEquals: Function = (value: mixed, arg1: mixed): boolean => getSize(value) === getSize(arg1);
+function sizeEquals(value: mixed, arg1: mixed) {
+    return getSize(value) === getSize(arg1);
+}
+
+sizeEquals.negativeForm = 'sizeNotEquals';
 
 export default sizeEquals;

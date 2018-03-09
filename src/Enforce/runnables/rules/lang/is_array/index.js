@@ -6,4 +6,6 @@ function isArray(value: mixed, expect: boolean = true): boolean {
     return isType(value, 'array') === expect;
 }
 
+isArray.negativeForm = 'isNotArray';
+
 export default isArray;

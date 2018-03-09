@@ -12,4 +12,8 @@ describe('Tests sizeEquals rule', () => {
     it('Should return false for a different number', () => {
         expect(sizeEquals(6, 8)).to.equal(false);
     });
+
+    it('Should expose negativeForm property', () => {
+        expect(sizeEquals.negativeForm).to.equal('sizeNotEquals');
+    });
 });

@@ -6,4 +6,6 @@ function isString(value: mixed, expect: boolean = true): boolean {
     return isType(value, 'string') === expect;
 }
 
+isString.negativeForm = 'isNotString';
+
 export default isString;

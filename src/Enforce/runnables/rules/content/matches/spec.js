@@ -36,4 +36,8 @@ describe('Tests matches rule', () => {
         expect(matches('no-match', null)).to.equal(false);
         expect(matches('no-match', 11)).to.equal(false);
     });
+
+    it('Should expose negativeForm property', () => {
+        expect(matches.negativeForm).to.equal('notMatches');
+    });
 });

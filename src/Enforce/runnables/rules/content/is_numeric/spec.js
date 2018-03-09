@@ -1,6 +1,6 @@
 'use strict';
 
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 import isNumeric from './index';
 
 const NUMERICS = [
@@ -34,5 +34,9 @@ describe('Tests isNumeric rule', () => {
 
     it('Should return false for non numeric values', () => {
         NON_NUMERICS.forEach((value) => assert(isNumeric(value, false), `${value} is should not be identified as numric`));
+    });
+
+    it('Should expose negativeForm property', () => {
+        expect(isNumeric.negativeForm).to.equal('isNotNumeric');
     });
 });
