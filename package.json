@@ -47,6 +47,7 @@
     "eslint-plugin-flowtype": "2.45.0",
     "flow-bin": "0.66.0",
     "mocha": "5.0.1",
+    "proxy-polyfill": "^0.2.0",
     "webpack": "3.11.0"
   }
 }

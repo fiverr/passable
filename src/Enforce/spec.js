@@ -7,7 +7,7 @@ import { expect } from 'chai';
 const allRules = Object.keys(rules);
 const allCompounds = Object.keys(compounds);
 
-describe('Test Passable\'s enforce function', () => {
+const suite = () => describe('Test Passable\'s enforce function', () => {
     it('Should expose all API functions', () => {
         const en = enforce();
         allCompounds.forEach((compound) => expect(en[compound]).to.be.a('function'));
@@ -205,4 +205,11 @@ describe('Test Enforce rules', () => {
             expect(enforce().notAFunction).to.equal('iAmNotAFunction');
         });
     });
+});
+
+suite();
+
+describe('Proxy is not available:', () => {
+    global.Proxy = undefined;
+    suite();
 });
