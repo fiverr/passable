@@ -20,7 +20,6 @@ function inside(value: Value, arg1: Arg): boolean {
         if (Array.isArray(value)) {
             return findArrayValuesInArray(value, arg1);
         }
-
     }
 
     // both value and arg1 are strings
@@ -30,5 +29,7 @@ function inside(value: Value, arg1: Arg): boolean {
 
     return false;
 }
+
+inside.negativeForm = 'notInside';
 
 export default inside;

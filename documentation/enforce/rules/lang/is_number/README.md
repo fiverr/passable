@@ -19,7 +19,7 @@ enforce(143).isNumber(true);
 
 ```js
 enforce(NaN).isNumber(true);
-// true
+// true (NaN is of type 'number!')
 ```
 
 ```js

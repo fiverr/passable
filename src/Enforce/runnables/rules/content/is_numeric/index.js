@@ -9,4 +9,6 @@ function isNumeric(value: mixed, expect: boolean = true): boolean {
     return result === expect;
 }
 
+isNumeric.negativeForm = 'isNotNumeric';
+
 export default isNumeric;

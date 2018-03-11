@@ -28,4 +28,8 @@ describe('Tests isArray rule', () => {
     it('Should return true a string when expecting a negative result', () => {
         expect(isArray('1', false)).to.equal(true);
     });
+
+    it('Should expose negativeForm property', () => {
+        expect(isArray.negativeForm).to.equal('isNotArray');
+    });
 });

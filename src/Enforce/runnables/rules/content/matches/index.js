@@ -10,7 +10,8 @@ function matches(value: string, regex: RegExp | string): boolean {
     } else {
         return false;
     }
-
 }
+
+matches.negativeForm = 'notMatches';
 
 export default matches;

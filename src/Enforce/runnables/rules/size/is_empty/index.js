@@ -7,4 +7,6 @@ function isEmpty(value: mixed, expect: boolean = true): boolean {
     return (getSize(value) === 0) === expect;
 };
 
+isEmpty.negativeForm = 'isNotEmpty';
+
 export default isEmpty;

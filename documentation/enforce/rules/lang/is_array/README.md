@@ -13,12 +13,12 @@ The isArray rule returns a boolean. `true` for matched values, and `false` for n
 ## usage examples:
 
 ```js
-enforce(['hello']).isArray(true);
+enforce(['hello']).isArray();
 // true
 ```
 
 ```js
-enforce('hello').isArray(true);
+enforce('hello').isArray();
 // false
 ```
 

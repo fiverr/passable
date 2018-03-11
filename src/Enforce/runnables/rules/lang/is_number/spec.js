@@ -36,4 +36,8 @@ describe('Tests isNumber rule', () => {
     it('Should return false an array when expecting a negative result', () => {
         expect(isNumber([1, 2, 3], false)).to.equal(true);
     });
+
+    it('Should expose negativeForm property', () => {
+        expect(isNumber.negativeForm).to.equal('isNotNumber');
+    });
 });

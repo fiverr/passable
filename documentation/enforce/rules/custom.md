@@ -16,7 +16,7 @@ Just like the predefined rules, your custom rules can accepts two parameters:
 ## Extending `Enforce` with custom rules
 > Since 6.0.0
 
-You can add your custom rules directly to enforce to allow reusability. As describe in [enforce]('../README.md'), you simply need to create a new instance of `Enforce` and add the rules as the argument.
+You can add your custom rules directly to enforce to allow reusability. As describe in [enforce](../README.md), you simply need to create a new instance of `Enforce` and add the rules as the argument.
 
 ```js
 import passable, { Enforce } from 'passable';

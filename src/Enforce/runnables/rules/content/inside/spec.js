@@ -57,4 +57,8 @@ describe('Inside rule', () => {
     it('Should failt to find a string inside another string in which it does not exist', () => {
         expect(inside('mugs', 'I\'m gonna pop some tags')).to.equal(false);
     });
+
+    it('Should expose negativeForm property', () => {
+        expect(inside.negativeForm).to.equal('notInside');
+    });
 });
