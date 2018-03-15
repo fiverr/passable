@@ -1,7 +1,7 @@
 # Lang | isTruthy
 
 ## Description
-Checks if a value is of type `isTruthy`
+Checks if a value is of type is any other then undefined, null, false, 0, NaN or an empty string "".
 
 ## Arguments
 * `value`: the value which you would like to check
