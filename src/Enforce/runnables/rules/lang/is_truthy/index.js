@@ -3,6 +3,6 @@ function isTruthy(value: mixed, expect: boolean = true): boolean {
     return !!value;
 }
 
-isTruthy.negativeForm = 'isFslsy';
+isTruthy.negativeForm = 'isFalsy';
 
 export default isTruthy;
