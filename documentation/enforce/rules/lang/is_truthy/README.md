@@ -7,10 +7,17 @@ Checks if a value is of type is any other then undefined, null, false, 0, NaN or
 * `value`: the value which you would like to check
 
 ## Response
-The isTruthy rule returns a boolean. `true` for matched values, and `false` for non matching values.
+Checks if a value is truthy; Meaning: if it can be coerced into boolean true.
+Anything not in the following list will return true:
+
+* undefined
+* null
+* false
+* 0
+* NaN
+* empty string ("")
 
 ## usage examples:
-
 
 ```js
 enforce(true).isTruthy(true);
