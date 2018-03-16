@@ -2,6 +2,7 @@
 
 import * as runnables from './runnables';
 import * as runners from './runners';
+import safeProxy from './helpers/safe_proxy';
 
 class Enforce {
     enforce: EnforceInstance;
@@ -16,7 +17,7 @@ class Enforce {
     }
 
     enforce = (value: AnyValue) => {
-        const proxy: EnforceRules = new Proxy(this.allRunnables, {
+        const proxy: EnforceRules = safeProxy(this.allRunnables, {
             get: (allRunnables, fnName) => {
 
                 if (this.rules.hasOwnProperty(fnName) && typeof this.rules[fnName] === 'function') {
