@@ -1,21 +1,21 @@
 # Lang | isTruthy
 
 ## Description
-Checks if a value is of type is any other then undefined, null, false, 0, NaN or an empty string "".
+Checks if a value is truthy; Meaning: if it can be coerced into boolean `true`.
+Anything not in the following is considered to be truthy.
+
+* `undefined`
+* `null`
+* `false`
+* `0`
+* `NaN`
+* empty string (`""`)
 
 ## Arguments
 * `value`: the value which you would like to check
 
 ## Response
-Checks if a value is truthy; Meaning: if it can be coerced into boolean true.
-Anything not in the following list will return true:
-
-* undefined
-* null
-* false
-* 0
-* NaN
-* empty string ("")
+`isTruthy` returns `true` for truthy values, and `false` for falsy values.
 
 ## usage examples:
 
