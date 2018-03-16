@@ -2,7 +2,7 @@
 
 ## Description
 Checks if a value is truthy; Meaning: if it can be coerced into boolean `true`.
-Anything not in the following is considered to be truthy.
+Anything not in the following list is considered to be truthy.
 
 * `undefined`
 * `null`
