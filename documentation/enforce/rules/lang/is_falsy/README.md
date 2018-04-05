@@ -12,12 +12,6 @@ Anything not in the following list is considered to be truthy:
 * `NaN`
 * empty string (`""`)
 
-## Arguments
-* `value`: the value which you would like to check
-
-## Response
-`isFalsy` returns `true` for falsy values, and `false` for truthy values.
-
 ## usage examples:
 
 ```js

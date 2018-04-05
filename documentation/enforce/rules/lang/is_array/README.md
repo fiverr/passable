@@ -1,14 +1,12 @@
 # Lang | isArray
 
 ## Description
-Checks if a value is of type `Array`
+Checks if a value is of type `Array`.
 
 ## Arguments
-* `value`: the value which you would like to check
-* `expect`: a `boolean`. Whether you expect the result to be `true` or `false`
-
-## Response
-The isArray rule returns a boolean. `true` for matched values, and `false` for non matching values.
+| Name   | Type      | Required? | Description
+|--------|-----------|-----------|------------
+| expect | `Boolean` | No        | when passed `false`, the negative result will be tested
 
 ## usage examples:
 
@@ -23,11 +21,10 @@ enforce('hello').isArray();
 ```
 
 ```js
-enforce(['hello']).isArray(false);
-// false
-```
+enforce(['hello']).isArray(false); // false
 
-```js
-enforce('hello').isArray(false);
-// true
+enforce(['hello']).allOf({
+    isArray: false
+});
+// false
 ```

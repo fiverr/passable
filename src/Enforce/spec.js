@@ -110,11 +110,11 @@ describe('Test Enforce rules', () => {
                 res5 = () => enforce(4).allOf({ sizeEquals: 4 }),
                 res6 = () => enforce(4).allOf({ sizeEquals: 3 }),
                 res7 = () => enforce(0).allOf({ isEmpty: true }),
-                res8 = () => enforce([]).allOf({ isEmpty: false }),
-                res9 = () => enforce('no').allOf({ isEmpty: true });
+                res8 = () => enforce('no').allOf({ isEmpty: true }),
+                res9 = () => enforce('no').allOf({ isEmpty: false });
 
-            [res1, res4, res5, res7].forEach((test) => expect(test).to.not.throw());
-            [res2, res3, res6, res8, res9].forEach((test) => expect(test).to.throw(Error));
+            [res1, res4, res5, res7, res9].forEach((test) => expect(test).to.not.throw());
+            [res2, res3, res6, res8].forEach((test) => expect(test).to.throw(Error));
         });
 
         it('Should give back correct responses for size rules when chained', () => {
@@ -124,12 +124,11 @@ describe('Test Enforce rules', () => {
                 res4 = () => enforce('no.').smallerThan(4),
                 res5 = () => enforce(4).sizeEquals(4),
                 res6 = () => enforce(4).sizeEquals(3),
-                res7 = () => enforce(0).isEmpty(true),
-                res8 = () => enforce([]).isEmpty(false),
-                res9 = () => enforce('no').isEmpty(true);
+                res7 = () => enforce(0).isEmpty(),
+                res8 = () => enforce('no').isEmpty();
 
             [res1, res4, res5, res7].forEach((test) => expect(test).to.not.throw());
-            [res2, res3, res6, res8, res9].forEach((test) => expect(test).to.throw(Error));
+            [res2, res3, res6, res8].forEach((test) => expect(test).to.throw(Error));
         });
 
     });
@@ -138,31 +137,29 @@ describe('Test Enforce rules', () => {
         it('Should give back correct responses for lang rules inside compounds', () => {
             const res1 = () => enforce(5).allOf({ isArray: true }),
                 res2 = () => enforce([]).allOf({ isArray: true }),
-                res3 = () => enforce([]).allOf({ isArray: false }),
-                res4 = () => enforce(5).allOf({ isString: true }),
-                res5 = () => enforce('no.').allOf({ isString: true }),
-                res6 = () => enforce('4').allOf({ isString: false }),
-                res7 = () => enforce(4).allOf({ isNumber: true }),
-                res8 = () => enforce(4).allOf({ isNumber: false }),
-                res9 = () => enforce('4').allOf({ isNumber: true });
+                res3 = () => enforce(5).allOf({ isString: true }),
+                res4 = () => enforce('no.').allOf({ isString: true }),
+                res5 = () => enforce(4).allOf({ isNumber: true }),
+                res6 = () => enforce('4').allOf({ isNumber: true }),
+                res7 = () => enforce('4').allOf({ isNumber: false });
 
-            [res2, res5, res7].forEach((test) => expect(test).to.not.throw());
-            [res1, res3, res6, res8, res9].forEach((test) => expect(test).to.throw(Error));
+            [res2, res4, res5, res7].forEach((test) => expect(test).to.not.throw());
+            [res1, res3, res6].forEach((test) => expect(test).to.throw(Error));
         });
 
         it('Should give back correct responses for lang rules when chained', () => {
-            const res1 = () => enforce(5).isArray(true),
-                res2 = () => enforce([]).isArray(true),
-                res3 = () => enforce([]).isArray(false),
-                res4 = () => enforce(5).isString(true),
-                res5 = () => enforce('no.').isString(true),
-                res6 = () => enforce('4').isString(false),
-                res7 = () => enforce(4).isNumber(true),
-                res8 = () => enforce(4).isNumber(false),
-                res9 = () => enforce('4').isNumber(true);
+            const res1 = () => enforce(5).isArray(),
+                res2 = () => enforce([]).isArray(),
+                res3 = () => enforce(5).isString(),
+                res4 = () => enforce('no.').isString(),
+                res5 = () => enforce(4).isNumber(),
+                res6 = () => enforce('4').isNumber(),
+                res7 = () => enforce([1, 2, 3, 4]).isArray(),
+                res8 = () => enforce([1, 2, 3, 4]).isArray(false),
+                res9 = () => enforce('4').isNumber(false);
 
-            [res2, res5, res7].forEach((test) => expect(test).to.not.throw());
-            [res1, res3, res6, res8, res9].forEach((test) => expect(test).to.throw(Error));
+            [res2, res4, res5, res7, res9].forEach((test) => expect(test).to.not.throw());
+            [res1, res3, res6, res8].forEach((test) => expect(test).to.throw(Error));
         });
     });
 

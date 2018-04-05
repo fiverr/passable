@@ -29,11 +29,11 @@ const NON_NUMERICS = [
 describe('Tests isNumeric rule', () => {
 
     it('Should return true for numeric values', () => {
-        NUMERICS.forEach((value) => assert(isNumeric(value, true), `${value} is should be identified as numric`));
+        NUMERICS.forEach((value) => assert(isNumeric(value, true), `${value} should be identified as numric`));
     });
 
     it('Should return false for non numeric values', () => {
-        NON_NUMERICS.forEach((value) => assert(isNumeric(value, false), `${value} is should not be identified as numric`));
+        NON_NUMERICS.forEach((value) => assert(isNumeric(value, false), `${value} should not be identified as numric`));
     });
 
     it('Should expose negativeForm property', () => {
