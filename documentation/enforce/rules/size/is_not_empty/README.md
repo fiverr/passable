@@ -1,7 +1,7 @@
 # Size | isNotEmpty
 
 ## Description
-Returns true if a given value is not empty, false, or zero.
+Checks that your `enforce` value is not empty, false, or zero.
 Reverse implementation of [`isEmpty` (see documentation)](../is_empty/README.md).
 
 ## usage examples:

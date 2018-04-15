@@ -1,43 +1,33 @@
 # Lang | isString
 
 ## Description
-Checks if a value is of type `String`
+Checks if a value is of type `String`.
 
 ## Arguments
-* `value`: the value which you would like to check
-* `expect`: a `boolean`. Whether you expect the result to be `true` or `false`
-
-## Response
-The isString rule returns a boolean. `true` for matched values, and `false` for non matching values.
+| Name   | Type      | Required? | Description
+|--------|-----------|-----------|------------
+| expect | `Boolean` | No        | when passed `false`, the negative result will be tested
 
 ## usage examples:
 
 ```js
-enforce('hello').isString(true);
+enforce('hello').isString();
 // true
 ```
 
 ```js
-enforce(['hello']).isString(true);
+enforce(['hello']).isString();
 // false
 ```
 
 ```js
-enforce(1984).isString(true);
+enforce(1984).isString();
 // false
 ```
 
 ```js
-enforce('hello').isString(false);
-// false
-```
-
-```js
-enforce(['hello']).isString(false);
-// true
-```
-
-```js
-enforce(1984).isString(false);
-// true
+enforce('hello').isString(false); // false
+enforce([]).allOf({
+    isString: false
+}); // true
 ```

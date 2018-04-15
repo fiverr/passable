@@ -4,11 +4,9 @@
 Checks if a value is a representation of a real number
 
 ## Arguments
-* `value`: the value which you would like to check
-* `expect`: a `boolean`. Whether you expect the result to be `true` or `false`
-
-## Response
-The isNumeric rule returns a boolean. `true` for matched values, and `false` for non matching values.
+| Name   | Type      | Required? | Description
+|--------|-----------|-----------|------------
+| expect | `Boolean` | No        | when passed `false`, the negative result will be tested
 
 ## usage examples:
 
@@ -18,17 +16,14 @@ enforce(143).isNumeric();
 ```
 
 ```js
-enforce(NaN).isNumeric(false);
-// true
-```
-
-```js
 enforce('143').isNumeric();
 // true
 ```
 
 ```js
-enforce(143).isNumeric(false);
-// false
-```
+enforce(143).isNumeric(false); // false
 
+enforce("not-numeric").allOf({
+    isNumeric: false
+}); // true
+```

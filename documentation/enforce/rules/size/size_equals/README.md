@@ -1,20 +1,16 @@
 # Size | sizeEquals
 
 ## Description
-Returns true if a given value equals the size than another value. The values do not have to be of the same type
+Checks that your `enforce` value equals the size than a given number.
 
 ## Arguments
-* `value`: the value which you would like to test. can be:
-* `target` the value which you would like your initial object to be tested against
+* `size`: `number` | the number which you would like your initial value to be tested against.
 
-Both arguments can be of the following types:
-* object: checks against count of keys
-* array: checks against length
-* number: checks the value of the number
-* string: checks against length
-
-## Response
-The sizeEquals rule returns a boolean. `true` for equals values
+The `value` argument can be of the following types:
+* object: checks against count of keys.
+* array: checks against length.
+* number: checks the value of the number.
+* string: checks against length.
 
 ## usage examples:
 

@@ -1,15 +1,15 @@
 # Content | Inside
 
 ## Description
-Checks if a given value is contained in another array or string.
+Checks if your `enforce` value is contained in another array or string.
+Your `enforce` value can be of the following types:
+* `string`
+* `number`
+* `array`
+* `boolean`
 
 ## Arguments
-* `value`: the value which you would like to find in the container. Can be any of the following types:
-    `string`, `number`, `array`, `boolean`
 * `container`: a `string` or an `array` which may contain the value specified.
-
-## Response
-The inside rule returns a boolean. `true` for matched values, and `false` for non matching values.
 
 ## usage examples:
 

@@ -1,125 +1,92 @@
 # Size | isEmpty
 
 ## Description
-Returns true if a given value is empty, false, or zero.
+Checks if your `enforce` value is empty, false, zero, null or undefined.
+
+Expected results are:
+* object: checks against count of keys (`0` is empty)
+* array/string: checks against length. (`0` is empty)
+* number: checks the value of the number. (`0` and `NaN` are empty)
+* boolean: `false` is empty.
+* undefined/null: are both empty.
 
 ## Arguments
-* `value`: the value which you would like to test. can be:
-     * object: will return `true` if no keys
-     * array: will return `true` if length equals zero
-     * boolean: will return `true` for `false`
-     * undefined: will return `true`
-     * null: will return `true`
-     * number: will return `true` for `NaN` of `0`
-     * string: will return `true` for an empty string
-* `expect`: a `boolean`. Whether you expect the result to be `true` or `false`
+| Name   | Type      | Required? | Description
+|--------|-----------|-----------|------------
+| expect | `Boolean` | No        | when passed `false`, the negative result will be tested
 
-## Response
-The isEmpty rule returns a boolean. `true` for matched values, and `false` for non matching values.
 
 ## usage examples:
 
 ```js
-enforce([]).isEmpty(true);
+enforce([]).isEmpty();
 // true
 ```
 
 ```js
-enforce('').isEmpty(true);
+enforce('').isEmpty();
 // true
 ```
 
 ```js
-enforce({}).isEmpty(true);
+enforce({}).isEmpty();
 // true
 ```
 
 ```js
-enforce(0).isEmpty(true);
+enforce(0).isEmpty();
 // true
 ```
 
 ```js
-enforce(NaN).isEmpty(true);
+enforce(NaN).isEmpty();
 // true
 ```
 
 ```js
-enforce(undefined).isEmpty(true);
+enforce(undefined).isEmpty();
 // true
 ```
 
 ```js
-enforce(null).isEmpty(true);
+enforce(null).isEmpty();
 // true
 ```
 
 ```js
-enforce(false).isEmpty(true);
+enforce(false).isEmpty();
 // true
 ```
 
 ```js
-enforce([1]).isEmpty(true);
+enforce([1]).isEmpty();
 // false
 ```
 
 ```js
-enforce('1').isEmpty(true);
+enforce('1').isEmpty();
 // false
 ```
 
 ```js
-enforce({1:1}).isEmpty(true);
+enforce({1:1}).isEmpty();
 // false
 ```
 
 ```js
-enforce(1).isEmpty(true);
+enforce(1).isEmpty();
 // false
 ```
 
 ```js
-enforce(true).isEmpty(true);
+enforce(true).isEmpty();
 // false
 ```
 
 ```js
-enforce([]).isEmpty(false);
-// false
-```
+enforce([]).isEmpty(false); // false
 
-```js
-enforce('').isEmpty(false);
-// false
-```
-
-```js
-enforce({}).isEmpty(false);
-// false
-```
-
-```js
-enforce(0).isEmpty(false);
-// false
-```
-
-```js
-enforce(NaN).isEmpty(false);
-// false
-```
-
-```js
-enforce(undefined).isEmpty(false);
-// false
-```
-
-```js
-enforce(null).isEmpty(false);
-// false
-```
-
-```js
-enforce(false).isEmpty(false);
-// false
+enforce([1,2,3]).allOf({
+    isEmpty: false
+}); // true
 ```

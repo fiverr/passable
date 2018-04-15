@@ -1,6 +1,8 @@
 // @flow
 import {getSize} from '../../helpers';
 
-const smallerThan: Function = (value: mixed, arg1: mixed): boolean => getSize(value) < getSize(arg1);
+function smallerThan(value: mixed, arg1: number) {
+    return getSize(value) < arg1;
+}
 
 export default smallerThan;

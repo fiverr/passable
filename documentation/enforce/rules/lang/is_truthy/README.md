@@ -12,34 +12,41 @@ Anything not in the following list is considered to be truthy.
 * empty string (`""`)
 
 ## Arguments
-* `value`: the value which you would like to check
-
-## Response
-`isTruthy` returns `true` for truthy values, and `false` for falsy values.
+| Name   | Type      | Required? | Description
+|--------|-----------|-----------|------------
+| expect | `Boolean` | No        | when passed `false`, the negative result will be tested
 
 ## usage examples:
 
 ```js
-enforce(true).isTruthy(true);
+enforce(true).isTruthy();
 // true
 ```
 
 ```js
-enforce(1).isTruthy(true);
+enforce(1).isTruthy();
 // true
 ```
 
 ```js
-enforce(null).isTruthy(true);
+enforce(null).isTruthy();
 // false
 ```
 
 ```js
-enforce(undefined).isTruthy(true);
+enforce(undefined).isTruthy();
 // false
 ```
 
 ```js
-enforce(0).isTruthy(true);
+enforce(0).isTruthy();
 // false
+```
+
+```js
+enforce(true).isTruthy(false); // false
+
+enforce(false).allOf({
+    isTruthy: false
+}); // true
 ```
