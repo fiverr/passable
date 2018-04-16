@@ -23,7 +23,7 @@ after_success:
 - chmod +x ./scripts/docs.sh
 - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_NODE_VERSION" == "8" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then ./scripts/docs.sh; fi
 - chmod +x ./scripts/prepare_next.sh
-- if [ "$TRAVIS_NODE_VERSION" == "8" ]; then ./scripts/prepare_next.sh; fi
+- if [ "$TRAVIS_BRANCH" != "master" -a "$TRAVIS_NODE_VERSION" == "8" ]; then ./scripts/prepare_next.sh; fi
 
 deploy:
   - provider: npm
