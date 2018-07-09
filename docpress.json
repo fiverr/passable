@@ -5,5 +5,8 @@
   "css": [
       "https://unpkg.com/highlight.js@9.12.0/styles/atom-one-light.css",
       "documentation/assets/style/main.css"
+  ],
+  "scripts": [
+    "https://unpkg.com/passable"
   ]
 }
