@@ -1,6 +1,7 @@
 
 git config --global user.email $GIT_EMAIL
 git config --global user.name $GIT_NAME
+git config --global github.token $GITHUB_TOKEN
 
 echo "Removing old master"
 git branch -D master
@@ -19,4 +20,4 @@ git commit -m "Updating passable: $TRAVIS_TAG"
 
 echo "Pushing to master"
 
-git push https://${GITHUB_TOKEN}@github.com/$GITHUB_REPO.git master
+git push git@github.com:fiverr/passable.git master
