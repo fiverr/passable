@@ -24,6 +24,8 @@ PASSABLE {{PASSABLE_VERSION}}
             * [lang/isNotArray](./enforce/rules/lang/is_not_array/README.md)
             * [lang/isNumber](./enforce/rules/lang/is_number/README.md)
             * [lang/isNotNumber](./enforce/rules/lang/is_not_number/README.md)
+            * [lang/isTruthy](./enforce/rules/lang/is_truthy/README.md)
+            * [lang/isFalsy](./enforce/rules/lang/is_falsy/README.md)
             * [size/isEmpty](./enforce/rules/size/is_empty/README.md)
             * [size/isNotEmpty](./enforce/rules/size/is_not_empty/README.md)
             * [size/largerThan](./enforce/rules/size/larger_than/README.md)

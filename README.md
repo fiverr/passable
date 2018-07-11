@@ -1,8 +1,8 @@
 # ![Passable](https://cdn.rawgit.com/fiverr/passable/master/documentation/assets/img/logo.png?raw=true "Passable")
 
-Isomorphic data model validations made easy.
+Declerative data validations.
 
-[![npm version](https://badge.fury.io/js/passable.svg)](https://badge.fury.io/js/passable) [![Build Status](https://travis-ci.org/fiverr/passable.svg?branch=master)](https://travis-ci.org/fiverr/passable) [![bitHound Overall Score](https://www.bithound.io/github/fiverr/passable/badges/score.svg)](https://www.bithound.io/github/fiverr/passable)
+[![npm version](https://badge.fury.io/js/passable.svg)](https://badge.fury.io/js/passable) [![Build Status](https://travis-ci.org/fiverr/passable.svg?branch=master)](https://travis-ci.org/fiverr/passable)
 
 
 Learn more at:
