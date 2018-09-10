@@ -8,9 +8,9 @@ import { Errors } from '../constants';
  * @param {function} callback The test content
  * @return {boolean}
  */
-function validate(test: TestFn): boolean {
+function validate(test: PassableTest): boolean {
 
-    if (typeof test !== 'function') {
+    if (typeof test !== 'function' && !(test instanceof Promise)) {
         throw runtimeError(Errors.VALIDATE_UNEXPECTED_TEST, typeof test);
     }
 

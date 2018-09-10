@@ -6,7 +6,8 @@ import { WARN, FAIL } from './result_object';
 import { version } from '../version.json';
 
 function passable(name: string, tests: TestsWrapper, specific: ?SpecificArgs) {
-    return new Passable(name, tests, specific);
+    const suite: Passable = new Passable(name, tests, specific);
+    return suite.res;
 }
 
 passable.VERSION = version;

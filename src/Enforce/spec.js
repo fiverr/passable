@@ -207,6 +207,12 @@ describe('Test Enforce rules', () => {
 suite();
 
 describe('Proxy is not available:', () => {
+    const _proxy = global.Proxy;
+
+    after(() => {
+        global.Proxy = _proxy;
+    });
+
     global.Proxy = undefined;
     suite();
 });

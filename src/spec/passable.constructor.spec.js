@@ -2,13 +2,14 @@
 
 import Passable from '../Passable.js';
 import ResultObject from '../result_object';
+import faker from 'faker';
+import { noop } from 'lodash';
+import sinon from 'sinon';
 import { expect } from 'chai';
 
 const specificError = (type) => `[Passable]: Failed to execute 'Passable constructor': Unexpected '${type}'. Expected \`specific\` at position 2.`;
 
-describe('Test passable\'s class constructor ', () => {
-
-    const noop = () => null;
+describe("Test Passable's class constructor ", () => {
     const passable = (...args) => new Passable(...args);
 
     describe('Test arguments', () => {
@@ -33,21 +34,13 @@ describe('Test passable\'s class constructor ', () => {
         });
     });
 
-    it('Should return result object', () => {
-        const v = new Passable('FormName', noop);
-        expect(v instanceof ResultObject).to.equal(true);
-    });
-
     it('Should pass down `test` function to `tests` callback', () => {
         const p = new Passable('name', (test) => {
             expect(test).to.be.a('function');
         });
     });
 
-    it('Calls tests argument', (done) => {
-        new Passable('FormName', () => {
-            done();
-        });
+    it('Calls `tests` argument', (done) => {
+        new Passable('FormName', () => done());
     });
-
 });

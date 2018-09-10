@@ -72,7 +72,8 @@ export default (passable) => {
                 'should be either "a" or "b"'
             ]
         },
-        skipped: ['field_2', 'field_3', 'field_5']
+        skipped: ['field_2', 'field_3', 'field_5'],
+        completionCallbacks: []
     };
 
     return {

@@ -39,8 +39,8 @@ declare type ErrorAndWarningObject = {
 
 // Test
 declare type TestsWrapper = (test: TestProvider) => void;
-declare type TestProvider = (fieldName: string, statemenpt: string, test: TestFn, severity: Severity) => void;
-declare type TestFn = () => void;
+declare type TestProvider = (fieldName: string, statemenpt: string, test: PassableTest, severity: Severity) => void;
+declare type PassableTest = () => void | () => boolean | Promise<void>;
 
 // Test: Severity
 declare type Severity = 'warn' | 'fail';

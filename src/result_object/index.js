@@ -22,6 +22,7 @@ class ResultObject {
         this.validationErrors = {};
         this.validationWarnings = {};
         this.skipped = [];
+        this.completionCallbacks = [];
     }
 
     /**
@@ -112,6 +113,25 @@ class ResultObject {
     }
 
     /**
+     * Runs completion callbacks aggregated by `done`
+     * regardless of success or failure
+     */
+    runCompletionCallbacks() {
+        this.completionCallbacks.forEach((cb) => cb(this));
+    }
+
+    /**
+     * Registers callback functions to be run when test suite is done running
+     * @param {function} callback the function to be called on done
+     * @return {Object} Current instance
+     */
+    done(callback: Function) {
+        if (typeof callback !== 'function') { return this;}
+        this.completionCallbacks.push(callback);
+        return this;
+    }
+
+    /**
      * Getall the errors of a field, or of the whole object
      * @param {string} [fieldName] - The name of the field.
      * @return {Array | Object} The field's errors, or all errors
@@ -161,6 +181,7 @@ class ResultObject {
         }
     };
     skipped: Array<string>;
+    completionCallbacks: Array<Function>;
     fail: Function;
 }
 

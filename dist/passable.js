@@ -273,7 +273,7 @@ module.exports = function proxyPolyfill() {
 /* 1 */
 /***/ (function(module) {
 
-module.exports = {"a":"6.0.6"};
+module.exports = {"a":"6.1.0"};
 
 /***/ }),
 /* 2 */
@@ -300,15 +300,11 @@ __webpack_require__.d(runners_namespaceObject, "compound", function() { return r
 __webpack_require__.d(runners_namespaceObject, "rule", function() { return runners_rule; });
 
 // CONCATENATED MODULE: ./src/test_runner/index.js
-function testRunner(callback) {
+function testRunner(test) {
   var isValid = null;
 
-  if (typeof callback !== 'function') {
-    return false;
-  }
-
   try {
-    var res = callback();
+    var res = test();
 
     if (typeof res !== 'undefined' && res !== null && res.hasOwnProperty('valid')) {
       isValid = res.valid;
@@ -324,7 +320,15 @@ function testRunner(callback) {
   return !!isValid;
 }
 
-/* harmony default export */ var test_runner = (testRunner);
+function testRunnerAsync(test, done, fail) {
+  try {
+    test.then(done, fail);
+  } catch (e) {
+    fail();
+  }
+}
+
+
 // CONCATENATED MODULE: ./src/result_object/index.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -358,6 +362,7 @@ function () {
     this.validationErrors = {};
     this.validationWarnings = {};
     this.skipped = [];
+    this.completionCallbacks = [];
   }
   /**
    * Initializes specific field's counters
@@ -456,6 +461,36 @@ function () {
     key: "addToSkipped",
     value: function addToSkipped(fieldName) {
       !this.skipped.includes(fieldName) && this.skipped.push(fieldName);
+      return this;
+    }
+    /**
+     * Runs completion callbacks aggregated by `done`
+     * regardless of success or failure
+     */
+
+  }, {
+    key: "runCompletionCallbacks",
+    value: function runCompletionCallbacks() {
+      var _this = this;
+
+      this.completionCallbacks.forEach(function (cb) {
+        return cb(_this);
+      });
+    }
+    /**
+     * Registers callback functions to be run when test suite is done running
+     * @param {function} callback the function to be called on done
+     * @return {Object} Current instance
+     */
+
+  }, {
+    key: "done",
+    value: function done(callback) {
+      if (typeof callback !== 'function') {
+        return this;
+      }
+
+      this.completionCallbacks.push(callback);
       return this;
     }
     /**
@@ -690,6 +725,14 @@ function () {
 // CONCATENATED MODULE: ./src/Passable.js
 function Passable_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Passable_typeof = function _typeof(obj) { return typeof obj; }; } else { Passable_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Passable_typeof(obj); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function Passable_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -699,11 +742,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+/**
+ * Describes a passable validation suite
+ */
 
-var Passable_Passable = function Passable(name, tests, specific) {
+var Passable_Passable =
+/**
+ * Initializes a validation suite, creates a new ResultObject instance and runs pending tests
+ */
+function Passable(name, tests, specific) {
   var _this = this;
 
   Passable_classCallCheck(this, Passable);
+
+  _defineProperty(this, "pending", []);
+
+  _defineProperty(this, "addPendingTest", function (test) {
+    return _this.pending.push(test);
+  });
+
+  _defineProperty(this, "clearPendingTest", function (test) {
+    // $FlowFixMe
+    _this.pending = _this.pending.filter(function (t) {
+      return t !== test;
+    });
+
+    if (_this.pending.length === 0) {
+      _this.res.runCompletionCallbacks();
+    }
+  });
 
   _defineProperty(this, "test", function (fieldName, statement, test, severity) {
     if (_this.specific.excludes(fieldName)) {
@@ -714,17 +781,44 @@ var Passable_Passable = function Passable(name, tests, specific) {
 
     _this.res.initFieldCounters(fieldName);
 
-    if (typeof test !== 'function') {
+    if (typeof test !== 'function' && !(test instanceof Promise)) {
       return;
     }
 
-    var isValid = test_runner(test);
+    test.fieldName = fieldName;
+    test.statement = statement;
+    test.severity = severity;
 
-    if (!isValid) {
-      _this.res.fail(fieldName, statement, severity);
-    }
+    _this.addPendingTest(test);
+  });
 
-    _this.res.bumpTestCounter(fieldName);
+  _defineProperty(this, "runPendingTests", function () {
+    _toConsumableArray(_this.pending).forEach(function (test) {
+      if (test instanceof Promise) {
+        var done = function done() {
+          _this.clearPendingTest(test);
+        };
+
+        var fail = function fail() {
+          // order is important here! fail needs to be called before `done`.
+          _this.res.fail(test.fieldName, test.statement, test.severity);
+
+          done();
+        };
+
+        testRunnerAsync(test, done, fail);
+      } else {
+        var isValid = testRunner(test);
+
+        if (!isValid) {
+          _this.res.fail(test.fieldName, test.statement, test.severity);
+        }
+
+        _this.clearPendingTest(test);
+      }
+
+      _this.res.bumpTestCounter(test.fieldName);
+    });
   });
 
   if (typeof name !== 'string') {
@@ -738,7 +832,7 @@ var Passable_Passable = function Passable(name, tests, specific) {
   this.specific = new src_Specific(specific);
   this.res = new result_object(name);
   tests(this.test);
-  return this.res;
+  this.runPendingTests();
 };
 
 /* harmony default export */ var src_Passable = (Passable_Passable);
@@ -1263,7 +1357,7 @@ function validate_typeof(obj) { if (typeof Symbol === "function" && typeof Symbo
  */
 
 function validate(test) {
-  if (typeof test !== 'function') {
+  if (typeof test !== 'function' && !(test instanceof Promise)) {
     throw runtime_error(errors_namespaceObject.VALIDATE_UNEXPECTED_TEST, validate_typeof(test));
   }
 
@@ -1286,7 +1380,8 @@ var version = __webpack_require__(1);
 
 
 function passable(name, tests, specific) {
-  return new src_Passable(name, tests, specific);
+  var suite = new src_Passable(name, tests, specific);
+  return suite.res;
 }
 
 passable.VERSION = version["a" /* version */];
