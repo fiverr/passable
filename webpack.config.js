@@ -1,51 +1,35 @@
-'use strict';
+const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const webpack = require('webpack'),
-    path = require('path');
-
-const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
-    env = process.env.WEBPACK_ENV,
-    libraryName = 'Passable',
-    plugins = [];
-
-let outputFile,
-    outputDir;
-
-if (env === 'build') {
-    plugins.push(new UglifyJsPlugin({
-        minimize: true,
-        sourceMap: true
-    }));
-    outputFile = `${libraryName}.min.js`;
-    outputDir = 'dist';
-} else {
-    outputFile = `${libraryName}.js`;
-    outputDir = 'dev';
-}
-
-const config = {
-    entry: `${__dirname}/src/index.js`,
+module.exports = {
+    mode: 'production',
     devtool: 'source-map',
+    entry: {
+        'passable.min': './src/index.js',
+        'passable': './src/index.js'
+    },
     output: {
-        path: `${__dirname}/${outputDir}`,
-        filename: outputFile,
-        library: libraryName,
-        libraryTarget: 'umd'
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].js',
+        library: 'Passable',
+        libraryTarget: 'umd',
+        libraryExport: 'default',
+        globalObject: '((() => 0).constructor("return this"))()'
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.js$/,
-            loaders: ['babel-loader']
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader'
+            }
         }]
     },
-    resolve: {
-        alias: {
-            Root: path.resolve('./src'),
-            Helpers: path.resolve('./src/helpers'),
-            Constants: path.resolve('./src/constants')
-        }
-    },
-    plugins
+    optimization: {
+        minimize: true,
+        minimizer: [new UglifyJsPlugin({
+            sourceMap: true,
+            include: /\.min\.js$/
+        })]
+    }
 };
-
-module.exports = config;

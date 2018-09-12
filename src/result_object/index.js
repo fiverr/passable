@@ -160,7 +160,7 @@ class ResultObject {
             warnCount: number
         }
     };
-    skipped: Array<string>
+    skipped: Array<string>;
     fail: Function;
 }
 

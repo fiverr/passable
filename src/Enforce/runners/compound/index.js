@@ -1,6 +1,6 @@
 // @flow
-import { Errors } from 'Constants';
-import { runtimeError } from 'Helpers';
+import { Errors } from '../../../constants';
+import { runtimeError } from '../../../helpers';
 
 /**
  * Run group of tests using test runner. (e.g. `anyOf`)

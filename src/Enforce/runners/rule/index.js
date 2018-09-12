@@ -1,7 +1,7 @@
 // @flow
 
-import { Errors } from 'Constants';
-import { runtimeError } from 'Helpers';
+import { Errors } from '../../../constants';
+import { runtimeError } from '../../../helpers';
 
 /**
  * Run a single rule against enforced value (e.g. `isNumber()`)

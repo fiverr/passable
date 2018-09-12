@@ -1,6 +1,6 @@
 // @flow
-import { runtimeError } from 'Helpers';
-import { Errors } from 'Constants';
+import { runtimeError } from '../helpers';
+import { Errors } from '../constants';
 
 /** Class representing validation inclusion and exclusion groups */
 class Specific {

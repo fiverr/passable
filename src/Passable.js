@@ -2,9 +2,9 @@
 
 import testRunner from './test_runner';
 import ResultObject from './result_object';
-import { runtimeError } from 'Helpers';
+import { runtimeError } from './helpers';
 import Specific from './Specific';
-import { Errors } from 'Constants';
+import { Errors } from './constants/';
 
 class Passable {
 

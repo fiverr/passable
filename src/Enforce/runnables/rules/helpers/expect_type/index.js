@@ -1,8 +1,8 @@
 // @flow
 
 import { isType } from '../';
-import { runtimeError } from 'Helpers';
-import { Errors } from 'Constants';
+import { runtimeError } from '../../../../../helpers/';
+import { Errors } from '../../../../../constants';
 
 function expectType(value: AnyValue, type: string, functionName: string): true | void {
     if (!isType(value, type)) {

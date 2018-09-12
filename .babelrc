@@ -1,9 +1,9 @@
 {
-  "presets": ["flow", "env"],
+  "presets": ["@babel/preset-flow", "@babel/preset-env"],
   "plugins": [
+    ["@babel/plugin-transform-flow-strip-types"],
     ["webpack-aliases", {"config": "webpack.config.js"}],
     "babel-plugin-add-module-exports",
-    "transform-class-properties"
+    "@babel/plugin-proposal-class-properties"
   ]
 }
-
