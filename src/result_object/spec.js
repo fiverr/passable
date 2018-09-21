@@ -131,8 +131,13 @@ describe('class: PassableResponse', () => {
     });
 
     describe('method: done', () => {
+        let res;
+
+        beforeEach(() => {
+            res = new ResultObject(faker.lorem.word());
+        });
+
         it('Should add given callback to `completionCallbackList`', () => {
-            const res = new ResultObject(faker.lorem.word());
             expect(res.completionCallbacks).to.have.lengthOf(0);
             res.done(noop);
             expect(res.completionCallbacks).to.have.lengthOf(1);
@@ -140,14 +145,11 @@ describe('class: PassableResponse', () => {
         });
 
         it('Should return without adding non-function values', () => {
-            const res = new ResultObject(faker.lorem.word());
             [0, 1, null, undefined, new Promise(noop), false, true, [], {}].forEach((v) => res.done(v));
             expect(res.completionCallbacks).to.have.lengthOf(0);
         });
 
         it('Should push given callback as last element in the array', (done) => {
-            const res = new ResultObject(faker.lorem.word());
-
             res.done(noop);
             res.done(() => done());
 

@@ -19,7 +19,7 @@ test('field', 'should fail by enforce', () => {
 ```
 
 ## Failing an async test
-Since async test is not a function, but a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), the way to fail it is to simply reject the promise:
+Since async test is not a function, but a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), the way to fail the test is simply to reject the promise:
 
 ```js
 test('Field3', 'should wait some and fail', new Promise((resolve, reject) => setTimeout(reject, 3000)));

@@ -33,7 +33,7 @@ passable('MyForm', (test) => {
 ## Synchronous Tests
 In most cases, you would want to test some already existing data value against predefined rules, for example - input field length or email regex. These kinds of validations can be performed synchronously, as they only rely on information already present for you when you initialize the test suite.
 
-The synchronous test is simply a callback function passed as the thired argument of the `test` function. If this function throws an exception or excplicitly returns `false` the test is considered to be failing. Otherwise, it passes implicitly.
+The synchronous test is simply a callback function passed as the third argument of the `test` function. If this function throws an exception or explicitly returns `false` the test is considered to be failing. Otherwise, it passes implicitly.
 
 ```js
 test('name',  'should be at least 3 chars', () => {
@@ -42,7 +42,7 @@ test('name',  'should be at least 3 chars', () => {
 ```
 
 ## Asynchronous Tests
-Sometimes you would want to validate data with information from the server, for example - username availability. In these cases, you should add an async test to your suite, reaching the server before going in and performing the validation. An async validation is a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object. When it *resolves*, the test passes, and when it *rejects* the test fails. An async test will not complete unless either happens.
+Sometimes you would want to validate data with information from the server, for example - username availability. In these cases, you should add an async test to your suite, reaching the server before going in and performing the validation. An async test is a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object. When it *resolves*, the test passes, and when it *rejects* the test fails. An async test will not complete unless either happens.
 
 ```js
 test('name',  'must be unique', new Promise((resolve, reject) => {

@@ -1,10 +1,10 @@
 # The `.done()` function
 
-The `.done()` function is a function that can be chaind to a passable suite. It accepts a function to be run whenever the suite completes running all [tests](../test/index.md) (both sync, and async - if present), regardless of whether they passed or [failed](../test/how_to_fail.md).
+The `.done()` function is a function that can be chained to a passable suite. It accepts a function to be run whenever the suite completes running all [tests](../test/index.md) (both sync, and async - if present), regardless of whether they passed or [failed](../test/how_to_fail.md).
 
-`.done` calls can be infinitely chained to one another, and as the passable suite completes - they will all run synchronously - meaning that if there is an async action being performed in one of the callbacks, the next `.done` call will *not* wait for it to complete before starting.
+`.done()` calls can be infinitely chained to one another, and as the passable suite completes - they will all run synchronously - meaning that if there is an async action being performed in one of the callbacks, the next `.done()` call will *not* wait for it to complete before starting.
 
-When running, the `done` function passes down to its callback function the final passable result object, so you do not have to store it in an external variable.
+When running, the `done()` function passes down to its callback function the final passable result object, so you do not have to store it in an external variable.
 
 ```js
 import passable, { enforce } from 'passable';
