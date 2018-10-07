@@ -96,7 +96,8 @@ export default (passable) => {
             ]
         },
         validationWarnings: {},
-        skipped: []
+        skipped: [],
+        completionCallbacks: []
     };
 
     return {

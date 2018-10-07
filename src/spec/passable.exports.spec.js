@@ -4,7 +4,7 @@ import passable, { Enforce, enforce, validate } from '../index';
 const passableExports = require('../index');
 import { version } from '../../package.json';
 
-describe('Test Passable\'s exports', () => {
+describe("Test Passable's exports", () => {
 
     it('Should expose all outward facing passable API functions', () => {
         const exportsArray = Object.keys(passableExports);
@@ -14,7 +14,7 @@ describe('Test Passable\'s exports', () => {
         });
     });
 
-    describe('Test passable\'s default export', () => {
+    describe("Test passable's default export", () => {
         it('Default export should output correct version number (es6 imports)', () => {
             expect(passable.VERSION).to.equal(version);
         });

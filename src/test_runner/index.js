@@ -1,14 +1,10 @@
 // @flow
-function testRunner(callback: Function): boolean {
+function testRunner(test: Function): boolean {
 
     let isValid: null | boolean = null;
 
-    if (typeof callback !== 'function') {
-        return false;
-    }
-
     try {
-        const res: testRunnerCallback = callback();
+        const res: testRunnerCallback = test();
 
         if (typeof res !== 'undefined' && res !== null && res.hasOwnProperty('valid')) {
             isValid = res.valid;
@@ -24,4 +20,12 @@ function testRunner(callback: Function): boolean {
     return !!isValid;
 }
 
-export default testRunner;
+function testRunnerAsync(test: Function, done: Function, fail: Function): void {
+    try {
+        test.then(done, fail);
+    } catch (e) {
+        fail();
+    }
+}
+
+export { testRunnerAsync, testRunner };

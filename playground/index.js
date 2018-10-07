@@ -4,7 +4,7 @@ const enforce = passable.enforce;
 console.log('Playground. Lets play!');
 console.log(`passable version: ${passable.VERSION}`);
 
-const validity = passable('TestForm', (test) => {
+passable('TestForm', (test) => {
     test('Field1', 'Should be valid', () => {
         enforce('string').allOf({
             isString: true,
@@ -12,6 +12,7 @@ const validity = passable('TestForm', (test) => {
             smallerThan: 10
         });
     });
-});
 
-console.log(validity);
+    test('Field2', 'should wait some and pass', new Promise((resolve, reject) => setTimeout(resolve, 1000)));
+    test('Field3', 'should wait some and fail', new Promise((resolve, reject) => setTimeout(reject, 3000)));
+}).done(console.log);

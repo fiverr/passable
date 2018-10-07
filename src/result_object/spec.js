@@ -2,8 +2,11 @@
 
 import ResultObject, { WARN, FAIL } from './index';
 import { expect } from 'chai';
+import { noop } from 'lodash';
+import sinon from 'sinon';
+import faker from 'faker';
 
-describe('Test PassableResponse class', () => {
+describe('class: PassableResponse', () => {
     it('Should return correct initial object from constructor', () => {
         expect(new ResultObject('FormName')).to.deep.equal({
             name: 'FormName',
@@ -15,11 +18,20 @@ describe('Test PassableResponse class', () => {
             testsPerformed: {},
             validationErrors: {},
             validationWarnings: {},
-            skipped: []
+            skipped: [],
+            completionCallbacks: []
         });
     });
 
-    describe('Test initFieldCounters method', () => {
+
+    ['done', 'getErrors', 'getWarnings'].forEach((method) => {
+        it(`Should expose ${method} method`, () => {
+            const res = new ResultObject(faker.lorem.word());
+            expect(typeof res[method]).to.equal('function');
+        });
+    });
+
+    describe('method: initFieldCounters', () => {
         let testObject;
         beforeEach(() => testObject = new ResultObject('FormName').initFieldCounters('example'));
         it('Should add new fields and its counters to `testsPerformed`', () => {
@@ -49,7 +61,7 @@ describe('Test PassableResponse class', () => {
         });
     });
 
-    describe('Test bumpTestCounters method', () => {
+    describe('method: bumpTestCounters', () => {
         let testObject;
         beforeEach(() => testObject = new ResultObject('FormName').initFieldCounters('example'));
 
@@ -71,7 +83,7 @@ describe('Test PassableResponse class', () => {
         });
     });
 
-    describe('Test addToSkipped method', () => {
+    describe('method: addToSkipped', () => {
         let testObject;
         beforeEach(() => testObject = new ResultObject('FormName'));
 
@@ -96,7 +108,56 @@ describe('Test PassableResponse class', () => {
         });
     });
 
-    describe('Test getErrors method', () => {
+    describe('method: runCompletionCallbacks', () => {
+        it('Should run all functions in `completionCallbacks` list', () => {
+            const res = new ResultObject(faker.lorem.word());
+            const fn1 = sinon.spy();
+            const fn2 = sinon.spy();
+            const fn3 = sinon.spy();
+            res.done(fn1).done(fn2).done(fn3);
+            res.runCompletionCallbacks();
+            expect(fn1.calledOnce).to.equal(true);
+            expect(fn2.calledOnce).to.equal(true);
+            expect(fn3.calledOnce).to.equal(true);
+        });
+
+        it('Should pass current ResultObject instance to the callback', () => {
+            const res = new ResultObject(faker.lorem.word());
+            res.done((instance) => {
+                expect(res).to.equal(instance);
+            });
+            res.runCompletionCallbacks();
+        });
+    });
+
+    describe('method: done', () => {
+        let res;
+
+        beforeEach(() => {
+            res = new ResultObject(faker.lorem.word());
+        });
+
+        it('Should add given callback to `completionCallbackList`', () => {
+            expect(res.completionCallbacks).to.have.lengthOf(0);
+            res.done(noop);
+            expect(res.completionCallbacks).to.have.lengthOf(1);
+            res.completionCallbacks[0] === noop;
+        });
+
+        it('Should return without adding non-function values', () => {
+            [0, 1, null, undefined, new Promise(noop), false, true, [], {}].forEach((v) => res.done(v));
+            expect(res.completionCallbacks).to.have.lengthOf(0);
+        });
+
+        it('Should push given callback as last element in the array', (done) => {
+            res.done(noop);
+            res.done(() => done());
+
+            res.completionCallbacks[1]();
+        });
+    });
+
+    describe('method: getErrors', () => {
         let testObject;
         beforeEach(() => {
             testObject = new ResultObject('FormName')
@@ -120,7 +181,7 @@ describe('Test PassableResponse class', () => {
         });
     });
 
-    describe('Test getErrors method', () => {
+    describe('method: getWarnings', () => {
         let testObject;
         beforeEach(() => {
             testObject = new ResultObject('FormName')
@@ -144,7 +205,7 @@ describe('Test PassableResponse class', () => {
         });
     });
 
-    describe('Test fail method', () => {
+    describe('method: fail', () => {
 
         let testObject;
 
@@ -173,7 +234,8 @@ describe('Test PassableResponse class', () => {
                 },
                 validationErrors: { f1: ['should fail'] },
                 validationWarnings: {},
-                skipped: []
+                skipped: [],
+                completionCallbacks: []
             });
         });
 
@@ -191,7 +253,8 @@ describe('Test PassableResponse class', () => {
                 },
                 validationErrors: {},
                 validationWarnings: { f1: ['should warn'] },
-                skipped: []
+                skipped: [],
+                completionCallbacks: []
             });
         });
 
@@ -203,7 +266,7 @@ describe('Test PassableResponse class', () => {
         });
     });
 
-    describe('Test bumpTestWarning and bumpTestError methods', () => {
+    describe('methods: bumpTestWarning and bumpTestError', () => {
 
         let testObject;
 
@@ -232,7 +295,8 @@ describe('Test PassableResponse class', () => {
                 },
                 validationErrors: {},
                 validationWarnings: { f1: ['should warn'] },
-                skipped: []
+                skipped: [],
+                completionCallbacks: []
             });
         });
 
@@ -251,7 +315,8 @@ describe('Test PassableResponse class', () => {
                 },
                 validationErrors: { f1: ['should error'] },
                 validationWarnings: {},
-                skipped: []
+                skipped: [],
+                completionCallbacks: []
             });
         });
     });

@@ -4,15 +4,15 @@ import passable, { WARN } from '../index.js';
 import { expect } from 'chai';
 
 describe('Test warn flag', () => {
-    it('Should warn and not fail', () => {
+    it('Should mark test with warning', () => {
         expect(warnPass).to.deep.equal(warnPassExpected);
     });
 
-    it('Should both warn and fail', () => {
+    it('Should mark test with both warning and error', () => {
         expect(warnFail).to.deep.equal(warnFailExpected);
     });
 
-    it('Should fail but not warn', () => {
+    it('Should only fail test', () => {
         expect(fail).to.deep.equal(failExpected);
     });
 });
@@ -43,7 +43,8 @@ const warnPassExpected = {
         validationWarnings: { WarnPass: ['should warn'] },
         failCount: 0,
         warnCount: 1,
-        testCount: 1
+        testCount: 1,
+        completionCallbacks: []
     },
     warnFailExpected = {
         name: 'WarnFail',
@@ -58,7 +59,8 @@ const warnPassExpected = {
         validationWarnings: { Warn: ['should warn'] },
         failCount: 1,
         warnCount: 1,
-        testCount: 2
+        testCount: 2,
+        completionCallbacks: []
     },
     failExpected = {
         name: 'Fail',
@@ -73,5 +75,6 @@ const warnPassExpected = {
         validationWarnings: {},
         failCount: 1,
         warnCount: 0,
-        testCount: 2
+        testCount: 2,
+        completionCallbacks: []
     };

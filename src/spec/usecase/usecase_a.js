@@ -92,7 +92,8 @@ export default (passable) => {
                 'should be either "a" or "b"'
             ]
         },
-        skipped: []
+        skipped: [],
+        completionCallbacks: []
     };
 
     return {
