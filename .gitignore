@@ -5,6 +5,7 @@ dev_docpress
 _docpress
 dev
 version.json
+version.txt
 docs
 documentation/MAIN.md
 documentation/assets/**/*.css
