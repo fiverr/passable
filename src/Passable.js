@@ -82,6 +82,9 @@ class Passable {
     runPendingTests = () => {
         [...this.pending].forEach((test) => {
             if (test instanceof Promise) {
+
+                this.res.markAsync();
+
                 const done: Function = () => {
                     this.clearPendingTest(test);
                 };

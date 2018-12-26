@@ -25,6 +25,7 @@ export default (passable, enforce) => {
     });
 
     const expect = {
+        async: false,
         name: 'case_d',
         hasValidationErrors: true,
         hasValidationWarnings: false,
@@ -57,6 +58,8 @@ export default (passable, enforce) => {
         skipped: [],
         completionCallbacks: []
     };
+
+    console.log(response)
 
     return {
         response,

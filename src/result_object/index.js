@@ -12,6 +12,7 @@ class ResultObject {
      * @return {Object} Current instance
      */
     constructor(name: string) {
+        this.async = false;
         this.name = name;
         this.hasValidationErrors = false;
         this.hasValidationWarnings = false;
@@ -122,12 +123,27 @@ class ResultObject {
 
     /**
      * Registers callback functions to be run when test suite is done running
+     * If current suite is not async, runs the callback immediately
      * @param {function} callback the function to be called on done
      * @return {Object} Current instance
      */
     done(callback: Function) {
-        if (typeof callback !== 'function') { return this;}
+        if (typeof callback !== 'function') {return this;}
+
+        if (!this.async) {
+            callback(this);
+        }
+
         this.completionCallbacks.push(callback);
+        return this;
+    }
+
+    /**
+     * Marks current suite as async to be used by `done`
+     * @return {Object} Current instance
+    */
+    markAsync() {
+        this.async = true;
         return this;
     }
 
@@ -165,6 +181,7 @@ class ResultObject {
         return [];
     }
 
+    async: boolean;
     name: string;
     hasValidationErrors: boolean;
     hasValidationWarnings: boolean;

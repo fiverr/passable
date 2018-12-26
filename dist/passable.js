@@ -352,6 +352,7 @@ function () {
   function ResultObject(name) {
     _classCallCheck(this, ResultObject);
 
+    this.async = false;
     this.name = name;
     this.hasValidationErrors = false;
     this.hasValidationWarnings = false;
@@ -479,6 +480,7 @@ function () {
     }
     /**
      * Registers callback functions to be run when test suite is done running
+     * If current suite is not async, runs the callback immediately
      * @param {function} callback the function to be called on done
      * @return {Object} Current instance
      */
@@ -490,7 +492,22 @@ function () {
         return this;
       }
 
+      if (!this.async) {
+        callback(this);
+      }
+
       this.completionCallbacks.push(callback);
+      return this;
+    }
+    /**
+     * Marks current suite as async to be used by `done`
+     * @return {Object} Current instance
+    */
+
+  }, {
+    key: "markAsync",
+    value: function markAsync() {
+      this.async = true;
       return this;
     }
     /**
@@ -795,6 +812,8 @@ function Passable(name, tests, specific) {
   _defineProperty(this, "runPendingTests", function () {
     _toConsumableArray(_this.pending).forEach(function (test) {
       if (test instanceof Promise) {
+        _this.res.markAsync();
+
         var done = function done() {
           _this.clearPendingTest(test);
         };

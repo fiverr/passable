@@ -118,6 +118,10 @@ describe("Tests Passable's `test` functionality", () => {
                     expect(instance.res.testCount).to.equal(1);
                 });
 
+                it('Should mark response object as `async`', () => {
+                    expect(instance.res.async).to.equal(true);
+                });
+
                 it('Should only marke test as failing after rejection', (done) => {
                     expect(instance.res.failCount).to.equal(0);
                     setTimeout(() => {
@@ -153,6 +157,15 @@ describe("Tests Passable's `test` functionality", () => {
                 });
                 expect(instance.res.failCount).to.equal(1);
                 expect(instance.res.validationErrors).to.have.key(name);
+            });
+
+            it('Should keep responseObject:async as untouched', () => {
+                const name = lorem.word();
+                instance = new Passable(lorem.word(), (test) => {
+                    test(name, lorem.sentence(), () => { throw new Error(); });
+                    test(lorem.word(), lorem.sentence(), noop);
+                });
+                expect(instance.res.async).to.equal(false);
             });
 
             it('should mark a test as failed for `false`', () => {

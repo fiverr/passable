@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import dist, * as distExports from '../../../dist/Passable.min';
+import dist, * as distExports from '../../../dist/passable.min';
 import dev, * as devExports from '../../index';
 import usecase_a from './usecase_a';
 import usecase_b from './usecase_b';

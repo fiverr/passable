@@ -10,6 +10,7 @@ describe('class: PassableResponse', () => {
     it('Should return correct initial object from constructor', () => {
         expect(new ResultObject('FormName')).to.deep.equal({
             name: 'FormName',
+            async: false,
             hasValidationErrors: false,
             hasValidationWarnings: false,
             failCount: 0,
@@ -109,8 +110,15 @@ describe('class: PassableResponse', () => {
     });
 
     describe('method: runCompletionCallbacks', () => {
+        let res;
+
+        beforeEach(() => {
+            res = new ResultObject(faker.lorem.word());
+            res.markAsync();
+        });
+
         it('Should run all functions in `completionCallbacks` list', () => {
-            const res = new ResultObject(faker.lorem.word());
+
             const fn1 = sinon.spy();
             const fn2 = sinon.spy();
             const fn3 = sinon.spy();
@@ -122,7 +130,6 @@ describe('class: PassableResponse', () => {
         });
 
         it('Should pass current ResultObject instance to the callback', () => {
-            const res = new ResultObject(faker.lorem.word());
             res.done((instance) => {
                 expect(res).to.equal(instance);
             });
@@ -149,12 +156,22 @@ describe('class: PassableResponse', () => {
             expect(res.completionCallbacks).to.have.lengthOf(0);
         });
 
-        it('Should push given callback as last element in the array', (done) => {
-            res.done(noop);
-            res.done(() => done());
+        describe('When async', () => {
+            it('Should push given callback as last element in the array', (done) => {
+                res.markAsync();
+                res.done(noop);
+                res.done(() => done());
 
-            res.completionCallbacks[1]();
+                res.completionCallbacks[1]();
+            });
         });
+
+        describe('When sync', () => {
+            it('Should run callbacks immediately', (done) => {
+                res.done(() => done());
+            });
+        });
+
     });
 
     describe('method: getErrors', () => {
@@ -224,6 +241,7 @@ describe('class: PassableResponse', () => {
 
             expect(fail).to.deep.equal({
                 name: 'FormName',
+                async: false,
                 testCount: 0,
                 failCount: 1,
                 warnCount: 0,
@@ -243,6 +261,7 @@ describe('class: PassableResponse', () => {
             const warn = testObject.fail('f1', 'should warn', WARN);
             expect(warn).to.deep.equal({
                 name: 'FormName',
+                async: false,
                 testCount: 0,
                 failCount: 0,
                 warnCount: 1,
@@ -284,6 +303,7 @@ describe('class: PassableResponse', () => {
             testObject.bumpTestWarning('f1', 'should warn');
 
             expect(testObject).to.deep.equal({
+                async: false,
                 name: 'FormName',
                 testCount: 0,
                 failCount: 0,
@@ -305,6 +325,7 @@ describe('class: PassableResponse', () => {
 
             expect(testObject).to.deep.equal({
                 name: 'FormName',
+                async: false,
                 testCount: 0,
                 failCount: 1,
                 warnCount: 0,

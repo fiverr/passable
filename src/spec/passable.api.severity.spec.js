@@ -33,6 +33,7 @@ const warnPass = passable('WarnPass', (test) => {
 
 const warnPassExpected = {
         name: 'WarnPass',
+        async: false,
         skipped: [],
         hasValidationErrors: false,
         hasValidationWarnings: true,
@@ -48,6 +49,7 @@ const warnPassExpected = {
     },
     warnFailExpected = {
         name: 'WarnFail',
+        async: false,
         skipped: [],
         hasValidationErrors: true,
         hasValidationWarnings: true,
@@ -64,6 +66,7 @@ const warnPassExpected = {
     },
     failExpected = {
         name: 'Fail',
+        async: false,
         skipped: [],
         hasValidationErrors: true,
         hasValidationWarnings: false,
