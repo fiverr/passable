@@ -273,7 +273,7 @@ module.exports = function proxyPolyfill() {
 /* 1 */
 /***/ (function(module) {
 
-module.exports = {"a":"6.1.3"};
+module.exports = {"a":"6.2.0"};
 
 /***/ }),
 /* 2 */
@@ -800,6 +800,7 @@ function Passable(name, tests, specific) {
   });
 
   _defineProperty(this, "clearPendingTest", function (test) {
+    // $FlowFixMe
     _this.pending = _this.pending.filter(function (t) {
       return t !== test;
     });
