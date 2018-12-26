@@ -37,6 +37,12 @@ declare type ErrorAndWarningObject = {
     [name: string]: Array<string>
 }
 
+declare type AsyncObject = {
+    [name: string]: {
+        done: boolean
+    }
+} | null;
+
 // Test
 declare type TestsWrapper = (test: TestProvider) => void;
 declare type TestProvider = (fieldName: string, statemenpt: string, test: PassableTest, severity: Severity) => void;

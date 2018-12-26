@@ -83,9 +83,10 @@ class Passable {
         [...this.pending].forEach((test) => {
             if (test instanceof Promise) {
 
-                this.res.markAsync();
+                this.res.markAsync(test.fieldName);
 
                 const done: Function = () => {
+                    this.res.markAsDone(test.fieldName);
                     this.clearPendingTest(test);
                 };
 

@@ -108,9 +108,11 @@ describe("Tests Passable's `test` functionality", () => {
 
         describe('async test behavior', () => {
             describe('failing', () => {
+                let name;
                 beforeEach(() => {
+                    name = lorem.word();
                     instance = new Passable('formname', (test) => {
-                        test(lorem.word(), lorem.sentence(), new Promise((resolve, reject) => setImmediate(reject)));
+                        test(name, lorem.sentence(), new Promise((resolve, reject) => setImmediate(reject)));
                     });
                 });
 
@@ -118,8 +120,19 @@ describe("Tests Passable's `test` functionality", () => {
                     expect(instance.res.testCount).to.equal(1);
                 });
 
-                it('Should mark response object as `async`', () => {
-                    expect(instance.res.async).to.equal(true);
+                it('Should set field as async (done: false) upon init', () => {
+                    expect(instance.res.async).to.deep.equal({
+                        [name]: { done: false }
+                    });
+                });
+
+                it('Should set async field as done when completed', (done) => {
+                    setTimeout(() => {
+                        expect(instance.res.async).to.deep.equal({
+                            [name]: { done: true }
+                        });
+                        done();
+                    }, 100);
                 });
 
                 it('Should only marke test as failing after rejection', (done) => {
@@ -165,7 +178,7 @@ describe("Tests Passable's `test` functionality", () => {
                     test(name, lorem.sentence(), () => { throw new Error(); });
                     test(lorem.word(), lorem.sentence(), noop);
                 });
-                expect(instance.res.async).to.equal(false);
+                expect(instance.res.async).to.equal(null);
             });
 
             it('should mark a test as failed for `false`', () => {

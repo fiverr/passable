@@ -12,7 +12,7 @@ class ResultObject {
      * @return {Object} Current instance
      */
     constructor(name: string) {
-        this.async = false;
+        this.async = null;
         this.name = name;
         this.hasValidationErrors = false;
         this.hasValidationWarnings = false;
@@ -139,11 +139,26 @@ class ResultObject {
     }
 
     /**
-     * Marks current suite as async to be used by `done`
+     * Marks a field as async
+     * @param {string} fieldName the name of the field marked as async
      * @return {Object} Current instance
     */
-    markAsync() {
-        this.async = true;
+    markAsync(fieldName: string) {
+        this.async = this.async || {};
+        this.async[fieldName] = { done: false };
+        return this;
+    }
+
+    /**
+     * Marks an async field as done
+     * @param {string} fieldName the name of the field marked as done
+     * @return {Object} Current instance
+    */
+    markAsDone(fieldName: string) {
+        if (this.async && this.async[fieldName]) {
+            this.async[fieldName] = { done: true };
+        }
+
         return this;
     }
 
@@ -181,7 +196,7 @@ class ResultObject {
         return [];
     }
 
-    async: boolean;
+    async: AsyncObject;
     name: string;
     hasValidationErrors: boolean;
     hasValidationWarnings: boolean;

@@ -25,7 +25,7 @@ export default (passable, enforce) => {
     });
 
     const expect = {
-        async: false,
+        async: null,
         name: 'case_d',
         hasValidationErrors: true,
         hasValidationWarnings: false,

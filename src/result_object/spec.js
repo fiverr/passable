@@ -10,7 +10,7 @@ describe('class: PassableResponse', () => {
     it('Should return correct initial object from constructor', () => {
         expect(new ResultObject('FormName')).to.deep.equal({
             name: 'FormName',
-            async: false,
+            async: null,
             hasValidationErrors: false,
             hasValidationWarnings: false,
             failCount: 0,
@@ -241,7 +241,7 @@ describe('class: PassableResponse', () => {
 
             expect(fail).to.deep.equal({
                 name: 'FormName',
-                async: false,
+                async: null,
                 testCount: 0,
                 failCount: 1,
                 warnCount: 0,
@@ -261,7 +261,7 @@ describe('class: PassableResponse', () => {
             const warn = testObject.fail('f1', 'should warn', WARN);
             expect(warn).to.deep.equal({
                 name: 'FormName',
-                async: false,
+                async: null,
                 testCount: 0,
                 failCount: 0,
                 warnCount: 1,
@@ -303,7 +303,7 @@ describe('class: PassableResponse', () => {
             testObject.bumpTestWarning('f1', 'should warn');
 
             expect(testObject).to.deep.equal({
-                async: false,
+                async: null,
                 name: 'FormName',
                 testCount: 0,
                 failCount: 0,
@@ -325,7 +325,7 @@ describe('class: PassableResponse', () => {
 
             expect(testObject).to.deep.equal({
                 name: 'FormName',
-                async: false,
+                async: null,
                 testCount: 0,
                 failCount: 1,
                 warnCount: 0,

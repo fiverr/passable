@@ -352,7 +352,7 @@ function () {
   function ResultObject(name) {
     _classCallCheck(this, ResultObject);
 
-    this.async = false;
+    this.async = null;
     this.name = name;
     this.hasValidationErrors = false;
     this.hasValidationWarnings = false;
@@ -500,14 +500,35 @@ function () {
       return this;
     }
     /**
-     * Marks current suite as async to be used by `done`
+     * Marks a field as async
+     * @param {string} fieldName the name of the field marked as async
      * @return {Object} Current instance
     */
 
   }, {
     key: "markAsync",
-    value: function markAsync() {
-      this.async = true;
+    value: function markAsync(fieldName) {
+      this.async = this.async || {};
+      this.async[fieldName] = {
+        done: false
+      };
+      return this;
+    }
+    /**
+     * Marks an async field as done
+     * @param {string} fieldName the name of the field marked as done
+     * @return {Object} Current instance
+    */
+
+  }, {
+    key: "markAsDone",
+    value: function markAsDone(fieldName) {
+      if (this.async && this.async[fieldName]) {
+        this.async[fieldName] = {
+          done: true
+        };
+      }
+
       return this;
     }
     /**
@@ -779,7 +800,6 @@ function Passable(name, tests, specific) {
   });
 
   _defineProperty(this, "clearPendingTest", function (test) {
-    // $FlowFixMe
     _this.pending = _this.pending.filter(function (t) {
       return t !== test;
     });
@@ -812,9 +832,11 @@ function Passable(name, tests, specific) {
   _defineProperty(this, "runPendingTests", function () {
     _toConsumableArray(_this.pending).forEach(function (test) {
       if (test instanceof Promise) {
-        _this.res.markAsync();
+        _this.res.markAsync(test.fieldName);
 
         var done = function done() {
+          _this.res.markAsDone(test.fieldName);
+
           _this.clearPendingTest(test);
         };
 
