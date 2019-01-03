@@ -59,8 +59,6 @@ export default (passable, enforce) => {
         completionCallbacks: []
     };
 
-    console.log(response)
-
     return {
         response,
         expect

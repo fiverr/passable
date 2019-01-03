@@ -1,4 +1,5 @@
 // @flow
+import ResultObject from './result_object';
 
 declare type AnyValue = any; // eslint-disable-line flowtype/no-weak-types
 declare type ArrayOrStringOfArrays = Array<string> | string;
@@ -44,7 +45,7 @@ declare type AsyncObject = {
 } | null;
 
 // Test
-declare type TestsWrapper = (test: TestProvider) => void;
+declare type TestsWrapper = (test: TestProvider, draft: ResultObject) => void;
 declare type TestProvider = (fieldName: string, statemenpt: string, test: PassableTest, severity: Severity) => void;
 declare type PassableTest = () => void | () => boolean | Promise<void>;
 

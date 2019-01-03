@@ -8,7 +8,7 @@ import sinon from 'sinon';
 describe("Tests Passable's `test` functionality", () => {
 
     describe('method: test', () => {
-        describe('Supplied test callback is either a promise or a function', () => {
+        describe('Supplied test callback is a function', () => {
             let instance;
             const allTests = [];
 
@@ -21,7 +21,48 @@ describe("Tests Passable's `test` functionality", () => {
                 }
             });
 
-            it('Should call `addPendingTest` for each test called', () => {
+            it('Should never call `addPendingTest` for sync tests', () => {
+                let callCounter = 0;
+                instance.addPendingTest = () => ++callCounter;
+                allTests.forEach((test) => instance.test(lorem.word(), lorem.sentence(), test));
+                expect(callCounter).to.equal(0);
+            });
+
+            it('Should assign `fieldName`, `statement` and `severity` to test callback', () => {
+                const severities = [WARN, FAIL];
+                const savedValues = [];
+
+                allTests.forEach((test, i) => {
+                    const fieldName = lorem.word();
+                    const statement = lorem.sentence();
+                    const severity = sample(severities);
+                    savedValues[i] = { fieldName, statement, severity };
+                    instance.test(fieldName, statement, test, severity);
+
+                });
+
+                allTests.forEach((test, i) => {
+                    expect(test.fieldName).to.equal(savedValues[i].fieldName);
+                    expect(test.statement).to.equal(savedValues[i].statement);
+                    expect(test.severity).to.equal(savedValues[i].severity);
+                });
+            });
+        });
+
+        describe('Supplied test callback is a promise', () => {
+            let instance;
+            const allTests = [];
+
+            beforeEach(() => {
+                instance = new Passable('formname', noop);
+                allTests.length = 0;
+
+                for (let i = 0; i < random(1, 15); i++) {
+                    allTests.push(Promise.resolve());
+                }
+            });
+
+            it('Should never call `addPendingTest` for async tests', () => {
                 let callCounter = 0;
                 instance.addPendingTest = () => ++callCounter;
                 allTests.forEach((test) => instance.test(lorem.word(), lorem.sentence(), test));
