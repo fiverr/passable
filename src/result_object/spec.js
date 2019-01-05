@@ -231,7 +231,7 @@ describe('class: PassableResponse', () => {
                 .fail('example', 'Error string', FAIL);
         });
 
-        describe('Fiels specified', () => {
+        describe('Field specified', () => {
             it('Should return errors array for a field with errors', () => {
                 expect(testObject.hasErrors('example')).to.equal(true);
             });
@@ -257,7 +257,7 @@ describe('class: PassableResponse', () => {
                 .fail('example', 'Error string', WARN);
         });
 
-        describe('Fiels specified', () => {
+        describe('Field specified', () => {
             it('Should return errors array for a field with errors', () => {
                 expect(testObject.hasWarnings('example')).to.equal(true);
             });
