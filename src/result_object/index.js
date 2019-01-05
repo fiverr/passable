@@ -205,9 +205,7 @@ class ResultObject {
             return this.hasValidationErrors;
         }
 
-        return this.validationErrors[fieldName]
-            ? Boolean(this.validationErrors[fieldName].length)
-            : false;
+        return Boolean(this.getErrors(fieldName).length);
     }
 
     /**
@@ -219,9 +217,7 @@ class ResultObject {
             return this.hasValidationWarnings;
         }
 
-        return this.validationWarnings[fieldName]
-            ? Boolean(this.validationWarnings[fieldName].length)
-            : false;
+        return Boolean(this.getWarnings(fieldName).length);
     }
 
     async: AsyncObject;
