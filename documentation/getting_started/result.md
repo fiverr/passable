@@ -31,7 +31,7 @@
 ## `hasErrors` and `hasWarnings` functions
 > since 6.3.0
 
-If you only need to know if a certain field has validation errors or warnings, but don't really care which they are, you can use `hasErrors` or `hasWarnings` functions.
+If you only need to know if a certain field has validation errors or warnings but don't really care which they are, you can use `hasErrors` or `hasWarnings` functions.
 
 ```js
 resultObject.hasErrors('username');
