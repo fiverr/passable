@@ -163,7 +163,7 @@ class ResultObject {
     }
 
     /**
-     * Getall the errors of a field, or of the whole object
+     * Gets all the errors of a field, or of the whole object
      * @param {string} [fieldName] - The name of the field.
      * @return {Array | Object} The field's errors, or all errors
      */
@@ -180,7 +180,7 @@ class ResultObject {
     }
 
     /**
-     * Getall the warnings of a field, or of the whole object
+     * Gets all the warnings of a field, or of the whole object
      * @param {string} [fieldName] - The name of the field.
      * @return {Array | Object} The field's warnings, or all warnings
      */
@@ -194,6 +194,30 @@ class ResultObject {
         }
 
         return [];
+    }
+
+    /**
+     * Returns whether a field (or the whole suite, if none passed) contains errors
+     * @param {string} [fieldName]
+     */
+    hasErrors(fieldName: string): boolean {
+        if (!fieldName) {
+            return this.hasValidationErrors;
+        }
+
+        return Boolean(this.getErrors(fieldName).length);
+    }
+
+    /**
+     * Returns whether a field (or the whole suite, if none passed) contains warnings
+     * @param {string} [fieldName]
+     */
+    hasWarnings(fieldName: string): boolean {
+        if (!fieldName) {
+            return this.hasValidationWarnings;
+        }
+
+        return Boolean(this.getWarnings(fieldName).length);
     }
 
     async: AsyncObject;
