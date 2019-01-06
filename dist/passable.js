@@ -273,7 +273,7 @@ module.exports = function proxyPolyfill() {
 /* 1 */
 /***/ (function(module) {
 
-module.exports = {"a":"6.2.0"};
+module.exports = {"a":"6.3.0"};
 
 /***/ }),
 /* 2 */
@@ -532,7 +532,7 @@ function () {
       return this;
     }
     /**
-     * Getall the errors of a field, or of the whole object
+     * Gets all the errors of a field, or of the whole object
      * @param {string} [fieldName] - The name of the field.
      * @return {Array | Object} The field's errors, or all errors
      */
@@ -551,7 +551,7 @@ function () {
       return [];
     }
     /**
-     * Getall the warnings of a field, or of the whole object
+     * Gets all the warnings of a field, or of the whole object
      * @param {string} [fieldName] - The name of the field.
      * @return {Array | Object} The field's warnings, or all warnings
      */
@@ -568,6 +568,34 @@ function () {
       }
 
       return [];
+    }
+    /**
+     * Returns whether a field (or the whole suite, if none passed) contains errors
+     * @param {string} [fieldName]
+     */
+
+  }, {
+    key: "hasErrors",
+    value: function hasErrors(fieldName) {
+      if (!fieldName) {
+        return this.hasValidationErrors;
+      }
+
+      return Boolean(this.getErrors(fieldName).length);
+    }
+    /**
+     * Returns whether a field (or the whole suite, if none passed) contains warnings
+     * @param {string} [fieldName]
+     */
+
+  }, {
+    key: "hasWarnings",
+    value: function hasWarnings(fieldName) {
+      if (!fieldName) {
+        return this.hasValidationWarnings;
+      }
+
+      return Boolean(this.getWarnings(fieldName).length);
     }
   }]);
 
@@ -819,21 +847,21 @@ function Passable(name, tests, specific) {
 
     _this.res.initFieldCounters(fieldName);
 
+    var operation;
+
     if (typeof test === 'function') {
-      _this.runTest(Object.assign(test, {
-        fieldName: fieldName,
-        statement: statement,
-        severity: severity
-      }));
+      operation = _this.runTest;
+    } else if (test instanceof Promise) {
+      operation = _this.addPendingTest;
+    } else {
+      return;
     }
 
-    if (test instanceof Promise) {
-      _this.addPendingTest(Object.assign(test, {
-        fieldName: fieldName,
-        statement: statement,
-        severity: severity
-      }));
-    }
+    operation(Object.assign(test, {
+      fieldName: fieldName,
+      statement: statement,
+      severity: severity
+    }));
   });
 
   _defineProperty(this, "runTest", function (test) {
