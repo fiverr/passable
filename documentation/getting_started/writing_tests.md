@@ -35,6 +35,8 @@ If our validation fails, among other information, we would get the names of the 
 ## Accessing the intermediate test result from within your suite
 In some cases, you might want to access the intermediate result, for example, if you'd like to stop a server call from happening for a field that's already invalid. To do that, you can access the draft of the result object from within the test suite, using its second argument.
 
+**Note**: It is only possible to access intermediate test results for sync tests, and it is recommended to put all the async tests at the bottom of your suite so they have access to the result of all the sync tests.
+
 In the following example, we're preventing the async validation from running over the username field in case it already has errors.
 
 ```js
