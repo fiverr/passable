@@ -25,7 +25,7 @@ describe('class: PassableResponse', () => {
     });
 
 
-    ['done', 'getErrors', 'getWarnings'].forEach((method) => {
+    ['done', 'getErrors', 'getWarnings', 'hasErrors', 'hasWarnings'].forEach((method) => {
         it(`Should expose ${method} method`, () => {
             const res = new ResultObject(faker.lorem.word());
             expect(typeof res[method]).to.equal('function');
@@ -218,6 +218,70 @@ describe('class: PassableResponse', () => {
         it('Should return all errors object when no field specified', () => {
             expect(testObject.getWarnings()).to.deep.equal({
                 example: ['Error string']
+            });
+        });
+    });
+
+    describe('method: hasErrors', () => {
+        let testObject;
+        beforeEach(() => {
+            testObject = new ResultObject('FormName')
+                .initFieldCounters('example')
+                .initFieldCounters('example_2')
+                .fail('example', 'Error string', FAIL);
+        });
+
+        describe('Field specified', () => {
+            it('Should return true for a field with errors', () => {
+                expect(testObject.hasErrors('example')).to.equal(true);
+            });
+
+            it('Should return false for a field without errors', () => {
+                expect(testObject.hasErrors('example_2')).to.equal(false);
+            });
+        });
+
+        describe('Field not specified', () => {
+            it('Should return true if errors exist', () => {
+                expect(testObject.hasErrors()).to.equal(true);
+            });
+        });
+
+        describe('Specified field does not exist', () => {
+            it('Should return false', () => {
+                expect(testObject.hasErrors('nonexistent')).to.equal(false);
+            });
+        });
+    });
+
+    describe('method: hasWarnings', () => {
+        let testObject;
+        beforeEach(() => {
+            testObject = new ResultObject('FormName')
+                .initFieldCounters('example')
+                .initFieldCounters('example_2')
+                .fail('example', 'Error string', WARN);
+        });
+
+        describe('Field specified', () => {
+            it('Should return true for a field with errors', () => {
+                expect(testObject.hasWarnings('example')).to.equal(true);
+            });
+
+            it('Should return false for a field without errors', () => {
+                expect(testObject.hasWarnings('example_2')).to.equal(false);
+            });
+        });
+
+        describe('Field not specified', () => {
+            it('Should return true if errors exist', () => {
+                expect(testObject.hasWarnings()).to.equal(true);
+            });
+        });
+
+        describe('Specified field does not exist', () => {
+            it('Should return false', () => {
+                expect(testObject.hasWarnings('nonexistent')).to.equal(false);
             });
         });
     });

@@ -3,21 +3,23 @@
 ## Properties
 | Name                             | Type       | Description                                         |
 |----------------------------------|------------|-----------------------------------------------------|
-| `name`                           | `String`   | The name of the form being validated                |
-| `hasValidationErrors`            | `Boolean`  | Whether there are validation errors or not          |
-| `hasValidationWarnings`          | `Boolean`  | Whether there are validation warnings or not        |
-| `failCount`                      | `Number`   | Overall errors count for this form                  |
-| `warnCount`                      | `Number`   | Overall warnings count for this form                |
-| `testCount`                      | `Number`   | Overall test count in this form                     |
-| `testsPerformed`                 | `Object{}` | Detailed stats per field (structure detailed below) |
-| `validationErrors`               | `Object[]` | Actual errors per each field                        |
-| `validationErrors[field-name]`   | `Object[]` | All error strings for this field                    |
-| `validationWarnings`             | `Object[]` | Actual errors per each field                        |
-| `validationWarnings[field-name]` | `Object[]` | All warning strings for this field                  |
-| `async`                          | `Object{}` | Contains async tests and their current completion status |
-| `skipped`                        | `Array`    | All skipped fields (empty, unless the `specific` option is used) |
-| `getErrors`                      | `Function` | Getter function which allows accessing the errors array of one or all fields |
-| `getWarnings`                    | `Function` | Getter function which allows accessing the warnings array of one or all fields |
+| `name`                           | `String`   | The name of the form being validated
+| `hasValidationErrors`            | `Boolean`  | Whether there are validation errors or not
+| `hasValidationWarnings`          | `Boolean`  | Whether there are validation warnings or not
+| `failCount`                      | `Number`   | Overall errors count for this form
+| `warnCount`                      | `Number`   | Overall warnings count for this form
+| `testCount`                      | `Number`   | Overall test count in this form
+| `testsPerformed`                 | `Object{}` | Detailed stats per field (structure detailed below)
+| `validationErrors`               | `Object[]` | Actual errors per each field
+| `validationErrors[field-name]`   | `Object[]` | All error strings for this field
+| `validationWarnings`             | `Object[]` | Actual errors per each field
+| `validationWarnings[field-name]` | `Object[]` | All warning strings for this field
+| `async`                          | `Object{}` | Contains async tests and their current completion status
+| `skipped`                        | `Array`    | All skipped fields (empty, unless the `specific` option is used)
+| `getErrors`                      | `Function` | Getter function which allows accessing the errors array of one or all fields
+| `getWarnings`                    | `Function` | Getter function which allows accessing the warnings array of one or all fields
+| `hasErrors`                      | `Function` | Returns whether a certain field (or the whole suite, if no field passed) has errors
+| `hasWarnings`                    | `Function` | Returns whether a certain field (or the whole suite, if no field passed) has warnings
 
 ### `testsPerformed` field structure
 | Name        | Type     | Description                           |
@@ -26,29 +28,53 @@
 | `warnCount` | `Number` | Overall warnings count for this field |
 | `testCount` | `Number` | Overall test count in this field      |
 
+## `hasErrors` and `hasWarnings` functions
+> since 6.3.0
+
+If you only need to know if a certain field has validation errors or warnings but don't really care which they are, you can use `hasErrors` or `hasWarnings` functions.
+
+```js
+resultObject.hasErrors('username');
+// true
+
+resultObject.hasWarnings('password');
+// false
+```
+
+In case you want to know whether the whole suite has errors or warnings, you can use the same functions, just without specifying a field
+
+```js
+resultObject.hasErrors();
+// true
+
+resultObject.hasWarnings();
+// true
+```
+
 ## `getErrors` and `getWarnings` functions
 > since 5.10.0
 
 You can easily traverse the object tree to acess the field errors and warnings, but when accessing many fields, it can get pretty messy:
+
 ```js
 resultObject.validationErrors.myField && resultObject.validationErrors.myField[0];
 ```
 This is clearly not ideal. There is a shortcut to getting to a specific field:
 
 ```js
-resultObject.getErrors('fieldName');
+resultObject.getErrors('username');
 // ['Error string 1', `Error string 2`]
 
-resultObject.getWarnings('fieldName');
+resultObject.getWarnings('password');
 // ['Warning string 1', `Warning string 2`]
 ```
 
 If there are no errors for the field, the function returns an empty array:
 ```js
-resultObject.getErrors('fieldName');
+resultObject.getErrors('username');
 // []
 
-resultObject.getWarnings('fieldName');
+resultObject.getWarnings('username');
 // []
 ```
 
