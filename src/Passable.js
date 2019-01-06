@@ -35,7 +35,7 @@ class Passable {
 
         this.res = new ResultObject(name);
 
-        tests(this.test);
+        tests(this.test, this.res);
         this.runPendingTests();
     }
 
@@ -54,7 +54,7 @@ class Passable {
      * It initiates field validation, and adds te test to the pending tests list
      * @param {string} fieldName the name of the field being validated
      * @param {string} statement description of the test
-     * @param {function} test the actual test callback or promise
+     * @param {function | Promise} test the actual test callback or promise
      */
     test = (fieldName: string, statement: string, test: PassableTest, severity: Severity) => {
 
@@ -65,48 +65,60 @@ class Passable {
 
         this.res.initFieldCounters(fieldName);
 
-        if (typeof test !== 'function' && !(test instanceof Promise)) {
+        let operation: Function;
+
+        if (typeof test === 'function') {
+            operation = this.runTest;
+        } else if (test instanceof Promise) {
+            operation = this.addPendingTest;
+        } else {
             return;
         }
 
-        test.fieldName = fieldName;
-        test.statement = statement;
-        test.severity = severity;
-
-        this.addPendingTest(test);
+        operation(Object.assign(test, {
+            fieldName,
+            statement,
+            severity
+        }));
     }
 
     /**
-     * Runs all pending tests, clears pending tests list and bumps counters
+     * calls `runTest` on all pending tests, clears pending tests list and bumps counters
+     * @param {function | Promise} test the actual test callback or promise
+     */
+    runTest = (test: PassableTest) => {
+        if (test instanceof Promise) {
+
+            this.res.markAsync(test.fieldName);
+
+            const done: Function = () => {
+                this.res.markAsDone(test.fieldName);
+                this.clearPendingTest(test);
+            };
+
+            const fail: Function = () => {
+                // order is important here! fail needs to be called before `done`.
+                this.res.fail(test.fieldName, test.statement, test.severity);
+                done();
+            };
+
+            testRunnerAsync(test, done, fail);
+        } else {
+            const isValid: boolean = testRunner(test);
+
+            if (!isValid) {
+                this.res.fail(test.fieldName, test.statement, test.severity);
+            }
+            this.clearPendingTest(test);
+        }
+        this.res.bumpTestCounter(test.fieldName);
+    }
+
+    /**
+     * calls `runTest` on all pending tests, clears pending tests list and bumps counters
      */
     runPendingTests = () => {
-        [...this.pending].forEach((test) => {
-            if (test instanceof Promise) {
-
-                this.res.markAsync(test.fieldName);
-
-                const done: Function = () => {
-                    this.res.markAsDone(test.fieldName);
-                    this.clearPendingTest(test);
-                };
-
-                const fail: Function = () => {
-                    // order is important here! fail needs to be called before `done`.
-                    this.res.fail(test.fieldName, test.statement, test.severity);
-                    done();
-                };
-
-                testRunnerAsync(test, done, fail);
-            } else {
-                const isValid: boolean = testRunner(test);
-
-                if (!isValid) {
-                    this.res.fail(test.fieldName, test.statement, test.severity);
-                }
-                this.clearPendingTest(test);
-            }
-            this.res.bumpTestCounter(test.fieldName);
-        });
+        [...this.pending].forEach(this.runTest);
     }
 }
 

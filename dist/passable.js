@@ -819,48 +819,56 @@ function Passable(name, tests, specific) {
 
     _this.res.initFieldCounters(fieldName);
 
-    if (typeof test !== 'function' && !(test instanceof Promise)) {
-      return;
+    if (typeof test === 'function') {
+      _this.runTest(Object.assign(test, {
+        fieldName: fieldName,
+        statement: statement,
+        severity: severity
+      }));
     }
 
-    test.fieldName = fieldName;
-    test.statement = statement;
-    test.severity = severity;
+    if (test instanceof Promise) {
+      _this.addPendingTest(Object.assign(test, {
+        fieldName: fieldName,
+        statement: statement,
+        severity: severity
+      }));
+    }
+  });
 
-    _this.addPendingTest(test);
+  _defineProperty(this, "runTest", function (test) {
+    if (test instanceof Promise) {
+      _this.res.markAsync(test.fieldName);
+
+      var done = function done() {
+        _this.res.markAsDone(test.fieldName);
+
+        _this.clearPendingTest(test);
+      };
+
+      var fail = function fail() {
+        // order is important here! fail needs to be called before `done`.
+        _this.res.fail(test.fieldName, test.statement, test.severity);
+
+        done();
+      };
+
+      testRunnerAsync(test, done, fail);
+    } else {
+      var isValid = testRunner(test);
+
+      if (!isValid) {
+        _this.res.fail(test.fieldName, test.statement, test.severity);
+      }
+
+      _this.clearPendingTest(test);
+    }
+
+    _this.res.bumpTestCounter(test.fieldName);
   });
 
   _defineProperty(this, "runPendingTests", function () {
-    _toConsumableArray(_this.pending).forEach(function (test) {
-      if (test instanceof Promise) {
-        _this.res.markAsync(test.fieldName);
-
-        var done = function done() {
-          _this.res.markAsDone(test.fieldName);
-
-          _this.clearPendingTest(test);
-        };
-
-        var fail = function fail() {
-          // order is important here! fail needs to be called before `done`.
-          _this.res.fail(test.fieldName, test.statement, test.severity);
-
-          done();
-        };
-
-        testRunnerAsync(test, done, fail);
-      } else {
-        var isValid = testRunner(test);
-
-        if (!isValid) {
-          _this.res.fail(test.fieldName, test.statement, test.severity);
-        }
-
-        _this.clearPendingTest(test);
-      }
-
-      _this.res.bumpTestCounter(test.fieldName);
-    });
+    _toConsumableArray(_this.pending).forEach(_this.runTest);
   });
 
   if (typeof name !== 'string') {
@@ -873,7 +881,7 @@ function Passable(name, tests, specific) {
 
   this.specific = new src_Specific(specific);
   this.res = new result_object(name);
-  tests(this.test);
+  tests(this.test, this.res);
   this.runPendingTests();
 };
 
