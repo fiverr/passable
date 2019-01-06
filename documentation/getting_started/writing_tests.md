@@ -47,7 +47,7 @@ passable('NewUserForm', (test, draft) => {
         enforce(data.username).isString().largerThan(1).smallerThan(11);
     });
 
-    if (!draft.getErrors('username').length) {
+    if (!draft.hasErrors('username')) {
         // if the username did not pass the previous test, the following test won't run
         test('username', 'already exists', fetch(`/check_availability?username=${data.username}`));
     }
