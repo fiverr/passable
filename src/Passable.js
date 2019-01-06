@@ -65,21 +65,21 @@ class Passable {
 
         this.res.initFieldCounters(fieldName);
 
+        let operation: Function;
+
         if (typeof test === 'function') {
-            this.runTest(Object.assign(test, {
-                fieldName,
-                statement,
-                severity
-            }));
+            operation = this.runTest;
+        } else if (test instanceof Promise) {
+            operation = this.addPendingTest;
+        } else {
+            return;
         }
 
-        if (test instanceof Promise) {
-            this.addPendingTest(Object.assign(test, {
-                fieldName,
-                statement,
-                severity
-            }));
-        }
+        operation(Object.assign(test, {
+            fieldName,
+            statement,
+            severity
+        }));
     }
 
     /**
