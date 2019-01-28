@@ -1,17 +1,21 @@
 declare module 'passable' {
+
+    const passable: Passable;
+    export default passable;
+
     interface Passable {
-        (name: string): Passable.PassableInstance,
-        static enforce(value: any): Passable.EnforceInstance,
-        static Enforce(value: any): Passable.EnforceInstance
+        (name: string): PassableNS.PassableInstance,
+        enforce(value: any): PassableNS.EnforceInstance,
+        Enforce(value: any): PassableNS.EnforceInstance
     }
 
-    namespace Passable {
-        
-        interface PassableInstance {
-
+    namespace PassableNS {
+    
+        export interface PassableInstance {
+    
         }
-
-        interface EnforceInstance {
+    
+        export interface EnforceInstance {
             /**
              * Checks if a value contains a regex match by Regex expression
              * 
@@ -21,7 +25,7 @@ declare module 'passable' {
              *  enforce('ninety eighty four').matches(/[0-9]/) // falsy
              */
             matches(regex: RegExp): EnforceInstance,
-
+    
             /**
              * Checks if a value contains a regex match by a string expression
              * 
@@ -31,7 +35,7 @@ declare module 'passable' {
              *  enforce('ninety eighty four').matches('[0-9]') // falsy
              */
             matches(regexAsString: string): EnforceInstance,
-
+    
             /**
              * Checks if a value doesn't contains a regex match by Regex expression
              * 
@@ -39,7 +43,7 @@ declare module 'passable' {
              *  enforce(1984).notMatches(/[0-9]/) // falsy
              */
             notMatches(regex: RegExp): EnforceInstance,
-
+    
             /**
              * Checks if a value doesn't contains a regex match by string expression
              * 
@@ -47,7 +51,7 @@ declare module 'passable' {
              *  enforce('ninety eighty four').notMatches('[0-9]') // truthy
              */
             notMatches(regexAsString: string): EnforceInstance,
-
+    
             /**
              * Checks if your enforce value is contained in another array
              * 
@@ -68,7 +72,7 @@ declare module 'passable' {
              *  enforce('ad').inside('tru dat.') // falsy
              */
             inside(text: string): EnforceInstance,
-
+    
             /**
              * Checks if your enforce value is not contained in another array
              * 
@@ -83,7 +87,7 @@ declare module 'passable' {
              *  enforce('ad').notInside('tru dat.') // truthy
              */
             notInside(text: string): EnforceInstance,
-
+    
             /**
              * Checks if a value is of type Array
              * 
@@ -95,7 +99,7 @@ declare module 'passable' {
              *  enforce(['hello']).isArray(false) // falsy
              */
             isArray(expect?: boolean): EnforceInstance,
-
+    
             /**
              * Checks if a value is of any type other than array
              * 
@@ -105,7 +109,7 @@ declare module 'passable' {
              *  enforce('hello').isNotArray() // truthy
              */
             isNotArray(expect?: boolean): EnforceInstance,
-
+    
             /**
              * Checks if a value is of type String
              * 
@@ -117,7 +121,7 @@ declare module 'passable' {
              *  enforce('hello').isString(false) // falsy
              */
             isString(expect?: boolean): EnforceInstance,
-
+    
             /**
              * Checks if a value is of any type other than string
              * 
@@ -129,7 +133,7 @@ declare module 'passable' {
              *  enforce('hello').isNotString(false) // truthy
              */
             isNotString(expect?: boolean): EnforceInstance,
-
+    
             /**
              * Checks if a value is of type number
              * 
@@ -141,7 +145,7 @@ declare module 'passable' {
              *  enforce(143).isNumber(false) // falsy
              */
             isNumber(expect?: boolean): EnforceInstance,
-
+    
             /**
              * Checks if a value is of any type other than number
              * 
@@ -151,7 +155,7 @@ declare module 'passable' {
              *  enforce('143').isNotNumber() // truthy
              */
             isNotNumber(expect?: boolean): EnforceInstance,
-
+    
             /**
              * Checks if your enforce value is empty, false, zero, null or undefined
              * 
@@ -163,7 +167,7 @@ declare module 'passable' {
              *  enforce({}).isEmpty() // truthy
              */ 
             isEmpty(expect?: boolean): EnforceInstance,
-
+    
             /**
              * Checks that your enforce value is not empty, false, or zero
              * 
@@ -176,7 +180,7 @@ declare module 'passable' {
              *  enforce([]).isNotEmpty() // falsy
              */
             isNotEmpty(expect?: boolean): EnforceInstance,
-
+    
             /**
              * Checks that your enforce value is larger than a given number
              * 
@@ -187,7 +191,7 @@ declare module 'passable' {
              *  enforce('').largerThan(0) // falsy
              */
             largerThan(size: number): EnforceInstance,
-
+    
             /**
              * Checks that your enforce value is larger than or equals a given number
              * 
@@ -198,7 +202,7 @@ declare module 'passable' {
              *  enforce(0).largerThanOrEquals(1) // falsy
              */
             largerThanOrEquals(size: number): EnforceInstance
-
+    
             /**
              * Checks that your enforce value equals the size than a given number
              * 
@@ -211,7 +215,7 @@ declare module 'passable' {
              *  enforce({1:1, 2:2}).sizeEquals([1, 2, 3]) // falsy
              */
             sizeEquals(size: number): EnforceInstance,
-
+    
             /**
              * Checks that your enforce value does not equal the size of a given number
              * 
@@ -222,7 +226,7 @@ declare module 'passable' {
              *  enforce([1]).sizeNotEquals(0) // falsy
              */
             sizeNotEquals(size: number): EnforceInstance,
-
+    
             /**
              * Checks that your enforce value is smaller than a given number
              * 
@@ -233,7 +237,7 @@ declare module 'passable' {
              *  enforce([1]).smallerThan(1) // falsy
              */
             smallerThan(size: number): EnforceInstance,
-
+    
             /**
              * Checks that your enforce value is a numeric value
              * 
@@ -244,7 +248,7 @@ declare module 'passable' {
              *  enforce('0xFF').isNumeric() // truthy
              */
             isNumeric(): EnforceInstance,
-
+    
             /**
              * Checks that your enforce value is not a numeric value
              * 
@@ -255,7 +259,7 @@ declare module 'passable' {
              *  enforce('-10').isNotNumeric() // falsy
              */
             isNotNumeric(): EnforceInstance,
-
+    
             /**
              * Checks that your enforce value is smaller than or equals another value
              * 
@@ -268,6 +272,4 @@ declare module 'passable' {
             smallerThanOrEquals(size: number): EnforceInstance,
         }
     }
-
-    export = Passable;
 }
