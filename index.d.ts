@@ -12,7 +12,8 @@ declare module 'passable' {
     export { enforce, Enforce, validate, WARN, FAIL, VERSION };
 
     interface Passable {
-        (name: string, testFn: (test: (name: string, errorMessage: string, callback: PassableNS.IFunctionOrPromise) => void) => void,
+        (name: string, testFn: (test: (name: string, errorMessage: string, callback: PassableNS.IFunctionOrPromise) => void, 
+            draft: PassableNS.IPassableInstance) => void,
             specific?: string | string[] | {only?: string | string[], not?: string | string[]}):
             PassableNS.IPassableInstance,
         enforce(value: any): PassableNS.IEnforce;
@@ -71,37 +72,21 @@ declare module 'passable' {
              */
             warnCount: number;
             /**
-             * Getter function which allows accessing the errors array of a certain field
+             * Getter function which allows accessing the errors array of a certain field (or the whole suite if not supplied)
              */
-            getErrors: (field: string) => any[];
+            getErrors: (field?: string) => any[];
             /**
-             * Getter function which allows accessing the errors array of all fields
+             * Getter function which allows accessing the warnings array of a certain field (or the whole suite if not supplied)
              */
-            getErrors: () => any[];
+            getWarnings: (field?: string) => any[];
             /**
-             * Getter function which allows accessing the warnings array of a certain field
+             * Returns whether a certain field (or the whole suite if not supplied) has errors
              */
-            getWarnings: (field: string) => any[];
+            hasErrors: (field?: string) => boolean;
             /**
-             * Getter function which allows accessing the warnings array of all fields
+             * Returns whether a certain field (or the whole suite if not supplied) has warnings
              */
-            getWarnings: () => any[];
-            /**
-             * Returns whether a certain field has errors
-             */
-            hasErrors: (field: string) => boolean;
-            /**
-             * Returns whether the whole suite has errors
-             */
-            hasErrors: () => boolean;
-            /**
-             * Returns whether a certain field has warnings
-             */
-            hasWarnings: (field: string) => boolean;
-            /**
-             * Returns whether the whole suite has warnings
-             */
-            hasWarnings: () => boolean;
+            hasWarnings: (field?: string) => boolean;
         }
 
         export type IFunctionOrPromise = () => void | Promise;
