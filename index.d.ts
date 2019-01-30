@@ -1,7 +1,7 @@
 declare module 'passable' {
 
     const passable: Passable;
-    const enforce: (value: any) => PassableNS.IEnforce;
+    const enforce: (value: any) => PassableNS.IEnforceInstance;
     const Enforce: PassableNS.IEnforceConstructor;
     const validate: PassableNS.IValidate;
     const WARN: PassableNS.IWARN;
@@ -13,10 +13,10 @@ declare module 'passable' {
 
     interface Passable {
         (name: string, testFn: (test: (name: string, errorMessage: string, callback: PassableNS.IFunctionOrPromise) => void, 
-            draft: PassableNS.IPassableInstance) => void,
+            draft: PassableNS.IValidationResult) => void,
             specific?: string | string[] | {only?: string | string[], not?: string | string[]}):
-            PassableNS.IPassableInstance,
-        enforce(value: any): PassableNS.IEnforce;
+            PassableNS.IValidationResult,
+        enforce(value: any): PassableNS.IEnforceInstance;
         Enforce: PassableNS.IEnforceConstructor;
         validate: PassableNS.IValidate;
         VERSION: PassableNS.IVERSION;
@@ -26,7 +26,7 @@ declare module 'passable' {
 
     namespace PassableNS {
     
-        export interface IPassableInstance {
+        export interface IValidationResult {
             /**
              * The name of the form being validated
              */
@@ -36,23 +36,23 @@ declare module 'passable' {
              */
             async: any;
             /**
-             * Overall errors count for this form
+             * Overall errors count in current validation suite
              */
             failCount: number;
             /**
-             * Whether there are validation errors or not
+             * Whether the validation suite contains errors or not
              */
             hasValidationErrors: boolean;
             /**
-             * Whether there are validation warnings or not
+             * Whether the validation suite contains warnings or not
              */
             hasValidationWarnings: boolean;
             /**
-             * All skipped fields (empty, unless the specific option is used)
+             * All skipped fields in suite (empty, unless the specific option is used)
              */
             skipped: any[];
             /**
-             * Overall test count in this form
+             * Overall warnings count in current validation suite
              */
             testCount: number;
             /**
@@ -99,22 +99,26 @@ declare module 'passable' {
             (): boolean;
         }
 
-        export type IEnforceConstructor = {
-            new(): (value: any) => IEnforce;
-            new<T extends { [key: string]: (...args: any[]) => IEnforce<T> }>
-                (arg: T): (value: any) => IEnforce<T>;
+        type IEnforceChain<T> = {
+            [K in keyof T]: IEnforceInstance
         };
 
-        export interface IEnforce<T = {}> {
+        export type IEnforceConstructor = {
+            new(): (value: any) => IEnforceInstance;
+            new<T extends { [key: string]: (...args: any[]) => boolean }>
+                (arg: T): (value: any) => IEnforceInstance<IEnforceChain<T>>;
+        };
+
+        export interface IEnforceInstance<T = {}> {
             /**
              * Checks if a value contains a regex match by Regex expression
              * 
              * @example
              *  enforce(1984).matches(/[0-9]/) // truthy
              * 
-             *  enforce('ninety eighty four').matches(/[0-9]/) // falsy
+             *  enforce('nineteen eighty four').matches(/[0-9]/) // falsy
              */
-            matches(regex: RegExp): IEnforce & T;
+            matches(regex: RegExp): IEnforceInstance & T;
     
             /**
              * Checks if a value contains a regex match by a string expression
@@ -122,9 +126,9 @@ declare module 'passable' {
              * @example
              *  enforce(1984).matches('[0-9]') //truthy
              * 
-             *  enforce('ninety eighty four').matches('[0-9]') // falsy
+             *  enforce('nineteen eighty four').matches('[0-9]') // falsy
              */
-            matches(regexAsString: string): IEnforce & T;
+            matches(regexAsString: string): IEnforceInstance & T;
     
             /**
              * Checks if a value doesn't contains a regex match by Regex expression
@@ -132,15 +136,15 @@ declare module 'passable' {
              * @example
              *  enforce(1984).notMatches(/[0-9]/) // falsy
              */
-            notMatches(regex: RegExp): IEnforce & T;
+            notMatches(regex: RegExp): IEnforceInstance & T;
     
             /**
              * Checks if a value doesn't contains a regex match by string expression
              * 
              * @example
-             *  enforce('ninety eighty four').notMatches('[0-9]') // truthy
+             *  enforce('nineteen eighty four').notMatches('[0-9]') // truthy
              */
-            notMatches(regexAsString: string): IEnforce & T;
+            notMatches(regexAsString: string): IEnforceInstance & T;
     
             /**
              * Checks if your enforce value is contained in another array
@@ -152,7 +156,7 @@ declare module 'passable' {
              * 
              *  enforce(false).inside([true, false]) // truthy
              */
-            inside(array: number[] | string[] | boolean[]): IEnforce & T;
+            inside(array: number[] | string[] | boolean[]): IEnforceInstance & T;
             /**
              * Checks if your enforce value is contained in another string
              * 
@@ -161,7 +165,7 @@ declare module 'passable' {
              * 
              *  enforce('ad').inside('tru dat.') // falsy
              */
-            inside(text: string): IEnforce & T;
+            inside(text: string): IEnforceInstance & T;
     
             /**
              * Checks if your enforce value is not contained in another array
@@ -169,14 +173,14 @@ declare module 'passable' {
              * @example
              *  enforce('hello').notInside(['hello', 'world']) // falsy
              */
-            notInside(array: number[] | string[] | boolean[]): IEnforce & T;
+            notInside(array: number[] | string[] | boolean[]): IEnforceInstance & T;
             /**
              * Checks if your enforce value is not contained in another string
              * 
              * @example
              *  enforce('ad').notInside('tru dat.') // truthy
              */
-            notInside(text: string): IEnforce & T;
+            notInside(text: string): IEnforceInstance & T;
     
             /**
              * Checks if a value is of type Array
@@ -188,7 +192,7 @@ declare module 'passable' {
              * 
              *  enforce(['hello']).isArray(false) // falsy
              */
-            isArray(expect?: boolean): IEnforce & T;
+            isArray(expect?: boolean): IEnforceInstance & T;
     
             /**
              * Checks if a value is of any type other than array
@@ -198,7 +202,7 @@ declare module 'passable' {
              * 
              *  enforce('hello').isNotArray() // truthy
              */
-            isNotArray(expect?: boolean): IEnforce & T;
+            isNotArray(expect?: boolean): IEnforceInstance & T;
     
             /**
              * Checks if a value is of type String
@@ -210,7 +214,7 @@ declare module 'passable' {
              * 
              *  enforce('hello').isString(false) // falsy
              */
-            isString(expect?: boolean): IEnforce & T;
+            isString(expect?: boolean): IEnforceInstance & T;
     
             /**
              * Checks if a value is of any type other than string
@@ -222,7 +226,7 @@ declare module 'passable' {
              * 
              *  enforce('hello').isNotString(false) // truthy
              */
-            isNotString(expect?: boolean): IEnforce & T;
+            isNotString(expect?: boolean): IEnforceInstance & T;
     
             /**
              * Checks if a value is of type number
@@ -234,7 +238,7 @@ declare module 'passable' {
              * 
              *  enforce(143).isNumber(false) // falsy
              */
-            isNumber(expect?: boolean): IEnforce & T;
+            isNumber(expect?: boolean): IEnforceInstance & T;
     
             /**
              * Checks if a value is of any type other than number
@@ -244,7 +248,7 @@ declare module 'passable' {
              * 
              *  enforce('143').isNotNumber() // truthy
              */
-            isNotNumber(expect?: boolean): IEnforce & T;
+            isNotNumber(expect?: boolean): IEnforceInstance & T;
     
             /**
              * Checks if your enforce value is empty, false, zero, null or undefined
@@ -256,7 +260,7 @@ declare module 'passable' {
              * 
              *  enforce({}).isEmpty() // truthy
              */ 
-            isEmpty(expect?: boolean): IEnforce & T;
+            isEmpty(expect?: boolean): IEnforceInstance & T;
     
             /**
              * Checks that your enforce value is not empty, false, or zero
@@ -269,7 +273,7 @@ declare module 'passable' {
              * 
              *  enforce([]).isNotEmpty() // falsy
              */
-            isNotEmpty(expect?: boolean): IEnforce & T;
+            isNotEmpty(expect?: boolean): IEnforceInstance & T;
     
             /**
              * Checks that your enforce value is larger than a given number
@@ -280,7 +284,7 @@ declare module 'passable' {
              * 
              *  enforce('').largerThan(0) // falsy
              */
-            largerThan(size: number): IEnforce & T;
+            largerThan(size: number): IEnforceInstance & T;
     
             /**
              * Checks that your enforce value is larger than or equals a given number
@@ -291,10 +295,10 @@ declare module 'passable' {
              * 
              *  enforce(0).largerThanOrEquals(1) // falsy
              */
-            largerThanOrEquals(size: number): IEnforce & T;
+            largerThanOrEquals(size: number): IEnforceInstance & T;
     
             /**
-             * Checks that your enforce value equals the size than a given number
+             * Checks that your enforce value equals the size of a given number
              * 
              * @example
              * 
@@ -304,7 +308,7 @@ declare module 'passable' {
              * 
              *  enforce({1:1, 2:2}).sizeEquals([1, 2, 3]) // falsy
              */
-            sizeEquals(size: number): IEnforce & T;
+            sizeEquals(size: number): IEnforceInstance & T;
     
             /**
              * Checks that your enforce value does not equal the size of a given number
@@ -315,7 +319,7 @@ declare module 'passable' {
              * 
              *  enforce([1]).sizeNotEquals(0) // falsy
              */
-            sizeNotEquals(size: number): IEnforce & T;
+            sizeNotEquals(size: number): IEnforceInstance & T;
     
             /**
              * Checks that your enforce value is smaller than a given number
@@ -326,7 +330,7 @@ declare module 'passable' {
              * 
              *  enforce([1]).smallerThan(1) // falsy
              */
-            smallerThan(size: number): IEnforce & T;
+            smallerThan(size: number): IEnforceInstance & T;
     
             /**
              * Checks that your enforce value is a numeric value
@@ -337,7 +341,7 @@ declare module 'passable' {
              * 
              *  enforce('0xFF').isNumeric() // truthy
              */
-            isNumeric(): IEnforce & T;
+            isNumeric(): IEnforceInstance & T;
     
             /**
              * Checks that your enforce value is not a numeric value
@@ -348,7 +352,7 @@ declare module 'passable' {
              * 
              *  enforce('-10').isNotNumeric() // falsy
              */
-            isNotNumeric(): IEnforce & T;
+            isNotNumeric(): IEnforceInstance & T;
     
             /**
              * Checks that your enforce value is smaller than or equals another value
@@ -359,7 +363,7 @@ declare module 'passable' {
              * 
              *  enforce('0').smallerThanOrEquals(0) // falsy
              */
-            smallerThanOrEquals(size: number): IEnforce & T;
+            smallerThanOrEquals(size: number): IEnforceInstance & T;
         }
     }
 }
