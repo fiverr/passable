@@ -1,7 +1,7 @@
 declare module 'passable' {
 
     const passable: Passable;
-    const enforce: (value: any) => PassableNS.IEnforceInstance;
+    const enforce: (value) => PassableNS.IEnforceInstance;
     const Enforce: PassableNS.IEnforceConstructor;
     const validate: PassableNS.IValidate;
     const WARN: PassableNS.IWARN;
@@ -16,7 +16,7 @@ declare module 'passable' {
             draft: PassableNS.IValidationResult) => void,
             specific?: string | string[] | {only?: string | string[], not?: string | string[]}):
             PassableNS.IValidationResult,
-        enforce(value: any): PassableNS.IEnforceInstance;
+        enforce(value): PassableNS.IEnforceInstance;
         Enforce: PassableNS.IEnforceConstructor;
         validate: PassableNS.IValidate;
         VERSION: PassableNS.IVERSION;
@@ -34,7 +34,11 @@ declare module 'passable' {
             /**
              * Contains async tests and their current completion status
              */
-            async: any;
+            async: {
+                [fieldName: string]: {
+                    done: boolean;
+                }
+            };
             /**
              * Overall errors count in current validation suite
              */
@@ -50,7 +54,7 @@ declare module 'passable' {
             /**
              * All skipped fields in suite (empty, unless the specific option is used)
              */
-            skipped: any[];
+            skipped: string[];
             /**
              * Overall warnings count in current validation suite
              */
@@ -58,15 +62,34 @@ declare module 'passable' {
             /**
              * Detailed stats per field (structure detailed below)
              */
-            testsPerformed: any;
+            testsPerformed: {
+                [fieldName: string]: {
+                    /**
+                     * Overall test count in this field
+                     */
+                    testCount: number;
+                    /**
+                     * Overall errors count for this field
+                     */
+                    failCount: number;
+                    /**
+                     * Overall warnings count for this field
+                     */
+                    warnCount: number;
+                }
+            };
             /**
              * Actual errors per each field
              */
-            validationErrors: any;
+            validationErrors: {
+                [fieldName: string]: string[];
+            };
             /**
              * Actual errors per each field
              */
-            validationWarnings: any;
+            validationWarnings: {
+                [fieldName: string]: string[];
+            };
             /**
              * Overall warnings count for this form
              */
@@ -104,9 +127,9 @@ declare module 'passable' {
         };
 
         export type IEnforceConstructor = {
-            new(): (value: any) => IEnforceInstance;
-            new<T extends { [key: string]: (...args: any[]) => boolean }>
-                (arg: T): (value: any) => IEnforceInstance<IEnforceChain<T>>;
+            new(): (value) => IEnforceInstance;
+            new<T extends { [key: string]: (...args) => boolean }>
+                (arg: T): (value) => IEnforceInstance<IEnforceChain<T>>;
         };
 
         export interface IEnforceInstance<T = {}> {
