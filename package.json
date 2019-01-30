@@ -3,6 +3,7 @@
   "version": "6.3.0",
   "description": "Isomorphic Data Model Validations",
   "main": "./dist/passable.min.js",
+  "typings": "index.d.ts",
   "author": "Evyatar <evyatar.a@fiverr.com>",
   "license": "MIT",
   "scripts": {
