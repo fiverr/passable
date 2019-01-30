@@ -89,7 +89,7 @@ declare module 'passable' {
             hasWarnings: (field?: string) => boolean;
         }
 
-        export type IFunctionOrPromise = () => void | Promise;
+        export type IFunctionOrPromise = () => void | Promise<any>;
 
         export type IVERSION = string;
         export type IWARN = 'warn';
