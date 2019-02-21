@@ -1,7 +1,7 @@
 # Size | sizeEquals
 
 ## Description
-Checks that your `enforce` value equals the size than a given number.
+Checks that your `enforce` value equals the size of a given number.
 
 ## Arguments
 * `size`: `number` | the number which you would like your initial value to be tested against.
