@@ -42,8 +42,7 @@ class Passable {
     addPendingTest = (test: PassableTest) => this.pending.push(test);
     clearPendingTest = (test: PassableTest) => {
 
-        // $FlowFixMe
-        this.pending = this.pending.filter((t: PassableTest): boolean => t !== test);
+        this.pending = (this.pending.filter((t: PassableTest): boolean => t !== test): Array<PassableTest>);
         if (this.pending.length === 0) {
             this.res.runCompletionCallbacks();
         }

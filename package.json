@@ -45,7 +45,7 @@
     "eslint-loader": "^2.1.2",
     "eslint-plugin-flowtype": "^3.4.2",
     "faker": "^4.1.0",
-    "flow-bin": "^0.80.0",
+    "flow-bin": "^0.93.0",
     "lodash": "^4.17.10",
     "mocha": "^6.0.1",
     "proxy-polyfill": "^0.3.0",

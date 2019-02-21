@@ -828,7 +828,6 @@ function Passable(name, tests, specific) {
   });
 
   _defineProperty(this, "clearPendingTest", function (test) {
-    // $FlowFixMe
     _this.pending = _this.pending.filter(function (t) {
       return t !== test;
     });
