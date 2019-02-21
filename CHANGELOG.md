@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [6.2.0] - 2019-01-06
+## [6.3.1] - 2019-02-22
+
+### Added
+- [Patch] Fix documentation typo (#107)
+- [Patch] Add type hints to passable (#106 + #107)
+
+## [6.3.0] - 2019-01-06
 
 ### Added
 - [Minor] access intermediate validation result via draft (#103)
