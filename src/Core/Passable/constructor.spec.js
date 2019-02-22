@@ -1,13 +1,11 @@
 'use strict';
 
-import Passable from '../Passable.js';
-import ResultObject from '../result_object';
+import Passable from '.';
+import ResultObject from '../ResultObject';
 import faker from 'faker';
 import { noop } from 'lodash';
 import sinon from 'sinon';
 import { expect } from 'chai';
-
-const specificError = (type) => `[Passable]: Failed to execute 'Passable constructor': Unexpected '${type}'. Expected \`specific\` at position 2.`;
 
 describe("Test Passable's class constructor ", () => {
     const passable = (...args) => new Passable(...args);
@@ -16,21 +14,21 @@ describe("Test Passable's class constructor ", () => {
         it('Should throw a TypeError for a non-string name', () => {
 
             expect(() => passable(1, noop))
-                .to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'number', expected string.");
+                .to.throw(TypeError);
             expect(() => passable({}, noop))
-                .to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'object', expected string.");
+                .to.throw(TypeError);
             expect(() => passable(noop, noop))
-                .to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'function', expected string.");
+                .to.throw(TypeError);
         });
 
         it('Should throw TypeError if `tests` is not a function', () => {
             expect(() => passable('MyForm', 'noop', null))
-                .to.throw("[Passable]: Failed to execute 'Passable constructor': Unexpected 'string'. Expected `tests` at position 1.");
+                .to.throw(TypeError);
         });
 
         it('Should throw an exception when specific does not follow convention', () => {
-            expect(() => passable('FormName', noop, noop)).to.throw(specificError('function'));
-            expect(() => passable('FormName', noop, true)).to.throw(specificError('boolean'));
+            expect(() => passable('FormName', noop, noop)).to.throw(TypeError);
+            expect(() => passable('FormName', noop, true)).to.throw(TypeError);
         });
     });
 

@@ -281,25 +281,12 @@ module.exports = {"a":"6.3.1"};
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var errors_namespaceObject = {};
-__webpack_require__.r(errors_namespaceObject);
-__webpack_require__.d(errors_namespaceObject, "INVALID_FORM_NAME", function() { return INVALID_FORM_NAME; });
-__webpack_require__.d(errors_namespaceObject, "ENFORCE_FAILED", function() { return ENFORCE_FAILED; });
-__webpack_require__.d(errors_namespaceObject, "EXPECT_TYPE_FAILURE", function() { return EXPECT_TYPE_FAILURE; });
-__webpack_require__.d(errors_namespaceObject, "MISSING_ARGUMENT_TESTS", function() { return MISSING_ARGUMENT_TESTS; });
-__webpack_require__.d(errors_namespaceObject, "UNEXPECTED_ARGUMENT_SPECIFIC", function() { return UNEXPECTED_ARGUMENT_SPECIFIC; });
-__webpack_require__.d(errors_namespaceObject, "VALIDATE_UNEXPECTED_TEST", function() { return VALIDATE_UNEXPECTED_TEST; });
-var modules_namespaceObject = {};
-__webpack_require__.r(modules_namespaceObject);
-__webpack_require__.d(modules_namespaceObject, "PASSABLE", function() { return PASSABLE; });
-__webpack_require__.d(modules_namespaceObject, "ENFORCE", function() { return ENFORCE; });
-__webpack_require__.d(modules_namespaceObject, "VALIDATE", function() { return VALIDATE; });
 var runners_namespaceObject = {};
 __webpack_require__.r(runners_namespaceObject);
 __webpack_require__.d(runners_namespaceObject, "compound", function() { return runners_compound; });
 __webpack_require__.d(runners_namespaceObject, "rule", function() { return runners_rule; });
 
-// CONCATENATED MODULE: ./src/test_runner/index.js
+// CONCATENATED MODULE: ./src/Core/testRunner/index.js
 function testRunner(test) {
   var isValid = null;
 
@@ -329,7 +316,7 @@ function testRunnerAsync(test, done, fail) {
 }
 
 
-// CONCATENATED MODULE: ./src/result_object/index.js
+// CONCATENATED MODULE: ./src/Core/ResultObject/index.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -602,66 +589,8 @@ function () {
   return ResultObject;
 }();
 
-/* harmony default export */ var result_object = (ResultObject);
-// CONCATENATED MODULE: ./src/constants/errors/index.js
-var INVALID_FORM_NAME = '0';
-var ENFORCE_FAILED = '1';
-var EXPECT_TYPE_FAILURE = '2';
-var MISSING_ARGUMENT_TESTS = '3';
-var UNEXPECTED_ARGUMENT_SPECIFIC = '4';
-var VALIDATE_UNEXPECTED_TEST = '5';
-// CONCATENATED MODULE: ./src/constants/modules/index.js
-var PASSABLE = 'Passable';
-var ENFORCE = 'Enforce';
-var VALIDATE = 'Validate';
-// CONCATENATED MODULE: ./src/constants/index.js
-
-
-
-
-// CONCATENATED MODULE: ./src/helpers/runtime_error/index.js
-
-var passableConstructor = "".concat(modules_namespaceObject.PASSABLE, " constructor");
-
-function errorBuilder(functionName, errorMessage) {
-  return "[".concat(modules_namespaceObject.PASSABLE, "]: Failed to execute '").concat(functionName, "': ").concat(errorMessage);
-}
-
-function unexpectedArgs(type, name, position) {
-  return "Unexpected '".concat(type, "'. Expected `").concat(name, "` at position ").concat(position, ". See documentation for more info.");
-}
-
-function runtimeError(type) {
-  switch (type) {
-    case errors_namespaceObject.INVALID_FORM_NAME:
-      return new TypeError(errorBuilder(passableConstructor, "Unexpected '".concat(arguments.length <= 1 ? undefined : arguments[1], "', expected string.")));
-
-    case errors_namespaceObject.ENFORCE_FAILED:
-      return new Error(errorBuilder(modules_namespaceObject.ENFORCE, "".concat(arguments.length <= 1 ? undefined : arguments[1], " - invalid ").concat(arguments.length <= 2 ? undefined : arguments[2], " value.")));
-
-    case errors_namespaceObject.EXPECT_TYPE_FAILURE:
-      var val = Array.isArray(arguments.length <= 2 ? undefined : arguments[2]) ? JSON.stringify(arguments.length <= 2 ? undefined : arguments[2]) : arguments.length <= 2 ? undefined : arguments[2];
-      return new TypeError(errorBuilder(arguments.length <= 1 ? undefined : arguments[1], "expected ".concat(val, " to be a ").concat(arguments.length <= 3 ? undefined : arguments[3], ".")));
-
-    case errors_namespaceObject.MISSING_ARGUMENT_TESTS:
-      return new TypeError(errorBuilder(passableConstructor, unexpectedArgs(arguments.length <= 1 ? undefined : arguments[1], 'tests', 1)));
-
-    case errors_namespaceObject.UNEXPECTED_ARGUMENT_SPECIFIC:
-      return new TypeError(errorBuilder(passableConstructor, unexpectedArgs(arguments.length <= 1 ? undefined : arguments[1], 'specific', 2)));
-
-    case errors_namespaceObject.VALIDATE_UNEXPECTED_TEST:
-      return new TypeError(errorBuilder(modules_namespaceObject.VALIDATE, "Expected ".concat(arguments.length <= 1 ? undefined : arguments[1], " `test` to be a function.")));
-
-    default:
-      return new Error(errorBuilder(modules_namespaceObject.PASSABLE, 'General exception.'));
-  }
-}
-
-/* harmony default export */ var runtime_error = (runtimeError);
-// CONCATENATED MODULE: ./src/helpers/index.js
-
-
-// CONCATENATED MODULE: ./src/Specific/index.js
+/* harmony default export */ var Core_ResultObject = (ResultObject);
+// CONCATENATED MODULE: ./src/Core/Specific/index.js
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function Specific_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -670,11 +599,8 @@ function Specific_defineProperties(target, props) { for (var i = 0; i < props.le
 
 function Specific_createClass(Constructor, protoProps, staticProps) { if (protoProps) Specific_defineProperties(Constructor.prototype, protoProps); if (staticProps) Specific_defineProperties(Constructor, staticProps); return Constructor; }
 
-
-
 /** Class representing validation inclusion and exclusion groups */
-
-var Specific_Specific =
+var Specific =
 /*#__PURE__*/
 function () {
   /**
@@ -690,7 +616,7 @@ function () {
     }
 
     if (!Specific.is(specific)) {
-      throw runtime_error(errors_namespaceObject.UNEXPECTED_ARGUMENT_SPECIFIC, _typeof(specific));
+      throw new TypeError();
     }
 
     if (typeof specific === 'string' || Array.isArray(specific)) {
@@ -787,10 +713,8 @@ function () {
   return Specific;
 }();
 
-/* harmony default export */ var src_Specific = (Specific_Specific);
-// CONCATENATED MODULE: ./src/Passable.js
-function Passable_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Passable_typeof = function _typeof(obj) { return typeof obj; }; } else { Passable_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Passable_typeof(obj); }
-
+/* harmony default export */ var Core_Specific = (Specific);
+// CONCATENATED MODULE: ./src/Core/Passable/index.js
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -803,14 +727,19 @@ function Passable_classCallCheck(instance, Constructor) { if (!(instance instanc
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function Passable_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Passable_typeof = function _typeof(obj) { return typeof obj; }; } else { Passable_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Passable_typeof(obj); }
 
 
 
 
 
+var constructorError = function constructorError(name, value, doc) {
+  return "[Passable]: failed during suite initialization. Unexpected '".concat(Passable_typeof(value), "' for '").concat(name, "' argument.\n    See: ").concat(doc ? doc : 'https://fiverr.github.io/passable/getting_started/writing_tests.html');
+};
 /**
  * Describes a passable validation suite
  */
+
 
 var Passable_Passable =
 /**
@@ -899,43 +828,24 @@ function Passable(name, tests, specific) {
   });
 
   if (typeof name !== 'string') {
-    throw runtime_error(errors_namespaceObject.INVALID_FORM_NAME, Passable_typeof(name));
+    throw new TypeError(constructorError('suite name', name));
   }
 
   if (typeof tests !== 'function') {
-    throw runtime_error(errors_namespaceObject.MISSING_ARGUMENT_TESTS, Passable_typeof(tests));
+    throw new TypeError(constructorError('tests', tests));
   }
 
-  this.specific = new src_Specific(specific);
-  this.res = new result_object(name);
+  if (specific && !Core_Specific.is(specific)) {
+    throw new TypeError(constructorError('specific', tests, 'https://fiverr.github.io/passable/test/specific.html'));
+  }
+
+  this.specific = new Core_Specific(specific);
+  this.res = new Core_ResultObject(name);
   tests(this.test, this.res);
   this.runPendingTests();
 };
 
-/* harmony default export */ var src_Passable = (Passable_Passable);
-// CONCATENATED MODULE: ./src/Enforce/runnables/compounds/run/index.js
-/**
- * A function which returns whether a combination of
- * rule + value is true or false
- *
- * @param {any} value - the value being tested
- * @param {string} key the name of the rule being run
- * @param {Object} tests an object containing the group of tests in the current run
- * @param {Object} rules an object containing all the rules available for the current test
- * @return {boolean} value validation result
- */
-function run(value, key, tests, rules) {
-  if (typeof rules[key] !== 'function') {
-    if (typeof tests[key] === 'function') {
-      return tests[key](value);
-    }
-
-    return false;
-  }
-
-  var args = tests[key];
-  return rules[key](value, args);
-}
+/* harmony default export */ var Core_Passable = (Passable_Passable);
 // CONCATENATED MODULE: ./src/Enforce/runnables/compounds/all_of/index.js
 
 function allOf(value, tests, rules) {
@@ -974,19 +884,41 @@ function noneOf(value, tests, rules) {
 
 
 
-/* harmony default export */ var compounds = ({
+var compounds = {
   allOf: allOf,
   anyOf: anyOf,
   noneOf: noneOf
-});
+};
+/**
+ * A function which returns whether a combination of
+ * rule + value is true or false
+ *
+ * @param {any} value - the value being tested
+ * @param {string} key the name of the rule being run
+ * @param {Object} tests an object containing the group of tests in the current run
+ * @param {Object} rules an object containing all the rules available for the current test
+ * @return {boolean} value validation result
+ */
+
+function run(value, key, tests, rules) {
+  if (typeof rules[key] !== 'function') {
+    if (typeof tests[key] === 'function') {
+      return tests[key](value);
+    }
+
+    return false;
+  }
+
+  var args = tests[key];
+  return rules[key](value, args);
+}
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/expect_type/index.js
-
-
 
 
 function expectType(value, type, functionName) {
   if (!is_type(value, type)) {
-    throw runtime_error(errors_namespaceObject.EXPECT_TYPE_FAILURE, functionName, value, type);
+    var val = Array.isArray(value) ? JSON.stringify(value) : value;
+    throw new TypeError("[Passable]: Failed to execute '".concat(functionName, "': expected ").concat(val, " to be a ").concat(type, "."));
   }
 
   return true;
@@ -1287,8 +1219,6 @@ var rules_rules = {
 // CONCATENATED MODULE: ./src/Enforce/runners/compound/index.js
 function compound_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { compound_typeof = function _typeof(obj) { return typeof obj; }; } else { compound_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return compound_typeof(obj); }
 
-
-
 /**
  * Run group of tests using test runner. (e.g. `anyOf`)
  *
@@ -1298,22 +1228,19 @@ function compound_typeof(obj) { if (typeof Symbol === "function" && typeof Symbo
  * @param {Object} tests
  * @return {object} enforce object
  */
-
 function compound(allRules, runner, value, tests) {
   if (typeof runner !== 'function') {
     return;
   }
 
   if (runner(value, tests, allRules) !== true) {
-    throw runtime_error(errors_namespaceObject.ENFORCE_FAILED, runner.name, compound_typeof(value));
+    throw new Error("[Enforce]: ".concat(runner.name, "  invalid ").concat(compound_typeof(value), " value"));
   }
 }
 
 /* harmony default export */ var runners_compound = (compound);
 // CONCATENATED MODULE: ./src/Enforce/runners/rule/index.js
 function rule_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { rule_typeof = function _typeof(obj) { return typeof obj; }; } else { rule_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return rule_typeof(obj); }
-
-
 
 /**
  * Run a single rule against enforced value (e.g. `isNumber()`)
@@ -1322,8 +1249,7 @@ function rule_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.it
  * @param {Any} value
  * @param {Array} args list of arguments sent from consumer
  */
-
-function rule_rule(rule, value) {
+function rule(rule, value) {
   if (typeof rule !== 'function') {
     return;
   }
@@ -1333,11 +1259,11 @@ function rule_rule(rule, value) {
   }
 
   if (rule.apply(void 0, [value].concat(args)) !== true) {
-    throw runtime_error(errors_namespaceObject.ENFORCE_FAILED, rule.name, rule_typeof(value));
+    throw new Error("[Enforce]: ".concat(rule.name, "  invalid ").concat(rule_typeof(value), " value"));
   }
 }
 
-/* harmony default export */ var runners_rule = (rule_rule);
+/* harmony default export */ var runners_rule = (rule);
 // CONCATENATED MODULE: ./src/Enforce/runners/index.js
 
 
@@ -1346,24 +1272,12 @@ function rule_rule(rule, value) {
 var src_proxy = __webpack_require__(0);
 var proxy_default = /*#__PURE__*/__webpack_require__.n(src_proxy);
 
-// CONCATENATED MODULE: ./src/Enforce/helpers/root.js
-var root; // credit https://stackoverflow.com/questions/3277182/how-to-get-the-global-object-in-javascript
-
-try {
-  root = function () {
-    return undefined;
-  }.constructor('return this')();
-} catch (e) {
-  root = window;
-}
-
-/* harmony default export */ var helpers_root = (root);
 // CONCATENATED MODULE: ./src/Enforce/helpers/safe_proxy.js
 
-
+var glob = Function('return this')();
 
 function safeProxy(target, handler) {
-  if (!helpers_root.Proxy) {
+  if (!glob.Proxy) {
     var ProxyPolyfill = proxy_default()();
     return new ProxyPolyfill(target, handler);
   }
@@ -1424,18 +1338,15 @@ var enforce = new Enforce_Enforce({});
 // CONCATENATED MODULE: ./src/validate/index.js
 function validate_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { validate_typeof = function _typeof(obj) { return typeof obj; }; } else { validate_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return validate_typeof(obj); }
 
-
-
 /**
  * Run tests and catch errors
  *
  * @param {function} callback The test content
  * @return {boolean}
  */
-
 function validate(test) {
   if (typeof test !== 'function' && !(test instanceof Promise)) {
-    throw runtime_error(errors_namespaceObject.VALIDATE_UNEXPECTED_TEST, validate_typeof(test));
+    throw new TypeError("[Validate]: expected ".concat(validate_typeof(test), " to be a function."));
   }
 
   try {
@@ -1457,7 +1368,7 @@ var version = __webpack_require__(1);
 
 
 function passable(name, tests, specific) {
-  var suite = new src_Passable(name, tests, specific);
+  var suite = new Core_Passable(name, tests, specific);
   return suite.res;
 }
 

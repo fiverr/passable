@@ -7,7 +7,6 @@ PASSABLE {{PASSABLE_VERSION}}
         * [Writing tests](./getting_started/writing_tests.md)
         * [The `done` function](./getting_started/done.md)
         * [The `result` object](./getting_started/result.md)
-        * [Passable Parameters](./getting_started/params.md)
     * [The `test` Function](./test/index.md)
         * [How to fail a test](./test/how_to_fail.md)
         * [Warn only tests](./test/warn_only_tests.md)

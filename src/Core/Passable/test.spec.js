@@ -1,6 +1,6 @@
-import Passable from '../Passable';
+import Passable from '.';
 import { expect } from 'chai';
-import { WARN, FAIL } from '../index';
+import { WARN, FAIL } from '../../index';
 import { noop, random, sample, toString, clone } from 'lodash';
 import { lorem } from 'faker';
 import sinon from 'sinon';

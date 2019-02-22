@@ -1,6 +1,4 @@
 // @flow
-import { runtimeError } from '../helpers';
-import { Errors } from '../constants';
 
 /** Class representing validation inclusion and exclusion groups */
 class Specific {
@@ -17,7 +15,7 @@ class Specific {
         if (!specific) { return; }
 
         if (!Specific.is(specific)) {
-            throw runtimeError(Errors.UNEXPECTED_ARGUMENT_SPECIFIC, typeof specific);
+            throw new TypeError();
         }
 
         if (typeof specific === 'string' || Array.isArray(specific)) {
@@ -96,7 +94,6 @@ class Specific {
 
         return false;
     }
-
 }
 
 export default Specific;

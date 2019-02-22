@@ -1,9 +1,10 @@
 import proxyPolyfill from 'proxy-polyfill/src/proxy.js';
-import root from './root';
+
+const glob = Function('return this')();
 
 function safeProxy(target, handler) {
 
-    if (!root.Proxy) {
+    if (!glob.Proxy) {
         const ProxyPolyfill = proxyPolyfill();
         return new ProxyPolyfill(target, handler);
     }

@@ -1,6 +1,4 @@
 // @flow
-import { Errors } from '../../../constants';
-import { runtimeError } from '../../../helpers';
 
 /**
  * Run group of tests using test runner. (e.g. `anyOf`)
@@ -15,7 +13,7 @@ function compound(allRules: EnforceRules, runner: Runner, value: AnyValue, tests
     if (typeof runner !== 'function') { return; }
 
     if (runner(value, tests, allRules) !== true) {
-        throw runtimeError(Errors.ENFORCE_FAILED, runner.name, typeof value);
+        throw new Error(`[Enforce]: ${runner.name}  invalid ${typeof value} value`);
     }
 }
 

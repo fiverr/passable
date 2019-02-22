@@ -1,5 +1,5 @@
 // @flow
-import ResultObject from './result_object';
+import ResultObject from './Core/ResultObject';
 
 declare type AnyValue = any; // eslint-disable-line flowtype/no-weak-types
 declare type ArrayOrStringOfArrays = Array<string> | string;

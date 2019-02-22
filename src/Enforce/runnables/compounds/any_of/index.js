@@ -1,5 +1,5 @@
 // @flow
-import run from '../run';
+import run from '../';
 
 export default function anyOf(value: mixed, tests: CompoundTestObject, rules: EnforceRules): boolean {
 

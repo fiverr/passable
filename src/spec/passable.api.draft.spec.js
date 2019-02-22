@@ -1,5 +1,5 @@
 import passable, {WARN} from '../index.js';
-import ResultObject from '../result_object';
+import ResultObject from '../Core/ResultObject';
 import faker from 'faker';
 import {expect} from 'chai';
 let suite;

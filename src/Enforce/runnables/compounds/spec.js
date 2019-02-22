@@ -1,8 +1,8 @@
 'use strict';
 
 import { expect } from 'chai';
-import rules from '../../rules';
-import run from './index';
+import rules from '../rules';
+import run from './';
 
 describe('Test Run Function', () => {
     it('Should return false when test is not a function and not present in rules', () => {

@@ -1,16 +1,16 @@
 // @flow
 
-import { testRunner, testRunnerAsync } from './test_runner';
-import ResultObject from './result_object';
-import { runtimeError } from './helpers';
-import Specific from './Specific';
-import { Errors } from './constants/';
+import { testRunner, testRunnerAsync } from '../testRunner';
+import ResultObject from '../ResultObject';
+import Specific from '../Specific';
+
+const constructorError: Function = (name: string, value: string, doc?: string): string => `[Passable]: failed during suite initialization. Unexpected '${typeof value}' for '${name}' argument.
+    See: ${doc ? doc : 'https://fiverr.github.io/passable/getting_started/writing_tests.html'}`;
 
 /**
  * Describes a passable validation suite
  */
 class Passable {
-
     specific: Specific;
     res: ResultObject;
     test: TestProvider;
@@ -24,11 +24,15 @@ class Passable {
     constructor(name: string, tests: TestsWrapper, specific: ?SpecificArgs) {
 
         if (typeof name !== 'string') {
-            throw runtimeError(Errors.INVALID_FORM_NAME, typeof name);
+            throw new TypeError(constructorError('suite name', name));
         }
 
         if (typeof tests !== 'function') {
-            throw runtimeError(Errors.MISSING_ARGUMENT_TESTS, typeof tests);
+            throw new TypeError(constructorError('tests', tests));
+        }
+
+        if (specific && !Specific.is(specific)) {
+            throw new TypeError(constructorError('specific', tests, 'https://fiverr.github.io/passable/test/specific.html'));
         }
 
         this.specific = new Specific(specific);

@@ -1,7 +1,5 @@
-'use strict';
-
 import compound from './index';
-import { allOf } from '../../runnables/compounds';
+import allOf from '../../runnables/compounds/all_of';
 import { expect } from 'chai';
 
 describe('Test Passable\'s enforce - chainable - compounds function', () => {

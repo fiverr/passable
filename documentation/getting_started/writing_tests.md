@@ -5,6 +5,16 @@
  * `test` - a single tests, most commonly a single field, much like the it function in unit tests. [More about test](../test/index.md)
  * `enforce` - the function which gets and enforces the data model compliance, similar to the expect function in unit tests. [More about enforce](../enforce/README.md);
 
+ ## Passable Parameters
+ The passable suite accepts three arguments:
+
+| Name       | Optional? | Type     | Description
+|------------|:---------:|:--------:|------------------------------------------------
+| `name`     | No        | String            | A name for the group of tests. E.G - form name
+| `tests`    | No        | Function          | A function containing the actual validation logic.
+| `only/not` | Yes       | Array / Object    | Whitelist or blacklist of tests to run/skip in the suite see: [Running a specific tests](../specific.md)
+
+
 The most basic test would look somewhat like this:
 
 ```js
