@@ -1,8 +1,8 @@
 // @flow
-import Passable from './Core/Passable';
+import Passable from './core/Passable';
 import Enforce, { enforce } from './Enforce';
 import validate from './validate';
-import { WARN, FAIL } from './Core/ResultObject';
+import { WARN, FAIL } from './core/ResultObject';
 import { version } from '../version.json';
 
 function passable(name: string, tests: TestsWrapper, specific: ?SpecificArgs) {

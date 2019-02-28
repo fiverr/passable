@@ -286,7 +286,7 @@ __webpack_require__.r(runners_namespaceObject);
 __webpack_require__.d(runners_namespaceObject, "compound", function() { return runners_compound; });
 __webpack_require__.d(runners_namespaceObject, "rule", function() { return runners_rule; });
 
-// CONCATENATED MODULE: ./src/Core/testRunner/index.js
+// CONCATENATED MODULE: ./src/core/testRunner/index.js
 function testRunner(test) {
   var isValid = null;
 
@@ -316,7 +316,7 @@ function testRunnerAsync(test, done, fail) {
 }
 
 
-// CONCATENATED MODULE: ./src/Core/ResultObject/index.js
+// CONCATENATED MODULE: ./src/core/ResultObject/index.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -589,8 +589,8 @@ function () {
   return ResultObject;
 }();
 
-/* harmony default export */ var Core_ResultObject = (ResultObject);
-// CONCATENATED MODULE: ./src/Core/Specific/index.js
+/* harmony default export */ var core_ResultObject = (ResultObject);
+// CONCATENATED MODULE: ./src/core/Specific/index.js
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function Specific_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -713,8 +713,8 @@ function () {
   return Specific;
 }();
 
-/* harmony default export */ var Core_Specific = (Specific);
-// CONCATENATED MODULE: ./src/Core/Passable/index.js
+/* harmony default export */ var core_Specific = (Specific);
+// CONCATENATED MODULE: ./src/core/Passable/index.js
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -835,17 +835,17 @@ function Passable(name, tests, specific) {
     throw new TypeError(constructorError('tests', tests));
   }
 
-  if (specific && !Core_Specific.is(specific)) {
+  if (specific && !core_Specific.is(specific)) {
     throw new TypeError(constructorError('specific', tests, 'https://fiverr.github.io/passable/test/specific.html'));
   }
 
-  this.specific = new Core_Specific(specific);
-  this.res = new Core_ResultObject(name);
+  this.specific = new core_Specific(specific);
+  this.res = new core_ResultObject(name);
   tests(this.test, this.res);
   this.runPendingTests();
 };
 
-/* harmony default export */ var Core_Passable = (Passable_Passable);
+/* harmony default export */ var core_Passable = (Passable_Passable);
 // CONCATENATED MODULE: ./src/Enforce/runnables/compounds/all_of/index.js
 
 function allOf(value, tests, rules) {
@@ -1368,7 +1368,7 @@ var version = __webpack_require__(1);
 
 
 function passable(name, tests, specific) {
-  var suite = new Core_Passable(name, tests, specific);
+  var suite = new core_Passable(name, tests, specific);
   return suite.res;
 }
 
