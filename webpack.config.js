@@ -19,7 +19,10 @@ module.exports = {
     module: {
         rules: [{
             test: /\.js$/,
-            // exclude: /node_modules/,
+            include: [
+                path.join(__dirname, 'src'),
+                path.join(__dirname, 'node_modules', 'proxy-polyfill'),
+            ],
             use: {
                 loader: 'babel-loader'
             }
