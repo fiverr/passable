@@ -12,7 +12,7 @@
 |------------|:---------:|:--------:|------------------------------------------------
 | `name`     | No        | String            | A name for the group of tests. E.G - form name
 | `tests`    | No        | Function          | A function containing the actual validation logic.
-| `only/not` | Yes       | Array / Object    | Whitelist or blacklist of tests to run/skip in the suite see: [Running a specific tests](../specific.md)
+| `only/not` | Yes       | Array / Object    | Whitelist or blacklist of tests to run/skip in the suite see: [Running a specific tests](../test/specific.md)
 
 
 The most basic test would look somewhat like this:
