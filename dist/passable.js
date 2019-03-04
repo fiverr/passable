@@ -7,7 +7,7 @@
 		exports["Passable"] = factory();
 	else
 		root["Passable"] = factory();
-})(((() => 0).constructor("return this"))(), function() {
+})(Function('return this')(), function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};

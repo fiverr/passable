@@ -14,7 +14,7 @@ module.exports = {
         library: 'Passable',
         libraryTarget: 'umd',
         libraryExport: 'default',
-        globalObject: '((() => 0).constructor("return this"))()'
+        globalObject: "Function('return this')()"
     },
     module: {
         rules: [{
