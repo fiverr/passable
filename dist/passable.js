@@ -98,6 +98,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports) {
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 /*
  * Copyright 2016 Google Inc. All rights reserved.
  *
@@ -114,15 +116,15 @@ return /******/ (function(modules) { // webpackBootstrap
  * the License.
  */
 module.exports = function proxyPolyfill() {
-  let lastRevokeFn = null;
-  let ProxyPolyfill;
+  var lastRevokeFn = null;
+  var ProxyPolyfill;
   /**
    * @param {*} o
    * @return {boolean} whether this is probably a (non-null) Object
    */
 
   function isObject(o) {
-    return o ? typeof o === 'object' || typeof o === 'function' : false;
+    return o ? _typeof(o) === 'object' || typeof o === 'function' : false;
   }
   /**
    * @constructor
@@ -131,7 +133,7 @@ module.exports = function proxyPolyfill() {
    */
 
 
-  ProxyPolyfill = function (target, handler) {
+  ProxyPolyfill = function ProxyPolyfill(target, handler) {
     if (!isObject(target) || !isObject(handler)) {
       throw new TypeError('Cannot create proxy with a non-object as target or handler');
     } // Construct revoke function, and set lastRevokeFn so that Proxy.revocable can steal it.
@@ -139,17 +141,17 @@ module.exports = function proxyPolyfill() {
     // to call itself, but that seems unlikely especially when using the polyfill.
 
 
-    let throwRevoked = function () {};
+    var throwRevoked = function throwRevoked() {};
 
-    lastRevokeFn = function () {
-      throwRevoked = function (trap) {
-        throw new TypeError(`Cannot perform '${trap}' on a proxy that has been revoked`);
+    lastRevokeFn = function lastRevokeFn() {
+      throwRevoked = function throwRevoked(trap) {
+        throw new TypeError("Cannot perform '".concat(trap, "' on a proxy that has been revoked"));
       };
     }; // Fail on unsupported traps: Chrome doesn't do this, but ensure that users of the polyfill
     // are a bit more careful. Copy the internal parts of handler to prevent user changes.
 
 
-    const unsafeHandler = handler;
+    var unsafeHandler = handler;
     handler = {
       'get': null,
       'set': null,
@@ -157,9 +159,9 @@ module.exports = function proxyPolyfill() {
       'construct': null
     };
 
-    for (let k in unsafeHandler) {
+    for (var k in unsafeHandler) {
       if (!(k in handler)) {
-        throw new TypeError(`Proxy polyfill does not support trap '${k}'`);
+        throw new TypeError("Proxy polyfill does not support trap '".concat(k, "'"));
       }
 
       handler[k] = unsafeHandler[k];
@@ -173,14 +175,14 @@ module.exports = function proxyPolyfill() {
     // TODO(samthor): Closure compiler doesn't know about 'construct', attempts to rename it.
 
 
-    let proxy = this;
-    let isMethod = false;
-    let isArray = false;
+    var proxy = this;
+    var isMethod = false;
+    var isArray = false;
 
     if (typeof target === 'function') {
       proxy = function ProxyPolyfill() {
-        const usingNew = this && this.constructor === proxy;
-        const args = Array.prototype.slice.call(arguments);
+        var usingNew = this && this.constructor === proxy;
+        var args = Array.prototype.slice.call(arguments);
         throwRevoked(usingNew ? 'construct' : 'apply');
 
         if (usingNew && handler['construct']) {
@@ -195,7 +197,7 @@ module.exports = function proxyPolyfill() {
           args.unshift(target); // pass class as first arg to constructor, although irrelevant
           // nb. cast to convince Closure compiler that this is a constructor
 
-          const f =
+          var f =
           /** @type {!Function} */
           target.bind.apply(target, args);
           return new f();
@@ -212,16 +214,16 @@ module.exports = function proxyPolyfill() {
     // change after creation.
 
 
-    const getter = handler.get ? function (prop) {
+    var getter = handler.get ? function (prop) {
       throwRevoked('get');
       return handler.get(this, prop, proxy);
     } : function (prop) {
       throwRevoked('get');
       return this[prop];
     };
-    const setter = handler.set ? function (prop, value) {
+    var setter = handler.set ? function (prop, value) {
       throwRevoked('set');
-      const status = handler.set(this, prop, value, proxy); // TODO(samthor): If the calling code is in strict mode, throw TypeError.
+      var status = handler.set(this, prop, value, proxy); // TODO(samthor): If the calling code is in strict mode, throw TypeError.
       // if (!status) {
       // It's (sometimes) possible to work this out, if this code isn't strict- try to load the
       // callee, and if it's available, that code is non-strict. However, this isn't exhaustive.
@@ -231,15 +233,15 @@ module.exports = function proxyPolyfill() {
       this[prop] = value;
     }; // Clone direct properties (i.e., not part of a prototype).
 
-    const propertyNames = Object.getOwnPropertyNames(target);
-    const propertyMap = {};
+    var propertyNames = Object.getOwnPropertyNames(target);
+    var propertyMap = {};
     propertyNames.forEach(function (prop) {
       if ((isMethod || isArray) && prop in proxy) {
         return; // ignore properties already here, e.g. 'bind', 'prototype' etc
       }
 
-      const real = Object.getOwnPropertyDescriptor(target, prop);
-      const desc = {
+      var real = Object.getOwnPropertyDescriptor(target, prop);
+      var desc = {
         enumerable: !!real.enumerable,
         get: getter.bind(target, prop),
         set: setter.bind(target, prop)
@@ -250,7 +252,7 @@ module.exports = function proxyPolyfill() {
     // TODO(samthor): We don't allow prototype methods to be set. It's (even more) awkward.
     // An alternative here would be to _just_ clone methods to keep behavior consistent.
 
-    let prototypeOk = true;
+    var prototypeOk = true;
 
     if (Object.setPrototypeOf) {
       Object.setPrototypeOf(proxy, Object.getPrototypeOf(target));
@@ -261,13 +263,13 @@ module.exports = function proxyPolyfill() {
     }
 
     if (handler.get || !prototypeOk) {
-      for (let k in target) {
-        if (propertyMap[k]) {
+      for (var _k in target) {
+        if (propertyMap[_k]) {
           continue;
         }
 
-        Object.defineProperty(proxy, k, {
-          get: getter.bind(target, k)
+        Object.defineProperty(proxy, _k, {
+          get: getter.bind(target, _k)
         });
       }
     } // The Proxy polyfill cannot handle adding new properties. Seal the target and proxy.
@@ -279,7 +281,7 @@ module.exports = function proxyPolyfill() {
   };
 
   ProxyPolyfill.revocable = function (target, handler) {
-    const p = new ProxyPolyfill(target, handler);
+    var p = new ProxyPolyfill(target, handler);
     return {
       'proxy': p,
       'revoke': lastRevokeFn
