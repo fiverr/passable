@@ -1,11 +1,12 @@
 'use strict';
 
-import Enforce, { enforce } from './index';
+import Enforce from './index';
 import { rules, compounds } from './runnables';
 import { expect } from 'chai';
 
 const allRules = Object.keys(rules);
 const allCompounds = Object.keys(compounds);
+const enforce = new Enforce({});
 
 const suite = () => describe('Test Passable\'s enforce function', () => {
     it('Should expose all API functions', () => {

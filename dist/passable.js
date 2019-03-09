@@ -1309,36 +1309,30 @@ function safeProxy(target, handler) {
 
 /* harmony default export */ var safe_proxy = (safeProxy);
 // CONCATENATED MODULE: ./src/Enforce/index.js
-function Enforce_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function Enforce_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
 
 var Enforce_Enforce = function Enforce() {
-  var _this = this;
-
   var customRules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var rules = Object.assign({}, runnables_rules, customRules);
+  var allRunnables = Object.assign({}, compounds, rules);
 
-  Enforce_classCallCheck(this, Enforce);
-
-  Enforce_defineProperty(this, "enforce", function (value) {
-    var proxy = safe_proxy(_this.allRunnables, {
+  var enforce = function enforce(value) {
+    var proxy = safe_proxy(allRunnables, {
       get: function get(allRunnables, fnName) {
-        if (_this.rules.hasOwnProperty(fnName) && typeof _this.rules[fnName] === 'function') {
+        if (rules.hasOwnProperty(fnName) && typeof rules[fnName] === 'function') {
           return function () {
             for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
               args[_key] = arguments[_key];
             }
 
-            runners_rule.apply(runners_namespaceObject, [_this.rules[fnName], value].concat(args));
+            runners_rule.apply(runners_namespaceObject, [rules[fnName], value].concat(args));
             return proxy;
           };
         } else if (compounds.hasOwnProperty(fnName) && typeof compounds[fnName] === 'function') {
           return function (tests) {
-            runners_compound(_this.rules, compounds[fnName], value, tests);
+            runners_compound(rules, compounds[fnName], value, tests);
             return proxy;
           };
         } else {
@@ -1347,16 +1341,12 @@ var Enforce_Enforce = function Enforce() {
       }
     });
     return proxy;
-  });
+  };
 
-  this.rules = Object.assign({}, runnables_rules, customRules);
-  this.allRunnables = Object.assign({}, compounds, this.rules);
-  return this.enforce;
+  return enforce;
 };
 
-var enforce = new Enforce_Enforce({});
 /* harmony default export */ var src_Enforce = (Enforce_Enforce);
-
 // CONCATENATED MODULE: ./src/validate/index.js
 function validate_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { validate_typeof = function _typeof(obj) { return typeof obj; }; } else { validate_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return validate_typeof(obj); }
 
@@ -1395,7 +1385,7 @@ function passable(name, tests, specific) {
 }
 
 passable.VERSION = version["a" /* version */];
-passable.enforce = enforce;
+passable.enforce = new src_Enforce({});
 passable.Enforce = src_Enforce;
 passable.validate = src_validate;
 passable.WARN = WARN;
