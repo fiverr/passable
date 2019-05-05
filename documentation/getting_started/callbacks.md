@@ -1,5 +1,8 @@
 # The `.after()` callback
-The after callback is a function that can be chained to a passable suite and allows invoking a callback whenever a certain field has finished running, regardless of whether it passed or failed. It accepts two arguments: `fieldName` and `callback`. You may chain multiple callbacks to the same field. When running, the `.after()` function passes down to its callback argument the current result object, **note** it might not be final yet, as there may be other async fields still being processed.
+
+The after callback is a function that can be chained to a passable suite and allows invoking a callback whenever a certain field has finished running, regardless of whether it passed or failed. It accepts two arguments: `fieldName` and `callback`. You may chain multiple callbacks to the same field.
+
+When running, the `.after()` function passes down to its callback argument the current result object, **note** it might not be final yet, as there may be other async fields still being processed.
 
 ```js
 import passable, { enforce } from 'passable';
