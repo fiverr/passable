@@ -44,13 +44,20 @@ class Passable {
     }
 
     addPendingTest = (test: PassableTest) => this.pending.push(test);
-    clearPendingTest = (test: PassableTest) => {
 
+    clearPendingTest = (test: PassableTest) => {
         this.pending = (this.pending.filter((t: PassableTest): boolean => t !== test): Array<PassableTest>);
         if (this.pending.length === 0) {
             this.res.runCompletionCallbacks();
         }
     };
+
+    /**
+     * Checks if a given field name still has pending tests
+     * @param {String} fieldName name of the field to test against
+     * @return {Boolean}
+     */
+    hasRemainingPendingTests = (fieldName: string) => this.pending.some((test) => test.fieldName === fieldName);
 
     /**
      * Test function passed over to the consumer.
@@ -95,8 +102,10 @@ class Passable {
             this.res.markAsync(test.fieldName);
 
             const done: Function = () => {
-                this.res.markAsDone(test.fieldName);
                 this.clearPendingTest(test);
+                if (!this.hasRemainingPendingTests(test.fieldName)) {
+                    this.res.markAsDone(test.fieldName);
+                }
             };
 
             const fail: Function = () => {
