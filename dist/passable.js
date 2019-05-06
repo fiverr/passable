@@ -573,7 +573,7 @@ function () {
         if (this.async[fieldName].callbacks) {
           this.async[fieldName].callbacks.forEach(function (callback) {
             return callback(_this2);
-          }, this);
+          });
         }
       }
 

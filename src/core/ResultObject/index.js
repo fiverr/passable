@@ -184,7 +184,7 @@ class ResultObject {
 
             // run field callbacks set in `after`
             if (this.async[fieldName].callbacks) {
-                this.async[fieldName].callbacks.forEach((callback) => callback(this), this);
+                this.async[fieldName].callbacks.forEach((callback) => callback(this));
             }
         }
 

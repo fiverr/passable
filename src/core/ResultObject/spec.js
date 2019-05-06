@@ -200,7 +200,7 @@ describe('class: PassableResponse', () => {
         describe('Multiple tests with given field name (f2)', () => {
             it('Should only run callback after all tests completed for given field', (done) => {
                 res.after(f2, (res) => {
-                    expect(res.testsPerformed[f2].testCount).to.equal(3)
+                    expect(res.testsPerformed[f2].testCount).to.equal(3);
                     done();
                 });
             });
@@ -223,6 +223,15 @@ describe('class: PassableResponse', () => {
             it('Should return self', () => {
                 expect(res.after('s')).to.equal(res);
                 expect(res.after('s', 's')).to.equal(res);
+            });
+        });
+
+        describe('Callback arguments', () => {
+            it('Should pass down result object to callback', (done) => {
+                res.after(f1, (result) => {
+                    expect(result).to.equal(res);
+                    done();
+                });
             });
         });
     });
