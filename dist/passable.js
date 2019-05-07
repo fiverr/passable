@@ -378,7 +378,10 @@ function () {
       value: void 0
     });
 
-    _classPrivateFieldSet(this, _async, null);
+    _completionCallbacks.set(this, {
+      writable: true,
+      value: void 0
+    });
 
     this.name = name;
     this.hasValidationErrors = false;
@@ -390,7 +393,10 @@ function () {
     this.validationErrors = {};
     this.validationWarnings = {};
     this.skipped = [];
-    this.completionCallbacks = [];
+
+    _classPrivateFieldSet(this, _async, null);
+
+    _classPrivateFieldSet(this, _completionCallbacks, []);
   }
   /**
    * Initializes specific field's counters
@@ -501,7 +507,7 @@ function () {
     value: function runCompletionCallbacks() {
       var _this = this;
 
-      this.completionCallbacks.forEach(function (cb) {
+      _classPrivateFieldGet(this, _completionCallbacks).forEach(function (cb) {
         return cb(_this);
       });
     }
@@ -523,7 +529,8 @@ function () {
         callback(this);
       }
 
-      this.completionCallbacks.push(callback);
+      _classPrivateFieldGet(this, _completionCallbacks).push(callback);
+
       return this;
     }
     /**
@@ -662,6 +669,8 @@ function () {
 }();
 
 var _async = new WeakMap();
+
+var _completionCallbacks = new WeakMap();
 
 /* harmony default export */ var core_ResultObject = (ResultObject);
 // CONCATENATED MODULE: ./src/core/Specific/index.js

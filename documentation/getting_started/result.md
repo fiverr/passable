@@ -14,7 +14,6 @@
 | `validationErrors[field-name]`   | `Object[]` | All error strings for this field
 | `validationWarnings`             | `Object[]` | Actual errors per each field
 | `validationWarnings[field-name]` | `Object[]` | All warning strings for this field
-| `async`                          | `Object{}` | Contains async tests and their current completion status
 | `skipped`                        | `Array`    | All skipped fields (empty, unless the `specific` option is used)
 | `getErrors`                      | `Function` | Getter function which allows accessing the errors array of one or all fields
 | `getWarnings`                    | `Function` | Getter function which allows accessing the warnings array of one or all fields

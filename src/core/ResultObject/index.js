@@ -12,7 +12,6 @@ class ResultObject {
      * @return {Object} Current instance
      */
     constructor(name: string) {
-        this.#async = null;
         this.name = name;
         this.hasValidationErrors = false;
         this.hasValidationWarnings = false;
@@ -23,7 +22,8 @@ class ResultObject {
         this.validationErrors = {};
         this.validationWarnings = {};
         this.skipped = [];
-        this.completionCallbacks = [];
+        this.#async = null;
+        this.#completionCallbacks = [];
     }
 
     /**
@@ -118,7 +118,7 @@ class ResultObject {
      * regardless of success or failure
      */
     runCompletionCallbacks() {
-        this.completionCallbacks.forEach((cb) => cb(this));
+        this.#completionCallbacks.forEach((cb) => cb(this));
     }
 
     /**
@@ -134,7 +134,7 @@ class ResultObject {
             callback(this);
         }
 
-        this.completionCallbacks.push(callback);
+        this.#completionCallbacks.push(callback);
         return this;
     }
 
@@ -249,7 +249,6 @@ class ResultObject {
         return Boolean(this.getWarnings(fieldName).length);
     }
 
-    #async: AsyncObject;
     name: string;
     hasValidationErrors: boolean;
     hasValidationWarnings: boolean;
@@ -266,8 +265,9 @@ class ResultObject {
         }
     };
     skipped: Array<string>;
-    completionCallbacks: Array<Function>;
     fail: Function;
+    #async: AsyncObject;
+    #completionCallbacks: Array<Function>;
 }
 
 export default ResultObject;

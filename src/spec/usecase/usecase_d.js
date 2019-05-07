@@ -54,8 +54,7 @@ export default (passable, enforce) => {
             ]
         },
         validationWarnings: {},
-        skipped: [],
-        completionCallbacks: []
+        skipped: []
     };
 
     return {
