@@ -339,6 +339,14 @@ function testRunnerAsync(test, done, fail) {
 
 
 // CONCATENATED MODULE: ./src/core/ResultObject/index.js
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -488,9 +496,9 @@ function () {
       });
     }
     /**
-     * Registers callback functions to be run when test suite is done running
+     * Registers callback function to be run when test suite is done running
      * If current suite is not async, runs the callback immediately
-     * @param {function} callback the function to be called on done
+     * @param {Function} callback the function to be called on done
      * @return {Object} Current instance
      */
 
@@ -506,6 +514,31 @@ function () {
       }
 
       this.completionCallbacks.push(callback);
+      return this;
+    }
+    /**
+     * Registers a callback function to be run after a certain field finished running
+     * If given field is sync, runs immediately
+     * @param {String} fieldName name of the field to register the callback to
+     * @param {Function} callback the function to be registered
+     * @return {Object} Current instance
+     */
+
+  }, {
+    key: "after",
+    value: function after(fieldName, callback) {
+      if (typeof callback !== 'function') {
+        return this;
+      }
+
+      this.async = this.async || {};
+
+      if (!this.async[fieldName] && this.testsPerformed[fieldName]) {
+        callback(this);
+      } else if (this.async[fieldName]) {
+        this.async[fieldName].callbacks = [].concat(_toConsumableArray(this.async[fieldName].callbacks || []), [callback]);
+      }
+
       return this;
     }
     /**
@@ -532,10 +565,16 @@ function () {
   }, {
     key: "markAsDone",
     value: function markAsDone(fieldName) {
-      if (this.async && this.async[fieldName]) {
-        this.async[fieldName] = {
-          done: true
-        };
+      var _this2 = this;
+
+      if (this.async !== null && this.async[fieldName]) {
+        this.async[fieldName].done = true; // run field callbacks set in `after`
+
+        if (this.async[fieldName].callbacks) {
+          this.async[fieldName].callbacks.forEach(function (callback) {
+            return callback(_this2);
+          });
+        }
       }
 
       return this;
@@ -737,13 +776,13 @@ function () {
 
 /* harmony default export */ var core_Specific = (Specific);
 // CONCATENATED MODULE: ./src/core/Passable/index.js
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function Passable_toConsumableArray(arr) { return Passable_arrayWithoutHoles(arr) || Passable_iterableToArray(arr) || Passable_nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function Passable_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function Passable_iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function Passable_arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function Passable_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -788,6 +827,12 @@ function Passable(name, tests, specific) {
     }
   });
 
+  _defineProperty(this, "hasRemainingPendingTests", function (fieldName) {
+    return _this.pending.some(function (test) {
+      return test.fieldName === fieldName;
+    });
+  });
+
   _defineProperty(this, "test", function (fieldName, statement, test, severity) {
     if (_this.specific.excludes(fieldName)) {
       _this.res.addToSkipped(fieldName);
@@ -819,9 +864,11 @@ function Passable(name, tests, specific) {
       _this.res.markAsync(test.fieldName);
 
       var done = function done() {
-        _this.res.markAsDone(test.fieldName);
-
         _this.clearPendingTest(test);
+
+        if (!_this.hasRemainingPendingTests(test.fieldName)) {
+          _this.res.markAsDone(test.fieldName);
+        }
       };
 
       var fail = function fail() {
@@ -846,7 +893,7 @@ function Passable(name, tests, specific) {
   });
 
   _defineProperty(this, "runPendingTests", function () {
-    _toConsumableArray(_this.pending).forEach(_this.runTest);
+    Passable_toConsumableArray(_this.pending).forEach(_this.runTest);
   });
 
   if (typeof name !== 'string') {

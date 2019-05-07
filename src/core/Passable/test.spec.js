@@ -1,7 +1,7 @@
 import Passable from '.';
 import { expect } from 'chai';
 import { WARN, FAIL } from '../../index';
-import { noop, random, sample, toString, clone } from 'lodash';
+import { noop, random, sample, clone } from 'lodash';
 import { lorem } from 'faker';
 import sinon from 'sinon';
 
@@ -149,31 +149,53 @@ describe("Tests Passable's `test` functionality", () => {
 
         describe('async test behavior', () => {
             describe('failing', () => {
-                let name;
+                let f1, f2;
                 beforeEach(() => {
-                    name = lorem.word();
+                    f1 = lorem.word();
+                    f2 = lorem.word();
+
                     instance = new Passable('formname', (test) => {
-                        test(name, lorem.sentence(), new Promise((resolve, reject) => setImmediate(reject)));
+                        test(f1, lorem.sentence(), new Promise((resolve, reject) => setImmediate(reject)));
+                        test(f2, lorem.sentence(), new Promise((resolve) => setTimeout(resolve)));
+                        test(f2, lorem.sentence(), new Promise((resolve) => setTimeout(resolve, 500)));
+                        test(lorem.word(), lorem.sentence(), noop);
                     });
                 });
 
-                it('Should immediately register test', () => {
-                    expect(instance.res.testCount).to.equal(1);
+                it('Should immediately register tests', () => {
+                    expect(instance.res.testCount).to.equal(4);
                 });
 
                 it('Should set field as async (done: false) upon init', () => {
                     expect(instance.res.async).to.deep.equal({
-                        [name]: { done: false }
+                        [f1]: { done: false },
+                        [f2]: { done: false }
                     });
                 });
 
-                it('Should set async field as done when completed', (done) => {
-                    setTimeout(() => {
-                        expect(instance.res.async).to.deep.equal({
-                            [name]: { done: true }
-                        });
-                        done();
-                    }, 100);
+                describe('Single test for a given field name (f1)', () => {                    
+                    it('Should set async field as done when completed', (done) => {
+                        setTimeout(() => {
+                            expect(instance.res.async[f1]).to.deep.equal({ done: true });
+                            done();
+                        }, 10);
+                    });
+                });
+
+                describe('Multiple tests for a given field name (f2)', () => {
+                    it('Should continue and not call done if not all tests finished running', (done) => {
+                        setTimeout(() => {
+                            expect(instance.res.async[f2]).to.deep.equal({ done: false });
+                            done();
+                        }, 10);
+                    });
+
+                    it('Should Call done after all tests finished running', (done) => {
+                        setTimeout(() => {
+                            expect(instance.res.async[f2]).to.deep.equal({ done: true });
+                            done();
+                        }, 600);
+                    });
                 });
 
                 it('Should only marke test as failing after rejection', (done) => {

@@ -5,7 +5,7 @@ PASSABLE {{PASSABLE_VERSION}}
     * Getting Started
         * [Installation](./getting_started/installation.md)
         * [Writing tests](./getting_started/writing_tests.md)
-        * [The `done` function](./getting_started/done.md)
+        * [Passable callbacks](./getting_started/callbacks.md)
         * [The `result` object](./getting_started/result.md)
     * [The `test` Function](./test/index.md)
         * [How to fail a test](./test/how_to_fail.md)

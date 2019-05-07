@@ -122,9 +122,9 @@ class ResultObject {
     }
 
     /**
-     * Registers callback functions to be run when test suite is done running
+     * Registers callback function to be run when test suite is done running
      * If current suite is not async, runs the callback immediately
-     * @param {function} callback the function to be called on done
+     * @param {Function} callback the function to be called on done
      * @return {Object} Current instance
      */
     done(callback: Function) {
@@ -135,6 +135,30 @@ class ResultObject {
         }
 
         this.completionCallbacks.push(callback);
+        return this;
+    }
+
+    /**
+     * Registers a callback function to be run after a certain field finished running
+     * If given field is sync, runs immediately
+     * @param {String} fieldName name of the field to register the callback to
+     * @param {Function} callback the function to be registered
+     * @return {Object} Current instance
+     */
+    after(fieldName: string, callback: Function) {
+
+        if (typeof callback !== 'function') {
+            return this;
+        }
+
+        this.async = this.async || {};
+
+        if (!this.async[fieldName] && this.testsPerformed[fieldName]) {
+            callback(this);
+        } else if (this.async[fieldName]) {
+            this.async[fieldName].callbacks = [...(this.async[fieldName].callbacks || []), callback];
+        }
+
         return this;
     }
 
@@ -155,8 +179,13 @@ class ResultObject {
      * @return {Object} Current instance
     */
     markAsDone(fieldName: string) {
-        if (this.async && this.async[fieldName]) {
-            this.async[fieldName] = { done: true };
+        if (this.async !== null && this.async[fieldName]) {
+            this.async[fieldName].done = true;
+
+            // run field callbacks set in `after`
+            if (this.async[fieldName].callbacks) {
+                this.async[fieldName].callbacks.forEach((callback) => callback(this));
+            }
         }
 
         return this;

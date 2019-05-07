@@ -40,7 +40,8 @@ declare type ErrorAndWarningObject = {
 
 declare type AsyncObject = {
     [name: string]: {
-        done: boolean
+        done: boolean,
+        callbacks?: Array<Function>
     }
 } | null;
 

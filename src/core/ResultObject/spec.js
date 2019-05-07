@@ -1,5 +1,4 @@
-'use strict';
-
+import passable from '../../';
 import ResultObject, { WARN, FAIL } from './index';
 import { expect } from 'chai';
 import { noop } from 'lodash';
@@ -169,9 +168,72 @@ describe('class: PassableResponse', () => {
         describe('When sync', () => {
             it('Should run callbacks immediately', (done) => {
                 res.done(() => done());
+                throw new Error(); // this proves that it is invoked immediately
+            });
+        });
+    });
+
+    describe('method: after', () => {
+        let res, f1, f2;
+
+        beforeEach(() => {
+            f1 = faker.lorem.word();
+            f2 = faker.lorem.word();
+
+            res = passable(faker.lorem.word(), (test) => {
+                test(f1, faker.lorem.sentence(), new Promise((resolve, reject) => setTimeout(reject, 100)));
+                test(f2, faker.lorem.sentence(), noop);
+                test(f2, faker.lorem.sentence(), new Promise((resolve) => setTimeout(resolve)));
+                test(f2, faker.lorem.sentence(), new Promise((resolve, reject) => setTimeout(reject, 250)));
+                test('sync', faker.lorem.sentence(), noop);
             });
         });
 
+        describe('Single test with given field name (f1)', () => {
+            it('Should only run callback after field completed', (done) => {
+                res.after(f1, (res) => {
+                    if (res.hasErrors(f1)) { done(); }
+                });
+            });
+        });
+
+        describe('Multiple tests with given field name (f2)', () => {
+            it('Should only run callback after all tests completed for given field', (done) => {
+                res.after(f2, (res) => {
+                    expect(res.testsPerformed[f2].testCount).to.equal(3);
+                    done();
+                });
+            });
+        });
+
+        describe('Sync only test', () => {
+            it('Should invoke immediately', (done) => {
+                res.after('sync', () => done());
+                throw new Error();
+            });
+        });
+
+        describe('Return value', () => {
+            it('Should return self', () => {
+                expect(res.after('sync', noop)).to.equal(res);
+            });
+        });
+
+        describe('Invalid values', () => {
+            it('Should return self', () => {
+                expect(res.after('s')).to.equal(res);
+                expect(res.after('s', 's')).to.equal(res);
+            });
+        });
+
+        describe('Callback arguments', () => {
+            it('Should pass down result object to callback', (done) => {
+                res.after(f1, (result) => {
+                    expect(result).to.equal(res);
+                    done();
+                });
+            });
+        });
     });
 
     describe('method: getErrors', () => {
