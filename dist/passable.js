@@ -353,6 +353,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _classPrivateFieldGet(receiver, privateMap) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } var descriptor = privateMap.get(receiver); if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to set private field on non-instance"); } var descriptor = privateMap.get(receiver); if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
 var WARN = 'warn';
 var FAIL = 'fail';
 var severities = [WARN, FAIL];
@@ -369,7 +373,13 @@ function () {
   function ResultObject(name) {
     _classCallCheck(this, ResultObject);
 
-    this.async = null;
+    _async.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _classPrivateFieldSet(this, _async, null);
+
     this.name = name;
     this.hasValidationErrors = false;
     this.hasValidationWarnings = false;
@@ -509,7 +519,7 @@ function () {
         return this;
       }
 
-      if (!this.async) {
+      if (!_classPrivateFieldGet(this, _async)) {
         callback(this);
       }
 
@@ -531,12 +541,12 @@ function () {
         return this;
       }
 
-      this.async = this.async || {};
+      _classPrivateFieldSet(this, _async, _classPrivateFieldGet(this, _async) || {});
 
-      if (!this.async[fieldName] && this.testsPerformed[fieldName]) {
+      if (!_classPrivateFieldGet(this, _async)[fieldName] && this.testsPerformed[fieldName]) {
         callback(this);
-      } else if (this.async[fieldName]) {
-        this.async[fieldName].callbacks = [].concat(_toConsumableArray(this.async[fieldName].callbacks || []), [callback]);
+      } else if (_classPrivateFieldGet(this, _async)[fieldName]) {
+        _classPrivateFieldGet(this, _async)[fieldName].callbacks = [].concat(_toConsumableArray(_classPrivateFieldGet(this, _async)[fieldName].callbacks || []), [callback]);
       }
 
       return this;
@@ -550,8 +560,9 @@ function () {
   }, {
     key: "markAsync",
     value: function markAsync(fieldName) {
-      this.async = this.async || {};
-      this.async[fieldName] = {
+      _classPrivateFieldSet(this, _async, _classPrivateFieldGet(this, _async) || {});
+
+      _classPrivateFieldGet(this, _async)[fieldName] = {
         done: false
       };
       return this;
@@ -567,11 +578,11 @@ function () {
     value: function markAsDone(fieldName) {
       var _this2 = this;
 
-      if (this.async !== null && this.async[fieldName]) {
-        this.async[fieldName].done = true; // run field callbacks set in `after`
+      if (_classPrivateFieldGet(this, _async) !== null && _classPrivateFieldGet(this, _async)[fieldName]) {
+        _classPrivateFieldGet(this, _async)[fieldName].done = true; // run field callbacks set in `after`
 
-        if (this.async[fieldName].callbacks) {
-          this.async[fieldName].callbacks.forEach(function (callback) {
+        if (_classPrivateFieldGet(this, _async)[fieldName].callbacks) {
+          _classPrivateFieldGet(this, _async)[fieldName].callbacks.forEach(function (callback) {
             return callback(_this2);
           });
         }
@@ -649,6 +660,8 @@ function () {
 
   return ResultObject;
 }();
+
+var _async = new WeakMap();
 
 /* harmony default export */ var core_ResultObject = (ResultObject);
 // CONCATENATED MODULE: ./src/core/Specific/index.js

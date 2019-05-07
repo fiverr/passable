@@ -13,7 +13,7 @@ describe("Tests Passable's `test` functionality", () => {
             const allTests = [];
 
             beforeEach(() => {
-                instance = new Passable('formname', noop);
+                instance = new Passable(lorem.word(), noop);
                 allTests.length = 0;
 
                 for (let i = 0; i < random(1, 15); i++) {
@@ -54,7 +54,7 @@ describe("Tests Passable's `test` functionality", () => {
             const allTests = [];
 
             beforeEach(() => {
-                instance = new Passable('formname', noop);
+                instance = new Passable(lorem.word(), noop);
                 allTests.length = 0;
 
                 for (let i = 0; i < random(1, 15); i++) {
@@ -94,7 +94,7 @@ describe("Tests Passable's `test` functionality", () => {
             let instance;
 
             beforeEach(() => {
-                instance = new Passable('formname', noop);
+                instance = new Passable(lorem.word(), noop);
             });
 
 
@@ -117,7 +117,7 @@ describe("Tests Passable's `test` functionality", () => {
             for (let i = 0; i < random(1, 15); i++) {
                 allTests.push(sinon.spy());
             }
-            instance = new Passable('formname', (test) => allTests.forEach((t) => {
+            instance = new Passable(lorem.word(), (test) => allTests.forEach((t) => {
                 test(lorem.word(), lorem.sentence(), t);
             }));
         });
@@ -154,7 +154,7 @@ describe("Tests Passable's `test` functionality", () => {
                     f1 = lorem.word();
                     f2 = lorem.word();
 
-                    instance = new Passable('formname', (test) => {
+                    instance = new Passable(lorem.word(), (test) => {
                         test(f1, lorem.sentence(), new Promise((resolve, reject) => setImmediate(reject)));
                         test(f2, lorem.sentence(), new Promise((resolve) => setTimeout(resolve)));
                         test(f2, lorem.sentence(), new Promise((resolve) => setTimeout(resolve, 500)));
@@ -166,39 +166,14 @@ describe("Tests Passable's `test` functionality", () => {
                     expect(instance.res.testCount).to.equal(4);
                 });
 
-                it('Should set field as async (done: false) upon init', () => {
-                    expect(instance.res.async).to.deep.equal({
-                        [f1]: { done: false },
-                        [f2]: { done: false }
+                it('Should run async test promise', (done) => {
+                    new Passable(lorem.word(), (test) => {
+                        test(f1, lorem.sentence(), new Promise((resolve) => done()));
+                        test(lorem.word(), lorem.sentence(), noop);
                     });
                 });
 
-                describe('Single test for a given field name (f1)', () => {                    
-                    it('Should set async field as done when completed', (done) => {
-                        setTimeout(() => {
-                            expect(instance.res.async[f1]).to.deep.equal({ done: true });
-                            done();
-                        }, 10);
-                    });
-                });
-
-                describe('Multiple tests for a given field name (f2)', () => {
-                    it('Should continue and not call done if not all tests finished running', (done) => {
-                        setTimeout(() => {
-                            expect(instance.res.async[f2]).to.deep.equal({ done: false });
-                            done();
-                        }, 10);
-                    });
-
-                    it('Should Call done after all tests finished running', (done) => {
-                        setTimeout(() => {
-                            expect(instance.res.async[f2]).to.deep.equal({ done: true });
-                            done();
-                        }, 600);
-                    });
-                });
-
-                it('Should only marke test as failing after rejection', (done) => {
+                it('Should only mark test as failing after rejection', (done) => {
                     expect(instance.res.failCount).to.equal(0);
                     setTimeout(() => {
                         expect(instance.res.failCount).to.equal(1);
@@ -209,7 +184,7 @@ describe("Tests Passable's `test` functionality", () => {
 
             describe('passing', () => {
                 beforeEach(() => {
-                    instance = new Passable('formname', (test) => {
+                    instance = new Passable(lorem.word(), (test) => {
                         test(lorem.word(), lorem.sentence(), new Promise((resolve, reject) => setImmediate(resolve)));
                     });
                 });
@@ -233,15 +208,6 @@ describe("Tests Passable's `test` functionality", () => {
                 });
                 expect(instance.res.failCount).to.equal(1);
                 expect(instance.res.validationErrors).to.have.key(name);
-            });
-
-            it('Should keep responseObject:async as untouched', () => {
-                const name = lorem.word();
-                instance = new Passable(lorem.word(), (test) => {
-                    test(name, lorem.sentence(), () => { throw new Error(); });
-                    test(lorem.word(), lorem.sentence(), noop);
-                });
-                expect(instance.res.async).to.equal(null);
             });
 
             it('should mark a test as failed for `false`', () => {

@@ -12,7 +12,7 @@ class ResultObject {
      * @return {Object} Current instance
      */
     constructor(name: string) {
-        this.async = null;
+        this.#async = null;
         this.name = name;
         this.hasValidationErrors = false;
         this.hasValidationWarnings = false;
@@ -130,7 +130,7 @@ class ResultObject {
     done(callback: Function) {
         if (typeof callback !== 'function') {return this;}
 
-        if (!this.async) {
+        if (!this.#async) {
             callback(this);
         }
 
@@ -151,12 +151,12 @@ class ResultObject {
             return this;
         }
 
-        this.async = this.async || {};
+        this.#async = this.#async || {};
 
-        if (!this.async[fieldName] && this.testsPerformed[fieldName]) {
+        if (!this.#async[fieldName] && this.testsPerformed[fieldName]) {
             callback(this);
-        } else if (this.async[fieldName]) {
-            this.async[fieldName].callbacks = [...(this.async[fieldName].callbacks || []), callback];
+        } else if (this.#async[fieldName]) {
+            this.#async[fieldName].callbacks = [...(this.#async[fieldName].callbacks || []), callback];
         }
 
         return this;
@@ -168,8 +168,8 @@ class ResultObject {
      * @return {Object} Current instance
     */
     markAsync(fieldName: string) {
-        this.async = this.async || {};
-        this.async[fieldName] = { done: false };
+        this.#async = this.#async || {};
+        this.#async[fieldName] = { done: false };
         return this;
     }
 
@@ -179,12 +179,12 @@ class ResultObject {
      * @return {Object} Current instance
     */
     markAsDone(fieldName: string) {
-        if (this.async !== null && this.async[fieldName]) {
-            this.async[fieldName].done = true;
+        if (this.#async !== null && this.#async[fieldName]) {
+            this.#async[fieldName].done = true;
 
             // run field callbacks set in `after`
-            if (this.async[fieldName].callbacks) {
-                this.async[fieldName].callbacks.forEach((callback) => callback(this));
+            if (this.#async[fieldName].callbacks) {
+                this.#async[fieldName].callbacks.forEach((callback) => callback(this));
             }
         }
 
@@ -249,7 +249,7 @@ class ResultObject {
         return Boolean(this.getWarnings(fieldName).length);
     }
 
-    async: AsyncObject;
+    #async: AsyncObject;
     name: string;
     hasValidationErrors: boolean;
     hasValidationWarnings: boolean;
