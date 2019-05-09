@@ -11,7 +11,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].js',
-        library: 'Passable',
+        library: 'passable',
         libraryTarget: 'umd',
         libraryExport: 'default',
         globalObject: "Function('return this')()"
