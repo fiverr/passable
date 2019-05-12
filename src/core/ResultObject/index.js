@@ -6,6 +6,7 @@ const severities: Array<Severity> = [WARN, FAIL];
 
 /** Class representing validation state. */
 class ResultObject {
+
     /**
      * Initialize validation object
      * @param {string} name - The name of the current data object.
@@ -22,9 +23,10 @@ class ResultObject {
         this.validationErrors = {};
         this.validationWarnings = {};
         this.skipped = [];
-        this.#async = null;
-        this.#completionCallbacks = [];
     }
+
+    #async: AsyncObject = null;
+    #completionCallbacks: Array<Function> = [];
 
     /**
      * Initializes specific field's counters
@@ -266,8 +268,6 @@ class ResultObject {
     };
     skipped: Array<string>;
     fail: Function;
-    #async: AsyncObject;
-    #completionCallbacks: Array<Function>;
 }
 
 export default ResultObject;

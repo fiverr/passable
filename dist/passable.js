@@ -353,9 +353,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _classPrivateFieldGet(receiver, privateMap) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } var descriptor = privateMap.get(receiver); if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
-
 function _classPrivateFieldSet(receiver, privateMap, value) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to set private field on non-instance"); } var descriptor = privateMap.get(receiver); if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
+function _classPrivateFieldGet(receiver, privateMap) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } var descriptor = privateMap.get(receiver); if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
 var WARN = 'warn';
 var FAIL = 'fail';
@@ -375,12 +375,12 @@ function () {
 
     _async.set(this, {
       writable: true,
-      value: void 0
+      value: null
     });
 
     _completionCallbacks.set(this, {
       writable: true,
-      value: void 0
+      value: []
     });
 
     this.name = name;
@@ -393,20 +393,16 @@ function () {
     this.validationErrors = {};
     this.validationWarnings = {};
     this.skipped = [];
-
-    _classPrivateFieldSet(this, _async, null);
-
-    _classPrivateFieldSet(this, _completionCallbacks, []);
   }
-  /**
-   * Initializes specific field's counters
-   * @param {string} fieldName - The name of the field.
-   * @return {Object} Current instance
-   */
-
 
   _createClass(ResultObject, [{
     key: "initFieldCounters",
+
+    /**
+     * Initializes specific field's counters
+     * @param {string} fieldName - The name of the field.
+     * @return {Object} Current instance
+     */
     value: function initFieldCounters(fieldName) {
       if (this.testsPerformed[fieldName]) {
         return this;
