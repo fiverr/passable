@@ -33,7 +33,6 @@ const warnPass = passable('WarnPass', (test) => {
 
 const warnPassExpected = {
         name: 'WarnPass',
-        async: null,
         skipped: [],
         hasValidationErrors: false,
         hasValidationWarnings: true,
@@ -44,12 +43,10 @@ const warnPassExpected = {
         validationWarnings: { WarnPass: ['should warn'] },
         failCount: 0,
         warnCount: 1,
-        testCount: 1,
-        completionCallbacks: []
+        testCount: 1
     },
     warnFailExpected = {
         name: 'WarnFail',
-        async: null,
         skipped: [],
         hasValidationErrors: true,
         hasValidationWarnings: true,
@@ -61,12 +58,10 @@ const warnPassExpected = {
         validationWarnings: { Warn: ['should warn'] },
         failCount: 1,
         warnCount: 1,
-        testCount: 2,
-        completionCallbacks: []
+        testCount: 2
     },
     failExpected = {
         name: 'Fail',
-        async: null,
         skipped: [],
         hasValidationErrors: true,
         hasValidationWarnings: false,
@@ -78,6 +73,5 @@ const warnPassExpected = {
         validationWarnings: {},
         failCount: 1,
         warnCount: 0,
-        testCount: 2,
-        completionCallbacks: []
+        testCount: 2
     };

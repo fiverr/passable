@@ -51,7 +51,6 @@ export default (passable) => {
     });
 
     const expect = {
-        async: null,
         name: 'case_c',
         hasValidationErrors: true,
         hasValidationWarnings: false,
@@ -97,8 +96,7 @@ export default (passable) => {
             ]
         },
         validationWarnings: {},
-        skipped: [],
-        completionCallbacks: []
+        skipped: []
     };
 
     return {

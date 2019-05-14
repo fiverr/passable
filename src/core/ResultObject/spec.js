@@ -9,7 +9,6 @@ describe('class: PassableResponse', () => {
     it('Should return correct initial object from constructor', () => {
         expect(new ResultObject('FormName')).to.deep.equal({
             name: 'FormName',
-            async: null,
             hasValidationErrors: false,
             hasValidationWarnings: false,
             failCount: 0,
@@ -18,8 +17,7 @@ describe('class: PassableResponse', () => {
             testsPerformed: {},
             validationErrors: {},
             validationWarnings: {},
-            skipped: [],
-            completionCallbacks: []
+            skipped: []
         });
     });
 
@@ -143,25 +141,43 @@ describe('class: PassableResponse', () => {
             res = new ResultObject(faker.lorem.word());
         });
 
-        it('Should add given callback to `completionCallbackList`', () => {
-            expect(res.completionCallbacks).to.have.lengthOf(0);
-            res.done(noop);
-            expect(res.completionCallbacks).to.have.lengthOf(1);
-            res.completionCallbacks[0] === noop;
+        it('Should allow chaining by returning self', () => {
+            expect(res.done(noop)).to.equal(res);
         });
 
-        it('Should return without adding non-function values', () => {
-            [0, 1, null, undefined, new Promise(noop), false, true, [], {}].forEach((v) => res.done(v));
-            expect(res.completionCallbacks).to.have.lengthOf(0);
+        it('Should run done callback when done', (done) => {
+            const startTime = Date.now();
+            passable(faker.lorem.word(), (test) => {
+                test(faker.lorem.word(), faker.lorem.sentence(), new Promise((resolve) => {
+                    setTimeout(resolve, 250);
+                }));
+
+                test(faker.lorem.word(), faker.lorem.sentence(), new Promise((reject) => {
+                    setTimeout(reject, 500);
+                }));
+            }).done(() => {
+                expect(Date.now() - startTime).to.be.at.least(500);
+                done();
+            });
+        });
+
+        it('Should return silently for non-function values', (done) => {
+            [0, 1, null, undefined, new Promise(noop), false, true, [], {}]
+                .forEach((v) => res.done(v));
+            done();
         });
 
         describe('When async', () => {
-            it('Should push given callback as last element in the array', (done) => {
+            it('Should wait for tests to finish', (done) => {
+                const startTime = Date.now();
                 res.markAsync();
-                res.done(noop);
-                res.done(() => done());
-
-                res.completionCallbacks[1]();
+                setTimeout(() => {
+                    res.runCompletionCallbacks();
+                }, 250);
+                res.done(() => {
+                    expect(Date.now() - startTime).to.be.at.least(250);
+                    done();
+                });
             });
         });
 
@@ -169,6 +185,15 @@ describe('class: PassableResponse', () => {
             it('Should run callbacks immediately', (done) => {
                 res.done(() => done());
                 throw new Error(); // this proves that it is invoked immediately
+            });
+
+            it('Should run all callbacks in sequence', () => {
+                const values = [];
+                res.done(() => values.push(1));
+                res.done(() => values.push(2));
+                res.done(() => values.push(3));
+                res.done(() => values.push(4));
+                expect(values).to.deep.equal([1, 2, 3, 4]);
             });
         });
     });
@@ -367,7 +392,6 @@ describe('class: PassableResponse', () => {
 
             expect(fail).to.deep.equal({
                 name: 'FormName',
-                async: null,
                 testCount: 0,
                 failCount: 1,
                 warnCount: 0,
@@ -378,8 +402,7 @@ describe('class: PassableResponse', () => {
                 },
                 validationErrors: { f1: ['should fail'] },
                 validationWarnings: {},
-                skipped: [],
-                completionCallbacks: []
+                skipped: []
             });
         });
 
@@ -387,7 +410,6 @@ describe('class: PassableResponse', () => {
             const warn = testObject.fail('f1', 'should warn', WARN);
             expect(warn).to.deep.equal({
                 name: 'FormName',
-                async: null,
                 testCount: 0,
                 failCount: 0,
                 warnCount: 1,
@@ -398,8 +420,7 @@ describe('class: PassableResponse', () => {
                 },
                 validationErrors: {},
                 validationWarnings: { f1: ['should warn'] },
-                skipped: [],
-                completionCallbacks: []
+                skipped: []
             });
         });
 
@@ -429,7 +450,6 @@ describe('class: PassableResponse', () => {
             testObject.bumpTestWarning('f1', 'should warn');
 
             expect(testObject).to.deep.equal({
-                async: null,
                 name: 'FormName',
                 testCount: 0,
                 failCount: 0,
@@ -441,8 +461,7 @@ describe('class: PassableResponse', () => {
                 },
                 validationErrors: {},
                 validationWarnings: { f1: ['should warn'] },
-                skipped: [],
-                completionCallbacks: []
+                skipped: []
             });
         });
 
@@ -451,7 +470,6 @@ describe('class: PassableResponse', () => {
 
             expect(testObject).to.deep.equal({
                 name: 'FormName',
-                async: null,
                 testCount: 0,
                 failCount: 1,
                 warnCount: 0,
@@ -462,8 +480,7 @@ describe('class: PassableResponse', () => {
                 },
                 validationErrors: { f1: ['should error'] },
                 validationWarnings: {},
-                skipped: [],
-                completionCallbacks: []
+                skipped: []
             });
         });
     });

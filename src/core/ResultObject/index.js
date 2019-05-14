@@ -6,13 +6,13 @@ const severities: Array<Severity> = [WARN, FAIL];
 
 /** Class representing validation state. */
 class ResultObject {
+
     /**
      * Initialize validation object
      * @param {string} name - The name of the current data object.
      * @return {Object} Current instance
      */
     constructor(name: string) {
-        this.async = null;
         this.name = name;
         this.hasValidationErrors = false;
         this.hasValidationWarnings = false;
@@ -23,8 +23,10 @@ class ResultObject {
         this.validationErrors = {};
         this.validationWarnings = {};
         this.skipped = [];
-        this.completionCallbacks = [];
     }
+
+    #async: AsyncObject = null;
+    #completionCallbacks: Array<Function> = [];
 
     /**
      * Initializes specific field's counters
@@ -118,7 +120,7 @@ class ResultObject {
      * regardless of success or failure
      */
     runCompletionCallbacks() {
-        this.completionCallbacks.forEach((cb) => cb(this));
+        this.#completionCallbacks.forEach((cb) => cb(this));
     }
 
     /**
@@ -130,11 +132,11 @@ class ResultObject {
     done(callback: Function) {
         if (typeof callback !== 'function') {return this;}
 
-        if (!this.async) {
+        if (!this.#async) {
             callback(this);
         }
 
-        this.completionCallbacks.push(callback);
+        this.#completionCallbacks.push(callback);
         return this;
     }
 
@@ -151,12 +153,12 @@ class ResultObject {
             return this;
         }
 
-        this.async = this.async || {};
+        this.#async = this.#async || {};
 
-        if (!this.async[fieldName] && this.testsPerformed[fieldName]) {
+        if (!this.#async[fieldName] && this.testsPerformed[fieldName]) {
             callback(this);
-        } else if (this.async[fieldName]) {
-            this.async[fieldName].callbacks = [...(this.async[fieldName].callbacks || []), callback];
+        } else if (this.#async[fieldName]) {
+            this.#async[fieldName].callbacks = [...(this.#async[fieldName].callbacks || []), callback];
         }
 
         return this;
@@ -168,8 +170,8 @@ class ResultObject {
      * @return {Object} Current instance
     */
     markAsync(fieldName: string) {
-        this.async = this.async || {};
-        this.async[fieldName] = { done: false };
+        this.#async = this.#async || {};
+        this.#async[fieldName] = { done: false };
         return this;
     }
 
@@ -179,12 +181,12 @@ class ResultObject {
      * @return {Object} Current instance
     */
     markAsDone(fieldName: string) {
-        if (this.async !== null && this.async[fieldName]) {
-            this.async[fieldName].done = true;
+        if (this.#async !== null && this.#async[fieldName]) {
+            this.#async[fieldName].done = true;
 
             // run field callbacks set in `after`
-            if (this.async[fieldName].callbacks) {
-                this.async[fieldName].callbacks.forEach((callback) => callback(this));
+            if (this.#async[fieldName].callbacks) {
+                this.#async[fieldName].callbacks.forEach((callback) => callback(this));
             }
         }
 
@@ -249,7 +251,6 @@ class ResultObject {
         return Boolean(this.getWarnings(fieldName).length);
     }
 
-    async: AsyncObject;
     name: string;
     hasValidationErrors: boolean;
     hasValidationWarnings: boolean;
@@ -266,7 +267,6 @@ class ResultObject {
         }
     };
     skipped: Array<string>;
-    completionCallbacks: Array<Function>;
     fail: Function;
 }
 

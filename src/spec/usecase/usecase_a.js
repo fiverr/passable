@@ -49,7 +49,6 @@ export default (passable) => {
     });
 
     const expect = {
-        async: null,
         name: 'case_a',
         hasValidationErrors: true,
         hasValidationWarnings: true,
@@ -93,8 +92,7 @@ export default (passable) => {
                 'should be either "a" or "b"'
             ]
         },
-        skipped: [],
-        completionCallbacks: []
+        skipped: []
     };
 
     return {

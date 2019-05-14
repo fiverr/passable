@@ -24,7 +24,6 @@ describe('Test suite `draft` argument', () => {
             expect(draft.hasValidationErrors).to.equal(false);
             expect(draft.hasValidationWarnings).to.equal(false);
             expect(draft.skipped).to.deep.equal([]);
-            expect(draft.async).to.equal(null);
 
             test('field1', 'message', () => expect(1).to.equal(2));
             expect(draft.testCount).to.equal(1);
