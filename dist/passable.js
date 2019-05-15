@@ -1184,7 +1184,7 @@ inside.negativeForm = 'notInside';
 function isNumeric(value) {
   var expect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   expect_type(expect, 'boolean', 'isNumeric');
-  var result = !isNaN(parseFloat(value)) && isFinite(value);
+  var result = !isNaN(parseFloat(value)) && !isNaN(Number(value)) && isFinite(value);
   return result === expect;
 }
 
@@ -1243,6 +1243,42 @@ function largerThanOrEquals(value, arg1) {
 }
 
 /* harmony default export */ var larger_than_or_equals = (largerThanOrEquals);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/greater_than/index.js
+
+
+function greaterThan(value, arg1) {
+  return is_numeric(value) && is_numeric(arg1) && Number(value) > Number(arg1);
+}
+
+greaterThan.alias = 'gt';
+/* harmony default export */ var greater_than = (greaterThan);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/greater_than_or_equals/index.js
+
+
+function greaterThanOrEquals(value, arg1) {
+  return is_numeric(value) && is_numeric(arg1) && Number(value) >= Number(arg1);
+}
+
+greaterThanOrEquals.alias = 'gte';
+/* harmony default export */ var greater_than_or_equals = (greaterThanOrEquals);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/less_than/index.js
+
+
+function lessThan(value, arg1) {
+  return is_numeric(value) && is_numeric(arg1) && Number(value) < Number(arg1);
+}
+
+lessThan.alias = 'lt';
+/* harmony default export */ var less_than = (lessThan);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/less_than_or_equals/index.js
+
+
+function lessThanOrEquals(value, arg1) {
+  return is_numeric(value) && is_numeric(arg1) && Number(value) <= Number(arg1);
+}
+
+lessThanOrEquals.alias = 'lte';
+/* harmony default export */ var less_than_or_equals = (lessThanOrEquals);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/extend_rules/index.js
 /**
  * Collects rules with `negativeForm` or `alias` attributes.
@@ -1288,6 +1324,10 @@ function extendRules(rules) {
 
 
 
+
+
+
+
 var rules_rules = {
   isArray: is_array,
   isNumber: is_number,
@@ -1300,7 +1340,11 @@ var rules_rules = {
   smallerThan: smaller_than,
   smallerThanOrEquals: smaller_than_or_equals,
   largerThanOrEquals: larger_than_or_equals,
-  sizeEquals: size_equals
+  sizeEquals: size_equals,
+  greaterThan: greater_than,
+  greaterThanOrEquals: greater_than_or_equals,
+  lessThan: less_than,
+  lessThanOrEquals: less_than_or_equals
 };
 /* harmony default export */ var runnables_rules = (extend_rules(rules_rules));
 // CONCATENATED MODULE: ./src/Enforce/runnables/index.js

@@ -1,0 +1,5 @@
+// @flow
+
+function numericValue(value) {
+
+}

@@ -38,6 +38,10 @@ const positiveRules = [
     'smallerThan',
     'smallerThanOrEquals',
     'largerThanOrEquals',
+    'greaterThan',
+    'lessThan',
+    'lessThanOrEquals',
+    'greaterThanOrEquals',
     'sizeEquals'
 ];
 

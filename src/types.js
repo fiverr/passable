@@ -69,3 +69,5 @@ declare type Runner = (value: AnyValue, tests: CompoundTestObject, rules: Enforc
 declare type CompoundTestObject = {
     [rule: string]: AnyValue
 }
+
+declare type NumericValue = number | string;
