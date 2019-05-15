@@ -1,4 +1,8 @@
-# Size | lessThan
+# Size | lessThanOrEquals
+
+> Since 7.0.0
+
+- alias: `lte()`
 
 ## Description
 Checks that your numeric `enforce` value is smaller than or equals to a given numeric value.
@@ -12,17 +16,17 @@ Strings are parsed using `Number()`, values which are non fully numeric always r
 
 ### Passing examples:
 ```js
-enforce(0).lessThan(1);
-enforce(2).lessThan('10');
-enforce('90').lessThan(100);
-enforce(100).lessThan('100');
+enforce(0).lessThanOrEquals(1);
+enforce(2).lessThanOrEquals('10');
+enforce('90').lte(100);
+enforce(100).lte('100');
 ```
 
 
 ### Failing examples:
 
 ```js
-enforce(100).lessThan(90);
-enforce('110').lessThan(100);
-enforce([0]).lessThan(1);
+enforce(100).lessThanOrEquals(90);
+enforce('110').lessThanOrEquals(100);
+enforce([0]).lte(1);
 ```
