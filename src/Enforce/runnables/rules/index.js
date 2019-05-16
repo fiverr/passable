@@ -11,7 +11,7 @@ import largerThan from './size/larger_than';
 import smallerThan from './size/smaller_than';
 import smallerThanOrEquals from './size/smaller_than_or_equals';
 import largerThanOrEquals from './size/larger_than_or_equals';
-import extendNegativeRules from './helpers/extend_negative_rules';
+import extendRules from './helpers/extend_rules';
 
 const rules: EnforceRules = {
     isArray,
@@ -28,4 +28,4 @@ const rules: EnforceRules = {
     sizeEquals
 };
 
-export default extendNegativeRules(rules);
+export default extendRules(rules);
