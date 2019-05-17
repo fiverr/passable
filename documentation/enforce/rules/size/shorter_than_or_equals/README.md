@@ -43,8 +43,3 @@ enforce([1]).shorterThanOrEquals(0);
 enforce('ab').shorterThanOrEquals(1);
 // false
 ```
-
-```js
-enforce(1).shorterThanOrEquals(0);
-// undefined
-```

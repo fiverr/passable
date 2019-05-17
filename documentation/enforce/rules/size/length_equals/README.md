@@ -1,7 +1,7 @@
-# Size | shorterThan
+# Size | lengthEquals
 
 ## Description
-Checks that your `enforce` value is shorter than a given number.
+Checks that your `enforce` value is equal to the given number.
 
 ## Arguments
 * `size`: `number` | the number which you would like your initial value to be tested against.
@@ -14,22 +14,22 @@ The `value` argument can be of the following types:
 
 ### Passing examples:
 ```js
-enforce([]).shorterThan(1);
+enforce([1]).lengthEquals(1);
 // true
 ```
 
 ```js
-enforce('a').shorterThan(2);
+enforce('a').lengthEquals(1);
 // true
 ```
 
 ### Failing examples:
 ```js
-enforce([1]).shorterThan(0);
+enforce([1, 2]).lengthEquals(1);
 // false
 ```
 
 ```js
-enforce('').shorterThan(0);
+enforce('').lengthEquals(1);
 // false
 ```

@@ -1,8 +1,6 @@
 'use strict';
 
 import { expect } from 'chai';
-import { random } from 'faker';
-
 import longerThanOrEquals from './index';
 
 describe('Tests longerThanOrEquals rule', () => {
@@ -44,10 +42,9 @@ describe('Tests longerThanOrEquals rule', () => {
     });
 
     describe('First argument isn\'t array or string', () => {
-        const arg0 = random.number();
 
         it('Should return undefined', () => {
-            expect(longerThanOrEquals(arg0, arg0 + 1)).to.be.undefined;
+            expect(() => longerThanOrEquals(undefined, 0)).to.throw(TypeError);
         });
     });
 });

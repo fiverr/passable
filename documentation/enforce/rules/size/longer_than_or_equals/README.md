@@ -43,8 +43,3 @@ enforce([1]).longerThanOrEquals(2);
 enforce('').longerThanOrEquals(1);
 // false
 ```
-
-```js
-enforce(1).longerThanOrEquals(0);
-// undefined
-```

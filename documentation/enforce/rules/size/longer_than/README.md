@@ -33,8 +33,3 @@ enforce([1]).longerThan(2);
 enforce('').longerThan(0);
 // false
 ```
-
-```js
-enforce(1).longerThan(0);
-// undefined
-```

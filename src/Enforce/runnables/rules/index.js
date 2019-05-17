@@ -20,7 +20,7 @@ import longerThan from './size/longer_than';
 import longerThanOrEquals from './size/longer_than_or_equals';
 import shorterThan from './size/shorter_than';
 import shorterThanOrEquals from './size/shorter_than_or_equals';
-import hasLengthOf from './size/has_length_of';
+import lengthEquals from './size/length_equals';
 
 const rules: EnforceRules = {
     isArray,
@@ -43,7 +43,7 @@ const rules: EnforceRules = {
     longerThanOrEquals,
     shorterThan,
     shorterThanOrEquals,
-    hasLengthOf
+    lengthEquals
 };
 
 export default extendRules(rules);
