@@ -16,6 +16,11 @@ import greaterThanOrEquals from './size/greater_than_or_equals';
 import lessThan from './size/less_than';
 import lessThanOrEquals from './size/less_than_or_equals';
 import extendRules from './helpers/extend_rules';
+import longerThan from './size/longer_than';
+import longerThanOrEquals from './size/longer_than_or_equals';
+import shorterThan from './size/shorter_than';
+import shorterThanOrEquals from './size/shorter_than_or_equals';
+import hasLengthOf from './size/has_length_of';
 
 const rules: EnforceRules = {
     isArray,
@@ -33,7 +38,12 @@ const rules: EnforceRules = {
     greaterThan,
     greaterThanOrEquals,
     lessThan,
-    lessThanOrEquals
+    lessThanOrEquals,
+    longerThan,
+    longerThanOrEquals,
+    shorterThan,
+    shorterThanOrEquals,
+    hasLengthOf
 };
 
 export default extendRules(rules);

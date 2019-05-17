@@ -1,5 +1,10 @@
 import rules from './index';
 import { expect } from 'chai';
+import shorterThan from './size/shorter_than';
+import shorterThanOrEquals from './size/shorter_than_or_equals';
+import longerThan from './size/longer_than';
+import longerThanOrEquals from './size/longer_than_or_equals';
+import hasLengthOf from './size/has_length_of';
 
 describe('Tests enforce rules API', () => {
     it('Should expose all enforce rules', () => {
@@ -44,7 +49,13 @@ const positiveRules = [
     'lt',
     'lte',
     'gt',
-    'gte'
+    'gte',
+    'longerThan',
+    'shorterThan',
+    'shorterThanOrEquals',
+    'longerThanOrEquals',
+    'hasLengthOf',
+    'sizeEquals'
 ];
 
 const allRules = [].concat(positiveRules, negativeRules);

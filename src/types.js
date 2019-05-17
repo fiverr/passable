@@ -73,3 +73,5 @@ declare type CompoundTestObject = {
 declare type NumericValue = number | string;
 
 declare var PASSABLE_VERSION: string;
+
+declare type StringOrArray = string | RuleArgs;
