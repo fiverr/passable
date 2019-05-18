@@ -142,7 +142,7 @@ describe("Tests Passable's `test` functionality", () => {
                 test.statement = lorem.sentence();
                 instance.pending.push(test);
             }
-            instance.res.bumpTestCounter = spy;
+            instance.res.methods.bumpTestCounter = spy;
             instance.runPendingTests();
             expect(spy.callCount).to.equal(count);
         });
@@ -163,7 +163,7 @@ describe("Tests Passable's `test` functionality", () => {
                 });
 
                 it('Should immediately register tests', () => {
-                    expect(instance.res.testCount).to.equal(4);
+                    expect(instance.res.result.testCount).to.equal(4);
                 });
 
                 it('Should run async test promise', (done) => {
@@ -174,9 +174,9 @@ describe("Tests Passable's `test` functionality", () => {
                 });
 
                 it('Should only mark test as failing after rejection', (done) => {
-                    expect(instance.res.failCount).to.equal(0);
+                    expect(instance.res.result.failCount).to.equal(0);
                     setTimeout(() => {
-                        expect(instance.res.failCount).to.equal(1);
+                        expect(instance.res.result.failCount).to.equal(1);
                         done();
                     }, 10);
                 });
@@ -206,8 +206,8 @@ describe("Tests Passable's `test` functionality", () => {
                     test(name, lorem.sentence(), () => { throw new Error(); });
                     test(lorem.word(), lorem.sentence(), noop);
                 });
-                expect(instance.res.failCount).to.equal(1);
-                expect(instance.res.validationErrors).to.have.key(name);
+                expect(instance.res.result.failCount).to.equal(1);
+                expect(instance.res.result.validationErrors).to.have.key(name);
             });
 
             it('should mark a test as failed for `false`', () => {
@@ -216,8 +216,8 @@ describe("Tests Passable's `test` functionality", () => {
                     test(name, lorem.sentence(), () => false);
                     test(lorem.word(), lorem.sentence(), noop);
                 });
-                expect(instance.res.failCount).to.equal(1);
-                expect(instance.res.validationErrors).to.have.key(name);
+                expect(instance.res.result.failCount).to.equal(1);
+                expect(instance.res.result.validationErrors).to.have.key(name);
             });
 
             it('should implicitly pass test', () => {
@@ -225,8 +225,8 @@ describe("Tests Passable's `test` functionality", () => {
                 instance = new Passable(lorem.word(), (test) => {
                     test(name, lorem.sentence(), noop);
                 });
-                expect(instance.res.failCount).to.equal(0);
-                expect(instance.res.testCount).to.equal(1);
+                expect(instance.res.result.failCount).to.equal(0);
+                expect(instance.res.result.testCount).to.equal(1);
             });
         });
     });

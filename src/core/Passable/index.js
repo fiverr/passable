@@ -37,9 +37,9 @@ class Passable {
 
         this.specific = new Specific(specific);
 
-        this.res = new ResultObject(name);
+        this.res = ResultObject(name);
 
-        tests(this.test, this.res);
+        tests(this.test, this.res.result);
         this.runPendingTests();
     }
 
@@ -48,7 +48,7 @@ class Passable {
     clearPendingTest = (test: PassableTest) => {
         this.pending = (this.pending.filter((t: PassableTest): boolean => t !== test): Array<PassableTest>);
         if (this.pending.length === 0) {
-            this.res.runCompletionCallbacks();
+            this.res.methods.runCompletionCallbacks();
         }
     };
 
@@ -69,11 +69,11 @@ class Passable {
     test = (fieldName: string, statement: string, test: PassableTest, severity: Severity) => {
 
         if (this.specific.excludes(fieldName)) {
-            this.res.addToSkipped(fieldName);
+            this.res.methods.addToSkipped(fieldName);
             return;
         }
 
-        this.res.initFieldCounters(fieldName);
+        this.res.methods.initFieldCounters(fieldName);
 
         let operation: Function;
 
@@ -99,18 +99,18 @@ class Passable {
     runTest = (test: PassableTest) => {
         if (test instanceof Promise) {
 
-            this.res.markAsync(test.fieldName);
+            this.res.methods.markAsync(test.fieldName);
 
             const done: Function = () => {
                 this.clearPendingTest(test);
                 if (!this.hasRemainingPendingTests(test.fieldName)) {
-                    this.res.markAsDone(test.fieldName);
+                    this.res.methods.markAsDone(test.fieldName);
                 }
             };
 
             const fail: Function = () => {
                 // order is important here! fail needs to be called before `done`.
-                this.res.fail(test.fieldName, test.statement, test.severity);
+                this.res.methods.fail(test.fieldName, test.statement, test.severity);
                 done();
             };
 
@@ -119,11 +119,11 @@ class Passable {
             const isValid: boolean = testRunner(test);
 
             if (!isValid) {
-                this.res.fail(test.fieldName, test.statement, test.severity);
+                this.res.methods.fail(test.fieldName, test.statement, test.severity);
             }
             this.clearPendingTest(test);
         }
-        this.res.bumpTestCounter(test.fieldName);
+        this.res.methods.bumpTestCounter(test.fieldName);
     }
 
     /**

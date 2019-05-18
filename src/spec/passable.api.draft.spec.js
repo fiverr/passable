@@ -12,7 +12,7 @@ describe('Test suite `draft` argument', () => {
 
     it('Should be `tests` second argument', () => {
         createSuite((test, draft) => {
-            expect(draft).to.be.instanceOf(ResultObject);
+            expect(draft).to.equal(suite.res.result);
         });
     });
 

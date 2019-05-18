@@ -1,273 +1,170 @@
-// @flow
+export const WARN = 'warn';
+export const FAIL = 'fail';
+const severities = [WARN, FAIL];
 
-export const WARN: Severity = 'warn';
-export const FAIL: Severity = 'fail';
-const severities: Array<Severity> = [WARN, FAIL];
+const resultObject = (name) => {
 
-/** Class representing validation state. */
-class ResultObject {
+    const result = {
+        name,
+        hasValidationErrors: false,
+        hasValidationWarnings: false,
+        failCount: 0,
+        warnCount: 0,
+        testCount: 0,
+        testsPerformed: {},
+        validationErrors: {},
+        validationWarnings: {},
+        skipped: []
+    };
 
-    /**
-     * Initialize validation object
-     * @param {string} name - The name of the current data object.
-     * @return {Object} Current instance
-     */
-    constructor(name: string) {
-        this.name = name;
-        this.hasValidationErrors = false;
-        this.hasValidationWarnings = false;
-        this.failCount = 0;
-        this.warnCount = 0;
-        this.testCount = 0;
-        this.testsPerformed = {};
-        this.validationErrors = {};
-        this.validationWarnings = {};
-        this.skipped = [];
-    }
+    const methods = {};
 
-    #async: AsyncObject = null;
-    #completionCallbacks: Array<Function> = [];
+    const completionCallbacks = [];
+    let asyncObject = null;
 
-    /**
-     * Initializes specific field's counters
-     * @param {string} fieldName - The name of the field.
-     * @return {Object} Current instance
-     */
-    initFieldCounters(fieldName: string) {
-        if (this.testsPerformed[fieldName]) { return this; }
+    methods.initFieldCounters = (fieldName) => {
+        if (result.testsPerformed[fieldName]) { return result; }
 
-        this.testsPerformed[fieldName] = {
+        result.testsPerformed[fieldName] = {
             testCount: 0,
             failCount: 0,
             warnCount: 0
         };
+    };
 
-        return this;
-    }
+    methods.bumpTestCounter = (fieldName) => {
+        if (!result.testsPerformed[fieldName]) { return result; }
 
-    /**
-     * Bumps test counters
-     * @param {string} fieldName - The name of the field.
-     * @return {Object} Current instance
-     */
-    bumpTestCounter(fieldName: string) {
-        if (!this.testsPerformed[fieldName]) { return this; }
+        result.testsPerformed[fieldName].testCount++;
+        result.testCount++;
+    };
 
-        this.testsPerformed[fieldName].testCount++;
-        this.testCount++;
+    const bumpTestWarning = (fieldName, statement) => {
+        result.hasValidationWarnings = true;
+        result.validationWarnings[fieldName] = result.validationWarnings[fieldName] || [];
+        result.validationWarnings[fieldName].push(statement);
+        result.warnCount++;
+        result.testsPerformed[fieldName].warnCount++;
+    };
 
-        return this;
-    }
+    const bumpTestError = (fieldName, statement) => {
+        result.hasValidationErrors = true;
+        result.validationErrors[fieldName] = result.validationErrors[fieldName] || [];
+        result.validationErrors[fieldName].push(statement);
+        result.failCount++;
+        result.testsPerformed[fieldName].failCount++;
+    };
 
-    /**
-     * Bumps field's warning counts and adds warning string
-     * @param {string} fieldName - The name of the field.
-     * @param {string} statement - The error string to add to the object.
-     */
-    bumpTestWarning(fieldName: string, statement: string) {
-        this.hasValidationWarnings = true;
-        this.validationWarnings[fieldName] = this.validationWarnings[fieldName] || [];
-        this.validationWarnings[fieldName].push(statement);
-        this.warnCount++;
-        this.testsPerformed[fieldName].warnCount++;
-    }
+    methods.fail = (fieldName, statement, severity) => {
+        if (!result.testsPerformed[fieldName]) { return result; }
 
-    /**
-     * Bumps field's error counts and adds error string
-     * @param {string} fieldName - The name of the field.
-     * @param {string} statement - The error string to add to the object.
-     */
-    bumpTestError(fieldName: string, statement: string) {
-        this.hasValidationErrors = true;
-        this.validationErrors[fieldName] = this.validationErrors[fieldName] || [];
-        this.validationErrors[fieldName].push(statement);
-        this.failCount++;
-        this.testsPerformed[fieldName].failCount++;
-    }
-
-    /**
-     * Fails a field and updates object accordingly
-     * @param {string} fieldName - The name of the field.
-     * @param {string} statement - The error string to add to the object.
-     * @param {string} severity - Whether it is a `fail` or `warn` test.
-     * @return {Object} Current instance
-     */
-    fail(fieldName: string, statement: string, severity: Severity) {
-        if (!this.testsPerformed[fieldName]) { return this; }
-
-        const selectedSeverity: Severity = severity && severities.includes(severity) ? severity : FAIL;
+        const selectedSeverity = severity && severities.includes(severity) ? severity : FAIL;
 
         selectedSeverity === WARN
-            ? this.bumpTestWarning(fieldName, statement)
-            : this.bumpTestError(fieldName, statement);
+            ? bumpTestWarning(fieldName, statement)
+            : bumpTestError(fieldName, statement);
+    };
 
-        return this;
-    }
+    methods.addToSkipped = (fieldName) => {
+        !result.skipped.includes(fieldName) && result.skipped.push(fieldName);
+    };
 
-    /**
-     * Uniquely add a field to the `skipped` list
-     * @param {string} fieldName
-     * @return {Object} Current instance
-     */
-    addToSkipped(fieldName: string): this {
-        !this.skipped.includes(fieldName) && this.skipped.push(fieldName);
+    methods.runCompletionCallbacks = () => {
+        completionCallbacks.forEach((cb) => cb(result));
+    };
 
-        return this;
-    }
+    result.done = (callback) => {
+        if (typeof callback !== 'function') {return result;}
 
-    /**
-     * Runs completion callbacks aggregated by `done`
-     * regardless of success or failure
-     */
-    runCompletionCallbacks() {
-        this.#completionCallbacks.forEach((cb) => cb(this));
-    }
-
-    /**
-     * Registers callback function to be run when test suite is done running
-     * If current suite is not async, runs the callback immediately
-     * @param {Function} callback the function to be called on done
-     * @return {Object} Current instance
-     */
-    done(callback: Function) {
-        if (typeof callback !== 'function') {return this;}
-
-        if (!this.#async) {
-            callback(this);
+        if (!asyncObject) {
+            callback(result);
         }
 
-        this.#completionCallbacks.push(callback);
-        return this;
-    }
+        completionCallbacks.push(callback);
+        return result;
+    };
 
-    /**
-     * Registers a callback function to be run after a certain field finished running
-     * If given field is sync, runs immediately
-     * @param {String} fieldName name of the field to register the callback to
-     * @param {Function} callback the function to be registered
-     * @return {Object} Current instance
-     */
-    after(fieldName: string, callback: Function) {
+    result.after = (fieldName, callback) => {
 
         if (typeof callback !== 'function') {
-            return this;
+            return result;
         }
 
-        this.#async = this.#async || {};
+        asyncObject = asyncObject || {};
 
-        if (!this.#async[fieldName] && this.testsPerformed[fieldName]) {
-            callback(this);
-        } else if (this.#async[fieldName]) {
-            this.#async[fieldName].callbacks = [...(this.#async[fieldName].callbacks || []), callback];
+        if (!asyncObject[fieldName] && result.testsPerformed[fieldName]) {
+            callback(result);
+        } else if (asyncObject[fieldName]) {
+            asyncObject[fieldName].callbacks = [...(asyncObject[fieldName].callbacks || []), callback];
         }
 
-        return this;
-    }
+        return result;
+    };
 
-    /**
-     * Marks a field as async
-     * @param {string} fieldName the name of the field marked as async
-     * @return {Object} Current instance
-    */
-    markAsync(fieldName: string) {
-        this.#async = this.#async || {};
-        this.#async[fieldName] = { done: false };
-        return this;
-    }
+    methods.markAsync = (fieldName) => {
+        asyncObject = asyncObject || {};
+        asyncObject[fieldName] = { done: false };
+    };
 
-    /**
-     * Marks an async field as done
-     * @param {string} fieldName the name of the field marked as done
-     * @return {Object} Current instance
-    */
-    markAsDone(fieldName: string) {
-        if (this.#async !== null && this.#async[fieldName]) {
-            this.#async[fieldName].done = true;
+    methods.markAsDone = (fieldName) => {
+        if (asyncObject !== null && asyncObject[fieldName]) {
+            asyncObject[fieldName].done = true;
 
             // run field callbacks set in `after`
-            if (this.#async[fieldName].callbacks) {
-                this.#async[fieldName].callbacks.forEach((callback) => callback(this));
+            if (asyncObject[fieldName].callbacks) {
+                asyncObject[fieldName].callbacks.forEach((callback) => callback(result));
             }
         }
+    };
 
-        return this;
-    }
-
-    /**
-     * Gets all the errors of a field, or of the whole object
-     * @param {string} [fieldName] - The name of the field.
-     * @return {Array | Object} The field's errors, or all errors
-     */
-    getErrors(fieldName: string): Array<string> | ErrorAndWarningObject {
+    result.getErrors = (fieldName) => {
         if (!fieldName) {
-            return this.validationErrors;
+            return result.validationErrors;
         }
 
-        if (this.validationErrors[fieldName]) {
-            return this.validationErrors[fieldName];
+        if (result.validationErrors[fieldName]) {
+            return result.validationErrors[fieldName];
         }
 
         return [];
-    }
+    };
 
-    /**
-     * Gets all the warnings of a field, or of the whole object
-     * @param {string} [fieldName] - The name of the field.
-     * @return {Array | Object} The field's warnings, or all warnings
-     */
-    getWarnings(fieldName: string): Array<string> | ErrorAndWarningObject {
+    result.getWarnings = (fieldName) => {
         if (!fieldName) {
-            return this.validationWarnings;
+            return result.validationWarnings;
         }
 
-        if (this.validationWarnings[fieldName]) {
-            return this.validationWarnings[fieldName];
+        if (result.validationWarnings[fieldName]) {
+            return result.validationWarnings[fieldName];
         }
 
         return [];
-    }
+    };
 
-    /**
-     * Returns whether a field (or the whole suite, if none passed) contains errors
-     * @param {string} [fieldName]
-     */
-    hasErrors(fieldName: string): boolean {
+    result.hasErrors = (fieldName) => {
         if (!fieldName) {
-            return this.hasValidationErrors;
+            return result.hasValidationErrors;
         }
 
-        return Boolean(this.getErrors(fieldName).length);
-    }
+        return Boolean(result.getErrors(fieldName).length);
+    };
 
     /**
      * Returns whether a field (or the whole suite, if none passed) contains warnings
      * @param {string} [fieldName]
      */
-    hasWarnings(fieldName: string): boolean {
+    result.hasWarnings = (fieldName) => {
         if (!fieldName) {
-            return this.hasValidationWarnings;
+            return result.hasValidationWarnings;
         }
 
-        return Boolean(this.getWarnings(fieldName).length);
-    }
-
-    name: string;
-    hasValidationErrors: boolean;
-    hasValidationWarnings: boolean;
-    failCount: number;
-    warnCount: number;
-    testCount: number;
-    validationErrors: ErrorAndWarningObject;
-    validationWarnings: ErrorAndWarningObject;
-    testsPerformed: {
-        [name: string]: {
-            testCount: number,
-            failCount: number,
-            warnCount: number
-        }
+        return Boolean(result.getWarnings(fieldName).length);
     };
-    skipped: Array<string>;
-    fail: Function;
-}
 
-export default ResultObject;
+    return {
+        result,
+        methods
+    };
+};
+
+export default resultObject;

@@ -341,336 +341,191 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
+var WARN = 'warn';
+var FAIL = 'fail';
+var severities = [WARN, FAIL];
+
+var resultObject = function resultObject(name) {
+  var result = {
+    name: name,
+    hasValidationErrors: false,
+    hasValidationWarnings: false,
+    failCount: 0,
+    warnCount: 0,
+    testCount: 0,
+    testsPerformed: {},
+    validationErrors: {},
+    validationWarnings: {},
+    skipped: []
+  };
+  var methods = {};
+  var completionCallbacks = [];
+  var asyncObject = null;
+
+  methods.initFieldCounters = function (fieldName) {
+    if (result.testsPerformed[fieldName]) {
+      return result;
+    }
+
+    result.testsPerformed[fieldName] = {
+      testCount: 0,
+      failCount: 0,
+      warnCount: 0
+    };
+  };
+
+  methods.bumpTestCounter = function (fieldName) {
+    if (!result.testsPerformed[fieldName]) {
+      return result;
+    }
+
+    result.testsPerformed[fieldName].testCount++;
+    result.testCount++;
+  };
+
+  var bumpTestWarning = function bumpTestWarning(fieldName, statement) {
+    result.hasValidationWarnings = true;
+    result.validationWarnings[fieldName] = result.validationWarnings[fieldName] || [];
+    result.validationWarnings[fieldName].push(statement);
+    result.warnCount++;
+    result.testsPerformed[fieldName].warnCount++;
+  };
+
+  var bumpTestError = function bumpTestError(fieldName, statement) {
+    result.hasValidationErrors = true;
+    result.validationErrors[fieldName] = result.validationErrors[fieldName] || [];
+    result.validationErrors[fieldName].push(statement);
+    result.failCount++;
+    result.testsPerformed[fieldName].failCount++;
+  };
+
+  methods.fail = function (fieldName, statement, severity) {
+    if (!result.testsPerformed[fieldName]) {
+      return result;
+    }
+
+    var selectedSeverity = severity && severities.includes(severity) ? severity : FAIL;
+    selectedSeverity === WARN ? bumpTestWarning(fieldName, statement) : bumpTestError(fieldName, statement);
+  };
+
+  methods.addToSkipped = function (fieldName) {
+    !result.skipped.includes(fieldName) && result.skipped.push(fieldName);
+  };
+
+  methods.runCompletionCallbacks = function () {
+    completionCallbacks.forEach(function (cb) {
+      return cb(result);
+    });
+  };
+
+  result.done = function (callback) {
+    if (typeof callback !== 'function') {
+      return result;
+    }
+
+    if (!asyncObject) {
+      callback(result);
+    }
+
+    completionCallbacks.push(callback);
+    return result;
+  };
+
+  result.after = function (fieldName, callback) {
+    if (typeof callback !== 'function') {
+      return result;
+    }
+
+    asyncObject = asyncObject || {};
+
+    if (!asyncObject[fieldName] && result.testsPerformed[fieldName]) {
+      callback(result);
+    } else if (asyncObject[fieldName]) {
+      asyncObject[fieldName].callbacks = [].concat(_toConsumableArray(asyncObject[fieldName].callbacks || []), [callback]);
+    }
+
+    return result;
+  };
+
+  methods.markAsync = function (fieldName) {
+    asyncObject = asyncObject || {};
+    asyncObject[fieldName] = {
+      done: false
+    };
+  };
+
+  methods.markAsDone = function (fieldName) {
+    if (asyncObject !== null && asyncObject[fieldName]) {
+      asyncObject[fieldName].done = true; // run field callbacks set in `after`
+
+      if (asyncObject[fieldName].callbacks) {
+        asyncObject[fieldName].callbacks.forEach(function (callback) {
+          return callback(result);
+        });
+      }
+    }
+  };
+
+  result.getErrors = function (fieldName) {
+    if (!fieldName) {
+      return result.validationErrors;
+    }
+
+    if (result.validationErrors[fieldName]) {
+      return result.validationErrors[fieldName];
+    }
+
+    return [];
+  };
+
+  result.getWarnings = function (fieldName) {
+    if (!fieldName) {
+      return result.validationWarnings;
+    }
+
+    if (result.validationWarnings[fieldName]) {
+      return result.validationWarnings[fieldName];
+    }
+
+    return [];
+  };
+
+  result.hasErrors = function (fieldName) {
+    if (!fieldName) {
+      return result.hasValidationErrors;
+    }
+
+    return Boolean(result.getErrors(fieldName).length);
+  };
+  /**
+   * Returns whether a field (or the whole suite, if none passed) contains warnings
+   * @param {string} [fieldName]
+   */
+
+
+  result.hasWarnings = function (fieldName) {
+    if (!fieldName) {
+      return result.hasValidationWarnings;
+    }
+
+    return Boolean(result.getWarnings(fieldName).length);
+  };
+
+  return {
+    result: result,
+    methods: methods
+  };
+};
+
+/* harmony default export */ var ResultObject = (resultObject);
+// CONCATENATED MODULE: ./src/core/Specific/index.js
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _classPrivateFieldSet(receiver, privateMap, value) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to set private field on non-instance"); } var descriptor = privateMap.get(receiver); if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
-
-function _classPrivateFieldGet(receiver, privateMap) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } var descriptor = privateMap.get(receiver); if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
-
-var WARN = 'warn';
-var FAIL = 'fail';
-var severities = [WARN, FAIL];
-/** Class representing validation state. */
-
-var ResultObject =
-/*#__PURE__*/
-function () {
-  /**
-   * Initialize validation object
-   * @param {string} name - The name of the current data object.
-   * @return {Object} Current instance
-   */
-  function ResultObject(name) {
-    _classCallCheck(this, ResultObject);
-
-    _async.set(this, {
-      writable: true,
-      value: null
-    });
-
-    _completionCallbacks.set(this, {
-      writable: true,
-      value: []
-    });
-
-    this.name = name;
-    this.hasValidationErrors = false;
-    this.hasValidationWarnings = false;
-    this.failCount = 0;
-    this.warnCount = 0;
-    this.testCount = 0;
-    this.testsPerformed = {};
-    this.validationErrors = {};
-    this.validationWarnings = {};
-    this.skipped = [];
-  }
-
-  _createClass(ResultObject, [{
-    key: "initFieldCounters",
-
-    /**
-     * Initializes specific field's counters
-     * @param {string} fieldName - The name of the field.
-     * @return {Object} Current instance
-     */
-    value: function initFieldCounters(fieldName) {
-      if (this.testsPerformed[fieldName]) {
-        return this;
-      }
-
-      this.testsPerformed[fieldName] = {
-        testCount: 0,
-        failCount: 0,
-        warnCount: 0
-      };
-      return this;
-    }
-    /**
-     * Bumps test counters
-     * @param {string} fieldName - The name of the field.
-     * @return {Object} Current instance
-     */
-
-  }, {
-    key: "bumpTestCounter",
-    value: function bumpTestCounter(fieldName) {
-      if (!this.testsPerformed[fieldName]) {
-        return this;
-      }
-
-      this.testsPerformed[fieldName].testCount++;
-      this.testCount++;
-      return this;
-    }
-    /**
-     * Bumps field's warning counts and adds warning string
-     * @param {string} fieldName - The name of the field.
-     * @param {string} statement - The error string to add to the object.
-     */
-
-  }, {
-    key: "bumpTestWarning",
-    value: function bumpTestWarning(fieldName, statement) {
-      this.hasValidationWarnings = true;
-      this.validationWarnings[fieldName] = this.validationWarnings[fieldName] || [];
-      this.validationWarnings[fieldName].push(statement);
-      this.warnCount++;
-      this.testsPerformed[fieldName].warnCount++;
-    }
-    /**
-     * Bumps field's error counts and adds error string
-     * @param {string} fieldName - The name of the field.
-     * @param {string} statement - The error string to add to the object.
-     */
-
-  }, {
-    key: "bumpTestError",
-    value: function bumpTestError(fieldName, statement) {
-      this.hasValidationErrors = true;
-      this.validationErrors[fieldName] = this.validationErrors[fieldName] || [];
-      this.validationErrors[fieldName].push(statement);
-      this.failCount++;
-      this.testsPerformed[fieldName].failCount++;
-    }
-    /**
-     * Fails a field and updates object accordingly
-     * @param {string} fieldName - The name of the field.
-     * @param {string} statement - The error string to add to the object.
-     * @param {string} severity - Whether it is a `fail` or `warn` test.
-     * @return {Object} Current instance
-     */
-
-  }, {
-    key: "fail",
-    value: function fail(fieldName, statement, severity) {
-      if (!this.testsPerformed[fieldName]) {
-        return this;
-      }
-
-      var selectedSeverity = severity && severities.includes(severity) ? severity : FAIL;
-      selectedSeverity === WARN ? this.bumpTestWarning(fieldName, statement) : this.bumpTestError(fieldName, statement);
-      return this;
-    }
-    /**
-     * Uniquely add a field to the `skipped` list
-     * @param {string} fieldName
-     * @return {Object} Current instance
-     */
-
-  }, {
-    key: "addToSkipped",
-    value: function addToSkipped(fieldName) {
-      !this.skipped.includes(fieldName) && this.skipped.push(fieldName);
-      return this;
-    }
-    /**
-     * Runs completion callbacks aggregated by `done`
-     * regardless of success or failure
-     */
-
-  }, {
-    key: "runCompletionCallbacks",
-    value: function runCompletionCallbacks() {
-      var _this = this;
-
-      _classPrivateFieldGet(this, _completionCallbacks).forEach(function (cb) {
-        return cb(_this);
-      });
-    }
-    /**
-     * Registers callback function to be run when test suite is done running
-     * If current suite is not async, runs the callback immediately
-     * @param {Function} callback the function to be called on done
-     * @return {Object} Current instance
-     */
-
-  }, {
-    key: "done",
-    value: function done(callback) {
-      if (typeof callback !== 'function') {
-        return this;
-      }
-
-      if (!_classPrivateFieldGet(this, _async)) {
-        callback(this);
-      }
-
-      _classPrivateFieldGet(this, _completionCallbacks).push(callback);
-
-      return this;
-    }
-    /**
-     * Registers a callback function to be run after a certain field finished running
-     * If given field is sync, runs immediately
-     * @param {String} fieldName name of the field to register the callback to
-     * @param {Function} callback the function to be registered
-     * @return {Object} Current instance
-     */
-
-  }, {
-    key: "after",
-    value: function after(fieldName, callback) {
-      if (typeof callback !== 'function') {
-        return this;
-      }
-
-      _classPrivateFieldSet(this, _async, _classPrivateFieldGet(this, _async) || {});
-
-      if (!_classPrivateFieldGet(this, _async)[fieldName] && this.testsPerformed[fieldName]) {
-        callback(this);
-      } else if (_classPrivateFieldGet(this, _async)[fieldName]) {
-        _classPrivateFieldGet(this, _async)[fieldName].callbacks = [].concat(_toConsumableArray(_classPrivateFieldGet(this, _async)[fieldName].callbacks || []), [callback]);
-      }
-
-      return this;
-    }
-    /**
-     * Marks a field as async
-     * @param {string} fieldName the name of the field marked as async
-     * @return {Object} Current instance
-    */
-
-  }, {
-    key: "markAsync",
-    value: function markAsync(fieldName) {
-      _classPrivateFieldSet(this, _async, _classPrivateFieldGet(this, _async) || {});
-
-      _classPrivateFieldGet(this, _async)[fieldName] = {
-        done: false
-      };
-      return this;
-    }
-    /**
-     * Marks an async field as done
-     * @param {string} fieldName the name of the field marked as done
-     * @return {Object} Current instance
-    */
-
-  }, {
-    key: "markAsDone",
-    value: function markAsDone(fieldName) {
-      var _this2 = this;
-
-      if (_classPrivateFieldGet(this, _async) !== null && _classPrivateFieldGet(this, _async)[fieldName]) {
-        _classPrivateFieldGet(this, _async)[fieldName].done = true; // run field callbacks set in `after`
-
-        if (_classPrivateFieldGet(this, _async)[fieldName].callbacks) {
-          _classPrivateFieldGet(this, _async)[fieldName].callbacks.forEach(function (callback) {
-            return callback(_this2);
-          });
-        }
-      }
-
-      return this;
-    }
-    /**
-     * Gets all the errors of a field, or of the whole object
-     * @param {string} [fieldName] - The name of the field.
-     * @return {Array | Object} The field's errors, or all errors
-     */
-
-  }, {
-    key: "getErrors",
-    value: function getErrors(fieldName) {
-      if (!fieldName) {
-        return this.validationErrors;
-      }
-
-      if (this.validationErrors[fieldName]) {
-        return this.validationErrors[fieldName];
-      }
-
-      return [];
-    }
-    /**
-     * Gets all the warnings of a field, or of the whole object
-     * @param {string} [fieldName] - The name of the field.
-     * @return {Array | Object} The field's warnings, or all warnings
-     */
-
-  }, {
-    key: "getWarnings",
-    value: function getWarnings(fieldName) {
-      if (!fieldName) {
-        return this.validationWarnings;
-      }
-
-      if (this.validationWarnings[fieldName]) {
-        return this.validationWarnings[fieldName];
-      }
-
-      return [];
-    }
-    /**
-     * Returns whether a field (or the whole suite, if none passed) contains errors
-     * @param {string} [fieldName]
-     */
-
-  }, {
-    key: "hasErrors",
-    value: function hasErrors(fieldName) {
-      if (!fieldName) {
-        return this.hasValidationErrors;
-      }
-
-      return Boolean(this.getErrors(fieldName).length);
-    }
-    /**
-     * Returns whether a field (or the whole suite, if none passed) contains warnings
-     * @param {string} [fieldName]
-     */
-
-  }, {
-    key: "hasWarnings",
-    value: function hasWarnings(fieldName) {
-      if (!fieldName) {
-        return this.hasValidationWarnings;
-      }
-
-      return Boolean(this.getWarnings(fieldName).length);
-    }
-  }]);
-
-  return ResultObject;
-}();
-
-var _async = new WeakMap();
-
-var _completionCallbacks = new WeakMap();
-
-/* harmony default export */ var core_ResultObject = (ResultObject);
-// CONCATENATED MODULE: ./src/core/Specific/index.js
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function Specific_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function Specific_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function Specific_createClass(Constructor, protoProps, staticProps) { if (protoProps) Specific_defineProperties(Constructor.prototype, protoProps); if (staticProps) Specific_defineProperties(Constructor, staticProps); return Constructor; }
 
 /** Class representing validation inclusion and exclusion groups */
 var Specific =
@@ -682,7 +537,7 @@ function () {
    * @param {String | Array | Object | undefined} specific
    */
   function Specific(specific) {
-    Specific_classCallCheck(this, Specific);
+    _classCallCheck(this, Specific);
 
     if (!specific) {
       return;
@@ -718,7 +573,7 @@ function () {
    */
 
 
-  Specific_createClass(Specific, [{
+  _createClass(Specific, [{
     key: "populateGroup",
     value: function populateGroup(group, field) {
       group = group || {};
@@ -835,7 +690,7 @@ function Passable(name, tests, specific) {
     });
 
     if (_this.pending.length === 0) {
-      _this.res.runCompletionCallbacks();
+      _this.res.methods.runCompletionCallbacks();
     }
   });
 
@@ -847,12 +702,12 @@ function Passable(name, tests, specific) {
 
   _defineProperty(this, "test", function (fieldName, statement, test, severity) {
     if (_this.specific.excludes(fieldName)) {
-      _this.res.addToSkipped(fieldName);
+      _this.res.methods.addToSkipped(fieldName);
 
       return;
     }
 
-    _this.res.initFieldCounters(fieldName);
+    _this.res.methods.initFieldCounters(fieldName);
 
     var operation;
 
@@ -873,19 +728,19 @@ function Passable(name, tests, specific) {
 
   _defineProperty(this, "runTest", function (test) {
     if (test instanceof Promise) {
-      _this.res.markAsync(test.fieldName);
+      _this.res.methods.markAsync(test.fieldName);
 
       var done = function done() {
         _this.clearPendingTest(test);
 
         if (!_this.hasRemainingPendingTests(test.fieldName)) {
-          _this.res.markAsDone(test.fieldName);
+          _this.res.methods.markAsDone(test.fieldName);
         }
       };
 
       var fail = function fail() {
         // order is important here! fail needs to be called before `done`.
-        _this.res.fail(test.fieldName, test.statement, test.severity);
+        _this.res.methods.fail(test.fieldName, test.statement, test.severity);
 
         done();
       };
@@ -895,13 +750,13 @@ function Passable(name, tests, specific) {
       var isValid = testRunner(test);
 
       if (!isValid) {
-        _this.res.fail(test.fieldName, test.statement, test.severity);
+        _this.res.methods.fail(test.fieldName, test.statement, test.severity);
       }
 
       _this.clearPendingTest(test);
     }
 
-    _this.res.bumpTestCounter(test.fieldName);
+    _this.res.methods.bumpTestCounter(test.fieldName);
   });
 
   _defineProperty(this, "runPendingTests", function () {
@@ -921,8 +776,8 @@ function Passable(name, tests, specific) {
   }
 
   this.specific = new core_Specific(specific);
-  this.res = new core_ResultObject(name);
-  tests(this.test, this.res);
+  this.res = ResultObject(name);
+  tests(this.test, this.res.result);
   this.runPendingTests();
 };
 
@@ -1525,7 +1380,7 @@ function validate(test) {
 
 function passable(name, tests, specific) {
   var suite = new core_Passable(name, tests, specific);
-  return suite.res;
+  return suite.res.result;
 }
 
 passable.VERSION = "6.3.5";
