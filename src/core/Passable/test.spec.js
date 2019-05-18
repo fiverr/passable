@@ -142,7 +142,7 @@ describe("Tests Passable's `test` functionality", () => {
                 test.statement = lorem.sentence();
                 instance.pending.push(test);
             }
-            instance.res.methods.bumpTestCounter = spy;
+            instance.res.bumpTestCounter = spy;
             instance.runPendingTests();
             expect(spy.callCount).to.equal(count);
         });

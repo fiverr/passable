@@ -1,7 +1,7 @@
 // @flow
 
 import { testRunner, testRunnerAsync } from '../testRunner';
-import ResultObject from '../ResultObject';
+import resultObject from '../resultObject';
 import Specific from '../Specific';
 
 const constructorError: Function = (name: string, value: string, doc?: string): string => `[Passable]: failed during suite initialization. Unexpected '${typeof value}' for '${name}' argument.
@@ -12,14 +12,14 @@ const constructorError: Function = (name: string, value: string, doc?: string): 
  */
 class Passable {
     specific: Specific;
-    res: ResultObject;
+    res: resultObject;
     test: TestProvider;
     pending: Array<PassableTest>;
 
     pending = [];
 
     /**
-     * Initializes a validation suite, creates a new ResultObject instance and runs pending tests
+     * Initializes a validation suite, creates a new resultObject instance and runs pending tests
      */
     constructor(name: string, tests: TestsWrapper, specific: ?SpecificArgs) {
 
@@ -37,7 +37,7 @@ class Passable {
 
         this.specific = new Specific(specific);
 
-        this.res = ResultObject(name);
+        this.res = resultObject(name);
 
         tests(this.test, this.res.result);
         this.runPendingTests();
@@ -48,7 +48,7 @@ class Passable {
     clearPendingTest = (test: PassableTest) => {
         this.pending = (this.pending.filter((t: PassableTest): boolean => t !== test): Array<PassableTest>);
         if (this.pending.length === 0) {
-            this.res.methods.runCompletionCallbacks();
+            this.res.runCompletionCallbacks();
         }
     };
 
@@ -69,11 +69,11 @@ class Passable {
     test = (fieldName: string, statement: string, test: PassableTest, severity: Severity) => {
 
         if (this.specific.excludes(fieldName)) {
-            this.res.methods.addToSkipped(fieldName);
+            this.res.addToSkipped(fieldName);
             return;
         }
 
-        this.res.methods.initFieldCounters(fieldName);
+        this.res.initFieldCounters(fieldName);
 
         let operation: Function;
 
@@ -99,18 +99,18 @@ class Passable {
     runTest = (test: PassableTest) => {
         if (test instanceof Promise) {
 
-            this.res.methods.markAsync(test.fieldName);
+            this.res.markAsync(test.fieldName);
 
             const done: Function = () => {
                 this.clearPendingTest(test);
                 if (!this.hasRemainingPendingTests(test.fieldName)) {
-                    this.res.methods.markAsDone(test.fieldName);
+                    this.res.markAsDone(test.fieldName);
                 }
             };
 
             const fail: Function = () => {
                 // order is important here! fail needs to be called before `done`.
-                this.res.methods.fail(test.fieldName, test.statement, test.severity);
+                this.res.fail(test.fieldName, test.statement, test.severity);
                 done();
             };
 
@@ -119,11 +119,11 @@ class Passable {
             const isValid: boolean = testRunner(test);
 
             if (!isValid) {
-                this.res.methods.fail(test.fieldName, test.statement, test.severity);
+                this.res.fail(test.fieldName, test.statement, test.severity);
             }
             this.clearPendingTest(test);
         }
-        this.res.methods.bumpTestCounter(test.fieldName);
+        this.res.bumpTestCounter(test.fieldName);
     }
 
     /**

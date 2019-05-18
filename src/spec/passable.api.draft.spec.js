@@ -1,5 +1,5 @@
 import passable, {WARN} from '../index.js';
-import ResultObject from '../core/ResultObject';
+import resultObject from '../core/resultObject';
 import faker from 'faker';
 import {expect} from 'chai';
 let suite;
@@ -10,9 +10,13 @@ const createSuite = (tests) => {
 
 describe('Test suite `draft` argument', () => {
 
-    it('Should be `tests` second argument', () => {
+    it('Should be `tests` second argument', (done) => {
+        let d;
         createSuite((test, draft) => {
-            expect(draft).to.equal(suite.res.result);
+            setTimeout(() => {
+                expect(draft).to.deep.equal(suite);
+                done();
+            }, 10);
         });
     });
 

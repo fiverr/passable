@@ -1,5 +1,5 @@
 import Passable from '.';
-import ResultObject from '../ResultObject';
+import resultObject from '../resultObject';
 import faker from 'faker';
 import { noop } from 'lodash';
 import sinon from 'sinon';

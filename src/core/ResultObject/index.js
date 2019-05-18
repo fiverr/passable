@@ -3,8 +3,7 @@ export const FAIL = 'fail';
 const severities = [WARN, FAIL];
 
 const resultObject = (name) => {
-
-    const result = {
+    const res = {
         name,
         hasValidationErrors: false,
         hasValidationWarnings: false,
@@ -17,46 +16,44 @@ const resultObject = (name) => {
         skipped: []
     };
 
-    const methods = {};
-
     const completionCallbacks = [];
     let asyncObject = null;
 
-    methods.initFieldCounters = (fieldName) => {
-        if (result.testsPerformed[fieldName]) { return result; }
+    const initFieldCounters = (fieldName) => {
+        if (res.testsPerformed[fieldName]) { return res; }
 
-        result.testsPerformed[fieldName] = {
+        res.testsPerformed[fieldName] = {
             testCount: 0,
             failCount: 0,
             warnCount: 0
         };
     };
 
-    methods.bumpTestCounter = (fieldName) => {
-        if (!result.testsPerformed[fieldName]) { return result; }
+    const bumpTestCounter = (fieldName) => {
+        if (!res.testsPerformed[fieldName]) { return res; }
 
-        result.testsPerformed[fieldName].testCount++;
-        result.testCount++;
+        res.testsPerformed[fieldName].testCount++;
+        res.testCount++;
     };
 
     const bumpTestWarning = (fieldName, statement) => {
-        result.hasValidationWarnings = true;
-        result.validationWarnings[fieldName] = result.validationWarnings[fieldName] || [];
-        result.validationWarnings[fieldName].push(statement);
-        result.warnCount++;
-        result.testsPerformed[fieldName].warnCount++;
+        res.hasValidationWarnings = true;
+        res.validationWarnings[fieldName] = res.validationWarnings[fieldName] || [];
+        res.validationWarnings[fieldName].push(statement);
+        res.warnCount++;
+        res.testsPerformed[fieldName].warnCount++;
     };
 
     const bumpTestError = (fieldName, statement) => {
-        result.hasValidationErrors = true;
-        result.validationErrors[fieldName] = result.validationErrors[fieldName] || [];
-        result.validationErrors[fieldName].push(statement);
-        result.failCount++;
-        result.testsPerformed[fieldName].failCount++;
+        res.hasValidationErrors = true;
+        res.validationErrors[fieldName] = res.validationErrors[fieldName] || [];
+        res.validationErrors[fieldName].push(statement);
+        res.failCount++;
+        res.testsPerformed[fieldName].failCount++;
     };
 
-    methods.fail = (fieldName, statement, severity) => {
-        if (!result.testsPerformed[fieldName]) { return result; }
+    const fail = (fieldName, statement, severity) => {
+        if (!res.testsPerformed[fieldName]) { return res; }
 
         const selectedSeverity = severity && severities.includes(severity) ? severity : FAIL;
 
@@ -65,105 +62,112 @@ const resultObject = (name) => {
             : bumpTestError(fieldName, statement);
     };
 
-    methods.addToSkipped = (fieldName) => {
-        !result.skipped.includes(fieldName) && result.skipped.push(fieldName);
+    const addToSkipped = (fieldName) => {
+        !res.skipped.includes(fieldName) && res.skipped.push(fieldName);
     };
 
-    methods.runCompletionCallbacks = () => {
-        completionCallbacks.forEach((cb) => cb(result));
+    const runCompletionCallbacks = () => {
+        completionCallbacks.forEach((cb) => cb(res));
     };
 
-    result.done = (callback) => {
-        if (typeof callback !== 'function') {return result;}
+    res.done = (callback) => {
+        if (typeof callback !== 'function') {return res;}
 
         if (!asyncObject) {
-            callback(result);
+            callback(res);
         }
 
         completionCallbacks.push(callback);
-        return result;
+        return res;
     };
 
-    result.after = (fieldName, callback) => {
+    res.after = (fieldName, callback) => {
 
         if (typeof callback !== 'function') {
-            return result;
+            return res;
         }
 
         asyncObject = asyncObject || {};
-
-        if (!asyncObject[fieldName] && result.testsPerformed[fieldName]) {
-            callback(result);
+        if (!asyncObject[fieldName] && res.testsPerformed[fieldName]) {
+            callback(res);
         } else if (asyncObject[fieldName]) {
             asyncObject[fieldName].callbacks = [...(asyncObject[fieldName].callbacks || []), callback];
         }
 
-        return result;
+        return res;
     };
 
-    methods.markAsync = (fieldName) => {
+    const markAsync = (fieldName) => {
         asyncObject = asyncObject || {};
         asyncObject[fieldName] = { done: false };
     };
 
-    methods.markAsDone = (fieldName) => {
+    const markAsDone = (fieldName) => {
         if (asyncObject !== null && asyncObject[fieldName]) {
             asyncObject[fieldName].done = true;
 
             // run field callbacks set in `after`
             if (asyncObject[fieldName].callbacks) {
-                asyncObject[fieldName].callbacks.forEach((callback) => callback(result));
+                asyncObject[fieldName].callbacks.forEach((callback) => callback(res));
             }
         }
     };
 
-    result.getErrors = (fieldName) => {
+    res.getErrors = (fieldName) => {
         if (!fieldName) {
-            return result.validationErrors;
+            return res.validationErrors;
         }
 
-        if (result.validationErrors[fieldName]) {
-            return result.validationErrors[fieldName];
+        if (res.validationErrors[fieldName]) {
+            return res.validationErrors[fieldName];
         }
 
         return [];
     };
 
-    result.getWarnings = (fieldName) => {
+    res.getWarnings = (fieldName) => {
         if (!fieldName) {
-            return result.validationWarnings;
+            return res.validationWarnings;
         }
 
-        if (result.validationWarnings[fieldName]) {
-            return result.validationWarnings[fieldName];
+        if (res.validationWarnings[fieldName]) {
+            return res.validationWarnings[fieldName];
         }
 
         return [];
     };
 
-    result.hasErrors = (fieldName) => {
+    res.hasErrors = (fieldName) => {
         if (!fieldName) {
-            return result.hasValidationErrors;
+            return res.hasValidationErrors;
         }
 
-        return Boolean(result.getErrors(fieldName).length);
+        return Boolean(res.getErrors(fieldName).length);
     };
 
     /**
      * Returns whether a field (or the whole suite, if none passed) contains warnings
      * @param {string} [fieldName]
      */
-    result.hasWarnings = (fieldName) => {
+    res.hasWarnings = (fieldName) => {
         if (!fieldName) {
-            return result.hasValidationWarnings;
+            return res.hasValidationWarnings;
         }
 
-        return Boolean(result.getWarnings(fieldName).length);
+        return Boolean(res.getWarnings(fieldName).length);
     };
 
     return {
-        result,
-        methods
+        initFieldCounters,
+        bumpTestError,
+        bumpTestWarning,
+        bumpTestCounter,
+        fail,
+        addToSkipped,
+        runCompletionCallbacks,
+        markAsync,
+        markAsDone,
+        result: res
     };
 };
 

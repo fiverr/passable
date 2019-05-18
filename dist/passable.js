@@ -332,7 +332,7 @@ function testRunnerAsync(test, done, fail) {
 }
 
 
-// CONCATENATED MODULE: ./src/core/ResultObject/index.js
+// CONCATENATED MODULE: ./src/core/resultObject/index.js
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -346,7 +346,7 @@ var FAIL = 'fail';
 var severities = [WARN, FAIL];
 
 var resultObject = function resultObject(name) {
-  var result = {
+  var res = {
     name: name,
     hasValidationErrors: false,
     hasValidationWarnings: false,
@@ -358,144 +358,143 @@ var resultObject = function resultObject(name) {
     validationWarnings: {},
     skipped: []
   };
-  var methods = {};
   var completionCallbacks = [];
   var asyncObject = null;
 
-  methods.initFieldCounters = function (fieldName) {
-    if (result.testsPerformed[fieldName]) {
-      return result;
+  var initFieldCounters = function initFieldCounters(fieldName) {
+    if (res.testsPerformed[fieldName]) {
+      return res;
     }
 
-    result.testsPerformed[fieldName] = {
+    res.testsPerformed[fieldName] = {
       testCount: 0,
       failCount: 0,
       warnCount: 0
     };
   };
 
-  methods.bumpTestCounter = function (fieldName) {
-    if (!result.testsPerformed[fieldName]) {
-      return result;
+  var bumpTestCounter = function bumpTestCounter(fieldName) {
+    if (!res.testsPerformed[fieldName]) {
+      return res;
     }
 
-    result.testsPerformed[fieldName].testCount++;
-    result.testCount++;
+    res.testsPerformed[fieldName].testCount++;
+    res.testCount++;
   };
 
   var bumpTestWarning = function bumpTestWarning(fieldName, statement) {
-    result.hasValidationWarnings = true;
-    result.validationWarnings[fieldName] = result.validationWarnings[fieldName] || [];
-    result.validationWarnings[fieldName].push(statement);
-    result.warnCount++;
-    result.testsPerformed[fieldName].warnCount++;
+    res.hasValidationWarnings = true;
+    res.validationWarnings[fieldName] = res.validationWarnings[fieldName] || [];
+    res.validationWarnings[fieldName].push(statement);
+    res.warnCount++;
+    res.testsPerformed[fieldName].warnCount++;
   };
 
   var bumpTestError = function bumpTestError(fieldName, statement) {
-    result.hasValidationErrors = true;
-    result.validationErrors[fieldName] = result.validationErrors[fieldName] || [];
-    result.validationErrors[fieldName].push(statement);
-    result.failCount++;
-    result.testsPerformed[fieldName].failCount++;
+    res.hasValidationErrors = true;
+    res.validationErrors[fieldName] = res.validationErrors[fieldName] || [];
+    res.validationErrors[fieldName].push(statement);
+    res.failCount++;
+    res.testsPerformed[fieldName].failCount++;
   };
 
-  methods.fail = function (fieldName, statement, severity) {
-    if (!result.testsPerformed[fieldName]) {
-      return result;
+  var fail = function fail(fieldName, statement, severity) {
+    if (!res.testsPerformed[fieldName]) {
+      return res;
     }
 
     var selectedSeverity = severity && severities.includes(severity) ? severity : FAIL;
     selectedSeverity === WARN ? bumpTestWarning(fieldName, statement) : bumpTestError(fieldName, statement);
   };
 
-  methods.addToSkipped = function (fieldName) {
-    !result.skipped.includes(fieldName) && result.skipped.push(fieldName);
+  var addToSkipped = function addToSkipped(fieldName) {
+    !res.skipped.includes(fieldName) && res.skipped.push(fieldName);
   };
 
-  methods.runCompletionCallbacks = function () {
+  var runCompletionCallbacks = function runCompletionCallbacks() {
     completionCallbacks.forEach(function (cb) {
-      return cb(result);
+      return cb(res);
     });
   };
 
-  result.done = function (callback) {
+  res.done = function (callback) {
     if (typeof callback !== 'function') {
-      return result;
+      return res;
     }
 
     if (!asyncObject) {
-      callback(result);
+      callback(res);
     }
 
     completionCallbacks.push(callback);
-    return result;
+    return res;
   };
 
-  result.after = function (fieldName, callback) {
+  res.after = function (fieldName, callback) {
     if (typeof callback !== 'function') {
-      return result;
+      return res;
     }
 
     asyncObject = asyncObject || {};
 
-    if (!asyncObject[fieldName] && result.testsPerformed[fieldName]) {
-      callback(result);
+    if (!asyncObject[fieldName] && res.testsPerformed[fieldName]) {
+      callback(res);
     } else if (asyncObject[fieldName]) {
       asyncObject[fieldName].callbacks = [].concat(_toConsumableArray(asyncObject[fieldName].callbacks || []), [callback]);
     }
 
-    return result;
+    return res;
   };
 
-  methods.markAsync = function (fieldName) {
+  var markAsync = function markAsync(fieldName) {
     asyncObject = asyncObject || {};
     asyncObject[fieldName] = {
       done: false
     };
   };
 
-  methods.markAsDone = function (fieldName) {
+  var markAsDone = function markAsDone(fieldName) {
     if (asyncObject !== null && asyncObject[fieldName]) {
       asyncObject[fieldName].done = true; // run field callbacks set in `after`
 
       if (asyncObject[fieldName].callbacks) {
         asyncObject[fieldName].callbacks.forEach(function (callback) {
-          return callback(result);
+          return callback(res);
         });
       }
     }
   };
 
-  result.getErrors = function (fieldName) {
+  res.getErrors = function (fieldName) {
     if (!fieldName) {
-      return result.validationErrors;
+      return res.validationErrors;
     }
 
-    if (result.validationErrors[fieldName]) {
-      return result.validationErrors[fieldName];
+    if (res.validationErrors[fieldName]) {
+      return res.validationErrors[fieldName];
     }
 
     return [];
   };
 
-  result.getWarnings = function (fieldName) {
+  res.getWarnings = function (fieldName) {
     if (!fieldName) {
-      return result.validationWarnings;
+      return res.validationWarnings;
     }
 
-    if (result.validationWarnings[fieldName]) {
-      return result.validationWarnings[fieldName];
+    if (res.validationWarnings[fieldName]) {
+      return res.validationWarnings[fieldName];
     }
 
     return [];
   };
 
-  result.hasErrors = function (fieldName) {
+  res.hasErrors = function (fieldName) {
     if (!fieldName) {
-      return result.hasValidationErrors;
+      return res.hasValidationErrors;
     }
 
-    return Boolean(result.getErrors(fieldName).length);
+    return Boolean(res.getErrors(fieldName).length);
   };
   /**
    * Returns whether a field (or the whole suite, if none passed) contains warnings
@@ -503,21 +502,29 @@ var resultObject = function resultObject(name) {
    */
 
 
-  result.hasWarnings = function (fieldName) {
+  res.hasWarnings = function (fieldName) {
     if (!fieldName) {
-      return result.hasValidationWarnings;
+      return res.hasValidationWarnings;
     }
 
-    return Boolean(result.getWarnings(fieldName).length);
+    return Boolean(res.getWarnings(fieldName).length);
   };
 
   return {
-    result: result,
-    methods: methods
+    initFieldCounters: initFieldCounters,
+    bumpTestError: bumpTestError,
+    bumpTestWarning: bumpTestWarning,
+    bumpTestCounter: bumpTestCounter,
+    fail: fail,
+    addToSkipped: addToSkipped,
+    runCompletionCallbacks: runCompletionCallbacks,
+    markAsync: markAsync,
+    markAsDone: markAsDone,
+    result: res
   };
 };
 
-/* harmony default export */ var ResultObject = (resultObject);
+/* harmony default export */ var core_resultObject = (resultObject);
 // CONCATENATED MODULE: ./src/core/Specific/index.js
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -671,7 +678,7 @@ var constructorError = function constructorError(name, value, doc) {
 
 var Passable_Passable =
 /**
- * Initializes a validation suite, creates a new ResultObject instance and runs pending tests
+ * Initializes a validation suite, creates a new resultObject instance and runs pending tests
  */
 function Passable(name, tests, specific) {
   var _this = this;
@@ -690,7 +697,7 @@ function Passable(name, tests, specific) {
     });
 
     if (_this.pending.length === 0) {
-      _this.res.methods.runCompletionCallbacks();
+      _this.res.runCompletionCallbacks();
     }
   });
 
@@ -702,12 +709,12 @@ function Passable(name, tests, specific) {
 
   _defineProperty(this, "test", function (fieldName, statement, test, severity) {
     if (_this.specific.excludes(fieldName)) {
-      _this.res.methods.addToSkipped(fieldName);
+      _this.res.addToSkipped(fieldName);
 
       return;
     }
 
-    _this.res.methods.initFieldCounters(fieldName);
+    _this.res.initFieldCounters(fieldName);
 
     var operation;
 
@@ -728,19 +735,19 @@ function Passable(name, tests, specific) {
 
   _defineProperty(this, "runTest", function (test) {
     if (test instanceof Promise) {
-      _this.res.methods.markAsync(test.fieldName);
+      _this.res.markAsync(test.fieldName);
 
       var done = function done() {
         _this.clearPendingTest(test);
 
         if (!_this.hasRemainingPendingTests(test.fieldName)) {
-          _this.res.methods.markAsDone(test.fieldName);
+          _this.res.markAsDone(test.fieldName);
         }
       };
 
       var fail = function fail() {
         // order is important here! fail needs to be called before `done`.
-        _this.res.methods.fail(test.fieldName, test.statement, test.severity);
+        _this.res.fail(test.fieldName, test.statement, test.severity);
 
         done();
       };
@@ -750,13 +757,13 @@ function Passable(name, tests, specific) {
       var isValid = testRunner(test);
 
       if (!isValid) {
-        _this.res.methods.fail(test.fieldName, test.statement, test.severity);
+        _this.res.fail(test.fieldName, test.statement, test.severity);
       }
 
       _this.clearPendingTest(test);
     }
 
-    _this.res.methods.bumpTestCounter(test.fieldName);
+    _this.res.bumpTestCounter(test.fieldName);
   });
 
   _defineProperty(this, "runPendingTests", function () {
@@ -776,7 +783,7 @@ function Passable(name, tests, specific) {
   }
 
   this.specific = new core_Specific(specific);
-  this.res = ResultObject(name);
+  this.res = core_resultObject(name);
   tests(this.test, this.res.result);
   this.runPendingTests();
 };
