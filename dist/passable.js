@@ -1243,22 +1243,26 @@ function largerThanOrEquals(value, arg1) {
 }
 
 /* harmony default export */ var larger_than_or_equals = (largerThanOrEquals);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/extend_negative_rules/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/extend_rules/index.js
 /**
- * Collects rules with `negativeForm` attributes.
- * When found, it creates a new function that flips
- * the value of the original rule.
+ * Collects rules with `negativeForm` or `alias` attributes.
+ * Adds a rule with the correct configuration.
  * @param {Object} rules - enforce rules object
  * @returns {Object} extended rules object
  */
-function extendNegativeRules(rules) {
+function extendRules(rules) {
   var _loop = function _loop(rule) {
     var negativeForm = rules[rule].negativeForm;
+    var alias = rules[rule].alias;
 
     if (negativeForm) {
       rules[negativeForm] = function () {
         return !rules[rule].apply(rules, arguments);
       };
+    }
+
+    if (alias) {
+      rules[alias] = rules[rule];
     }
   };
 
@@ -1269,7 +1273,7 @@ function extendNegativeRules(rules) {
   return rules;
 }
 
-/* harmony default export */ var extend_negative_rules = (extendNegativeRules);
+/* harmony default export */ var extend_rules = (extendRules);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/index.js
 
 
@@ -1298,7 +1302,7 @@ var rules_rules = {
   largerThanOrEquals: larger_than_or_equals,
   sizeEquals: size_equals
 };
-/* harmony default export */ var runnables_rules = (extend_negative_rules(rules_rules));
+/* harmony default export */ var runnables_rules = (extend_rules(rules_rules));
 // CONCATENATED MODULE: ./src/Enforce/runnables/index.js
 
 
