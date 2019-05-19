@@ -1,5 +1,3 @@
-'use strict';
-
 import rules from './index';
 import { expect } from 'chai';
 
@@ -38,7 +36,15 @@ const positiveRules = [
     'smallerThan',
     'smallerThanOrEquals',
     'largerThanOrEquals',
-    'sizeEquals'
+    'greaterThan',
+    'lessThan',
+    'lessThanOrEquals',
+    'greaterThanOrEquals',
+    'sizeEquals',
+    'lt',
+    'lte',
+    'gt',
+    'gte'
 ];
 
 const allRules = [].concat(positiveRules, negativeRules);

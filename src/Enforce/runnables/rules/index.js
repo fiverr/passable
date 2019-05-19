@@ -11,6 +11,10 @@ import largerThan from './size/larger_than';
 import smallerThan from './size/smaller_than';
 import smallerThanOrEquals from './size/smaller_than_or_equals';
 import largerThanOrEquals from './size/larger_than_or_equals';
+import greaterThan from './size/greater_than';
+import greaterThanOrEquals from './size/greater_than_or_equals';
+import lessThan from './size/less_than';
+import lessThanOrEquals from './size/less_than_or_equals';
 import extendRules from './helpers/extend_rules';
 
 const rules: EnforceRules = {
@@ -25,7 +29,11 @@ const rules: EnforceRules = {
     smallerThan,
     smallerThanOrEquals,
     largerThanOrEquals,
-    sizeEquals
+    sizeEquals,
+    greaterThan,
+    greaterThanOrEquals,
+    lessThan,
+    lessThanOrEquals
 };
 
 export default extendRules(rules);
