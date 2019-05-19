@@ -42,7 +42,11 @@ const positiveRules = [
     'lessThan',
     'lessThanOrEquals',
     'greaterThanOrEquals',
-    'sizeEquals'
+    'sizeEquals',
+    'lt',
+    'lte',
+    'gt',
+    'gte'
 ];
 
 const allRules = [].concat(positiveRules, negativeRules);
