@@ -1,5 +1,3 @@
-'use strict';
-
 import { expect } from 'chai';
 import { random } from 'faker';
 import lessThan from './index';
