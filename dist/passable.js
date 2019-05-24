@@ -350,6 +350,10 @@ var severities = [WARN, FAIL];
 var passableResult_passableResult = function passableResult(name) {
   var completionCallbacks = [];
   var asyncObject = null;
+  /**
+   * Initializes specific field's counters
+   * @param {string} fieldName - The name of the field.
+   */
 
   var initFieldCounters = function initFieldCounters(fieldName) {
     if (output.testsPerformed[fieldName]) {
@@ -362,6 +366,11 @@ var passableResult_passableResult = function passableResult(name) {
       warnCount: 0
     };
   };
+  /**
+   * Bumps test counters to indicate tests that's being performed
+   * @param {string} fieldName - The name of the field.
+   */
+
 
   var bumpTestCounter = function bumpTestCounter(fieldName) {
     if (!output.testsPerformed[fieldName]) {
@@ -371,6 +380,12 @@ var passableResult_passableResult = function passableResult(name) {
     output.testsPerformed[fieldName].testCount++;
     output.testCount++;
   };
+  /**
+   * Bumps field's warning counts and adds warning string
+   * @param {string} fieldName - The name of the field.
+   * @param {string} statement - The error string to add to the object.
+   */
+
 
   var bumpTestWarning = function bumpTestWarning(fieldName, statement) {
     output.hasValidationWarnings = true;
@@ -379,6 +394,12 @@ var passableResult_passableResult = function passableResult(name) {
     output.warnCount++;
     output.testsPerformed[fieldName].warnCount++;
   };
+  /**
+   * Bumps field's error counts and adds error string
+   * @param {string} fieldName - The name of the field.
+   * @param {string} statement - The error string to add to the object.
+   */
+
 
   var bumpTestError = function bumpTestError(fieldName, statement) {
     output.hasValidationErrors = true;
@@ -387,6 +408,13 @@ var passableResult_passableResult = function passableResult(name) {
     output.failCount++;
     output.testsPerformed[fieldName].failCount++;
   };
+  /**
+   * Fails a field and updates output accordingly
+   * @param {string} fieldName - The name of the field.
+   * @param {string} statement - The error string to add to the object.
+   * @param {string} severity - Whether it is a `fail` or `warn` test.
+   */
+
 
   var fail = function fail(fieldName, statement, severity) {
     if (!output.testsPerformed[fieldName]) {
@@ -396,16 +424,64 @@ var passableResult_passableResult = function passableResult(name) {
     var selectedSeverity = severity && severities.includes(severity) ? severity : FAIL;
     selectedSeverity === WARN ? bumpTestWarning(fieldName, statement) : bumpTestError(fieldName, statement);
   };
+  /**
+   * Uniquely add a field to the `skipped` list
+   * @param {string} fieldName
+   */
+
 
   var addToSkipped = function addToSkipped(fieldName) {
     !output.skipped.includes(fieldName) && output.skipped.push(fieldName);
   };
+  /**
+   * Runs completion callbacks aggregated by `done`
+   * regardless of success or failure
+   */
+
 
   var runCompletionCallbacks = function runCompletionCallbacks() {
     completionCallbacks.forEach(function (cb) {
       return cb(output);
     });
   };
+  /**
+   * Marks a field as async
+   * @param {string} fieldName the name of the field marked as async
+  */
+
+
+  var markAsync = function markAsync(fieldName) {
+    asyncObject = asyncObject || {};
+    asyncObject[fieldName] = asyncObject[fieldName] || {};
+    asyncObject[fieldName] = {
+      done: false,
+      callbacks: asyncObject[fieldName].callbacks || []
+    };
+  };
+  /**
+   * Marks an async field as done
+   * @param {string} fieldName the name of the field marked as done
+  */
+
+
+  var markAsDone = function markAsDone(fieldName) {
+    if (asyncObject !== null && asyncObject[fieldName]) {
+      asyncObject[fieldName].done = true; // run field callbacks set in `after`
+
+      if (asyncObject[fieldName].callbacks) {
+        asyncObject[fieldName].callbacks.forEach(function (callback) {
+          return callback(output);
+        });
+      }
+    }
+  };
+  /**
+   * Registers callback functions to be run when test suite is done running
+   * If current suite is not async, runs the callback immediately
+   * @param {function} callback the function to be called on done
+   * @return {object} output object
+   */
+
 
   var done = function done(callback) {
     if (typeof callback !== 'function') {
@@ -419,6 +495,13 @@ var passableResult_passableResult = function passableResult(name) {
     completionCallbacks.push(callback);
     return output;
   };
+  /**
+   * Registers callback functions to be run when a certain field is done running
+   * If field is not async, runs the callback immediately
+   * @param {function} callback the function to be called on done
+   * @return {object} output object
+   */
+
 
   var after = function after(fieldName, callback) {
     if (typeof callback !== 'function') {
@@ -435,27 +518,12 @@ var passableResult_passableResult = function passableResult(name) {
 
     return output;
   };
+  /**
+   * Gets all the errors of a field, or of the whole object
+   * @param {string} [fieldName] - The name of the field.
+   * @return {Array | Object} The field's errors, or all errors
+   */
 
-  var markAsync = function markAsync(fieldName) {
-    asyncObject = asyncObject || {};
-    asyncObject[fieldName] = asyncObject[fieldName] || {};
-    asyncObject[fieldName] = {
-      done: false,
-      callbacks: asyncObject[fieldName].callbacks || []
-    };
-  };
-
-  var markAsDone = function markAsDone(fieldName) {
-    if (asyncObject !== null && asyncObject[fieldName]) {
-      asyncObject[fieldName].done = true; // run field callbacks set in `after`
-
-      if (asyncObject[fieldName].callbacks) {
-        asyncObject[fieldName].callbacks.forEach(function (callback) {
-          return callback(output);
-        });
-      }
-    }
-  };
 
   var getErrors = function getErrors(fieldName) {
     if (!fieldName) {
@@ -468,6 +536,12 @@ var passableResult_passableResult = function passableResult(name) {
 
     return [];
   };
+  /**
+   * Gets all the warnings of a field, or of the whole object
+   * @param {string} [fieldName] - The name of the field.
+   * @return {Array | Object} The field's warnings, or all warnings
+   */
+
 
   var getWarnings = function getWarnings(fieldName) {
     if (!fieldName) {
@@ -480,6 +554,12 @@ var passableResult_passableResult = function passableResult(name) {
 
     return [];
   };
+  /**
+   * Checks if a certain field (or the whole suite) has errors
+   * @param {string} [fieldName]
+   * @return {boolean}
+   */
+
 
   var hasErrors = function hasErrors(fieldName) {
     if (!fieldName) {
@@ -489,8 +569,9 @@ var passableResult_passableResult = function passableResult(name) {
     return Boolean(output.getErrors(fieldName).length);
   };
   /**
-   * Returns whether a field (or the whole suite, if none passed) contains warnings
+   * Checks if a certain field (or the whole suite) has warnings
    * @param {string} [fieldName]
+   * @return {boolean}
    */
 
 

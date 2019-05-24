@@ -76,7 +76,6 @@ declare type StringOrArray = string | RuleArgs;
 
 declare type Output = {
     name: String,
-
 }
 
 declare type PassableOutput = {

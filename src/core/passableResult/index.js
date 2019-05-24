@@ -15,6 +15,10 @@ const passableResult: Function = (name: string): PassableResult => {
     const completionCallbacks: Function[] = [];
     let asyncObject: AsyncObject = null;
 
+    /**
+     * Initializes specific field's counters
+     * @param {string} fieldName - The name of the field.
+     */
     const initFieldCounters: Function = (fieldName: string) => {
         if (output.testsPerformed[fieldName]) { return output; }
 
@@ -25,6 +29,10 @@ const passableResult: Function = (name: string): PassableResult => {
         };
     };
 
+    /**
+     * Bumps test counters to indicate tests that's being performed
+     * @param {string} fieldName - The name of the field.
+     */
     const bumpTestCounter: Function = (fieldName: string) => {
         if (!output.testsPerformed[fieldName]) { return output; }
 
@@ -32,6 +40,11 @@ const passableResult: Function = (name: string): PassableResult => {
         output.testCount++;
     };
 
+    /**
+     * Bumps field's warning counts and adds warning string
+     * @param {string} fieldName - The name of the field.
+     * @param {string} statement - The error string to add to the object.
+     */
     const bumpTestWarning: Function = (fieldName: string, statement: string) => {
         output.hasValidationWarnings = true;
         output.validationWarnings[fieldName] = output.validationWarnings[fieldName] || [];
@@ -40,6 +53,11 @@ const passableResult: Function = (name: string): PassableResult => {
         output.testsPerformed[fieldName].warnCount++;
     };
 
+    /**
+     * Bumps field's error counts and adds error string
+     * @param {string} fieldName - The name of the field.
+     * @param {string} statement - The error string to add to the object.
+     */
     const bumpTestError: Function = (fieldName: string, statement: string) => {
         output.hasValidationErrors = true;
         output.validationErrors[fieldName] = output.validationErrors[fieldName] || [];
@@ -48,6 +66,12 @@ const passableResult: Function = (name: string): PassableResult => {
         output.testsPerformed[fieldName].failCount++;
     };
 
+    /**
+     * Fails a field and updates output accordingly
+     * @param {string} fieldName - The name of the field.
+     * @param {string} statement - The error string to add to the object.
+     * @param {string} severity - Whether it is a `fail` or `warn` test.
+     */
     const fail: Function = (fieldName: string, statement: string, severity: Severity) => {
         if (!output.testsPerformed[fieldName]) { return output; }
 
@@ -58,14 +82,56 @@ const passableResult: Function = (name: string): PassableResult => {
             : bumpTestError(fieldName, statement);
     };
 
+    /**
+     * Uniquely add a field to the `skipped` list
+     * @param {string} fieldName
+     */
     const addToSkipped: Function = (fieldName: string) => {
         !output.skipped.includes(fieldName) && output.skipped.push(fieldName);
     };
 
+    /**
+     * Runs completion callbacks aggregated by `done`
+     * regardless of success or failure
+     */
     const runCompletionCallbacks: Function = () => {
         completionCallbacks.forEach((cb) => cb(output));
     };
 
+    /**
+     * Marks a field as async
+     * @param {string} fieldName the name of the field marked as async
+    */
+    const markAsync: Function = (fieldName: string) => {
+        asyncObject = asyncObject || {};
+        asyncObject[fieldName] = asyncObject[fieldName] || {};
+        asyncObject[fieldName] = {
+            done: false,
+            callbacks: asyncObject[fieldName].callbacks || []
+        };
+    };
+
+    /**
+     * Marks an async field as done
+     * @param {string} fieldName the name of the field marked as done
+    */
+    const markAsDone: Function = (fieldName: string) => {
+        if (asyncObject !== null && asyncObject[fieldName]) {
+            asyncObject[fieldName].done = true;
+
+            // run field callbacks set in `after`
+            if (asyncObject[fieldName].callbacks) {
+                asyncObject[fieldName].callbacks.forEach((callback) => callback(output));
+            }
+        }
+    };
+
+    /**
+     * Registers callback functions to be run when test suite is done running
+     * If current suite is not async, runs the callback immediately
+     * @param {function} callback the function to be called on done
+     * @return {object} output object
+     */
     const done: Function = (callback: Function) => {
         if (typeof callback !== 'function') {return output;}
 
@@ -77,6 +143,12 @@ const passableResult: Function = (name: string): PassableResult => {
         return output;
     };
 
+    /**
+     * Registers callback functions to be run when a certain field is done running
+     * If field is not async, runs the callback immediately
+     * @param {function} callback the function to be called on done
+     * @return {object} output object
+     */
     const after: Function = (fieldName: string, callback) => {
 
         if (typeof callback !== 'function') {
@@ -93,26 +165,11 @@ const passableResult: Function = (name: string): PassableResult => {
         return output;
     };
 
-    const markAsync: Function = (fieldName: string) => {
-        asyncObject = asyncObject || {};
-        asyncObject[fieldName] = asyncObject[fieldName] || {};
-        asyncObject[fieldName] = {
-            done: false,
-            callbacks: asyncObject[fieldName].callbacks || []
-        };
-    };
-
-    const markAsDone: Function = (fieldName: string) => {
-        if (asyncObject !== null && asyncObject[fieldName]) {
-            asyncObject[fieldName].done = true;
-
-            // run field callbacks set in `after`
-            if (asyncObject[fieldName].callbacks) {
-                asyncObject[fieldName].callbacks.forEach((callback) => callback(output));
-            }
-        }
-    };
-
+    /**
+     * Gets all the errors of a field, or of the whole object
+     * @param {string} [fieldName] - The name of the field.
+     * @return {Array | Object} The field's errors, or all errors
+     */
     const getErrors: Function = (fieldName: string) => {
         if (!fieldName) {
             return output.validationErrors;
@@ -125,6 +182,11 @@ const passableResult: Function = (name: string): PassableResult => {
         return [];
     };
 
+    /**
+     * Gets all the warnings of a field, or of the whole object
+     * @param {string} [fieldName] - The name of the field.
+     * @return {Array | Object} The field's warnings, or all warnings
+     */
     const getWarnings: Function = (fieldName: string) => {
         if (!fieldName) {
             return output.validationWarnings;
@@ -137,6 +199,11 @@ const passableResult: Function = (name: string): PassableResult => {
         return [];
     };
 
+    /**
+     * Checks if a certain field (or the whole suite) has errors
+     * @param {string} [fieldName]
+     * @return {boolean}
+     */
     const hasErrors: Function = (fieldName: string) => {
         if (!fieldName) {
             return output.hasValidationErrors;
@@ -146,8 +213,9 @@ const passableResult: Function = (name: string): PassableResult => {
     };
 
     /**
-     * Returns whether a field (or the whole suite, if none passed) contains warnings
+     * Checks if a certain field (or the whole suite) has warnings
      * @param {string} [fieldName]
+     * @return {boolean}
      */
     const hasWarnings: Function = (fieldName: string) => {
         if (!fieldName) {
