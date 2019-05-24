@@ -49,7 +49,7 @@ deploy:
     email: evyatar.a@fiverr.com
     skip_cleanup: true
     api_key: $NPM_TOKEN
-    tag: "${TRAVIS_COMMIT:(-6)}"
+    tag: "next-${TRAVIS_COMMIT:(-6)}"
     on:
       all_branches: true
       condition: $TRAVIS_BRANCH != "next" && $TRAVIS_BRANCH != "master"
