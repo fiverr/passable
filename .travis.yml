@@ -1,8 +1,4 @@
 language: node_js
-node_js:
-- '6'
-- '8'
-- node
 cache: npm
 
 env:
@@ -19,11 +15,11 @@ before_script:
 
 after_success:
 - chmod +x ./scripts/push_tag_to_master.sh
-- if [ -n "$TRAVIS_TAG" -a "$TRAVIS_NODE_VERSION" == "8" ]; then ./scripts/push_tag_to_master.sh; fi
+- if [ -n "$TRAVIS_TAG" ]; then ./scripts/push_tag_to_master.sh; fi
 - chmod +x ./scripts/docs.sh
-- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_NODE_VERSION" == "8" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then ./scripts/docs.sh; fi
+- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then ./scripts/docs.sh; fi
 - chmod +x ./scripts/prepare_next.sh
-- if [ "$TRAVIS_BRANCH" != "master" -a "$TRAVIS_NODE_VERSION" == "8" ]; then ./scripts/prepare_next.sh; fi
+- if [ "$TRAVIS_BRANCH" != "master" ]; then ./scripts/prepare_next.sh; fi
 
 deploy:
   - provider: npm
@@ -48,7 +44,7 @@ deploy:
     email: evyatar.a@fiverr.com
     skip_cleanup: true
     api_key: $NPM_TOKEN
-    tag: "next-${TRAVIS_COMMIT:(-6)}"
+    tag: "next-${TRAVIS_COMMIT:(0):6}"
     on:
       all_branches: true
       condition: $TRAVIS_BRANCH != "next" && $TRAVIS_BRANCH != "master"
