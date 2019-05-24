@@ -1,5 +1,3 @@
-'use strict';
-
 import { testRunner, testRunnerAsync } from './index';
 import { expect } from 'chai';
 import { noop } from 'lodash';

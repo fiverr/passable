@@ -1,5 +1,3 @@
-'use strict';
-
 import passable, { WARN } from '../index.js';
 import { expect } from 'chai';
 

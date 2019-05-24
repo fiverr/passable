@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
-const { version } = require('./package.json');
+const { version } = require('../package.json');
 
 module.exports = {
     mode: 'production',
@@ -11,7 +11,7 @@ module.exports = {
         'passable': './src/index.js'
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(process.cwd(), 'dist'),
         filename: '[name].js',
         library: 'passable',
         libraryTarget: 'umd',
@@ -22,11 +22,12 @@ module.exports = {
         rules: [{
             test: /\.js$/,
             include: [
-                path.join(__dirname, 'src'),
-                path.join(__dirname, 'node_modules', 'proxy-polyfill'),
+                path.join(process.cwd(), 'src'),
+                path.join(process.cwd(), 'node_modules', 'proxy-polyfill')
             ],
             use: {
-                loader: 'babel-loader'
+                loader: 'babel-loader',
+                options: require('./babel.config')()
             }
         }]
     },

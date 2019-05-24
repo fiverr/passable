@@ -1487,7 +1487,7 @@ function passable(name, tests, specific) {
   return suite.res;
 }
 
-passable.VERSION = "1.1.1";
+passable.VERSION = "6.3.5";
 passable.enforce = new src_Enforce({});
 passable.Enforce = src_Enforce;
 passable.validate = src_validate;

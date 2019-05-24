@@ -1,5 +1,3 @@
-'use strict';
-
 import { expect } from 'chai';
 import reduceArrayToMap from './index';
 import findArrayValuesInMapKeys from '../find_array_values_in_map_keys';

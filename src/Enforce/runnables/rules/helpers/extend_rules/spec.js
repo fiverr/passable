@@ -1,5 +1,3 @@
-'use strict';
-
 import { test } from 'mocha';
 import { expect } from 'chai';
 import { random } from 'faker';

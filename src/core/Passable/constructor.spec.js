@@ -1,5 +1,3 @@
-'use strict';
-
 import Passable from '.';
 import ResultObject from '../ResultObject';
 import faker from 'faker';

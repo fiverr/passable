@@ -1,5 +1,3 @@
-'use strict';
-
 import { expect } from 'chai';
 import allOf from './index';
 import rules from '../../rules';
