@@ -1,6 +1,6 @@
 const fs = require('fs');
 const files = fs.readFileSync('./tree.txt', 'utf8').split('\n');
-const version = require('../version.json').version;
+const { version } = require('../package.json');
 const pattern = /{{([a-zA-Z0-9_]+)}}/;
 const strings = {
     'PASSABLE_VERSION': () => version

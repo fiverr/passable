@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -293,12 +293,6 @@ module.exports = function proxyPolyfill() {
 
 /***/ }),
 /* 1 */
-/***/ (function(module) {
-
-module.exports = {"a":"6.3.5"};
-
-/***/ }),
-/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1482,11 +1476,7 @@ function validate(test) {
 }
 
 /* harmony default export */ var src_validate = (validate);
-// EXTERNAL MODULE: ./version.json
-var version = __webpack_require__(1);
-
 // CONCATENATED MODULE: ./src/index.js
-
 
 
 
@@ -1497,7 +1487,7 @@ function passable(name, tests, specific) {
   return suite.res;
 }
 
-passable.VERSION = version["a" /* version */];
+passable.VERSION = "1.1.1";
 passable.enforce = new src_Enforce({});
 passable.Enforce = src_Enforce;
 passable.validate = src_validate;

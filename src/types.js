@@ -71,3 +71,5 @@ declare type CompoundTestObject = {
 }
 
 declare type NumericValue = number | string;
+
+declare var PASSABLE_VERSION: string;

@@ -18,7 +18,6 @@ before_script:
 - flow
 
 after_success:
-- if [ "$TRAVIS_NODE_VERSION" == "8" ]; then node ./scripts/make_version_file.js; fi
 - chmod +x ./scripts/push_tag_to_master.sh
 - if [ -n "$TRAVIS_TAG" -a "$TRAVIS_NODE_VERSION" == "8" ]; then ./scripts/push_tag_to_master.sh; fi
 - chmod +x ./scripts/docs.sh
