@@ -4,7 +4,7 @@ node ./scripts/make_version_file.js
 find ./documentation -type f > ./tree.txt
 node ./scripts/add_version_to_files.js
 
-passable_version=$(<version.txt)
+passable_version=$(<.version)
 
 git config --global user.email $GIT_EMAIL
 git config --global user.name $GIT_NAME

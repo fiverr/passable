@@ -1,5 +1,3 @@
-'use strict';
-
 import Enforce from './index';
 import { rules, compounds } from './runnables';
 import { expect } from 'chai';

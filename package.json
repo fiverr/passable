@@ -7,16 +7,11 @@
   "author": "Evyatar <evyatar.a@fiverr.com>",
   "license": "MIT",
   "scripts": {
-    "prebuild": "node ./scripts/make_version_file.js",
-    "prepare": "node ./scripts/make_version_file.js",
-    "build": "cross-env WEBPACK_ENV=build webpack",
-    "build:watch": "webpack --watch",
+    "build": "cross-env WEBPACK_ENV=build webpack --config config/webpack.js",
     "pretest": "npm run build",
     "docs:dev": "cp README.md documentation/MAIN.md && npx docpress s --port 9455 & sass --watch documentation/assets/style:documentation/assets/style --sourcemap=none",
     "dev": "cross-env WEBPACK_ENV=dev webpack --progress --colors --watch",
-    "test:watch": "mocha --require @babel/register --colors -w \"./src/**/*spec.js\"",
-    "test:match": "mocha --require @babel/register --colors -w",
-    "test": "mocha --require @babel/register --colors \"./src/**/*spec.js\"",
+    "test": "mocha --file ./config/test-setup.js --require ./config/babel-register.js --colors \"./src/**/*spec.js\"",
     "eslint": "eslint -c .eslintrc \"./src/**/*.js\"; exit 0"
   },
   "repository": {
@@ -38,7 +33,6 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-add-module-exports": "^1.0.0",
-    "babel-plugin-webpack-aliases": "^1.0.3",
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
     "eslint": "^5.15.1",

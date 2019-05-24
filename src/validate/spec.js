@@ -1,5 +1,3 @@
-'use strict';
-
 import validate from './index.js';
 import { enforce } from '../index';
 import { expect } from 'chai';

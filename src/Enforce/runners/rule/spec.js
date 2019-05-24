@@ -1,5 +1,3 @@
-'use strict';
-
 import single from './index';
 import { expect } from 'chai';
 

@@ -1,0 +1,1 @@
+global.PASSABLE_VERSION = require('../package.json').version;

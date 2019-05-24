@@ -6,6 +6,7 @@ _docpress
 dev
 version.json
 version.txt
+.version
 docs
 documentation/MAIN.md
 documentation/assets/**/*.css
