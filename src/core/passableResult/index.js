@@ -1,7 +1,6 @@
 // @flow
 
 import { WARN, FAIL } from '../../constants';
-import { createDiffieHellman } from 'crypto';
 const severities: string[] = [ WARN, FAIL ];
 
 type AsyncObject = null | {
@@ -96,6 +95,7 @@ const passableResult: Function = (name: string): PassableResult => {
 
     const markAsync: Function = (fieldName: string) => {
         asyncObject = asyncObject || {};
+        asyncObject[fieldName] = asyncObject[fieldName] || {};
         asyncObject[fieldName] = {
             done: false,
             callbacks: asyncObject[fieldName].callbacks || []
