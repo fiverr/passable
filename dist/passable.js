@@ -332,7 +332,10 @@ function testRunnerAsync(test, done, fail) {
 }
 
 
-// CONCATENATED MODULE: ./src/core/resultObject/index.js
+// CONCATENATED MODULE: ./src/constants.js
+var WARN = 'warn';
+var FAIL = 'fail';
+// CONCATENATED MODULE: ./src/core/passableResult/index.js
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -341,12 +344,11 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-var WARN = 'warn';
-var FAIL = 'fail';
+
 var severities = [WARN, FAIL];
 
-var resultObject = function resultObject(name) {
-  var res = {
+var passableResult_passableResult = function passableResult(name) {
+  var output = {
     name: name,
     hasValidationErrors: false,
     hasValidationWarnings: false,
@@ -362,11 +364,11 @@ var resultObject = function resultObject(name) {
   var asyncObject = null;
 
   var initFieldCounters = function initFieldCounters(fieldName) {
-    if (res.testsPerformed[fieldName]) {
-      return res;
+    if (output.testsPerformed[fieldName]) {
+      return output;
     }
 
-    res.testsPerformed[fieldName] = {
+    output.testsPerformed[fieldName] = {
       testCount: 0,
       failCount: 0,
       warnCount: 0
@@ -374,33 +376,33 @@ var resultObject = function resultObject(name) {
   };
 
   var bumpTestCounter = function bumpTestCounter(fieldName) {
-    if (!res.testsPerformed[fieldName]) {
-      return res;
+    if (!output.testsPerformed[fieldName]) {
+      return output;
     }
 
-    res.testsPerformed[fieldName].testCount++;
-    res.testCount++;
+    output.testsPerformed[fieldName].testCount++;
+    output.testCount++;
   };
 
   var bumpTestWarning = function bumpTestWarning(fieldName, statement) {
-    res.hasValidationWarnings = true;
-    res.validationWarnings[fieldName] = res.validationWarnings[fieldName] || [];
-    res.validationWarnings[fieldName].push(statement);
-    res.warnCount++;
-    res.testsPerformed[fieldName].warnCount++;
+    output.hasValidationWarnings = true;
+    output.validationWarnings[fieldName] = output.validationWarnings[fieldName] || [];
+    output.validationWarnings[fieldName].push(statement);
+    output.warnCount++;
+    output.testsPerformed[fieldName].warnCount++;
   };
 
   var bumpTestError = function bumpTestError(fieldName, statement) {
-    res.hasValidationErrors = true;
-    res.validationErrors[fieldName] = res.validationErrors[fieldName] || [];
-    res.validationErrors[fieldName].push(statement);
-    res.failCount++;
-    res.testsPerformed[fieldName].failCount++;
+    output.hasValidationErrors = true;
+    output.validationErrors[fieldName] = output.validationErrors[fieldName] || [];
+    output.validationErrors[fieldName].push(statement);
+    output.failCount++;
+    output.testsPerformed[fieldName].failCount++;
   };
 
   var fail = function fail(fieldName, statement, severity) {
-    if (!res.testsPerformed[fieldName]) {
-      return res;
+    if (!output.testsPerformed[fieldName]) {
+      return output;
     }
 
     var selectedSeverity = severity && severities.includes(severity) ? severity : FAIL;
@@ -408,42 +410,42 @@ var resultObject = function resultObject(name) {
   };
 
   var addToSkipped = function addToSkipped(fieldName) {
-    !res.skipped.includes(fieldName) && res.skipped.push(fieldName);
+    !output.skipped.includes(fieldName) && output.skipped.push(fieldName);
   };
 
   var runCompletionCallbacks = function runCompletionCallbacks() {
     completionCallbacks.forEach(function (cb) {
-      return cb(res);
+      return cb(output);
     });
   };
 
-  res.done = function (callback) {
+  output.done = function (callback) {
     if (typeof callback !== 'function') {
-      return res;
+      return output;
     }
 
     if (!asyncObject) {
-      callback(res);
+      callback(output);
     }
 
     completionCallbacks.push(callback);
-    return res;
+    return output;
   };
 
-  res.after = function (fieldName, callback) {
+  output.after = function (fieldName, callback) {
     if (typeof callback !== 'function') {
-      return res;
+      return output;
     }
 
     asyncObject = asyncObject || {};
 
-    if (!asyncObject[fieldName] && res.testsPerformed[fieldName]) {
-      callback(res);
+    if (!asyncObject[fieldName] && output.testsPerformed[fieldName]) {
+      callback(output);
     } else if (asyncObject[fieldName]) {
       asyncObject[fieldName].callbacks = [].concat(_toConsumableArray(asyncObject[fieldName].callbacks || []), [callback]);
     }
 
-    return res;
+    return output;
   };
 
   var markAsync = function markAsync(fieldName) {
@@ -459,42 +461,42 @@ var resultObject = function resultObject(name) {
 
       if (asyncObject[fieldName].callbacks) {
         asyncObject[fieldName].callbacks.forEach(function (callback) {
-          return callback(res);
+          return callback(output);
         });
       }
     }
   };
 
-  res.getErrors = function (fieldName) {
+  output.getErrors = function (fieldName) {
     if (!fieldName) {
-      return res.validationErrors;
+      return output.validationErrors;
     }
 
-    if (res.validationErrors[fieldName]) {
-      return res.validationErrors[fieldName];
+    if (output.validationErrors[fieldName]) {
+      return output.validationErrors[fieldName];
     }
 
     return [];
   };
 
-  res.getWarnings = function (fieldName) {
+  output.getWarnings = function (fieldName) {
     if (!fieldName) {
-      return res.validationWarnings;
+      return output.validationWarnings;
     }
 
-    if (res.validationWarnings[fieldName]) {
-      return res.validationWarnings[fieldName];
+    if (output.validationWarnings[fieldName]) {
+      return output.validationWarnings[fieldName];
     }
 
     return [];
   };
 
-  res.hasErrors = function (fieldName) {
+  output.hasErrors = function (fieldName) {
     if (!fieldName) {
-      return res.hasValidationErrors;
+      return output.hasValidationErrors;
     }
 
-    return Boolean(res.getErrors(fieldName).length);
+    return Boolean(output.getErrors(fieldName).length);
   };
   /**
    * Returns whether a field (or the whole suite, if none passed) contains warnings
@@ -502,12 +504,12 @@ var resultObject = function resultObject(name) {
    */
 
 
-  res.hasWarnings = function (fieldName) {
+  output.hasWarnings = function (fieldName) {
     if (!fieldName) {
-      return res.hasValidationWarnings;
+      return output.hasValidationWarnings;
     }
 
-    return Boolean(res.getWarnings(fieldName).length);
+    return Boolean(output.getWarnings(fieldName).length);
   };
 
   return {
@@ -520,11 +522,11 @@ var resultObject = function resultObject(name) {
     runCompletionCallbacks: runCompletionCallbacks,
     markAsync: markAsync,
     markAsDone: markAsDone,
-    result: res
+    output: output
   };
 };
 
-/* harmony default export */ var core_resultObject = (resultObject);
+/* harmony default export */ var core_passableResult = (passableResult_passableResult);
 // CONCATENATED MODULE: ./src/core/Specific/index.js
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -678,7 +680,7 @@ var constructorError = function constructorError(name, value, doc) {
 
 var Passable_Passable =
 /**
- * Initializes a validation suite, creates a new resultObject instance and runs pending tests
+ * Initializes a validation suite, creates a new passableResult instance and runs pending tests
  */
 function Passable(name, tests, specific) {
   var _this = this;
@@ -783,8 +785,8 @@ function Passable(name, tests, specific) {
   }
 
   this.specific = new core_Specific(specific);
-  this.res = core_resultObject(name);
-  tests(this.test, this.res.result);
+  this.res = core_passableResult(name);
+  tests(this.test, this.res.output);
   this.runPendingTests();
 };
 
@@ -1387,7 +1389,7 @@ function validate(test) {
 
 function passable(name, tests, specific) {
   var suite = new core_Passable(name, tests, specific);
-  return suite.res.result;
+  return suite.res.output;
 }
 
 passable.VERSION = "6.3.5";

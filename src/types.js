@@ -1,6 +1,4 @@
 // @flow
-import resultObject from './core/resultObject';
-
 declare type AnyValue = any; // eslint-disable-line flowtype/no-weak-types
 declare type ArrayOrStringOfArrays = Array<string> | string;
 declare type NumStrBool = number | string | boolean;
@@ -75,3 +73,20 @@ declare type NumericValue = number | string;
 declare var PASSABLE_VERSION: string;
 
 declare type StringOrArray = string | RuleArgs;
+
+declare type Output = {
+    name: String,
+
+}
+
+declare type PassableResult = {
+    initFieldCounters: (fieldName: string) => void,
+    bumpTestCounter: (fieldName: string) => void,
+    bumpTestError: (fieldName: string, statement: string) => void,
+    bumpTestWarning: (fieldName: string, statement: string) => void,
+    fail: (fieldName: string, statement: string, Severity: Severity) => void,
+    addToSkipped: (fieldName: string) => void,
+    runCompletionCallbacks: () => void,
+    markAsync: (fieldName: string) => void,
+    markAsDone: (fieldName: string) => void,
+};

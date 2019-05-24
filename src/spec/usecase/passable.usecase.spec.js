@@ -5,7 +5,7 @@ import usecase_a from './usecase_a';
 import usecase_b from './usecase_b';
 import usecase_c from './usecase_c';
 import usecase_d from './usecase_d';
-import { excludeFromResult } from '../../../test-setup';
+import { excludeFromResult } from '../../../config/test-setup';
 
 describe('Test Passable full usecase', () => {
 
