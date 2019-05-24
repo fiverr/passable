@@ -295,7 +295,7 @@ module.exports = function proxyPolyfill() {
 /* 1 */
 /***/ (function(module) {
 
-module.exports = {"a":"6.3.5"};
+module.exports = {"a":"7.0.0"};
 
 /***/ }),
 /* 2 */
