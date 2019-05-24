@@ -12,7 +12,7 @@ const constructorError: Function = (name: string, value: string, doc?: string): 
  */
 class Passable {
     specific: Specific;
-    res: passableResult;
+    res: PassableResult;
     test: TestProvider;
     pending: Array<PassableTest>;
 

@@ -1,24 +1,22 @@
+// @flow
+
 import { WARN, FAIL } from '../../constants';
-const severities = [WARN, FAIL];
+import { createDiffieHellman } from 'crypto';
+const severities: string[] = [ WARN, FAIL ];
 
-const passableResult = (name) => {
-    const output = {
-        name,
-        hasValidationErrors: false,
-        hasValidationWarnings: false,
-        failCount: 0,
-        warnCount: 0,
-        testCount: 0,
-        testsPerformed: {},
-        validationErrors: {},
-        validationWarnings: {},
-        skipped: []
-    };
+type AsyncObject = null | {
+    [fieldName: string]: {
+        done: boolean,
+        callbacks: Function[]
+    }
+};
 
-    const completionCallbacks = [];
-    let asyncObject = null;
+const passableResult: Function = (name: string): PassableResult => {
 
-    const initFieldCounters = (fieldName) => {
+    const completionCallbacks: Function[] = [];
+    let asyncObject: AsyncObject = null;
+
+    const initFieldCounters: Function = (fieldName: string) => {
         if (output.testsPerformed[fieldName]) { return output; }
 
         output.testsPerformed[fieldName] = {
@@ -28,14 +26,14 @@ const passableResult = (name) => {
         };
     };
 
-    const bumpTestCounter = (fieldName) => {
+    const bumpTestCounter: Function = (fieldName: string) => {
         if (!output.testsPerformed[fieldName]) { return output; }
 
         output.testsPerformed[fieldName].testCount++;
         output.testCount++;
     };
 
-    const bumpTestWarning = (fieldName, statement) => {
+    const bumpTestWarning: Function = (fieldName: string, statement: string) => {
         output.hasValidationWarnings = true;
         output.validationWarnings[fieldName] = output.validationWarnings[fieldName] || [];
         output.validationWarnings[fieldName].push(statement);
@@ -43,7 +41,7 @@ const passableResult = (name) => {
         output.testsPerformed[fieldName].warnCount++;
     };
 
-    const bumpTestError = (fieldName, statement) => {
+    const bumpTestError: Function = (fieldName: string, statement: string) => {
         output.hasValidationErrors = true;
         output.validationErrors[fieldName] = output.validationErrors[fieldName] || [];
         output.validationErrors[fieldName].push(statement);
@@ -51,25 +49,25 @@ const passableResult = (name) => {
         output.testsPerformed[fieldName].failCount++;
     };
 
-    const fail = (fieldName, statement, severity) => {
+    const fail: Function = (fieldName: string, statement: string, severity: Severity) => {
         if (!output.testsPerformed[fieldName]) { return output; }
 
-        const selectedSeverity = severity && severities.includes(severity) ? severity : FAIL;
+        const selectedSeverity: Severity = severity && severities.includes(severity) ? severity : FAIL;
 
         selectedSeverity === WARN
             ? bumpTestWarning(fieldName, statement)
             : bumpTestError(fieldName, statement);
     };
 
-    const addToSkipped = (fieldName) => {
+    const addToSkipped: Function = (fieldName: string) => {
         !output.skipped.includes(fieldName) && output.skipped.push(fieldName);
     };
 
-    const runCompletionCallbacks = () => {
+    const runCompletionCallbacks: Function = () => {
         completionCallbacks.forEach((cb) => cb(output));
     };
 
-    output.done = (callback) => {
+    const done: Function = (callback: Function) => {
         if (typeof callback !== 'function') {return output;}
 
         if (!asyncObject) {
@@ -80,7 +78,7 @@ const passableResult = (name) => {
         return output;
     };
 
-    output.after = (fieldName, callback) => {
+    const after: Function = (fieldName: string, callback) => {
 
         if (typeof callback !== 'function') {
             return output;
@@ -96,12 +94,15 @@ const passableResult = (name) => {
         return output;
     };
 
-    const markAsync = (fieldName) => {
+    const markAsync: Function = (fieldName: string) => {
         asyncObject = asyncObject || {};
-        asyncObject[fieldName] = { done: false };
+        asyncObject[fieldName] = {
+            done: false,
+            callbacks: asyncObject[fieldName].callbacks || []
+        };
     };
 
-    const markAsDone = (fieldName) => {
+    const markAsDone: Function = (fieldName: string) => {
         if (asyncObject !== null && asyncObject[fieldName]) {
             asyncObject[fieldName].done = true;
 
@@ -112,7 +113,7 @@ const passableResult = (name) => {
         }
     };
 
-    output.getErrors = (fieldName) => {
+    const getErrors: Function = (fieldName: string) => {
         if (!fieldName) {
             return output.validationErrors;
         }
@@ -124,7 +125,7 @@ const passableResult = (name) => {
         return [];
     };
 
-    output.getWarnings = (fieldName) => {
+    const getWarnings: Function = (fieldName: string) => {
         if (!fieldName) {
             return output.validationWarnings;
         }
@@ -136,7 +137,7 @@ const passableResult = (name) => {
         return [];
     };
 
-    output.hasErrors = (fieldName) => {
+    const hasErrors: Function = (fieldName: string) => {
         if (!fieldName) {
             return output.hasValidationErrors;
         }
@@ -148,12 +149,31 @@ const passableResult = (name) => {
      * Returns whether a field (or the whole suite, if none passed) contains warnings
      * @param {string} [fieldName]
      */
-    output.hasWarnings = (fieldName) => {
+    const hasWarnings: Function = (fieldName: string) => {
         if (!fieldName) {
             return output.hasValidationWarnings;
         }
 
         return Boolean(output.getWarnings(fieldName).length);
+    };
+
+    const output: PassableOutput = {
+        name,
+        hasValidationErrors: false,
+        hasValidationWarnings: false,
+        failCount: 0,
+        warnCount: 0,
+        testCount: 0,
+        testsPerformed: {},
+        validationErrors: {},
+        validationWarnings: {},
+        skipped: [],
+        hasErrors,
+        hasWarnings,
+        getErrors,
+        getWarnings,
+        done,
+        after
     };
 
     return {

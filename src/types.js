@@ -1,6 +1,6 @@
 // @flow
 declare type AnyValue = any; // eslint-disable-line flowtype/no-weak-types
-declare type ArrayOrStringOfArrays = Array<string> | string;
+declare type ArrayOrStringOfArrays = string[] | string;
 declare type NumStrBool = number | string | boolean;
 declare type MapType = Map<mixed, mixed>;
 
@@ -25,7 +25,7 @@ declare type SpecificObject = {
     not?: SpecificGroup
 };
 
-declare type SpecificField = Array<string> | string;
+declare type SpecificField = string[] | string;
 declare type SpecificArgs = void | SpecificField | {
     only: SpecificField,
     not: SpecificField
@@ -33,7 +33,7 @@ declare type SpecificArgs = void | SpecificField | {
 
 // Passable: Result Object
 declare type ErrorAndWarningObject = {
-    [name: string]: Array<string>
+    [name: string]: string[]
 }
 
 declare type AsyncObject = {
@@ -44,7 +44,7 @@ declare type AsyncObject = {
 } | null;
 
 // Test
-declare type TestsWrapper = (test: TestProvider, draft: resultObject) => void;
+declare type TestsWrapper = (test: TestProvider, draft: PassableOutput) => void;
 declare type TestProvider = (fieldName: string, statemenpt: string, test: PassableTest, severity: Severity) => void;
 declare type PassableTest = () => void | () => boolean | Promise<void>;
 
@@ -79,6 +79,35 @@ declare type Output = {
 
 }
 
+declare type PassableOutput = {
+    name: string,
+    hasValidationErrors: boolean,
+    hasValidationWarnings: boolean,
+    failCount: number,
+    warnCount: number,
+    testCount: number,
+    testsPerformed: {
+        [fieldName: string]: {
+            testCount: number,
+            failCount: number,
+            warnCount: number
+        }
+    },
+    validationErrors: {
+        [fieldName: string]: string[]
+    },
+    validationWarnings: {
+        [fieldName: string]: string[]
+    },
+    skipped: string[],
+    hasErrors: (fieldName?: string) => boolean,
+    hasWarnings: (fieldName?: string) => boolean,
+    getErrors: (fieldName?: string) => string[] | { [fieldName: string]: string[] },
+    getWarnings: (fieldName?: string) => string[] | { [fieldName: string]: string[] },
+    done: ((output: PassableOutput) => void) => PassableOutput,
+    after: ((output: PassableOutput) => void) => PassableOutput
+};
+
 declare type PassableResult = {
     initFieldCounters: (fieldName: string) => void,
     bumpTestCounter: (fieldName: string) => void,
@@ -89,4 +118,5 @@ declare type PassableResult = {
     runCompletionCallbacks: () => void,
     markAsync: (fieldName: string) => void,
     markAsDone: (fieldName: string) => void,
+    output: PassableOutput
 };

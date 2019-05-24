@@ -1,4 +1,4 @@
 // @flow
 
-export const WARN: string = 'warn';
-export const FAIL: string = 'fail';
+export const WARN: Severity = 'warn';
+export const FAIL: Severity = 'fail';
