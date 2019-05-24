@@ -11,9 +11,6 @@ module.exports = (api) => {
 
     const plugins = [
         '@babel/plugin-transform-flow-strip-types',
-        ['webpack-aliases', {
-            'config': './config/webpack.js'
-        }],
         'babel-plugin-add-module-exports',
         '@babel/plugin-proposal-class-properties'
     ];
