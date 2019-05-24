@@ -29,7 +29,6 @@ deploy:
     on:
       repo: fiverr/passable
       branch: master
-      node: '8'
   - provider: npm
     email: evyatar.a@fiverr.com
     skip_cleanup: true
@@ -39,7 +38,6 @@ deploy:
       all_branches: true
       condition: $TRAVIS_BRANCH = "next"
       repo: fiverr/passable
-      node: '8'
   - provider: npm
     email: evyatar.a@fiverr.com
     skip_cleanup: true
@@ -49,4 +47,3 @@ deploy:
       all_branches: true
       condition: $TRAVIS_BRANCH != "next" && $TRAVIS_BRANCH != "master"
       repo: fiverr/passable
-      node: '8'
