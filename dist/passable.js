@@ -1273,6 +1273,37 @@ function lessThanOrEquals(value, arg1) {
 
 lessThanOrEquals.alias = 'lte';
 /* harmony default export */ var less_than_or_equals = (lessThanOrEquals);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/longer_than/index.js
+function longerThan(value, arg1) {
+  return value.length > arg1;
+}
+
+/* harmony default export */ var longer_than = (longerThan);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/longer_than_or_equals/index.js
+function longerThanOrEquals(value, arg1) {
+  return value.length >= arg1;
+}
+
+/* harmony default export */ var longer_than_or_equals = (longerThanOrEquals);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/shorter_than/index.js
+function shorterThan(value, arg1) {
+  return value.length < arg1;
+}
+
+/* harmony default export */ var shorter_than = (shorterThan);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/shorter_than_or_equals/index.js
+function shorterThanOrEquals(value, arg1) {
+  return value.length <= arg1;
+}
+
+/* harmony default export */ var shorter_than_or_equals = (shorterThanOrEquals);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/length_equals/index.js
+function lengthEquals(value, arg1) {
+  return value.length === arg1;
+}
+
+lengthEquals.negativeForm = 'lengthNotEquals';
+/* harmony default export */ var length_equals = (lengthEquals);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/extend_rules/index.js
 /**
  * Collects rules with `negativeForm` or `alias` attributes.
@@ -1322,6 +1353,11 @@ function extendRules(rules) {
 
 
 
+
+
+
+
+
 var rules_rules = {
   isArray: is_array,
   isNumber: is_number,
@@ -1338,7 +1374,12 @@ var rules_rules = {
   greaterThan: greater_than,
   greaterThanOrEquals: greater_than_or_equals,
   lessThan: less_than,
-  lessThanOrEquals: less_than_or_equals
+  lessThanOrEquals: less_than_or_equals,
+  longerThan: longer_than,
+  longerThanOrEquals: longer_than_or_equals,
+  shorterThan: shorter_than,
+  shorterThanOrEquals: shorter_than_or_equals,
+  lengthEquals: length_equals
 };
 /* harmony default export */ var runnables_rules = (extend_rules(rules_rules));
 // CONCATENATED MODULE: ./src/Enforce/runnables/index.js

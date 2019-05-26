@@ -1,3 +1,5 @@
+import {IEnforceInstance} from "passable";
+
 declare module 'passable' {
 
     const passable: Passable;
@@ -475,6 +477,72 @@ declare module 'passable' {
              *  enforce(2).gte('3') // falsy
              */
             gte(size: number): IEnforceInstance & T;
+
+            /**
+             * Checks that your enforce value is longer than a given number
+             *
+             * @example
+             *
+             *  enforce([1]).largerThan(0) // truthy
+             *
+             *  enforce('').largerThan(0) // falsy
+             */
+            longerThan(size: number): IEnforceInstance & T;
+
+            /**
+             * Checks that your enforce value is longer than or equals another value
+             *
+             * @example
+             *
+             *  enforce([1]).smallerThanOrEquals(0) // truthy
+             *
+             *  enforce('').smallerThanOrEquals(1) // falsy
+             */
+            longerThanOrEquals(size: number): IEnforceInstance & T;
+
+            /**
+             * Checks that your enforce value is shorter than a given number
+             *
+             * @example
+             *
+             *  enforce([]).smallerThanOrEquals(1) // truthy
+             *
+             *  enforce('0').smallerThanOrEquals(0) // falsy
+             */
+            shorterThan(size: number): IEnforceInstance & T;
+
+            /**
+             * Checks that your enforce value is shorter than or equals another value
+             *
+             * @example
+             *
+             *  enforce([]).smallerThanOrEquals(1) // truthy
+             *
+             *  enforce('0').smallerThanOrEquals(0) // falsy
+             */
+            shorterThanOrEquals(size: number): IEnforceInstance & T;
+
+            /**
+             * Checks that your enforce value is equals to a given number
+             *
+             * @example
+             *
+             *  enforce([1]).smallerThanOrEquals(1) // truthy
+             *
+             *  enforce('0').smallerThanOrEquals(0) // falsy
+             */
+            lengthEquals(size: number): IEnforceInstance & T;
+
+            /**
+             * Checks that your enforce value is not equals to a given number
+             *
+             * @example
+             *
+             *  enforce([]).smallerThanOrEquals(1) // truthy
+             *
+             *  enforce('').smallerThanOrEquals(0) // falsy
+             */
+            lengthNotEquals(size: number): IEnforceInstance & T;
         }
     }
 }

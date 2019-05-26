@@ -20,6 +20,7 @@ const negativeRules = [
     'notInside',
     'isNotNumeric',
     'isNotEmpty',
+    'lengthNotEquals',
     'notMatches',
     'sizeNotEquals'
 ];
@@ -44,7 +45,12 @@ const positiveRules = [
     'lt',
     'lte',
     'gt',
-    'gte'
+    'gte',
+    'longerThan',
+    'shorterThan',
+    'shorterThanOrEquals',
+    'longerThanOrEquals',
+    'lengthEquals'
 ];
 
-const allRules = [].concat(positiveRules, negativeRules);
+const allRules = [...new Set([...positiveRules, ...negativeRules])];
