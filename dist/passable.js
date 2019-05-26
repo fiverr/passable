@@ -1273,37 +1273,6 @@ function lessThanOrEquals(value, arg1) {
 
 lessThanOrEquals.alias = 'lte';
 /* harmony default export */ var less_than_or_equals = (lessThanOrEquals);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/extend_rules/index.js
-/**
- * Collects rules with `negativeForm` or `alias` attributes.
- * Adds a rule with the correct configuration.
- * @param {Object} rules - enforce rules object
- * @returns {Object} extended rules object
- */
-function extendRules(rules) {
-  var _loop = function _loop(rule) {
-    var negativeForm = rules[rule].negativeForm;
-    var alias = rules[rule].alias;
-
-    if (negativeForm) {
-      rules[negativeForm] = function () {
-        return !rules[rule].apply(rules, arguments);
-      };
-    }
-
-    if (alias) {
-      rules[alias] = rules[rule];
-    }
-  };
-
-  for (var rule in rules) {
-    _loop(rule);
-  }
-
-  return rules;
-}
-
-/* harmony default export */ var extend_rules = (extendRules);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/longer_than/index.js
 function longerThan(value, arg1) {
   return value.length > arg1;
@@ -1335,6 +1304,37 @@ function lengthEquals(value, arg1) {
 
 lengthEquals.negativeForm = 'lengthNotEquals';
 /* harmony default export */ var length_equals = (lengthEquals);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/extend_rules/index.js
+/**
+ * Collects rules with `negativeForm` or `alias` attributes.
+ * Adds a rule with the correct configuration.
+ * @param {Object} rules - enforce rules object
+ * @returns {Object} extended rules object
+ */
+function extendRules(rules) {
+  var _loop = function _loop(rule) {
+    var negativeForm = rules[rule].negativeForm;
+    var alias = rules[rule].alias;
+
+    if (negativeForm) {
+      rules[negativeForm] = function () {
+        return !rules[rule].apply(rules, arguments);
+      };
+    }
+
+    if (alias) {
+      rules[alias] = rules[rule];
+    }
+  };
+
+  for (var rule in rules) {
+    _loop(rule);
+  }
+
+  return rules;
+}
+
+/* harmony default export */ var extend_rules = (extendRules);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/index.js
 
 

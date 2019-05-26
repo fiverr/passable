@@ -15,12 +15,12 @@ import greaterThan from './size/greater_than';
 import greaterThanOrEquals from './size/greater_than_or_equals';
 import lessThan from './size/less_than';
 import lessThanOrEquals from './size/less_than_or_equals';
-import extendRules from './helpers/extend_rules';
 import longerThan from './size/longer_than';
 import longerThanOrEquals from './size/longer_than_or_equals';
 import shorterThan from './size/shorter_than';
 import shorterThanOrEquals from './size/shorter_than_or_equals';
 import lengthEquals from './size/length_equals';
+import extendRules from './helpers/extend_rules';
 
 const rules: EnforceRules = {
     isArray,

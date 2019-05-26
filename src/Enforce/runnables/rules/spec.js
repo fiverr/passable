@@ -50,8 +50,7 @@ const positiveRules = [
     'shorterThan',
     'shorterThanOrEquals',
     'longerThanOrEquals',
-    'lengthEquals',
-    'sizeEquals'
+    'lengthEquals'
 ];
 
-const allRules = [].concat(positiveRules, negativeRules);
+const allRules = [...positiveRules, ...negativeRules];
