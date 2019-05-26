@@ -53,4 +53,4 @@ const positiveRules = [
     'lengthEquals'
 ];
 
-const allRules = [...positiveRules, ...negativeRules];
+const allRules = [...new Set([...positiveRules, ...negativeRules])];
