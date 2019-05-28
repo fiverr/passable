@@ -1,7 +1,7 @@
 // @flow
 
 import { testRunner, testRunnerAsync } from '../testRunner';
-import ResultObject from '../ResultObject';
+import passableResult from '../passableResult';
 import Specific from '../Specific';
 
 const constructorError: Function = (name: string, value: string, doc?: string): string => `[Passable]: failed during suite initialization. Unexpected '${typeof value}' for '${name}' argument.
@@ -12,14 +12,14 @@ const constructorError: Function = (name: string, value: string, doc?: string): 
  */
 class Passable {
     specific: Specific;
-    res: ResultObject;
+    res: PassableResult;
     test: TestProvider;
     pending: Array<PassableTest>;
 
     pending = [];
 
     /**
-     * Initializes a validation suite, creates a new ResultObject instance and runs pending tests
+     * Initializes a validation suite, creates a new passableResult instance and runs pending tests
      */
     constructor(name: string, tests: TestsWrapper, specific: ?SpecificArgs) {
 
@@ -37,9 +37,9 @@ class Passable {
 
         this.specific = new Specific(specific);
 
-        this.res = new ResultObject(name);
+        this.res = passableResult(name);
 
-        tests(this.test, this.res);
+        tests(this.test, this.res.output);
         this.runPendingTests();
     }
 

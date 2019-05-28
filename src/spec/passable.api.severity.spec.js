@@ -3,15 +3,18 @@ import { expect } from 'chai';
 
 describe('Test warn flag', () => {
     it('Should mark test with warning', () => {
-        expect(warnPass).to.deep.equal(warnPassExpected);
+        expect(warnPass.hasErrors()).to.equal(false);
+        expect(warnPass.hasWarnings()).to.equal(true);
     });
 
     it('Should mark test with both warning and error', () => {
-        expect(warnFail).to.deep.equal(warnFailExpected);
+        expect(warnFail.hasErrors()).to.equal(true);
+        expect(warnFail.hasWarnings()).to.equal(true);
     });
 
     it('Should only fail test', () => {
-        expect(fail).to.deep.equal(failExpected);
+        expect(fail.hasErrors()).to.equal(true);
+        expect(fail.hasWarnings()).to.equal(false);
     });
 });
 

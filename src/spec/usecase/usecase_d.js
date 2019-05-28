@@ -54,7 +54,13 @@ export default (passable, enforce) => {
             ]
         },
         validationWarnings: {},
-        skipped: []
+        skipped: [],
+        after: '[Function]',
+        done: '[Function]',
+        getErrors: '[Function]',
+        hasErrors: '[Function]',
+        hasWarnings: '[Function]',
+        getWarnings: '[Function]'
     };
 
     return {

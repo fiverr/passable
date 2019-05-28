@@ -1,40 +1,46 @@
-import passable from '../../';
-import ResultObject, { WARN, FAIL } from './index';
+import passable from '../..';
+import passableResult from './index';
+import { WARN, FAIL } from '../../constants';
 import { expect } from 'chai';
+import { excludeFromResult } from '../../../config/test-setup';
 import { noop } from 'lodash';
 import sinon from 'sinon';
 import faker from 'faker';
 
-describe('class: PassableResponse', () => {
+describe('module: passableResult', () => {
     it('Should return correct initial object from constructor', () => {
-        expect(new ResultObject('FormName')).to.deep.equal({
-            name: 'FormName',
-            hasValidationErrors: false,
-            hasValidationWarnings: false,
-            failCount: 0,
-            warnCount: 0,
-            testCount: 0,
-            testsPerformed: {},
-            validationErrors: {},
-            validationWarnings: {},
-            skipped: []
-        });
+        expect(passableResult('FormName').output)
+            .excluding(excludeFromResult).to.deep.equal({
+                name: 'FormName',
+                hasValidationErrors: false,
+                hasValidationWarnings: false,
+                failCount: 0,
+                warnCount: 0,
+                testCount: 0,
+                testsPerformed: {},
+                validationErrors: {},
+                validationWarnings: {},
+                skipped: []
+            });
     });
 
 
     ['done', 'getErrors', 'getWarnings', 'hasErrors', 'hasWarnings'].forEach((method) => {
         it(`Should expose ${method} method`, () => {
-            const res = new ResultObject(faker.lorem.word());
-            expect(typeof res[method]).to.equal('function');
+            const res = passableResult(faker.lorem.word());
+            expect(typeof res.output[method]).to.equal('function');
         });
     });
 
     describe('method: initFieldCounters', () => {
         let testObject;
-        beforeEach(() => testObject = new ResultObject('FormName').initFieldCounters('example'));
+        beforeEach(() => {
+            testObject = passableResult('FormName');
+            testObject.initFieldCounters('example');
+        });
         it('Should add new fields and its counters to `testsPerformed`', () => {
 
-            expect(testObject.testsPerformed).to.deep.equal({
+            expect(testObject.output.testsPerformed).to.deep.equal({
                 example: {
                     failCount: 0,
                     testCount: 0,
@@ -44,12 +50,12 @@ describe('class: PassableResponse', () => {
         });
 
         it('Should keep field counters untouched if they already exist', () => {
-            Object.assign(testObject.testsPerformed.example, {
+            Object.assign(testObject.output.testsPerformed.example, {
                 failCount: 5,
                 testCount: 5
             });
 
-            expect(testObject.testsPerformed).to.deep.equal({
+            expect(testObject.output.testsPerformed).to.deep.equal({
                 example: {
                     failCount: 5,
                     testCount: 5,
@@ -61,11 +67,14 @@ describe('class: PassableResponse', () => {
 
     describe('method: bumpTestCounters', () => {
         let testObject;
-        beforeEach(() => testObject = new ResultObject('FormName').initFieldCounters('example'));
+        beforeEach(() => {
+            testObject = passableResult('FormName');
+            testObject.initFieldCounters('example');
+        });
 
         it('Should bump test counters in `testsPerformed`', () => {
             testObject.bumpTestCounter('example');
-            expect(testObject.testsPerformed).to.deep.equal({
+            expect(testObject.output.testsPerformed).to.deep.equal({
                 example: {
                     failCount: 0,
                     testCount: 1,
@@ -75,34 +84,34 @@ describe('class: PassableResponse', () => {
         });
 
         it('Should bump test counters in `testCount` from `0` to `1`', () => {
-            expect(testObject.testCount).to.equal(0);
+            expect(testObject.output.testCount).to.equal(0);
             testObject.bumpTestCounter('example');
-            expect(testObject.testCount).to.equal(1);
+            expect(testObject.output.testCount).to.equal(1);
         });
     });
 
     describe('method: addToSkipped', () => {
         let testObject;
-        beforeEach(() => testObject = new ResultObject('FormName'));
+        beforeEach(() => testObject = passableResult('FormName'));
 
         it('Should have added field in skipped list', () => {
             testObject.addToSkipped('field_1');
-            expect(testObject.skipped).to.include('field_1');
+            expect(testObject.output.skipped).to.include('field_1');
         });
 
         it('Should have added fields in skipped list', () => {
-            testObject.addToSkipped('field_1').addToSkipped('field_2');
-            expect(testObject.skipped).to.include('field_1');
-            expect(testObject.skipped).to.include('field_2');
+            testObject.addToSkipped('field_1');
+            testObject.addToSkipped('field_2');
+            expect(testObject.output.skipped).to.include('field_1');
+            expect(testObject.output.skipped).to.include('field_2');
         });
 
         it('Should uniquely add each field', () => {
-            testObject
-                .addToSkipped('field_1')
-                .addToSkipped('field_2')
-                .addToSkipped('field_1')
-                .addToSkipped('field_2');
-            expect(testObject.skipped).to.have.lengthOf(2);
+            testObject.addToSkipped('field_1');
+            testObject.addToSkipped('field_2');
+            testObject.addToSkipped('field_1');
+            testObject.addToSkipped('field_2');
+            expect(testObject.output.skipped).to.have.lengthOf(2);
         });
     });
 
@@ -110,7 +119,7 @@ describe('class: PassableResponse', () => {
         let res;
 
         beforeEach(() => {
-            res = new ResultObject(faker.lorem.word());
+            res = passableResult(faker.lorem.word());
             res.markAsync();
         });
 
@@ -119,17 +128,18 @@ describe('class: PassableResponse', () => {
             const fn1 = sinon.spy();
             const fn2 = sinon.spy();
             const fn3 = sinon.spy();
-            res.done(fn1).done(fn2).done(fn3);
+            res.output.done(fn1).done(fn2).done(fn3);
             res.runCompletionCallbacks();
             expect(fn1.calledOnce).to.equal(true);
             expect(fn2.calledOnce).to.equal(true);
             expect(fn3.calledOnce).to.equal(true);
         });
 
-        it('Should pass current ResultObject instance to the callback', () => {
-            res.done((instance) => {
-                expect(res).to.equal(instance);
+        it('Should pass current passableResult instance to the callback', () => {
+            res.output.done((instance) => {
+                expect(instance).to.deep.equal(res.output);
             });
+
             res.runCompletionCallbacks();
         });
     });
@@ -138,11 +148,11 @@ describe('class: PassableResponse', () => {
         let res;
 
         beforeEach(() => {
-            res = new ResultObject(faker.lorem.word());
+            res = passableResult(faker.lorem.word());
         });
 
         it('Should allow chaining by returning self', () => {
-            expect(res.done(noop)).to.equal(res);
+            expect(res.output.done(noop)).to.deep.equal(res.output);
         });
 
         it('Should run done callback when done', (done) => {
@@ -163,7 +173,7 @@ describe('class: PassableResponse', () => {
 
         it('Should return silently for non-function values', (done) => {
             [0, 1, null, undefined, new Promise(noop), false, true, [], {}]
-                .forEach((v) => res.done(v));
+                .forEach((v) => res.output.done(v));
             done();
         });
 
@@ -174,7 +184,7 @@ describe('class: PassableResponse', () => {
                 setTimeout(() => {
                     res.runCompletionCallbacks();
                 }, 250);
-                res.done(() => {
+                res.output.done(() => {
                     expect(Date.now() - startTime).to.be.at.least(250);
                     done();
                 });
@@ -183,16 +193,16 @@ describe('class: PassableResponse', () => {
 
         describe('When sync', () => {
             it('Should run callbacks immediately', (done) => {
-                res.done(() => done());
+                res.output.done(() => done());
                 throw new Error(); // this proves that it is invoked immediately
             });
 
             it('Should run all callbacks in sequence', () => {
                 const values = [];
-                res.done(() => values.push(1));
-                res.done(() => values.push(2));
-                res.done(() => values.push(3));
-                res.done(() => values.push(4));
+                res.output.done(() => values.push(1));
+                res.output.done(() => values.push(2));
+                res.output.done(() => values.push(3));
+                res.output.done(() => values.push(4));
                 expect(values).to.deep.equal([1, 2, 3, 4]);
             });
         });
@@ -240,14 +250,14 @@ describe('class: PassableResponse', () => {
 
         describe('Return value', () => {
             it('Should return self', () => {
-                expect(res.after('sync', noop)).to.equal(res);
+                expect(res.after('sync', noop)).to.deep.equal(res);
             });
         });
 
         describe('Invalid values', () => {
             it('Should return self', () => {
-                expect(res.after('s')).to.equal(res);
-                expect(res.after('s', 's')).to.equal(res);
+                expect(res.after('s')).to.deep.equal(res);
+                expect(res.after('s', 's')).to.deep.equal(res);
             });
         });
 
@@ -264,22 +274,22 @@ describe('class: PassableResponse', () => {
     describe('method: getErrors', () => {
         let testObject;
         beforeEach(() => {
-            testObject = new ResultObject('FormName')
-                .initFieldCounters('example')
-                .initFieldCounters('example_2')
-                .fail('example', 'Error string', FAIL);
+            testObject = passableResult('FormName');
+            testObject.initFieldCounters('example');
+            testObject.initFieldCounters('example_2');
+            testObject.fail('example', 'Error string', FAIL);
         });
 
         it('Should return errors array for a field with errors', () => {
-            expect(testObject.getErrors('example')).to.deep.equal(['Error string']);
+            expect(testObject.output.getErrors('example')).to.deep.equal(['Error string']);
         });
 
         it('Should return empty array for a field with no errors', () => {
-            expect(testObject.getErrors('example_2')).to.deep.equal([]);
+            expect(testObject.output.getErrors('example_2')).to.deep.equal([]);
         });
 
         it('Should return all errors object when no field specified', () => {
-            expect(testObject.getErrors()).to.deep.equal({
+            expect(testObject.output.getErrors()).to.deep.equal({
                 example: ['Error string']
             });
         });
@@ -288,22 +298,22 @@ describe('class: PassableResponse', () => {
     describe('method: getWarnings', () => {
         let testObject;
         beforeEach(() => {
-            testObject = new ResultObject('FormName')
-                .initFieldCounters('example')
-                .initFieldCounters('example_2')
-                .fail('example', 'Error string', WARN);
+            testObject = passableResult('FormName');
+            testObject.initFieldCounters('example');
+            testObject.initFieldCounters('example_2');
+            testObject.fail('example', 'Error string', WARN);
         });
 
         it('Should return errors array for a field with errors', () => {
-            expect(testObject.getWarnings('example')).to.deep.equal(['Error string']);
+            expect(testObject.output.getWarnings('example')).to.deep.equal(['Error string']);
         });
 
         it('Should return empty array for a field with no errors', () => {
-            expect(testObject.getWarnings('example_2')).to.deep.equal([]);
+            expect(testObject.output.getWarnings('example_2')).to.deep.equal([]);
         });
 
         it('Should return all errors object when no field specified', () => {
-            expect(testObject.getWarnings()).to.deep.equal({
+            expect(testObject.output.getWarnings()).to.deep.equal({
                 example: ['Error string']
             });
         });
@@ -312,31 +322,31 @@ describe('class: PassableResponse', () => {
     describe('method: hasErrors', () => {
         let testObject;
         beforeEach(() => {
-            testObject = new ResultObject('FormName')
-                .initFieldCounters('example')
-                .initFieldCounters('example_2')
-                .fail('example', 'Error string', FAIL);
+            testObject = passableResult('FormName');
+            testObject.initFieldCounters('example');
+            testObject.initFieldCounters('example_2');
+            testObject.fail('example', 'Error string', FAIL);
         });
 
         describe('Field specified', () => {
             it('Should return true for a field with errors', () => {
-                expect(testObject.hasErrors('example')).to.equal(true);
+                expect(testObject.output.hasErrors('example')).to.equal(true);
             });
 
             it('Should return false for a field without errors', () => {
-                expect(testObject.hasErrors('example_2')).to.equal(false);
+                expect(testObject.output.hasErrors('example_2')).to.equal(false);
             });
         });
 
         describe('Field not specified', () => {
             it('Should return true if errors exist', () => {
-                expect(testObject.hasErrors()).to.equal(true);
+                expect(testObject.output.hasErrors()).to.equal(true);
             });
         });
 
         describe('Specified field does not exist', () => {
             it('Should return false', () => {
-                expect(testObject.hasErrors('nonexistent')).to.equal(false);
+                expect(testObject.output.hasErrors('nonexistent')).to.equal(false);
             });
         });
     });
@@ -344,31 +354,31 @@ describe('class: PassableResponse', () => {
     describe('method: hasWarnings', () => {
         let testObject;
         beforeEach(() => {
-            testObject = new ResultObject('FormName')
-                .initFieldCounters('example')
-                .initFieldCounters('example_2')
-                .fail('example', 'Error string', WARN);
+            testObject = passableResult('FormName');
+            testObject.initFieldCounters('example');
+            testObject.initFieldCounters('example_2');
+            testObject.fail('example', 'Error string', WARN);
         });
 
         describe('Field specified', () => {
             it('Should return true for a field with errors', () => {
-                expect(testObject.hasWarnings('example')).to.equal(true);
+                expect(testObject.output.hasWarnings('example')).to.equal(true);
             });
 
             it('Should return false for a field without errors', () => {
-                expect(testObject.hasWarnings('example_2')).to.equal(false);
+                expect(testObject.output.hasWarnings('example_2')).to.equal(false);
             });
         });
 
         describe('Field not specified', () => {
             it('Should return true if errors exist', () => {
-                expect(testObject.hasWarnings()).to.equal(true);
+                expect(testObject.output.hasWarnings()).to.equal(true);
             });
         });
 
         describe('Specified field does not exist', () => {
             it('Should return false', () => {
-                expect(testObject.hasWarnings('nonexistent')).to.equal(false);
+                expect(testObject.output.hasWarnings('nonexistent')).to.equal(false);
             });
         });
     });
@@ -378,57 +388,58 @@ describe('class: PassableResponse', () => {
         let testObject;
 
         beforeEach(() => {
-            testObject = new ResultObject('FormName');
-            testObject.testsPerformed = {
-                f1: {
-                    failCount: 0,
-                    warnCount: 0
-                }
-            };
+            testObject = passableResult('FormName');
+            testObject.initFieldCounters('f1');
         });
 
         it('Should return correct failing object', () => {
-            const fail = testObject.fail('f1', 'should fail', FAIL);
+            testObject.fail('f1', 'should fail', FAIL);
 
-            expect(fail).to.deep.equal({
-                name: 'FormName',
-                testCount: 0,
-                failCount: 1,
-                warnCount: 0,
-                hasValidationErrors: true,
-                hasValidationWarnings: false,
-                testsPerformed: {
-                    f1: { failCount: 1, warnCount: 0 }
-                },
-                validationErrors: { f1: ['should fail'] },
-                validationWarnings: {},
-                skipped: []
-            });
+            expect(testObject.output)
+                .excluding(excludeFromResult)
+                .to.deep.equal({
+                    name: 'FormName',
+                    testCount: 0,
+                    failCount: 1,
+                    warnCount: 0,
+                    hasValidationErrors: true,
+                    hasValidationWarnings: false,
+                    testsPerformed: {
+                        f1: { failCount: 1, warnCount: 0, testCount: 0 }
+                    },
+                    validationErrors: { f1: ['should fail'] },
+                    validationWarnings: {},
+                    skipped: []
+                });
         });
 
         it('Should return correct warning object', () => {
-            const warn = testObject.fail('f1', 'should warn', WARN);
-            expect(warn).to.deep.equal({
-                name: 'FormName',
-                testCount: 0,
-                failCount: 0,
-                warnCount: 1,
-                hasValidationErrors: false,
-                hasValidationWarnings: true,
-                testsPerformed: {
-                    f1: { failCount: 0, warnCount: 1 }
-                },
-                validationErrors: {},
-                validationWarnings: { f1: ['should warn'] },
-                skipped: []
-            });
+            testObject.fail('f1', 'should warn', WARN);
+            expect(testObject.output)
+                .excluding(excludeFromResult)
+                .to.deep.equal({
+                    name: 'FormName',
+                    testCount: 0,
+                    failCount: 0,
+                    warnCount: 1,
+                    hasValidationErrors: false,
+                    hasValidationWarnings: true,
+                    testsPerformed: {
+                        f1: { failCount: 0, warnCount: 1, testCount: 0 }
+                    },
+                    validationErrors: {},
+                    validationWarnings: { f1: ['should warn'] },
+                    skipped: []
+                });
         });
 
         it('Should return and keep object unchanged if field does not exist', () => {
-            const testObject = new ResultObject('FormName');
+            const testObject = passableResult('FormName');
             testObject.fail('f1', 'I do not exist');
 
-            expect(testObject).to.deep.equal(new ResultObject('FormName'));
+            expect(testObject.output)
+                .excluding(excludeFromResult)
+                .to.deep.equal(passableResult('FormName').output);
         });
     });
 
@@ -437,51 +448,50 @@ describe('class: PassableResponse', () => {
         let testObject;
 
         beforeEach(() => {
-            testObject = new ResultObject('FormName');
-            testObject.testsPerformed = {
-                f1: {
-                    failCount: 0,
-                    warnCount: 0
-                }
-            };
+            testObject = passableResult('FormName');
+            testObject.initFieldCounters('f1');
         });
 
         it('#bumpTestWarning Should correctly update instance with field\'s warnings', () => {
             testObject.bumpTestWarning('f1', 'should warn');
 
-            expect(testObject).to.deep.equal({
-                name: 'FormName',
-                testCount: 0,
-                failCount: 0,
-                warnCount: 1,
-                hasValidationErrors: false,
-                hasValidationWarnings: true,
-                testsPerformed: {
-                    f1: { failCount: 0, warnCount: 1 }
-                },
-                validationErrors: {},
-                validationWarnings: { f1: ['should warn'] },
-                skipped: []
-            });
+            expect(testObject.output)
+                .excluding(excludeFromResult)
+                .to.deep.equal({
+                    name: 'FormName',
+                    testCount: 0,
+                    failCount: 0,
+                    warnCount: 1,
+                    hasValidationErrors: false,
+                    hasValidationWarnings: true,
+                    testsPerformed: {
+                        f1: { failCount: 0, warnCount: 1, testCount: 0 }
+                    },
+                    validationErrors: {},
+                    validationWarnings: { f1: ['should warn'] },
+                    skipped: []
+                });
         });
 
         it('#bumpTestError Should correctly update instance with field\'s error', () => {
             testObject.bumpTestError('f1', 'should error');
 
-            expect(testObject).to.deep.equal({
-                name: 'FormName',
-                testCount: 0,
-                failCount: 1,
-                warnCount: 0,
-                hasValidationErrors: true,
-                hasValidationWarnings: false,
-                testsPerformed: {
-                    f1: { failCount: 1, warnCount: 0 }
-                },
-                validationErrors: { f1: ['should error'] },
-                validationWarnings: {},
-                skipped: []
-            });
+            expect(testObject.output)
+                .excluding(excludeFromResult)
+                .to.deep.equal({
+                    name: 'FormName',
+                    testCount: 0,
+                    failCount: 1,
+                    warnCount: 0,
+                    hasValidationErrors: true,
+                    hasValidationWarnings: false,
+                    testsPerformed: {
+                        f1: { failCount: 1, warnCount: 0, testCount: 0 }
+                    },
+                    validationErrors: { f1: ['should error'] },
+                    validationWarnings: {},
+                    skipped: []
+                });
         });
     });
 });
