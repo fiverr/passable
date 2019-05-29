@@ -22,8 +22,4 @@ enforce('143').isNumeric();
 
 ```js
 enforce(143).isNumeric(false); // false
-
-enforce("not-numeric").allOf({
-    isNumeric: false
-}); // true
 ```

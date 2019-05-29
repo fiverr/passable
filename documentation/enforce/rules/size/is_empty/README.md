@@ -85,8 +85,4 @@ enforce(true).isEmpty();
 
 ```js
 enforce([]).isEmpty(false); // false
-
-enforce([1,2,3]).allOf({
-    isEmpty: false
-}); // true
 ```

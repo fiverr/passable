@@ -45,5 +45,4 @@ PASSABLE {{PASSABLE_VERSION}}
             * [size/smallerThan](./enforce/rules/size/smaller_than/README.md)
             * [size/smallerThanOrEquals](./enforce/rules/size/smaller_than_or_equals/README.md)
         * [Custom Enforce Rules](./enforce/rules/custom.md)
-        * [Compound Enforcements](./enforce/compound/README.md)
     * [Using with assertions libraries](./compatability/assertions.md)

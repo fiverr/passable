@@ -22,8 +22,4 @@ enforce(NaN).isNumber();
 
 ```js
 enforce(143).isNumber(false); // false
-
-enforce(143).allOf({
-    isNumber: false
-}); // false
 ```

@@ -29,11 +29,8 @@ passable('NewUserForm', (test) => {
 
     test('username', 'already exists', fetch(`/check_availability?username=${data.username}`));
 
-    test('age', 'Can either be empty, or larger than 18', () => {
-        enforce(data.age).anyOf({
-            isEmpty: true,
-            largerThan: 18
-        });
+    test('age', 'Must be greater than 18', () => {
+        enforce(data.age).greaterThan(18);
     });
 });
 ```

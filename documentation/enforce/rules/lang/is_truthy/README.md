@@ -45,8 +45,4 @@ enforce(0).isTruthy();
 
 ```js
 enforce(true).isTruthy(false); // false
-
-enforce(false).allOf({
-    isTruthy: false
-}); // true
 ```
