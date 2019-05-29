@@ -62,12 +62,6 @@ declare type EnforceRules = {
     [ruleName: string]: EnforceRule
 };
 
-// Enforce: Compound
-declare type Runner = (value: AnyValue, tests: CompoundTestObject, rules: EnforceRules) => boolean;
-declare type CompoundTestObject = {
-    [rule: string]: AnyValue
-}
-
 declare type NumericValue = number | string;
 
 declare var PASSABLE_VERSION: string;
