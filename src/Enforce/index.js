@@ -1,21 +1,21 @@
 // @flow
 
-import * as runnables from './runnables';
-import * as runners from './runners';
+import rules from './runnables/rules';
+import ruleRunner from './runners/rule';
 
 // $FlowFixMe
 const glob: GlobalObject = Function('return this')();
 
 const Enforce: Function = (customRules: EnforceRules = {}): EnforceInstance => {
-    const rules: EnforceRules = Object.assign({}, runnables.rules, customRules);
+    const rulesObject: EnforceRules = Object.assign({}, rules, customRules);
 
     if (typeof glob.Proxy === 'function') {
         return (value: AnyValue): EnforceRules => {
-            const proxy: EnforceRules = new Proxy(rules, {
+            const proxy: EnforceRules = new Proxy(rulesObject, {
                 get: (rules, fnName) => {
                     if (rules.hasOwnProperty(fnName) && typeof rules[fnName] === 'function') {
                         return (...args) => {
-                            runners.rule(rules[fnName], value, ...args);
+                            ruleRunner(rules[fnName], value, ...args);
                             return proxy;
                         };
                     }
@@ -26,12 +26,12 @@ const Enforce: Function = (customRules: EnforceRules = {}): EnforceInstance => {
         };
     }
 
-    const rulesList: string[] = Object.keys(rules);
+    const rulesList: string[] = Object.keys(rulesObject);
 
     return (value) => rulesList.reduce((allRules, fnName) => {
-        if (rules.hasOwnProperty(fnName) && typeof rules[fnName] === 'function') {
+        if (rulesObject.hasOwnProperty(fnName) && typeof rulesObject[fnName] === 'function') {
             allRules[fnName] = (...args) => {
-                runners.rule(rules[fnName], value, ...args);
+                ruleRunner(rulesObject[fnName], value, ...args);
                 return allRules;
             };
         }

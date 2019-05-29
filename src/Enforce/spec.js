@@ -1,6 +1,6 @@
 import Enforce from './index';
 import { random } from 'faker';
-import { rules } from './runnables';
+import rules from './runnables/rules';
 import { expect } from 'chai';
 const allRules = Object.keys(rules);
 const _proxy = Proxy;

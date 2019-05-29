@@ -100,9 +100,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var runners_namespaceObject = {};
-__webpack_require__.r(runners_namespaceObject);
-__webpack_require__.d(runners_namespaceObject, "rule", function() { return runners_rule; });
 
 // CONCATENATED MODULE: ./src/core/testRunner/index.js
 function testRunner(test) {
@@ -1071,9 +1068,6 @@ var rules_rules = {
   lengthEquals: length_equals
 };
 /* harmony default export */ var runnables_rules = (extend_rules(rules_rules));
-// CONCATENATED MODULE: ./src/Enforce/runnables/index.js
-
-
 // CONCATENATED MODULE: ./src/Enforce/runners/rule/index.js
 function rule_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { rule_typeof = function _typeof(obj) { return typeof obj; }; } else { rule_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return rule_typeof(obj); }
 
@@ -1099,9 +1093,6 @@ function rule(rule, value) {
 }
 
 /* harmony default export */ var runners_rule = (rule);
-// CONCATENATED MODULE: ./src/Enforce/runners/index.js
-
-
 // CONCATENATED MODULE: ./src/Enforce/index.js
 
  // $FlowFixMe
@@ -1110,11 +1101,11 @@ var glob = Function('return this')();
 
 var Enforce_Enforce = function Enforce() {
   var customRules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var rules = Object.assign({}, runnables_rules, customRules);
+  var rulesObject = Object.assign({}, runnables_rules, customRules);
 
   if (typeof glob.Proxy === 'function') {
     return function (value) {
-      var proxy = new Proxy(rules, {
+      var proxy = new Proxy(rulesObject, {
         get: function get(rules, fnName) {
           if (rules.hasOwnProperty(fnName) && typeof rules[fnName] === 'function') {
             return function () {
@@ -1122,7 +1113,7 @@ var Enforce_Enforce = function Enforce() {
                 args[_key] = arguments[_key];
               }
 
-              runners_rule.apply(runners_namespaceObject, [rules[fnName], value].concat(args));
+              runners_rule.apply(void 0, [rules[fnName], value].concat(args));
               return proxy;
             };
           }
@@ -1134,16 +1125,16 @@ var Enforce_Enforce = function Enforce() {
     };
   }
 
-  var rulesList = Object.keys(rules);
+  var rulesList = Object.keys(rulesObject);
   return function (value) {
     return rulesList.reduce(function (allRules, fnName) {
-      if (rules.hasOwnProperty(fnName) && typeof rules[fnName] === 'function') {
+      if (rulesObject.hasOwnProperty(fnName) && typeof rulesObject[fnName] === 'function') {
         allRules[fnName] = function () {
           for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
             args[_key2] = arguments[_key2];
           }
 
-          runners_rule.apply(runners_namespaceObject, [rules[fnName], value].concat(args));
+          runners_rule.apply(void 0, [rulesObject[fnName], value].concat(args));
           return allRules;
         };
       }
