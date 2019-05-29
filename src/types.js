@@ -113,3 +113,5 @@ declare type PassableResult = {
     markAsDone: (fieldName: string) => void,
     output: PassableOutput
 };
+
+declare type GlobalObject = Object; // eslint-disable-line flowtype/no-weak-types
