@@ -1,13 +1,17 @@
-import single from './index';
 import { expect } from 'chai';
+import rule from './index';
 
-describe('Test Passable\'s enforce - chainable - single function', () => {
+describe('Test rule runner', () => {
 
-    it('Should run passed function against value and throw if invalid', () => {
-        expect(() => single((n) => n === 2), 1).to.throw(Error);
+    describe('When failing output', () => {
+        it('Should throw', () => {
+            expect(() => rule((n) => n === 2, 1)).to.throw(Error);
+        });
     });
 
-    it('Should run passed function against value and return silently if valid', () => {
-        expect(single((n) => n === 1, 1)).to.equal(undefined);
+    describe('When passing output', () => {
+        it('Should return silently', () => {
+            expect(rule((n) => n === 1, 1)).to.equal(undefined);
+        });
     });
 });
