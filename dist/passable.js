@@ -1088,7 +1088,7 @@ function rule(rule, value) {
   }
 
   if (rule.apply(void 0, [value].concat(args)) !== true) {
-    throw new Error("[Enforce]: ".concat(rule.name, "  invalid ").concat(rule_typeof(value), " value"));
+    throw new Error("[Enforce]: ".concat(rule.name, " invalid ").concat(rule_typeof(value), " value"));
   }
 }
 
@@ -1099,45 +1099,51 @@ function rule(rule, value) {
 
 var glob = Function('return this')();
 
+var isRule = function isRule(rulesObject, name) {
+  return rulesObject.hasOwnProperty(name) && typeof rulesObject[name] === 'function';
+};
+
 var Enforce_Enforce = function Enforce() {
   var customRules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var rulesObject = Object.assign({}, runnables_rules, customRules);
 
-  if (typeof glob.Proxy === 'function') {
+  if (typeof Proxy === 'function') {
     return function (value) {
       var proxy = new Proxy(rulesObject, {
         get: function get(rules, fnName) {
-          if (rules.hasOwnProperty(fnName) && typeof rules[fnName] === 'function') {
-            return function () {
-              for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-              }
-
-              runners_rule.apply(void 0, [rules[fnName], value].concat(args));
-              return proxy;
-            };
+          if (!isRule(rules, fnName)) {
+            return;
           }
 
-          return undefined;
+          return function () {
+            for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+              args[_key] = arguments[_key];
+            }
+
+            runners_rule.apply(void 0, [rules[fnName], value].concat(args));
+            return proxy;
+          };
         }
       });
       return proxy;
     };
-  }
+  } // This is relatively heavier, and preferably should only be done when lacking proxy support
 
-  var rulesList = Object.keys(rulesObject);
+
   return function (value) {
-    return rulesList.reduce(function (allRules, fnName) {
-      if (rulesObject.hasOwnProperty(fnName) && typeof rulesObject[fnName] === 'function') {
-        allRules[fnName] = function () {
-          for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-            args[_key2] = arguments[_key2];
-          }
-
-          runners_rule.apply(void 0, [rulesObject[fnName], value].concat(args));
-          return allRules;
-        };
+    return Object.keys(rulesObject).reduce(function (allRules, fnName) {
+      if (!isRule(rulesObject, fnName)) {
+        return allRules;
       }
+
+      allRules[fnName] = function () {
+        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        runners_rule.apply(void 0, [rulesObject[fnName], value].concat(args));
+        return allRules;
+      };
 
       return allRules;
     }, {});
