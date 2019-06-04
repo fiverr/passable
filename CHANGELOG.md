@@ -11,8 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - [Minor] `.after()` callback that can run after a specific field finished execution.
-- [Minor] new size rules (lessThan, greaterThan, lessThanOrEquals, greaterThanOrEquals).
-- [Minor] new size rules (longerThan, shorterThan, longerThanOrEquals, shorterThanOrEquals, lengthEquals).
+- [Minor] New size rules (lessThan, greaterThan, lessThanOrEquals, greaterThanOrEquals).
+- [Minor] New size rules (longerThan, shorterThan, longerThanOrEquals, shorterThanOrEquals, lengthEquals).
+
+### Removed
+- [Major] Removed compound rules (`anyOf()`, `allOf()`, `noneOf()`).
 
 ## [6.3.4] - 2019-05-01
 
