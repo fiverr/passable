@@ -104,6 +104,16 @@ declare module 'passable' {
              * Returns whether a certain field (or the whole suite if not supplied) has warnings
              */
             hasWarnings: (field?: string) => boolean;
+
+            /**
+             * Registers a completion callback for the validation suite
+             */
+            done: (callback: (res: PassableNS.IValidationResult) => void) => PassableNS.IValidationResult;
+
+            /**
+             * Registers a completion callback for a specific field
+             */
+            after: (fieldName: string, callback: (res: PassableNS.IValidationResult) => void) => PassableNS.IValidationResult;
         }
 
         export type IFunctionOrPromise = () => void | Promise<any>;
@@ -479,13 +489,37 @@ declare module 'passable' {
             gte(size: number): IEnforceInstance & T;
 
             /**
+             * Checks that your enforce value is equals to a given number
+             *
+             * @example
+             *
+             *  enforce('1').numberEquals(1) // truthy
+             *
+             *  enforce(2).numberEquals(2) // truthy
+             *
+             *  enforce('2').numberEquals(0) // falsy
+             */
+            numberEquals(size: number): IEnforceInstance & T;
+
+            /**
+             * Checks that your enforce value is not equals to a given number
+             *
+             * @example
+             *
+             *  enforce(3).numberNotEquals(1) // truthy
+             *
+             *  enforce('3').numberNotEquals(3) // falsy
+             */
+            numberNotEquals(size: number): IEnforceInstance & T;
+
+            /**
              * Checks that your enforce value is longer than a given number
              *
              * @example
              *
-             *  enforce([1]).largerThan(0) // truthy
+             *  enforce(['one']).longerThan(0) // truthy
              *
-             *  enforce('').largerThan(0) // falsy
+             *  enforce('').longerThan(0) // falsy
              */
             longerThan(size: number): IEnforceInstance & T;
 
@@ -494,9 +528,9 @@ declare module 'passable' {
              *
              * @example
              *
-             *  enforce([1]).smallerThanOrEquals(0) // truthy
+             *  enforce([1]).longerThanOrEquals(0) // truthy
              *
-             *  enforce('').smallerThanOrEquals(1) // falsy
+             *  enforce('').longerThanOrEquals(1) // falsy
              */
             longerThanOrEquals(size: number): IEnforceInstance & T;
 
@@ -505,9 +539,9 @@ declare module 'passable' {
              *
              * @example
              *
-             *  enforce([]).smallerThanOrEquals(1) // truthy
+             *  enforce([]).shorterThan(1) // truthy
              *
-             *  enforce('0').smallerThanOrEquals(0) // falsy
+             *  enforce('0').shorterThan(0) // falsy
              */
             shorterThan(size: number): IEnforceInstance & T;
 
@@ -516,9 +550,9 @@ declare module 'passable' {
              *
              * @example
              *
-             *  enforce([]).smallerThanOrEquals(1) // truthy
+             *  enforce([]).shorterThanOrEquals(1) // truthy
              *
-             *  enforce('0').smallerThanOrEquals(0) // falsy
+             *  enforce('0').shorterThanOrEquals(0) // falsy
              */
             shorterThanOrEquals(size: number): IEnforceInstance & T;
 
@@ -527,9 +561,9 @@ declare module 'passable' {
              *
              * @example
              *
-             *  enforce([1]).smallerThanOrEquals(1) // truthy
+             *  enforce([1]).lengthEquals(1) // truthy
              *
-             *  enforce('0').smallerThanOrEquals(0) // falsy
+             *  enforce('0').lengthEquals(0) // falsy
              */
             lengthEquals(size: number): IEnforceInstance & T;
 
@@ -538,9 +572,9 @@ declare module 'passable' {
              *
              * @example
              *
-             *  enforce([]).smallerThanOrEquals(1) // truthy
+             *  enforce([]).lengthNotEquals(1) // truthy
              *
-             *  enforce('').smallerThanOrEquals(0) // falsy
+             *  enforce('').lengthNotEquals(0) // falsy
              */
             lengthNotEquals(size: number): IEnforceInstance & T;
         }
