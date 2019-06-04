@@ -1,10 +1,8 @@
 // @flow
 
-import {
-    isType,
-    findArrayValuesInArray,
-    findValInArrayOrString
-} from '../../helpers';
+import isType from '../../../helpers/is_type';
+import findArrayValuesInArray from '../../../helpers/find_array_values_in_array';
+import findValInArrayOrString from '../../../helpers/find_val_in_array_or_string';
 
 type All = NumStrBool | Array<NumStrBool>;
 type Value = All | Array<NumStrBool>;

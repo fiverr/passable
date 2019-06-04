@@ -1,5 +1,5 @@
 // @flow
-import {getSize} from '../../helpers';
+import getSize from '../../../helpers/get_size';
 
 function largerThanOrEquals(value: mixed, arg1: number): boolean {
     return getSize(value) >= arg1;

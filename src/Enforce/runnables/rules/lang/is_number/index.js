@@ -1,6 +1,7 @@
 // @flow
 
-import { isType, expectType } from '../../helpers';
+import expectType from '../../../helpers/expect_type';
+import isType from '../../../helpers/is_type';
 
 function isNumber(value: mixed, expect: boolean = true): boolean {
     expectType(expect, 'boolean', 'isNumber');

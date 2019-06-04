@@ -679,68 +679,7 @@ function Passable(name, tests, specific) {
 };
 
 /* harmony default export */ var core_Passable = (Passable_Passable);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/expect_type/index.js
-
-
-function expectType(value, type, functionName) {
-  if (!is_type(value, type)) {
-    var val = Array.isArray(value) ? JSON.stringify(value) : value;
-    throw new TypeError("[Passable]: Failed to execute '".concat(functionName, "': expected ").concat(val, " to be a ").concat(type, "."));
-  }
-
-  return true;
-}
-
-/* harmony default export */ var expect_type = (expectType);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/find_array_values_in_array/index.js
-
-
-function findArrayValuesInArray(values, array) {
-  var reducedArray = reduce_array_to_map(array),
-      allItemsFound = find_array_values_in_map_keys(values, reducedArray);
-  return allItemsFound;
-}
-
-/* harmony default export */ var find_array_values_in_array = (findArrayValuesInArray);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/find_array_values_in_map_keys/index.js
-function findArrayValuesInMapKeys(array, map) {
-  // eslint-disable-line flowtype/no-weak-types
-  if (!map) {
-    return false;
-  }
-
-  return array.every(function (element) {
-    return map && map.has(element);
-  });
-}
-
-/* harmony default export */ var find_array_values_in_map_keys = (findArrayValuesInMapKeys);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/find_val_in_array_or_string/index.js
-function findValInArrayOrString(value, container) {
-  return container.indexOf(value) > -1;
-}
-
-/* harmony default export */ var find_val_in_array_or_string = (findValInArrayOrString);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/get_size/index.js
-function get_size_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { get_size_typeof = function _typeof(obj) { return typeof obj; }; } else { get_size_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return get_size_typeof(obj); }
-
-function getSize(value) {
-  if (!value) {
-    return 0;
-  } else if (typeof value === 'number' && !isNaN(value)) {
-    return value;
-  } else if (value.hasOwnProperty('length')) {
-    return value.length;
-  } else if (get_size_typeof(value) === 'object') {
-    return Object.keys(value).length;
-  } else {
-    return 0;
-  }
-}
-
-;
-/* harmony default export */ var get_size = (getSize);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/is_type/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/is_type/index.js
 function is_type_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { is_type_typeof = function _typeof(obj) { return typeof obj; }; } else { is_type_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return is_type_typeof(obj); }
 
 /**
@@ -768,25 +707,21 @@ function isType(value) {
 }
 
 /* harmony default export */ var is_type = (isType);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/reduce_array_to_map/index.js
-function reduceArrayToMap(array) {
-  return array.reduce(function (acc, val) {
-    acc.set(val, true);
-    return acc;
-  }, new Map());
+// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/expect_type/index.js
+
+
+function expectType(value, type, functionName) {
+  if (!is_type(value, type)) {
+    var val = Array.isArray(value) ? JSON.stringify(value) : value;
+    throw new TypeError("[Passable]: Failed to execute '".concat(functionName, "': expected ").concat(val, " to be a ").concat(type, "."));
+  }
+
+  return true;
 }
 
-/* harmony default export */ var reduce_array_to_map = (reduceArrayToMap);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/index.js
-
-
-
-
-
-
-
-
+/* harmony default export */ var expect_type = (expectType);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/lang/is_array/index.js
+
 
 
 function isArray(value) {
@@ -800,6 +735,7 @@ isArray.negativeForm = 'isNotArray';
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/lang/is_number/index.js
 
 
+
 function isNumber(value) {
   var expect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   expect_type(expect, 'boolean', 'isNumber');
@@ -809,6 +745,7 @@ function isNumber(value) {
 isNumber.negativeForm = 'isNotNumber';
 /* harmony default export */ var is_number = (isNumber);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/lang/is_string/index.js
+
 
 
 function isString(value) {
@@ -834,7 +771,48 @@ function matches(value, regex) {
 
 matches.negativeForm = 'notMatches';
 /* harmony default export */ var content_matches = (matches);
+// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/reduce_array_to_map/index.js
+function reduceArrayToMap(array) {
+  return array.reduce(function (acc, val) {
+    acc.set(val, true);
+    return acc;
+  }, new Map());
+}
+
+/* harmony default export */ var reduce_array_to_map = (reduceArrayToMap);
+// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/find_array_values_in_map_keys/index.js
+function findArrayValuesInMapKeys(array, map) {
+  // eslint-disable-line flowtype/no-weak-types
+  if (!map) {
+    return false;
+  }
+
+  return array.every(function (element) {
+    return map && map.has(element);
+  });
+}
+
+/* harmony default export */ var find_array_values_in_map_keys = (findArrayValuesInMapKeys);
+// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/find_array_values_in_array/index.js
+
+
+
+function findArrayValuesInArray(values, array) {
+  var reducedArray = reduce_array_to_map(array),
+      allItemsFound = find_array_values_in_map_keys(values, reducedArray);
+  return allItemsFound;
+}
+
+/* harmony default export */ var find_array_values_in_array = (findArrayValuesInArray);
+// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/find_val_in_array_or_string/index.js
+function findValInArrayOrString(value, container) {
+  return container.indexOf(value) > -1;
+}
+
+/* harmony default export */ var find_val_in_array_or_string = (findValInArrayOrString);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/content/inside/index.js
+
+
 
 
 function inside(value, arg1) {
@@ -870,7 +848,27 @@ function isNumeric(value) {
 
 isNumeric.negativeForm = 'isNotNumeric';
 /* harmony default export */ var is_numeric = (isNumeric);
+// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/get_size/index.js
+function get_size_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { get_size_typeof = function _typeof(obj) { return typeof obj; }; } else { get_size_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return get_size_typeof(obj); }
+
+function getSize(value) {
+  if (!value) {
+    return 0;
+  } else if (typeof value === 'number' && !isNaN(value)) {
+    return value;
+  } else if (value.hasOwnProperty('length')) {
+    return value.length;
+  } else if (get_size_typeof(value) === 'object') {
+    return Object.keys(value).length;
+  } else {
+    return 0;
+  }
+}
+
+;
+/* harmony default export */ var get_size = (getSize);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/is_empty/index.js
+
 
 
 function isEmpty(value) {
@@ -990,7 +988,7 @@ function lengthEquals(value, arg1) {
 
 lengthEquals.negativeForm = 'lengthNotEquals';
 /* harmony default export */ var length_equals = (lengthEquals);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/extend_rules/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/extend_rules/index.js
 /**
  * Collects rules with `negativeForm` or `alias` attributes.
  * Adds a rule with the correct configuration.
