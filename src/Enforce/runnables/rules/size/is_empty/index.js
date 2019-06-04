@@ -1,5 +1,6 @@
 // @flow
-import { expectType, getSize } from '../../helpers';
+import expectType from '../../../helpers/expect_type';
+import getSize from '../../../helpers/get_size';
 
 function isEmpty(value: mixed, expect: boolean = true): boolean {
     expectType(expect, 'boolean', 'isEmpty');

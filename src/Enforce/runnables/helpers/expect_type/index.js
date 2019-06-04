@@ -1,6 +1,6 @@
 // @flow
 
-import { isType } from '../';
+import isType from '../is_type';
 
 function expectType(value: AnyValue, type: string, functionName: string): true | void {
     if (!isType(value, type)) {

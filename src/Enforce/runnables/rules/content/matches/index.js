@@ -1,5 +1,5 @@
 // @flow
-import { isType } from '../../helpers';
+import isType from '../../../helpers/is_type';
 
 function matches(value: string, regex: RegExp | string): boolean {
 
