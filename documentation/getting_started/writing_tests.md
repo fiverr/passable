@@ -1,7 +1,7 @@
 # Writing tests
  Much like when writing unit-tests, writing validations with Passable is all about knowing in advance which values you expect to get. The structure is very similar to the familiar unit test `describe/it/expect` combo, only that with Passable the functions you will mostly run are `Passable/test/enforce`.
 
- * `Passable` - the wrapper for your form validation, much like the describe function in unit tests.
+ * `passable` - the wrapper for your form validation, much like the describe function in unit tests.
  * `test` - a single tests, most commonly a single field, much like the it function in unit tests. [More about test](../test/index.md)
  * `enforce` - the function which gets and enforces the data model compliance, similar to the expect function in unit tests. [More about enforce](../enforce/README.md);
 

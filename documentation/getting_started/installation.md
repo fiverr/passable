@@ -13,5 +13,5 @@ Or import Passable as a script tag to your page:
 To view the currently running version, you can use:
 
 ```js
-console.log(Passable.VERSION) // {{PASSABLE_VERSION}}
+console.log(passable.VERSION) // {{PASSABLE_VERSION}}
 ```
