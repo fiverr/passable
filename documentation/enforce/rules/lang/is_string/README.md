@@ -27,7 +27,4 @@ enforce(1984).isString();
 
 ```js
 enforce('hello').isString(false); // false
-enforce([]).allOf({
-    isString: false
-}); // true
 ```

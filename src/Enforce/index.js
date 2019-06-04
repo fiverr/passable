@@ -1,36 +1,45 @@
 // @flow
 
-import * as runnables from './runnables';
-import * as runners from './runners';
-import safeProxy from './helpers/safe_proxy';
+import rules from './runnables/rules';
+import ruleRunner from './runners/rule';
+
+// $FlowFixMe
+const glob: GlobalObject = Function('return this')();
+
+const isRule: Function = (rulesObject, name): boolean => (
+    rulesObject.hasOwnProperty(name) && typeof rulesObject[name] === 'function'
+);
 
 const Enforce: Function = (customRules: EnforceRules = {}): EnforceInstance => {
-    const rules: EnforceRules = Object.assign({}, runnables.rules, customRules);
-    const allRunnables: EnforceRules = Object.assign({}, runnables.compounds, rules);
+    const rulesObject: EnforceRules = Object.assign({}, rules, customRules);
 
-    const enforce: Function = (value: AnyValue): EnforceRules => {
-        const proxy: EnforceRules = safeProxy(allRunnables, {
-            get: (allRunnables, fnName) => {
+    if (typeof Proxy === 'function') {
+        return (value: AnyValue): EnforceRules => {
+            const proxy: EnforceRules = new Proxy(rulesObject, {
+                get: (rules, fnName) => {
+                    if (!isRule(rules, fnName)) { return; }
 
-                if (rules.hasOwnProperty(fnName) && typeof rules[fnName] === 'function') {
                     return (...args) => {
-                        runners.rule(rules[fnName], value, ...args);
+                        ruleRunner(rules[fnName], value, ...args);
                         return proxy;
                     };
-                } else if (runnables.compounds.hasOwnProperty(fnName) && typeof runnables.compounds[fnName] === 'function') {
-                    return (tests) => {
-                        runners.compound(rules, runnables.compounds[fnName], value, tests);
-                        return proxy;
-                    };
-                } else {
-                    return allRunnables[fnName];
                 }
-            }
-        });
-        return proxy;
-    };
+            });
+            return proxy;
+        };
+    }
 
-    return enforce;
+    // This is relatively heavier, and preferably should only be done when lacking proxy support
+    return (value) => Object.keys(rulesObject).reduce((allRules, fnName) => {
+        if (!isRule(rulesObject, fnName)) { return allRules; }
+
+        allRules[fnName] = (...args) => {
+            ruleRunner(rulesObject[fnName], value, ...args);
+            return allRules;
+        };
+
+        return allRules;
+    }, {});
 };
 
 export default Enforce;

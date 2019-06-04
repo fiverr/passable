@@ -91,216 +91,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-/*
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
-module.exports = function proxyPolyfill() {
-  var lastRevokeFn = null;
-  var ProxyPolyfill;
-  /**
-   * @param {*} o
-   * @return {boolean} whether this is probably a (non-null) Object
-   */
-
-  function isObject(o) {
-    return o ? _typeof(o) === 'object' || typeof o === 'function' : false;
-  }
-  /**
-   * @constructor
-   * @param {!Object} target
-   * @param {{apply, construct, get, set}} handler
-   */
-
-
-  ProxyPolyfill = function ProxyPolyfill(target, handler) {
-    if (!isObject(target) || !isObject(handler)) {
-      throw new TypeError('Cannot create proxy with a non-object as target or handler');
-    } // Construct revoke function, and set lastRevokeFn so that Proxy.revocable can steal it.
-    // The caller might get the wrong revoke function if a user replaces or wraps scope.Proxy
-    // to call itself, but that seems unlikely especially when using the polyfill.
-
-
-    var throwRevoked = function throwRevoked() {};
-
-    lastRevokeFn = function lastRevokeFn() {
-      throwRevoked = function throwRevoked(trap) {
-        throw new TypeError("Cannot perform '".concat(trap, "' on a proxy that has been revoked"));
-      };
-    }; // Fail on unsupported traps: Chrome doesn't do this, but ensure that users of the polyfill
-    // are a bit more careful. Copy the internal parts of handler to prevent user changes.
-
-
-    var unsafeHandler = handler;
-    handler = {
-      'get': null,
-      'set': null,
-      'apply': null,
-      'construct': null
-    };
-
-    for (var k in unsafeHandler) {
-      if (!(k in handler)) {
-        throw new TypeError("Proxy polyfill does not support trap '".concat(k, "'"));
-      }
-
-      handler[k] = unsafeHandler[k];
-    }
-
-    if (typeof unsafeHandler === 'function') {
-      // Allow handler to be a function (which has an 'apply' method). This matches what is
-      // probably a bug in native versions. It treats the apply call as a trap to be configured.
-      handler.apply = unsafeHandler.apply.bind(unsafeHandler);
-    } // Define proxy as this, or a Function (if either it's callable, or apply is set).
-    // TODO(samthor): Closure compiler doesn't know about 'construct', attempts to rename it.
-
-
-    var proxy = this;
-    var isMethod = false;
-    var isArray = false;
-
-    if (typeof target === 'function') {
-      proxy = function ProxyPolyfill() {
-        var usingNew = this && this.constructor === proxy;
-        var args = Array.prototype.slice.call(arguments);
-        throwRevoked(usingNew ? 'construct' : 'apply');
-
-        if (usingNew && handler['construct']) {
-          return handler['construct'].call(this, target, args);
-        } else if (!usingNew && handler.apply) {
-          return handler.apply(target, this, args);
-        } // since the target was a function, fallback to calling it directly.
-
-
-        if (usingNew) {
-          // inspired by answers to https://stackoverflow.com/q/1606797
-          args.unshift(target); // pass class as first arg to constructor, although irrelevant
-          // nb. cast to convince Closure compiler that this is a constructor
-
-          var f =
-          /** @type {!Function} */
-          target.bind.apply(target, args);
-          return new f();
-        }
-
-        return target.apply(this, args);
-      };
-
-      isMethod = true;
-    } else if (target instanceof Array) {
-      proxy = [];
-      isArray = true;
-    } // Create default getters/setters. Create different code paths as handler.get/handler.set can't
-    // change after creation.
-
-
-    var getter = handler.get ? function (prop) {
-      throwRevoked('get');
-      return handler.get(this, prop, proxy);
-    } : function (prop) {
-      throwRevoked('get');
-      return this[prop];
-    };
-    var setter = handler.set ? function (prop, value) {
-      throwRevoked('set');
-      var status = handler.set(this, prop, value, proxy); // TODO(samthor): If the calling code is in strict mode, throw TypeError.
-      // if (!status) {
-      // It's (sometimes) possible to work this out, if this code isn't strict- try to load the
-      // callee, and if it's available, that code is non-strict. However, this isn't exhaustive.
-      // }
-    } : function (prop, value) {
-      throwRevoked('set');
-      this[prop] = value;
-    }; // Clone direct properties (i.e., not part of a prototype).
-
-    var propertyNames = Object.getOwnPropertyNames(target);
-    var propertyMap = {};
-    propertyNames.forEach(function (prop) {
-      if ((isMethod || isArray) && prop in proxy) {
-        return; // ignore properties already here, e.g. 'bind', 'prototype' etc
-      }
-
-      var real = Object.getOwnPropertyDescriptor(target, prop);
-      var desc = {
-        enumerable: !!real.enumerable,
-        get: getter.bind(target, prop),
-        set: setter.bind(target, prop)
-      };
-      Object.defineProperty(proxy, prop, desc);
-      propertyMap[prop] = true;
-    }); // Set the prototype, or clone all prototype methods (always required if a getter is provided).
-    // TODO(samthor): We don't allow prototype methods to be set. It's (even more) awkward.
-    // An alternative here would be to _just_ clone methods to keep behavior consistent.
-
-    var prototypeOk = true;
-
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(proxy, Object.getPrototypeOf(target));
-    } else if (proxy.__proto__) {
-      proxy.__proto__ = target.__proto__;
-    } else {
-      prototypeOk = false;
-    }
-
-    if (handler.get || !prototypeOk) {
-      for (var _k in target) {
-        if (propertyMap[_k]) {
-          continue;
-        }
-
-        Object.defineProperty(proxy, _k, {
-          get: getter.bind(target, _k)
-        });
-      }
-    } // The Proxy polyfill cannot handle adding new properties. Seal the target and proxy.
-
-
-    Object.seal(target);
-    Object.seal(proxy);
-    return proxy; // nb. if isMethod is true, proxy != this
-  };
-
-  ProxyPolyfill.revocable = function (target, handler) {
-    var p = new ProxyPolyfill(target, handler);
-    return {
-      'proxy': p,
-      'revoke': lastRevokeFn
-    };
-  };
-
-  return ProxyPolyfill;
-};
-
-/***/ }),
-/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var runners_namespaceObject = {};
-__webpack_require__.r(runners_namespaceObject);
-__webpack_require__.d(runners_namespaceObject, "compound", function() { return runners_compound; });
-__webpack_require__.d(runners_namespaceObject, "rule", function() { return runners_rule; });
 
 // CONCATENATED MODULE: ./src/core/testRunner/index.js
 function testRunner(test) {
@@ -880,72 +679,6 @@ function Passable(name, tests, specific) {
 };
 
 /* harmony default export */ var core_Passable = (Passable_Passable);
-// CONCATENATED MODULE: ./src/Enforce/runnables/compounds/all_of/index.js
-
-function allOf(value, tests, rules) {
-  var validations = Object.keys(tests);
-
-  if (validations.length === 0) {
-    return false;
-  }
-
-  return validations.every(function (key) {
-    return run(value, key, tests, rules) === true;
-  });
-}
-// CONCATENATED MODULE: ./src/Enforce/runnables/compounds/any_of/index.js
-
-function anyOf(value, tests, rules) {
-  var validations = Object.keys(tests);
-  return validations.some(function (key) {
-    return run(value, key, tests, rules) === true;
-  });
-}
-// CONCATENATED MODULE: ./src/Enforce/runnables/compounds/none_of/index.js
-
-function noneOf(value, tests, rules) {
-  var validations = Object.keys(tests);
-
-  if (validations.length === 0) {
-    return false;
-  }
-
-  return validations.every(function (key) {
-    return run(value, key, tests, rules) !== true;
-  });
-}
-// CONCATENATED MODULE: ./src/Enforce/runnables/compounds/index.js
-
-
-
-var compounds = {
-  allOf: allOf,
-  anyOf: anyOf,
-  noneOf: noneOf
-};
-/**
- * A function which returns whether a combination of
- * rule + value is true or false
- *
- * @param {any} value - the value being tested
- * @param {string} key the name of the rule being run
- * @param {Object} tests an object containing the group of tests in the current run
- * @param {Object} rules an object containing all the rules available for the current test
- * @return {boolean} value validation result
- */
-
-function run(value, key, tests, rules) {
-  if (typeof rules[key] !== 'function') {
-    if (typeof tests[key] === 'function') {
-      return tests[key](value);
-    }
-
-    return false;
-  }
-
-  var args = tests[key];
-  return rules[key](value, args);
-}
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/helpers/expect_type/index.js
 
 
@@ -1335,33 +1068,6 @@ var rules_rules = {
   lengthEquals: length_equals
 };
 /* harmony default export */ var runnables_rules = (extend_rules(rules_rules));
-// CONCATENATED MODULE: ./src/Enforce/runnables/index.js
-
-
-
-// CONCATENATED MODULE: ./src/Enforce/runners/compound/index.js
-function compound_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { compound_typeof = function _typeof(obj) { return typeof obj; }; } else { compound_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return compound_typeof(obj); }
-
-/**
- * Run group of tests using test runner. (e.g. `anyOf`)
- *
- * @param {Object} allRules
- * @param {Function} runner - test runner
- * @param {Any} value
- * @param {Object} tests
- * @return {object} enforce object
- */
-function compound(allRules, runner, value, tests) {
-  if (typeof runner !== 'function') {
-    return;
-  }
-
-  if (runner(value, tests, allRules) !== true) {
-    throw new Error("[Enforce]: ".concat(runner.name, "  invalid ").concat(compound_typeof(value), " value"));
-  }
-}
-
-/* harmony default export */ var runners_compound = (compound);
 // CONCATENATED MODULE: ./src/Enforce/runners/rule/index.js
 function rule_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { rule_typeof = function _typeof(obj) { return typeof obj; }; } else { rule_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return rule_typeof(obj); }
 
@@ -1382,69 +1088,66 @@ function rule(rule, value) {
   }
 
   if (rule.apply(void 0, [value].concat(args)) !== true) {
-    throw new Error("[Enforce]: ".concat(rule.name, "  invalid ").concat(rule_typeof(value), " value"));
+    throw new Error("[Enforce]: ".concat(rule.name, " invalid ").concat(rule_typeof(value), " value"));
   }
 }
 
 /* harmony default export */ var runners_rule = (rule);
-// CONCATENATED MODULE: ./src/Enforce/runners/index.js
+// CONCATENATED MODULE: ./src/Enforce/index.js
 
-
-
-// EXTERNAL MODULE: ./node_modules/proxy-polyfill/src/proxy.js
-var src_proxy = __webpack_require__(0);
-var proxy_default = /*#__PURE__*/__webpack_require__.n(src_proxy);
-
-// CONCATENATED MODULE: ./src/Enforce/helpers/safe_proxy.js
+ // $FlowFixMe
 
 var glob = Function('return this')();
 
-function safeProxy(target, handler) {
-  if (!glob.Proxy) {
-    var ProxyPolyfill = proxy_default()();
-    return new ProxyPolyfill(target, handler);
-  }
-
-  return new Proxy(target, handler);
-}
-
-/* harmony default export */ var safe_proxy = (safeProxy);
-// CONCATENATED MODULE: ./src/Enforce/index.js
-
-
-
+var isRule = function isRule(rulesObject, name) {
+  return rulesObject.hasOwnProperty(name) && typeof rulesObject[name] === 'function';
+};
 
 var Enforce_Enforce = function Enforce() {
   var customRules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var rules = Object.assign({}, runnables_rules, customRules);
-  var allRunnables = Object.assign({}, compounds, rules);
+  var rulesObject = Object.assign({}, runnables_rules, customRules);
 
-  var enforce = function enforce(value) {
-    var proxy = safe_proxy(allRunnables, {
-      get: function get(allRunnables, fnName) {
-        if (rules.hasOwnProperty(fnName) && typeof rules[fnName] === 'function') {
+  if (typeof Proxy === 'function') {
+    return function (value) {
+      var proxy = new Proxy(rulesObject, {
+        get: function get(rules, fnName) {
+          if (!isRule(rules, fnName)) {
+            return;
+          }
+
           return function () {
             for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
               args[_key] = arguments[_key];
             }
 
-            runners_rule.apply(runners_namespaceObject, [rules[fnName], value].concat(args));
+            runners_rule.apply(void 0, [rules[fnName], value].concat(args));
             return proxy;
           };
-        } else if (compounds.hasOwnProperty(fnName) && typeof compounds[fnName] === 'function') {
-          return function (tests) {
-            runners_compound(rules, compounds[fnName], value, tests);
-            return proxy;
-          };
-        } else {
-          return allRunnables[fnName];
         }
-      }
-    });
-    return proxy;
-  };
+      });
+      return proxy;
+    };
+  } // This is relatively heavier, and preferably should only be done when lacking proxy support
 
-  return enforce;
+
+  return function (value) {
+    return Object.keys(rulesObject).reduce(function (allRules, fnName) {
+      if (!isRule(rulesObject, fnName)) {
+        return allRules;
+      }
+
+      allRules[fnName] = function () {
+        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        runners_rule.apply(void 0, [rulesObject[fnName], value].concat(args));
+        return allRules;
+      };
+
+      return allRules;
+    }, {});
+  };
 };
 
 /* harmony default export */ var src_Enforce = (Enforce_Enforce);

@@ -63,41 +63,17 @@ More on [custom enforce rules](./rules/custom.md).
 All of these functions are chainable and can be used more than once in the same chain.
 When chained, all blocks share an `AND` relationship, meaning that if one block fails, the whole test fails as well.
 
-All the following are valid uses of enforce.
+The following are valid uses of enforce.
 
 ```js
-enforce([1,2,3,4,5,6]).anyOf({
-    largerThan: 5, // in anyOf - this one is enough to set the anyOf block to true
-    smallerThan: 6,
-}).noneOf({
-    isString: true, // in noneOf, all must be false
-    isNumber: true
-}).isArray(); // true
+enforce([1,2,3,4,5,6]).longerThan(5).isArray();
+
+enforce('North Dakota, por favor').shorterThan(10).longerThan(6);
+
+enforce('Toto, I\'ve a feeling we\'re not in Kansas anymore').notMatches(/0-9/);
 ```
 
-```js
-enforce('North Dakota, por favor').noneOf({
-    largerThan: 5,
-    smallerThan: 2,
-    matches: /[0-9]/
-}); // false
-```
-
-```js
-enforce('Toto, I\'ve a feeling we\'re not in Kansas anymore').anyOf({
-    largerThan: 5,
-    smallerThan: 2
-}).smallerThan(150); // true
-```
-
-```js
-enforce('Toto, I\'ve a feeling we\'re not in Kansas anymore').anyOf({
-    largerThan: 5,
-    smallerThan: 2
-}).smallerThan(150);
-```
-
-Enforce exposes all [predefined](./rules/README.md) and [custom](./rules/custom.md) rules, and the [compound enforcement methods](./compound/README.md). You may use chaining to make multiple enfocements for the same value.
+Enforce exposes all [predefined](./rules/README.md) and [custom](./rules/custom.md) rules. You may use chaining to make multiple enfocements for the same value.
 
 ### Table of Contents
 * [Enforce Rules](./rules/README.md)

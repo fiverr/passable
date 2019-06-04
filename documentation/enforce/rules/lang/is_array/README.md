@@ -22,9 +22,4 @@ enforce('hello').isArray();
 
 ```js
 enforce(['hello']).isArray(false); // false
-
-enforce(['hello']).allOf({
-    isArray: false
-});
-// false
 ```
