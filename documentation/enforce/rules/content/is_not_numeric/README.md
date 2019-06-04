@@ -2,7 +2,7 @@
 
 ## Description
 Checks if a value is not a representation of a real number.
-Reverse implementation of [`isNumeric` (see documentation)](../isNumeric/README.md).
+Reverse implementation of [`isNumeric` (see documentation)](../is_numeric/README.md).
 
 ## usage examples:
 

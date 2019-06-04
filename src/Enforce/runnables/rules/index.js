@@ -6,11 +6,6 @@ import matches from './content/matches';
 import inside from './content/inside';
 import isNumeric from './content/is_numeric';
 import isEmpty from './size/is_empty';
-import sizeEquals from './size/size_equals';
-import largerThan from './size/larger_than';
-import smallerThan from './size/smaller_than';
-import smallerThanOrEquals from './size/smaller_than_or_equals';
-import largerThanOrEquals from './size/larger_than_or_equals';
 import greaterThan from './size/greater_than';
 import greaterThanOrEquals from './size/greater_than_or_equals';
 import lessThan from './size/less_than';
@@ -30,11 +25,6 @@ const rules: EnforceRules = {
     inside,
     isNumeric,
     isEmpty,
-    largerThan,
-    smallerThan,
-    smallerThanOrEquals,
-    largerThanOrEquals,
-    sizeEquals,
     greaterThan,
     greaterThanOrEquals,
     lessThan,

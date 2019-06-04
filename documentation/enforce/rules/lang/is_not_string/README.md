@@ -2,7 +2,7 @@
 
 ## Description
 Checks if a value is of any type other than `String`.
-Reverse implementation of [`isNotString` (see documentation)](../isNotString/README.md).
+Reverse implementation of [`isString` (see documentation)](../is_string/README.md).
 
 ## usage examples:
 

@@ -851,10 +851,12 @@ isNumeric.negativeForm = 'isNotNumeric';
 // CONCATENATED MODULE: ./src/Enforce/runnables/helpers/get_size/index.js
 function get_size_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { get_size_typeof = function _typeof(obj) { return typeof obj; }; } else { get_size_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return get_size_typeof(obj); }
 
+
+
 function getSize(value) {
   if (!value) {
     return 0;
-  } else if (typeof value === 'number' && !isNaN(value)) {
+  } else if (is_numeric(value)) {
     return value;
   } else if (value.hasOwnProperty('length')) {
     return value.length;
@@ -880,47 +882,6 @@ function isEmpty(value) {
 ;
 isEmpty.negativeForm = 'isNotEmpty';
 /* harmony default export */ var is_empty = (isEmpty);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/size_equals/index.js
-
-
-function sizeEquals(value, arg1) {
-  return get_size(value) === arg1;
-}
-
-sizeEquals.negativeForm = 'sizeNotEquals';
-/* harmony default export */ var size_equals = (sizeEquals);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/larger_than/index.js
-
-
-function largerThan(value, arg1) {
-  return get_size(value) > arg1;
-}
-
-/* harmony default export */ var larger_than = (largerThan);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/smaller_than/index.js
-
-
-function smallerThan(value, arg1) {
-  return get_size(value) < arg1;
-}
-
-/* harmony default export */ var smaller_than = (smallerThan);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/smaller_than_or_equals/index.js
-
-
-function smallerThanOrEquals(value, arg1) {
-  return get_size(value) <= arg1;
-}
-
-/* harmony default export */ var smaller_than_or_equals = (smallerThanOrEquals);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/larger_than_or_equals/index.js
-
-
-function largerThanOrEquals(value, arg1) {
-  return get_size(value) >= arg1;
-}
-
-/* harmony default export */ var larger_than_or_equals = (largerThanOrEquals);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/greater_than/index.js
 
 
@@ -1037,11 +998,6 @@ function extendRules(rules) {
 
 
 
-
-
-
-
-
 var rules_rules = {
   isArray: is_array,
   isNumber: is_number,
@@ -1050,11 +1006,6 @@ var rules_rules = {
   inside: content_inside,
   isNumeric: is_numeric,
   isEmpty: is_empty,
-  largerThan: larger_than,
-  smallerThan: smaller_than,
-  smallerThanOrEquals: smaller_than_or_equals,
-  largerThanOrEquals: larger_than_or_equals,
-  sizeEquals: size_equals,
   greaterThan: greater_than,
   greaterThanOrEquals: greater_than_or_equals,
   lessThan: less_than,
