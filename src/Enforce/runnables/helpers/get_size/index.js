@@ -1,9 +1,12 @@
 // @flow
+
+import isNumeric from '../../rules/content/is_numeric/';
+
 function getSize(value: AnyValue): number {
 
     if (!value) {
         return 0;
-    } else if (typeof value === 'number' && !isNaN(value)) {
+    } else if (isNumeric(value)) {
         return value;
     } else if (value.hasOwnProperty('length')) {
         return value.length;

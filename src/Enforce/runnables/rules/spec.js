@@ -22,7 +22,6 @@ const negativeRules = [
     'isNotEmpty',
     'lengthNotEquals',
     'notMatches',
-    'sizeNotEquals'
 ];
 
 const positiveRules = [
@@ -33,15 +32,10 @@ const positiveRules = [
     'isNumeric',
     'isEmpty',
     'matches',
-    'largerThan',
-    'smallerThan',
-    'smallerThanOrEquals',
-    'largerThanOrEquals',
     'greaterThan',
     'lessThan',
     'lessThanOrEquals',
     'greaterThanOrEquals',
-    'sizeEquals',
     'lt',
     'lte',
     'gt',
