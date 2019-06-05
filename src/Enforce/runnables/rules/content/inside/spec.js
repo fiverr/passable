@@ -32,13 +32,6 @@ describe('Inside rule', () => {
         expect(inside(false, [true, 'one', 'two'])).to.equal(false);
     });
 
-    it('Should correctly find all array elemets in another array', () => {
-        expect(inside(['I\'m', 'pop'], ['I\'m', 'gonna', 'pop', 'some', 'tags'])).to.equal(true);
-        expect(inside(['Eric'], ['Eric', 'Kenny', 'Kyle', 'Stan'])).to.equal(true);
-        expect(inside(['myString', 1], [1, [55], 'myString'])).to.equal(true);
-        expect(inside([1, 2, 3], [1, 2, 5, 6, 3])).to.equal(true);
-    });
-
     it('Should fail to find array elemets in another array in which they do not exist', () => {
         expect(inside(['no', 'treble'], ['all', 'about', 'the', 'bass'])).to.equal(false);
     });

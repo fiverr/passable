@@ -1,7 +1,6 @@
 // @flow
 
 import isType from '../../../helpers/is_type';
-import findArrayValuesInArray from '../../../helpers/find_array_values_in_array';
 import findValInArrayOrString from '../../../helpers/find_val_in_array_or_string';
 
 type All = NumStrBool | Array<NumStrBool>;
@@ -14,9 +13,6 @@ function inside(value: Value, arg1: Arg): boolean {
 
         if (isType(value, 'string', 'number', 'boolean')) {
             return findValInArrayOrString(value, arg1);
-        }
-        if (Array.isArray(value)) {
-            return findArrayValuesInArray(value, arg1);
         }
     }
 

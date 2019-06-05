@@ -707,27 +707,11 @@ function isType(value) {
 }
 
 /* harmony default export */ var is_type = (isType);
-// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/expect_type/index.js
-
-
-function expectType(value, type, functionName) {
-  if (!is_type(value, type)) {
-    var val = Array.isArray(value) ? JSON.stringify(value) : value;
-    throw new TypeError("[Passable]: Failed to execute '".concat(functionName, "': expected ").concat(val, " to be a ").concat(type, "."));
-  }
-
-  return true;
-}
-
-/* harmony default export */ var expect_type = (expectType);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/lang/is_array/index.js
 
 
-
 function isArray(value) {
-  var expect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-  expect_type(expect, 'boolean', 'isArray');
-  return is_type(value, 'array') === expect;
+  return Boolean(is_type(value, 'array'));
 }
 
 isArray.negativeForm = 'isNotArray';
@@ -735,11 +719,8 @@ isArray.negativeForm = 'isNotArray';
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/lang/is_number/index.js
 
 
-
 function isNumber(value) {
-  var expect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-  expect_type(expect, 'boolean', 'isNumber');
-  return is_type(value, 'number') === expect;
+  return Boolean(is_type(value, 'number'));
 }
 
 isNumber.negativeForm = 'isNotNumber';
@@ -747,11 +728,8 @@ isNumber.negativeForm = 'isNotNumber';
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/lang/is_string/index.js
 
 
-
 function isString(value) {
-  var expect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-  expect_type(expect, 'boolean', 'isString');
-  return is_type(value, 'string') === expect;
+  return Boolean(is_type(value, 'string'));
 }
 
 isString.negativeForm = 'isNotString';
@@ -771,39 +749,6 @@ function matches(value, regex) {
 
 matches.negativeForm = 'notMatches';
 /* harmony default export */ var content_matches = (matches);
-// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/reduce_array_to_map/index.js
-function reduceArrayToMap(array) {
-  return array.reduce(function (acc, val) {
-    acc.set(val, true);
-    return acc;
-  }, new Map());
-}
-
-/* harmony default export */ var reduce_array_to_map = (reduceArrayToMap);
-// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/find_array_values_in_map_keys/index.js
-function findArrayValuesInMapKeys(array, map) {
-  // eslint-disable-line flowtype/no-weak-types
-  if (!map) {
-    return false;
-  }
-
-  return array.every(function (element) {
-    return map && map.has(element);
-  });
-}
-
-/* harmony default export */ var find_array_values_in_map_keys = (findArrayValuesInMapKeys);
-// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/find_array_values_in_array/index.js
-
-
-
-function findArrayValuesInArray(values, array) {
-  var reducedArray = reduce_array_to_map(array),
-      allItemsFound = find_array_values_in_map_keys(values, reducedArray);
-  return allItemsFound;
-}
-
-/* harmony default export */ var find_array_values_in_array = (findArrayValuesInArray);
 // CONCATENATED MODULE: ./src/Enforce/runnables/helpers/find_val_in_array_or_string/index.js
 function findValInArrayOrString(value, container) {
   return container.indexOf(value) > -1;
@@ -814,15 +759,10 @@ function findValInArrayOrString(value, container) {
 
 
 
-
 function inside(value, arg1) {
   if (Array.isArray(arg1)) {
     if (is_type(value, 'string', 'number', 'boolean')) {
       return find_val_in_array_or_string(value, arg1);
-    }
-
-    if (Array.isArray(value)) {
-      return find_array_values_in_array(value, arg1);
     }
   } // both value and arg1 are strings
 
@@ -837,13 +777,9 @@ function inside(value, arg1) {
 inside.negativeForm = 'notInside';
 /* harmony default export */ var content_inside = (inside);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/content/is_numeric/index.js
-
-
 function isNumeric(value) {
-  var expect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-  expect_type(expect, 'boolean', 'isNumeric');
   var result = !isNaN(parseFloat(value)) && !isNaN(Number(value)) && isFinite(value);
-  return result === expect;
+  return Boolean(result);
 }
 
 isNumeric.negativeForm = 'isNotNumeric';
@@ -872,11 +808,8 @@ function getSize(value) {
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/is_empty/index.js
 
 
-
 function isEmpty(value) {
-  var expect = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-  expect_type(expect, 'boolean', 'isEmpty');
-  return get_size(value) === 0 === expect;
+  return Boolean(get_size(value) === 0);
 }
 
 ;

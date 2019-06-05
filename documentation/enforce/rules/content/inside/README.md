@@ -5,7 +5,6 @@ Checks if your `enforce` value is contained in another array or string.
 Your `enforce` value can be of the following types:
 * `string`
 * `number`
-* `array`
 * `boolean`
 
 ## Arguments
@@ -48,18 +47,6 @@ enforce(false).inside([true, false]);
 
 ```js
 enforce(true).inside([1,2,3]);
-//false
-```
-
-array: checks if all members of an array are members of another array
-
-```js
-enforce(['a', 'b', 'c']).inside(['a', 'b', 'c', 'd', 'e']);
-//true
-```
-
-```js
-enforce(['a', 'b', 'c', 'd', 'e']).inside(['a', 'b', 'c']);
 //false
 ```
 

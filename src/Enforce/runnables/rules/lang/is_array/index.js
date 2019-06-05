@@ -1,10 +1,8 @@
 // @flow
-import expectType from '../../../helpers/expect_type';
 import isType from '../../../helpers/is_type';
 
-function isArray(value: mixed, expect: boolean = true): boolean {
-    expectType(expect, 'boolean', 'isArray');
-    return isType(value, 'array') === expect;
+function isArray(value: mixed): boolean {
+    return Boolean(isType(value, 'array'));
 }
 
 isArray.negativeForm = 'isNotArray';

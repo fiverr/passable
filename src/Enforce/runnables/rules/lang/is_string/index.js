@@ -1,10 +1,9 @@
 // @flow
-import expectType from '../../../helpers/expect_type';
+
 import isType from '../../../helpers/is_type';
 
-function isString(value: mixed, expect: boolean = true): boolean {
-    expectType(expect, 'boolean', 'isString');
-    return isType(value, 'string') === expect;
+function isString(value: mixed): boolean {
+    return Boolean(isType(value, 'string'));
 }
 
 isString.negativeForm = 'isNotString';
