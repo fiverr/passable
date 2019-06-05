@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [Minor] `.after()` callback that can run after a specific field finished execution.
 - [Minor] New size rules (`lessThan`, `greaterThan`, `lessThanOrEquals`, `greaterThanOrEquals`, `numberEquals`, `numberNotEquals`).
 - [Minor] New size rules (`longerThan`, `shorterThan`, `longerThanOrEquals`, `shorterThanOrEquals`, `lengthEquals`, `lengthNotEquals`).
+- [Minor] New content rules (`equals`, `notEquals`).
 
 ### Removed
 - [Major] Removed compound rules (`anyOf`, `allOf`, `noneOf`).

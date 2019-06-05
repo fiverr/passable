@@ -18,10 +18,11 @@ const negativeRules = [
     'isNotNumber',
     'isNotString',
     'notInside',
+    'notEquals',
     'isNotNumeric',
     'isNotEmpty',
     'lengthNotEquals',
-    'notMatches',
+    'notMatches'
 ];
 
 const positiveRules = [
@@ -29,6 +30,7 @@ const positiveRules = [
     'isNumber',
     'isString',
     'inside',
+    'equals',
     'isNumeric',
     'isEmpty',
     'matches',

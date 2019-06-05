@@ -776,6 +776,13 @@ function inside(value, arg1) {
 
 inside.negativeForm = 'notInside';
 /* harmony default export */ var content_inside = (inside);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/content/equals/index.js
+function equals(value, arg1) {
+  return value === arg1;
+}
+
+equals.negativeForm = 'notEquals';
+/* harmony default export */ var content_equals = (equals);
 // CONCATENATED MODULE: ./src/Enforce/runnables/rules/content/is_numeric/index.js
 function isNumeric(value) {
   var result = !isNaN(parseFloat(value)) && !isNaN(Number(value)) && isFinite(value);
@@ -931,12 +938,14 @@ function extendRules(rules) {
 
 
 
+
 var rules_rules = {
   isArray: is_array,
   isNumber: is_number,
   isString: is_string,
   matches: content_matches,
   inside: content_inside,
+  equals: content_equals,
   isNumeric: is_numeric,
   isEmpty: is_empty,
   greaterThan: greater_than,
