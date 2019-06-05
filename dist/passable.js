@@ -679,68 +679,32 @@ function Passable(name, tests, specific) {
 };
 
 /* harmony default export */ var core_Passable = (Passable_Passable);
-// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/is_type/index.js
-function is_type_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { is_type_typeof = function _typeof(obj) { return typeof obj; }; } else { is_type_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return is_type_typeof(obj); }
-
-/**
- * Check if value type matches any of provided types
- * Allows checking agains custom type 'array' for array values
- *
- * @example
- * // returns false
- * isType(5, 'string')
- * @example
- * // returns true
- * isType([], 'string', 'array')
- * @param {any} value Value to match
- * @param {...string} types
- * @return {boolean} true if value matches against any type, false otherwise
- */
-function isType(value) {
-  for (var _len = arguments.length, types = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    types[_key - 1] = arguments[_key];
-  }
-
-  return types.some(function (type) {
-    return type === 'array' ? Array.isArray(value) : is_type_typeof(value) === type;
-  });
-}
-
-/* harmony default export */ var is_type = (isType);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/lang/is_array/index.js
-
-
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/is_array/index.js
 function isArray(value) {
-  return Boolean(is_type(value, 'array'));
+  return Boolean(Array.isArray(value));
 }
 
 isArray.negativeForm = 'isNotArray';
 /* harmony default export */ var is_array = (isArray);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/lang/is_number/index.js
-
-
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/is_number/index.js
 function isNumber(value) {
-  return Boolean(is_type(value, 'number'));
+  return Boolean(typeof value === 'number');
 }
 
 isNumber.negativeForm = 'isNotNumber';
 /* harmony default export */ var is_number = (isNumber);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/lang/is_string/index.js
-
-
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/is_string/index.js
 function isString(value) {
-  return Boolean(is_type(value, 'string'));
+  return Boolean(typeof value === 'string');
 }
 
 isString.negativeForm = 'isNotString';
 /* harmony default export */ var is_string = (isString);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/content/matches/index.js
-
-
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/matches/index.js
 function matches(value, regex) {
   if (regex instanceof RegExp) {
     return regex.test(value);
-  } else if (is_type(regex, 'string')) {
+  } else if (typeof regex === 'string') {
     return new RegExp(regex).test(value);
   } else {
     return false;
@@ -748,42 +712,33 @@ function matches(value, regex) {
 }
 
 matches.negativeForm = 'notMatches';
-/* harmony default export */ var content_matches = (matches);
-// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/find_val_in_array_or_string/index.js
-function findValInArrayOrString(value, container) {
-  return container.indexOf(value) > -1;
-}
-
-/* harmony default export */ var find_val_in_array_or_string = (findValInArrayOrString);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/content/inside/index.js
-
-
+/* harmony default export */ var rules_matches = (matches);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/inside/index.js
+function inside_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { inside_typeof = function _typeof(obj) { return typeof obj; }; } else { inside_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return inside_typeof(obj); }
 
 function inside(value, arg1) {
-  if (Array.isArray(arg1)) {
-    if (is_type(value, 'string', 'number', 'boolean')) {
-      return find_val_in_array_or_string(value, arg1);
-    }
+  if (Array.isArray(arg1) && ['string', 'number', 'boolean'].includes(inside_typeof(value))) {
+    return arg1.includes(value);
   } // both value and arg1 are strings
 
 
-  if (is_type(arg1, 'string') && is_type(value, 'string')) {
-    return find_val_in_array_or_string(value, arg1);
+  if (typeof arg1 === 'string' && typeof value === 'string') {
+    return arg1.includes(value);
   }
 
   return false;
 }
 
 inside.negativeForm = 'notInside';
-/* harmony default export */ var content_inside = (inside);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/content/equals/index.js
+/* harmony default export */ var rules_inside = (inside);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/equals/index.js
 function equals(value, arg1) {
   return value === arg1;
 }
 
 equals.negativeForm = 'notEquals';
-/* harmony default export */ var content_equals = (equals);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/content/is_numeric/index.js
+/* harmony default export */ var rules_equals = (equals);
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/is_numeric/index.js
 function isNumeric(value) {
   var result = !isNaN(parseFloat(value)) && !isNaN(Number(value)) && isFinite(value);
   return Boolean(result);
@@ -791,38 +746,29 @@ function isNumeric(value) {
 
 isNumeric.negativeForm = 'isNotNumeric';
 /* harmony default export */ var is_numeric = (isNumeric);
-// CONCATENATED MODULE: ./src/Enforce/runnables/helpers/get_size/index.js
-function get_size_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { get_size_typeof = function _typeof(obj) { return typeof obj; }; } else { get_size_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return get_size_typeof(obj); }
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/is_empty/index.js
+function is_empty_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { is_empty_typeof = function _typeof(obj) { return typeof obj; }; } else { is_empty_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return is_empty_typeof(obj); }
 
-
-
-function getSize(value) {
-  if (!value) {
-    return 0;
-  } else if (is_numeric(value)) {
-    return value;
-  } else if (value.hasOwnProperty('length')) {
-    return value.length;
-  } else if (get_size_typeof(value) === 'object') {
-    return Object.keys(value).length;
-  } else {
-    return 0;
-  }
-}
-
-;
-/* harmony default export */ var get_size = (getSize);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/is_empty/index.js
 
 
 function isEmpty(value) {
-  return Boolean(get_size(value) === 0);
+  if (!value) {
+    return true;
+  } else if (is_numeric(value)) {
+    return value === 0;
+  } else if (value.hasOwnProperty('length')) {
+    return value.length === 0;
+  } else if (is_empty_typeof(value) === 'object') {
+    return Object.keys(value).length === 0;
+  } else {
+    return true;
+  }
 }
 
 ;
 isEmpty.negativeForm = 'isNotEmpty';
 /* harmony default export */ var is_empty = (isEmpty);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/greater_than/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/greater_than/index.js
 
 
 function greaterThan(value, arg1) {
@@ -831,7 +777,7 @@ function greaterThan(value, arg1) {
 
 greaterThan.alias = 'gt';
 /* harmony default export */ var greater_than = (greaterThan);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/greater_than_or_equals/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/greater_than_or_equals/index.js
 
 
 function greaterThanOrEquals(value, arg1) {
@@ -840,7 +786,7 @@ function greaterThanOrEquals(value, arg1) {
 
 greaterThanOrEquals.alias = 'gte';
 /* harmony default export */ var greater_than_or_equals = (greaterThanOrEquals);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/less_than/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/less_than/index.js
 
 
 function lessThan(value, arg1) {
@@ -849,7 +795,7 @@ function lessThan(value, arg1) {
 
 lessThan.alias = 'lt';
 /* harmony default export */ var less_than = (lessThan);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/less_than_or_equals/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/less_than_or_equals/index.js
 
 
 function lessThanOrEquals(value, arg1) {
@@ -858,31 +804,31 @@ function lessThanOrEquals(value, arg1) {
 
 lessThanOrEquals.alias = 'lte';
 /* harmony default export */ var less_than_or_equals = (lessThanOrEquals);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/longer_than/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/longer_than/index.js
 function longerThan(value, arg1) {
   return value.length > arg1;
 }
 
 /* harmony default export */ var longer_than = (longerThan);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/longer_than_or_equals/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/longer_than_or_equals/index.js
 function longerThanOrEquals(value, arg1) {
   return value.length >= arg1;
 }
 
 /* harmony default export */ var longer_than_or_equals = (longerThanOrEquals);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/shorter_than/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/shorter_than/index.js
 function shorterThan(value, arg1) {
   return value.length < arg1;
 }
 
 /* harmony default export */ var shorter_than = (shorterThan);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/shorter_than_or_equals/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/shorter_than_or_equals/index.js
 function shorterThanOrEquals(value, arg1) {
   return value.length <= arg1;
 }
 
 /* harmony default export */ var shorter_than_or_equals = (shorterThanOrEquals);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/size/length_equals/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/rules/length_equals/index.js
 function lengthEquals(value, arg1) {
   return value.length === arg1;
 }
@@ -920,7 +866,8 @@ function extendRules(rules) {
 }
 
 /* harmony default export */ var extend_rules = (extendRules);
-// CONCATENATED MODULE: ./src/Enforce/runnables/rules/index.js
+// CONCATENATED MODULE: ./src/Enforce/runnables/index.js
+// // 
 
 
 
@@ -939,13 +886,13 @@ function extendRules(rules) {
 
 
 
-var rules_rules = {
+var runnables_rules = {
   isArray: is_array,
   isNumber: is_number,
   isString: is_string,
-  matches: content_matches,
-  inside: content_inside,
-  equals: content_equals,
+  matches: rules_matches,
+  inside: rules_inside,
+  equals: rules_equals,
   isNumeric: is_numeric,
   isEmpty: is_empty,
   greaterThan: greater_than,
@@ -958,7 +905,7 @@ var rules_rules = {
   shorterThanOrEquals: shorter_than_or_equals,
   lengthEquals: length_equals
 };
-/* harmony default export */ var runnables_rules = (extend_rules(rules_rules));
+/* harmony default export */ var runnables = (extend_rules(runnables_rules));
 // CONCATENATED MODULE: ./src/Enforce/runners/rule/index.js
 function rule_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { rule_typeof = function _typeof(obj) { return typeof obj; }; } else { rule_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return rule_typeof(obj); }
 
@@ -996,7 +943,7 @@ var isRule = function isRule(rulesObject, name) {
 
 var Enforce_Enforce = function Enforce() {
   var customRules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var rulesObject = Object.assign({}, runnables_rules, customRules);
+  var rulesObject = Object.assign({}, runnables, customRules);
 
   if (typeof Proxy === 'function') {
     return function (value) {

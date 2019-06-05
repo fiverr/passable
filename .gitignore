@@ -10,3 +10,4 @@ version.txt
 docs
 documentation/MAIN.md
 documentation/assets/**/*.css
+.DS_Store

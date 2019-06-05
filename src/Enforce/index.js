@@ -1,6 +1,6 @@
 // @flow
 
-import rules from './runnables/rules';
+import rules from './runnables';
 import ruleRunner from './runners/rule';
 
 // $FlowFixMe
