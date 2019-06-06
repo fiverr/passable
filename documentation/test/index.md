@@ -41,24 +41,8 @@ test('name',  'should be at least 3 chars', () => {
 });
 ```
 
-## Asynchronous Tests
-Sometimes you would want to validate data with information from the server, for example - username availability. In these cases, you should add an async test to your suite, reaching the server before going in and performing the validation. An async test is a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object. When it *resolves*, the test passes, and when it *rejects* the test fails. An async test will not complete unless either happens.
-
-```js
-test('name',  'must be unique', new Promise((resolve, reject) => {
-    fetch(`/userExists?name=${name}`)
-        .then(res => res.json)
-        .then(data => {
-            if (data.exists) {
-                reject(); // rejects and marks the test as failing
-            } else {
-                resolve(); // completes. doesn't mark the test as failing
-            }
-        }
-}));
-```
-
 ### Table of Contents
+* [Async tests](./async.md)
 * [How to fail a test](./how_to_fail.md)
 * [Warn only test](./warn_only_tests.md)
 * [Running a specific tests](./specific.md)

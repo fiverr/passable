@@ -94,34 +94,6 @@
     throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
 
-  function testRunner(test) {
-    var isValid = null;
-
-    try {
-      var res = test();
-
-      if (typeof res !== 'undefined' && res !== null && res.hasOwnProperty('valid')) {
-        isValid = res.valid;
-      } else if (typeof res === 'boolean') {
-        isValid = res || false;
-      } else {
-        isValid = true;
-      }
-    } catch (e) {
-      isValid = false;
-    }
-
-    return !!isValid;
-  }
-
-  function testRunnerAsync(test, done, fail) {
-    try {
-      test.then(done, fail);
-    } catch (e) {
-      fail();
-    }
-  }
-
   var WARN = 'warn';
   var FAIL = 'fail';
 
@@ -574,36 +546,60 @@
     });
 
     _defineProperty(this, "runTest", function (test) {
-      if (test instanceof Promise) {
+      var _test = test,
+          fieldName = _test.fieldName,
+          statement = _test.statement,
+          severity = _test.severity;
+      var isAsync = typeof test.then === 'function';
+      var testResult;
+
+      if (!isAsync) {
+        try {
+          testResult = test();
+        } catch (e) {
+          testResult = false;
+        }
+
+        if (testResult && typeof testResult.then === 'function') {
+          isAsync = true; // $FlowFixMe
+
+          test = testResult;
+        }
+      }
+
+      if (isAsync) {
         _this.res.markAsync(test.fieldName);
 
         var done = function done() {
           _this.clearPendingTest(test);
 
-          if (!_this.hasRemainingPendingTests(test.fieldName)) {
-            _this.res.markAsDone(test.fieldName);
+          if (!_this.hasRemainingPendingTests(fieldName)) {
+            _this.res.markAsDone(fieldName);
           }
         };
 
         var fail = function fail() {
           // order is important here! fail needs to be called before `done`.
-          _this.res.fail(test.fieldName, test.statement, test.severity);
+          _this.res.fail(fieldName, statement, severity);
 
           done();
         };
 
-        testRunnerAsync(test, done, fail);
+        try {
+          // $FlowFixMe
+          test.then(done, fail);
+        } catch (e) {
+          fail();
+        }
       } else {
-        var isValid = testRunner(test);
-
-        if (!isValid) {
-          _this.res.fail(test.fieldName, test.statement, test.severity);
+        if (testResult === false) {
+          _this.res.fail(fieldName, statement, severity);
         }
 
         _this.clearPendingTest(test);
       }
 
-      _this.res.bumpTestCounter(test.fieldName);
+      _this.res.bumpTestCounter(fieldName);
     });
 
     _defineProperty(this, "runPendingTests", function () {

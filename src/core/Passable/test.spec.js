@@ -148,53 +148,105 @@ describe("Tests Passable's `test` functionality", () => {
         });
 
         describe('async test behavior', () => {
-            describe('failing', () => {
-                let f1, f2;
+
+            describe('When returning promise to test callback', () => {
+                let f1, f2, f3, f4;
                 beforeEach(() => {
                     f1 = lorem.word();
                     f2 = lorem.word();
+                    f3 = lorem.word();
+                    f4 = lorem.word();
+
+                    const rejectLater = () => {
+                        return new Promise((res, rej) => {
+                            setTimeout(rej, 500);
+                        });
+                    };
 
                     instance = new Passable(lorem.word(), (test) => {
-                        test(f1, lorem.sentence(), new Promise((resolve, reject) => setImmediate(reject)));
-                        test(f2, lorem.sentence(), new Promise((resolve) => setTimeout(resolve)));
-                        test(f2, lorem.sentence(), new Promise((resolve) => setTimeout(resolve, 500)));
-                        test(lorem.word(), lorem.sentence(), noop);
+                        test(f1, lorem.sentence(), () => Promise.reject());
+                        test(f2, lorem.sentence(), () => new Promise((resolve, reject) => {
+                            setTimeout(reject, 200);
+                        }));
+                        test(f3, lorem.sentence(), () => new Promise((resolve) => {
+                            setTimeout(resolve, 100);
+                        }));
+                        test(f4, lorem.sentence(), async() => {
+                            return await rejectLater();
+                        });
                     });
                 });
 
-                it('Should immediately register tests', () => {
-                    expect(instance.res.output.testCount).to.equal(4);
-                });
-
-                it('Should run async test promise', (done) => {
-                    new Passable(lorem.word(), (test) => {
-                        test(f1, lorem.sentence(), new Promise((resolve) => done()));
-                        test(lorem.word(), lorem.sentence(), noop);
-                    });
-                });
-
-                it('Should only mark test as failing after rejection', (done) => {
-                    expect(instance.res.output.failCount).to.equal(0);
+                it('Should fail for rejected promise', (done) => {
+                    expect(instance.res.output.hasErrors(f1)).to.equal(false);
+                    expect(instance.res.output.hasErrors(f2)).to.equal(false);
+                    expect(instance.res.output.hasErrors(f4)).to.equal(false);
                     setTimeout(() => {
-                        expect(instance.res.output.failCount).to.equal(1);
+                        expect(instance.res.output.hasErrors(f1)).to.equal(true);
+                        expect(instance.res.output.hasErrors(f2)).to.equal(true);
+                        expect(instance.res.output.hasErrors(f4)).to.equal(true);
                         done();
-                    }, 10);
+                    }, 550);
+                });
+
+                it('Should pass for fulfilled promises', (done) => {
+                    expect(instance.res.output.hasErrors(f3)).to.equal(false);
+                    setTimeout(() => {
+                        expect(instance.res.output.hasErrors(f3)).to.equal(false);
+                        done();
+                    }, 500);
                 });
             });
 
-            describe('passing', () => {
-                beforeEach(() => {
-                    instance = new Passable(lorem.word(), (test) => {
-                        test(lorem.word(), lorem.sentence(), new Promise((resolve, reject) => setImmediate(resolve)));
+            describe('When passing a Promise as a test', () => {
+                describe('failing', () => {
+                    let f1, f2;
+                    beforeEach(() => {
+                        f1 = lorem.word();
+                        f2 = lorem.word();
+
+                        instance = new Passable(lorem.word(), (test) => {
+                            test(f1, lorem.sentence(), new Promise((resolve, reject) => setImmediate(reject)));
+                            test(f2, lorem.sentence(), new Promise((resolve) => setTimeout(resolve)));
+                            test(f2, lorem.sentence(), new Promise((resolve) => setTimeout(resolve, 500)));
+                            test(lorem.word(), lorem.sentence(), noop);
+                        });
+                    });
+
+                    it('Should immediately register tests', () => {
+                        expect(instance.res.output.testCount).to.equal(4);
+                    });
+
+                    it('Should run async test promise', (done) => {
+                        new Passable(lorem.word(), (test) => {
+                            test(f1, lorem.sentence(), new Promise((resolve) => done()));
+                            test(lorem.word(), lorem.sentence(), noop);
+                        });
+                    });
+
+                    it('Should only mark test as failing after rejection', (done) => {
+                        expect(instance.res.output.failCount).to.equal(0);
+                        setTimeout(() => {
+                            expect(instance.res.output.failCount).to.equal(1);
+                            done();
+                        }, 10);
                     });
                 });
 
-                it('Should keep test unchanged after resolution', (done) => {
-                    const res = clone(instance.res);
-                    setTimeout(() => {
-                        expect(instance.res).to.deep.equal(res);
-                        done();
-                    }, 10);
+                describe('passing', () => {
+                    beforeEach(() => {
+                        instance = new Passable(lorem.word(), (test) => {
+                            test(lorem.word(), lorem.sentence(), new Promise((resolve, reject) => setImmediate(resolve)));
+                        });
+                    });
+
+                    it('Should keep test unchanged after resolution', (done) => {
+                        const res = clone(instance.res);
+                        setTimeout(() => {
+                            expect(instance.res).to.deep.equal(res);
+                            done();
+                        }, 10);
+                    });
                 });
             });
         });

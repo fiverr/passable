@@ -10,11 +10,6 @@ declare type ValidityObject = {
     message?: string
 };
 
-// Passable
-declare type testRunnerCallback = {
-    valid: boolean
-} | void | null;
-
 // Passable: Specific
 declare type SpecificGroup = {
     [name: string]: boolean
@@ -46,7 +41,14 @@ declare type AsyncObject = {
 // Test
 declare type TestsWrapper = (test: TestProvider, draft: PassableOutput) => void;
 declare type TestProvider = (fieldName: string, statemenpt: string, test: PassableTest, severity: Severity) => void;
-declare type PassableTest = () => void | () => boolean | Promise<void>;
+
+declare type PassableTest = {
+    (): void | () => boolean | Promise<void>,
+    severity: Severity,
+    fieldName: string,
+    statement: string,
+    then?: Function
+};
 
 // Test: Severity
 declare type Severity = 'warn' | 'fail';

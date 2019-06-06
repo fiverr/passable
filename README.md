@@ -20,7 +20,7 @@ Much like most testing frameworks, Passable comes with its own assertion functio
 ## Key features
 1. [Non failing tests](https://fiverr.github.io/passable/test/warn_only_tests.html).
 2. [Conditionally running tests](https://fiverr.github.io/passable/test/specific.html).
-3. [Async validations](https://fiverr.github.io/passable/test/index.html#asynchronous-tests).
+3. [Async validations](https://fiverr.github.io/passable/test/async.html).
 4. [Test callbacks](https://fiverr.github.io/passable/getting_started/callbacks.html).
 
 ---

@@ -1,6 +1,5 @@
 // @flow
 
-import { testRunner, testRunnerAsync } from '../testRunner';
 import passableResult from '../passableResult';
 import Specific from '../Specific';
 
@@ -97,33 +96,65 @@ class Passable {
      * @param {function | Promise} test the actual test callback or promise
      */
     runTest = (test: PassableTest) => {
-        if (test instanceof Promise) {
 
+        const {
+            fieldName,
+            statement,
+            severity
+        }: {
+            severity: Severity,
+            fieldName: string,
+            statement: string
+        } = test;
+
+        let isAsync: boolean = typeof test.then === 'function';
+        let testResult: AnyValue;
+
+        if (!isAsync) {
+            try {
+                testResult = test();
+            } catch (e) {
+                testResult = false;
+            }
+
+            if (testResult && typeof testResult.then === 'function') {
+                isAsync = true;
+
+                // $FlowFixMe
+                test = testResult;
+            }
+        }
+
+        if (isAsync) {
             this.res.markAsync(test.fieldName);
 
             const done: Function = () => {
                 this.clearPendingTest(test);
-                if (!this.hasRemainingPendingTests(test.fieldName)) {
-                    this.res.markAsDone(test.fieldName);
+                if (!this.hasRemainingPendingTests(fieldName)) {
+                    this.res.markAsDone(fieldName);
                 }
             };
 
             const fail: Function = () => {
                 // order is important here! fail needs to be called before `done`.
-                this.res.fail(test.fieldName, test.statement, test.severity);
+                this.res.fail(fieldName, statement, severity);
                 done();
             };
 
-            testRunnerAsync(test, done, fail);
+            try {
+                // $FlowFixMe
+                test.then(done, fail);
+            } catch (e) {
+                fail();
+            }
         } else {
-            const isValid: boolean = testRunner(test);
 
-            if (!isValid) {
-                this.res.fail(test.fieldName, test.statement, test.severity);
+            if (testResult === false) {
+                this.res.fail(fieldName, statement, severity);
             }
             this.clearPendingTest(test);
         }
-        this.res.bumpTestCounter(test.fieldName);
+        this.res.bumpTestCounter(fieldName);
     }
 
     /**

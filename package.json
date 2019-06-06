@@ -42,6 +42,7 @@
     "flow-bin": "0.98.1",
     "lodash": "^4.17.10",
     "mocha": "^6.1.4",
+    "regenerator-runtime": "^0.13.2",
     "rollup": "^1.14.3",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-node-resolve": "^5.0.1",

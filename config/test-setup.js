@@ -1,3 +1,4 @@
+const regeneratorRuntime = require('regenerator-runtime');
 const chai = require('chai');
 const chaiExclude = require('chai-exclude');
 
