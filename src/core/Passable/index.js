@@ -85,11 +85,11 @@ class Passable {
             return;
         }
 
-        operation(Object.assign(test, {
-            fieldName,
-            statement,
-            severity
-        }));
+        test.fieldName = fieldName;
+        test.statement = statement;
+        test.severity = severity;
+
+        operation(test);
     }
 
     /**

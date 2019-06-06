@@ -12,7 +12,7 @@ function rule(rule: EnforceRule, value: AnyValue, ...args: RuleArgs): void {
     if (typeof rule !== 'function') { return; }
 
     if (rule(value, ...args) !== true) {
-        throw new Error(`[Enforce]: ${rule.name} invalid ${typeof value} value`);
+        throw new Error(`[Enforce]: invalid ${typeof value} value`);
     }
 }
 

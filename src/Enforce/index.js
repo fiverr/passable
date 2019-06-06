@@ -11,7 +11,7 @@ const isRule: Function = (rulesObject, name): boolean => (
 );
 
 const Enforce: Function = (customRules: EnforceRules = {}): EnforceInstance => {
-    const rulesObject: EnforceRules = Object.assign({}, rules, customRules);
+    const rulesObject: EnforceRules = {...rules, ...customRules};
 
     if (typeof Proxy === 'function') {
         return (value: AnyValue): EnforceRules => {
