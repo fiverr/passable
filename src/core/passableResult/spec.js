@@ -15,19 +15,21 @@ const rejectLater = () => new Promise((res, rej) => {
 
 describe('module: passableResult', () => {
     it('Should return correct initial object from constructor', () => {
-        expect(passableResult('FormName').output)
+        const output = passableResult('FormName').output;
+        expect(output)
             .excluding(excludeFromResult).to.deep.equal({
                 name: 'FormName',
-                hasValidationErrors: false,
-                hasValidationWarnings: false,
                 failCount: 0,
                 warnCount: 0,
                 testCount: 0,
                 testsPerformed: {},
-                validationErrors: {},
-                validationWarnings: {},
+                errors: {},
+                warnings: {},
                 skipped: []
             });
+
+        expect(output.hasErrors()).to.equal(false);
+        expect(output.hasWarnings()).to.equal(false);
     });
 
 
@@ -331,7 +333,8 @@ describe('module: passableResult', () => {
 
         it('Should return all errors object when no field specified', () => {
             expect(testObject.output.getErrors()).to.deep.equal({
-                example: ['Error string']
+                example: ['Error string'],
+                example_2: []
             });
         });
     });
@@ -355,7 +358,8 @@ describe('module: passableResult', () => {
 
         it('Should return all errors object when no field specified', () => {
             expect(testObject.output.getWarnings()).to.deep.equal({
-                example: ['Error string']
+                example: ['Error string'],
+                example_2: []
             });
         });
     });
@@ -443,15 +447,16 @@ describe('module: passableResult', () => {
                     testCount: 0,
                     failCount: 1,
                     warnCount: 0,
-                    hasValidationErrors: true,
-                    hasValidationWarnings: false,
                     testsPerformed: {
                         f1: { failCount: 1, warnCount: 0, testCount: 0 }
                     },
-                    validationErrors: { f1: ['should fail'] },
-                    validationWarnings: {},
+                    errors: { f1: ['should fail'] },
+                    warnings: { f1: [] },
                     skipped: []
                 });
+
+            expect(testObject.output.hasErrors()).to.equal(true);
+            expect(testObject.output.hasWarnings()).to.equal(false);
         });
 
         it('Should return correct warning object', () => {
@@ -463,15 +468,16 @@ describe('module: passableResult', () => {
                     testCount: 0,
                     failCount: 0,
                     warnCount: 1,
-                    hasValidationErrors: false,
-                    hasValidationWarnings: true,
                     testsPerformed: {
                         f1: { failCount: 0, warnCount: 1, testCount: 0 }
                     },
-                    validationErrors: {},
-                    validationWarnings: { f1: ['should warn'] },
+                    errors: { f1: [] },
+                    warnings: { f1: ['should warn'] },
                     skipped: []
                 });
+
+            expect(testObject.output.hasErrors()).to.equal(false);
+            expect(testObject.output.hasWarnings()).to.equal(true);
         });
 
         it('Should return and keep object unchanged if field does not exist', () => {
@@ -503,15 +509,16 @@ describe('module: passableResult', () => {
                     testCount: 0,
                     failCount: 0,
                     warnCount: 1,
-                    hasValidationErrors: false,
-                    hasValidationWarnings: true,
                     testsPerformed: {
                         f1: { failCount: 0, warnCount: 1, testCount: 0 }
                     },
-                    validationErrors: {},
-                    validationWarnings: { f1: ['should warn'] },
+                    errors: { f1: []  },
+                    warnings: { f1: ['should warn'] },
                     skipped: []
                 });
+
+            expect(testObject.output.hasErrors()).to.equal(false);
+            expect(testObject.output.hasWarnings()).to.equal(true);
         });
 
         it('#bumpTestError Should correctly update instance with field\'s error', () => {
@@ -524,15 +531,16 @@ describe('module: passableResult', () => {
                     testCount: 0,
                     failCount: 1,
                     warnCount: 0,
-                    hasValidationErrors: true,
-                    hasValidationWarnings: false,
                     testsPerformed: {
                         f1: { failCount: 1, warnCount: 0, testCount: 0 }
                     },
-                    validationErrors: { f1: ['should error'] },
-                    validationWarnings: {},
+                    errors: { f1: ['should error'] },
+                    warnings: { f1: [] },
                     skipped: []
                 });
+
+            expect(testObject.output.hasErrors()).to.equal(true);
+            expect(testObject.output.hasWarnings()).to.equal(false);
         });
     });
 });

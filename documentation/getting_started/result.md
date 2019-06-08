@@ -4,16 +4,14 @@
 | Name                             | Type       | Description                                         |
 |----------------------------------|------------|-----------------------------------------------------|
 | `name`                           | `String`   | The name of the form being validated
-| `hasValidationErrors`            | `Boolean`  | Whether there are validation errors or not
-| `hasValidationWarnings`          | `Boolean`  | Whether there are validation warnings or not
 | `failCount`                      | `Number`   | Overall errors count for this form
 | `warnCount`                      | `Number`   | Overall warnings count for this form
 | `testCount`                      | `Number`   | Overall test count in this form
 | `testsPerformed`                 | `Object{}` | Detailed stats per field (structure detailed below)
-| `validationErrors`               | `Object[]` | Actual errors per each field
-| `validationErrors[field-name]`   | `Object[]` | All error strings for this field
-| `validationWarnings`             | `Object[]` | Actual errors per each field
-| `validationWarnings[field-name]` | `Object[]` | All warning strings for this field
+| `errors`                         | `Object[]` | Actual errors per each field
+| `errors[field-name]`             | `Object[]` | All error strings for this field
+| `warnings`                       | `Object[]` | Actual errors per each field
+| `warnings[field-name]`           | `Object[]` | All warning strings for this field
 | `skipped`                        | `Array`    | All skipped fields (empty, unless the `specific` option is used)
 | `getErrors`                      | `Function` | Getter function which allows accessing the errors array of one or all fields
 | `getWarnings`                    | `Function` | Getter function which allows accessing the warnings array of one or all fields
@@ -56,7 +54,7 @@ resultObject.hasWarnings();
 You can easily traverse the object tree to acess the field errors and warnings, but when accessing many fields, it can get pretty messy:
 
 ```js
-resultObject.validationErrors.myField && resultObject.validationErrors.myField[0];
+resultObject.errors.myField && resultObject.errors.myField[0];
 ```
 This is clearly not ideal. There is a shortcut to getting to a specific field:
 
@@ -77,15 +75,13 @@ resultObject.getWarnings('username');
 // []
 ```
 
-## Why No `isValid` prop?
+## Why isn't there an `isValid` prop?
 There is **no** `isValid` prop, this is by design. Passable cannot know your business logic, nor can it ever assume that `0` errors means valid result. `0` errors can be due to skipped fields. Same goes for isInvalid. Even though, usually, errors mean invalidity, it is not always the case. This is why Passable gives you all the information about the tests, but it is your job to decide whether it means that the validation failed or not.
 
 ## Passing Example
 ```js
 {
   "name": "NewUserForm",
-  "hasValidationErrors": false,
-  "hasValidationWarnings": false,
   "failCount": 0,
   "warnCount": 0,
   "testCount": 2,
@@ -101,8 +97,8 @@ There is **no** `isValid` prop, this is by design. Passable cannot know your bus
       "warnCount": 0
     }
   },
-  "validationErrors": {},
-  "validationWarnings": {},
+  "errors": {},
+  "warnings": {},
   "skipped": []
 }
 ```
@@ -111,8 +107,6 @@ There is **no** `isValid` prop, this is by design. Passable cannot know your bus
 ```js
 {
   "name": "NewUserForm",
-  "hasValidationErrors": true,
-  "hasValidationWarnings": false,
   "failCount": 2,
   "warnCount": 0,
   "testCount": 2,
@@ -128,7 +122,7 @@ There is **no** `isValid` prop, this is by design. Passable cannot know your bus
       "warnCount": 0
     }
   },
-  "validationErrors": {
+  "errors": {
     "username": [
       "Must be a string between 2 and 10 chars"
     ],
@@ -136,7 +130,7 @@ There is **no** `isValid` prop, this is by design. Passable cannot know your bus
       "Can either be empty, or larger than 18"
     ]
   },
-  "validationWarnings": {},
+  "warnings": {},
   "skipped": []
 }
 ```

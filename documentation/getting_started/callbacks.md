@@ -70,7 +70,7 @@ passable('SendEmailForm', (test) => {
     enforce(data.content).largerThan(4).smallerThan(501);
   });
 }).done((res) => {
-  if (res.hasValidationErrors) {
+  if (res.hasErrors()) {
     showValidationErrors(res.errors)
   }
 }).done(reportToServer).done(promptUserQuestionnaire);
@@ -81,7 +81,7 @@ In the example above, whenever the validation completes, the following functions
 1.
 ```js
 (res) => {
-  if (res.hasValidationErrors) {
+  if (res.hasErrors()) {
     showValidationErrors(res.errors)
   }
 }

@@ -38,14 +38,6 @@ declare module 'passable' {
              */
             failCount: number;
             /**
-             * Whether the validation suite contains errors or not
-             */
-            hasValidationErrors: boolean;
-            /**
-             * Whether the validation suite contains warnings or not
-             */
-            hasValidationWarnings: boolean;
-            /**
              * All skipped fields in suite (empty, unless the specific option is used)
              */
             skipped: string[];
@@ -75,13 +67,13 @@ declare module 'passable' {
             /**
              * Actual errors per each field
              */
-            validationErrors: {
+            errors: {
                 [fieldName: string]: string[];
             };
             /**
              * Actual errors per each field
              */
-            validationWarnings: {
+            warnings: {
                 [fieldName: string]: string[];
             };
             /**

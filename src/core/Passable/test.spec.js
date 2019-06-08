@@ -255,7 +255,7 @@ describe("Tests Passable's `test` functionality", () => {
                     test(lorem.word(), lorem.sentence(), noop);
                 });
                 expect(instance.res.output.failCount).to.equal(1);
-                expect(instance.res.output.validationErrors).to.have.key(name);
+                expect(instance.res.output.hasErrors(name)).to.equal(true);
             });
 
             it('should mark a test as failed for `false`', () => {
@@ -265,7 +265,7 @@ describe("Tests Passable's `test` functionality", () => {
                     test(lorem.word(), lorem.sentence(), noop);
                 });
                 expect(instance.res.output.failCount).to.equal(1);
-                expect(instance.res.output.validationErrors).to.have.key(name);
+                expect(instance.res.output.hasErrors(name)).to.equal(true);
             });
 
             it('should implicitly pass test', () => {

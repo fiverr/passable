@@ -102,6 +102,8 @@
   var passableResult = function passableResult(name) {
     var completionCallbacks = [];
     var asyncObject = null;
+    var hasValidationErrors = false;
+    var hasValidationWarnings = false;
     /**
      * Initializes specific field's counters
      * @param {string} fieldName - The name of the field.
@@ -117,6 +119,8 @@
         failCount: 0,
         warnCount: 0
       };
+      output.errors[fieldName] = output.errors[fieldName] || [];
+      output.warnings[fieldName] = output.warnings[fieldName] || [];
     };
     /**
      * Bumps test counters to indicate tests that's being performed
@@ -140,9 +144,9 @@
 
 
     var bumpTestWarning = function bumpTestWarning(fieldName, statement) {
-      output.hasValidationWarnings = true;
-      output.validationWarnings[fieldName] = output.validationWarnings[fieldName] || [];
-      output.validationWarnings[fieldName].push(statement);
+      hasValidationWarnings = true;
+      output.warnings[fieldName] = output.warnings[fieldName] || [];
+      output.warnings[fieldName].push(statement);
       output.warnCount++;
       output.testsPerformed[fieldName].warnCount++;
     };
@@ -154,9 +158,9 @@
 
 
     var bumpTestError = function bumpTestError(fieldName, statement) {
-      output.hasValidationErrors = true;
-      output.validationErrors[fieldName] = output.validationErrors[fieldName] || [];
-      output.validationErrors[fieldName].push(statement);
+      hasValidationErrors = true;
+      output.errors[fieldName] = output.errors[fieldName] || [];
+      output.errors[fieldName].push(statement);
       output.failCount++;
       output.testsPerformed[fieldName].failCount++;
     };
@@ -281,11 +285,11 @@
 
     var getErrors = function getErrors(fieldName) {
       if (!fieldName) {
-        return output.validationErrors;
+        return output.errors;
       }
 
-      if (output.validationErrors[fieldName]) {
-        return output.validationErrors[fieldName];
+      if (output.errors[fieldName]) {
+        return output.errors[fieldName];
       }
 
       return [];
@@ -299,11 +303,11 @@
 
     var getWarnings = function getWarnings(fieldName) {
       if (!fieldName) {
-        return output.validationWarnings;
+        return output.warnings;
       }
 
-      if (output.validationWarnings[fieldName]) {
-        return output.validationWarnings[fieldName];
+      if (output.warnings[fieldName]) {
+        return output.warnings[fieldName];
       }
 
       return [];
@@ -317,7 +321,7 @@
 
     var hasErrors = function hasErrors(fieldName) {
       if (!fieldName) {
-        return output.hasValidationErrors;
+        return hasValidationErrors;
       }
 
       return Boolean(output.getErrors(fieldName).length);
@@ -331,7 +335,7 @@
 
     var hasWarnings = function hasWarnings(fieldName) {
       if (!fieldName) {
-        return output.hasValidationWarnings;
+        return hasValidationWarnings;
       }
 
       return Boolean(output.getWarnings(fieldName).length);
@@ -339,14 +343,12 @@
 
     var output = {
       name: name,
-      hasValidationErrors: false,
-      hasValidationWarnings: false,
       failCount: 0,
       warnCount: 0,
       testCount: 0,
       testsPerformed: {},
-      validationErrors: {},
-      validationWarnings: {},
+      errors: {},
+      warnings: {},
       skipped: [],
       hasErrors: hasErrors,
       hasWarnings: hasWarnings,

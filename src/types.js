@@ -76,8 +76,6 @@ declare type Output = {
 
 declare type PassableOutput = {
     name: string,
-    hasValidationErrors: boolean,
-    hasValidationWarnings: boolean,
     failCount: number,
     warnCount: number,
     testCount: number,
@@ -88,10 +86,10 @@ declare type PassableOutput = {
             warnCount: number
         }
     },
-    validationErrors: {
+    errors: {
         [fieldName: string]: string[]
     },
-    validationWarnings: {
+    warnings: {
         [fieldName: string]: string[]
     },
     skipped: string[],

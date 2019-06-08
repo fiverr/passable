@@ -14,6 +14,8 @@ const passableResult: Function = (name: string): PassableResult => {
 
     const completionCallbacks: Function[] = [];
     let asyncObject: AsyncObject = null;
+    let hasValidationErrors: boolean = false;
+    let hasValidationWarnings: boolean = false;
 
     /**
      * Initializes specific field's counters
@@ -27,6 +29,9 @@ const passableResult: Function = (name: string): PassableResult => {
             failCount: 0,
             warnCount: 0
         };
+
+        output.errors[fieldName] = output.errors[fieldName] || [];
+        output.warnings[fieldName] = output.warnings[fieldName] || [];
     };
 
     /**
@@ -46,9 +51,9 @@ const passableResult: Function = (name: string): PassableResult => {
      * @param {string} statement - The error string to add to the object.
      */
     const bumpTestWarning: Function = (fieldName: string, statement: string) => {
-        output.hasValidationWarnings = true;
-        output.validationWarnings[fieldName] = output.validationWarnings[fieldName] || [];
-        output.validationWarnings[fieldName].push(statement);
+        hasValidationWarnings = true;
+        output.warnings[fieldName] = output.warnings[fieldName] || [];
+        output.warnings[fieldName].push(statement);
         output.warnCount++;
         output.testsPerformed[fieldName].warnCount++;
     };
@@ -59,9 +64,9 @@ const passableResult: Function = (name: string): PassableResult => {
      * @param {string} statement - The error string to add to the object.
      */
     const bumpTestError: Function = (fieldName: string, statement: string) => {
-        output.hasValidationErrors = true;
-        output.validationErrors[fieldName] = output.validationErrors[fieldName] || [];
-        output.validationErrors[fieldName].push(statement);
+        hasValidationErrors = true;
+        output.errors[fieldName] = output.errors[fieldName] || [];
+        output.errors[fieldName].push(statement);
         output.failCount++;
         output.testsPerformed[fieldName].failCount++;
     };
@@ -173,11 +178,11 @@ const passableResult: Function = (name: string): PassableResult => {
      */
     const getErrors: Function = (fieldName: string) => {
         if (!fieldName) {
-            return output.validationErrors;
+            return output.errors;
         }
 
-        if (output.validationErrors[fieldName]) {
-            return output.validationErrors[fieldName];
+        if (output.errors[fieldName]) {
+            return output.errors[fieldName];
         }
 
         return [];
@@ -190,11 +195,11 @@ const passableResult: Function = (name: string): PassableResult => {
      */
     const getWarnings: Function = (fieldName: string) => {
         if (!fieldName) {
-            return output.validationWarnings;
+            return output.warnings;
         }
 
-        if (output.validationWarnings[fieldName]) {
-            return output.validationWarnings[fieldName];
+        if (output.warnings[fieldName]) {
+            return output.warnings[fieldName];
         }
 
         return [];
@@ -207,7 +212,7 @@ const passableResult: Function = (name: string): PassableResult => {
      */
     const hasErrors: Function = (fieldName: string) => {
         if (!fieldName) {
-            return output.hasValidationErrors;
+            return hasValidationErrors;
         }
 
         return Boolean(output.getErrors(fieldName).length);
@@ -220,7 +225,7 @@ const passableResult: Function = (name: string): PassableResult => {
      */
     const hasWarnings: Function = (fieldName: string) => {
         if (!fieldName) {
-            return output.hasValidationWarnings;
+            return hasValidationWarnings;
         }
 
         return Boolean(output.getWarnings(fieldName).length);
@@ -228,14 +233,12 @@ const passableResult: Function = (name: string): PassableResult => {
 
     const output: PassableOutput = {
         name,
-        hasValidationErrors: false,
-        hasValidationWarnings: false,
         failCount: 0,
         warnCount: 0,
         testCount: 0,
         testsPerformed: {},
-        validationErrors: {},
-        validationWarnings: {},
+        errors: {},
+        warnings: {},
         skipped: [],
         hasErrors,
         hasWarnings,

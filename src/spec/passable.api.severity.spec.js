@@ -35,13 +35,11 @@ const warnPass = passable('WarnPass', (test) => {
 const warnPassExpected = {
         name: 'WarnPass',
         skipped: [],
-        hasValidationErrors: false,
-        hasValidationWarnings: true,
         testsPerformed: {
             WarnPass: { testCount: 1, failCount: 0, warnCount: 1 }
         },
-        validationErrors: {},
-        validationWarnings: { WarnPass: ['should warn'] },
+        errors: {},
+        warnings: { WarnPass: ['should warn'] },
         failCount: 0,
         warnCount: 1,
         testCount: 1
@@ -49,14 +47,12 @@ const warnPassExpected = {
     warnFailExpected = {
         name: 'WarnFail',
         skipped: [],
-        hasValidationErrors: true,
-        hasValidationWarnings: true,
         testsPerformed: {
             Warn: { testCount: 1, failCount: 0, warnCount: 1 },
             Fail: { testCount: 1, failCount: 1, warnCount: 0 }
         },
-        validationErrors: { Fail: ['should Fail'] },
-        validationWarnings: { Warn: ['should warn'] },
+        errors: { Fail: ['should Fail'] },
+        warnings: { Warn: ['should warn'] },
         failCount: 1,
         warnCount: 1,
         testCount: 2
@@ -64,14 +60,12 @@ const warnPassExpected = {
     failExpected = {
         name: 'Fail',
         skipped: [],
-        hasValidationErrors: true,
-        hasValidationWarnings: false,
         testsPerformed: {
             Warn: { testCount: 1, failCount: 0, warnCount: 0 },
             Fail: { testCount: 1, failCount: 1, warnCount: 0 }
         },
-        validationErrors: { Fail: ['should Fail'] },
-        validationWarnings: {},
+        errors: { Fail: ['should Fail'] },
+        warnings: {},
         failCount: 1,
         warnCount: 0,
         testCount: 2
