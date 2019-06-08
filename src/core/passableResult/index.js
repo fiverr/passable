@@ -29,9 +29,6 @@ const passableResult: Function = (name: string): PassableResult => {
             failCount: 0,
             warnCount: 0
         };
-
-        output.errors[fieldName] = output.errors[fieldName] || [];
-        output.warnings[fieldName] = output.warnings[fieldName] || [];
     };
 
     /**

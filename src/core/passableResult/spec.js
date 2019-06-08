@@ -333,8 +333,7 @@ describe('module: passableResult', () => {
 
         it('Should return all errors object when no field specified', () => {
             expect(testObject.output.getErrors()).to.deep.equal({
-                example: ['Error string'],
-                example_2: []
+                example: ['Error string']
             });
         });
     });
@@ -358,8 +357,7 @@ describe('module: passableResult', () => {
 
         it('Should return all errors object when no field specified', () => {
             expect(testObject.output.getWarnings()).to.deep.equal({
-                example: ['Error string'],
-                example_2: []
+                example: ['Error string']
             });
         });
     });
@@ -451,7 +449,7 @@ describe('module: passableResult', () => {
                         f1: { failCount: 1, warnCount: 0, testCount: 0 }
                     },
                     errors: { f1: ['should fail'] },
-                    warnings: { f1: [] },
+                    warnings: {},
                     skipped: []
                 });
 
@@ -471,7 +469,7 @@ describe('module: passableResult', () => {
                     testsPerformed: {
                         f1: { failCount: 0, warnCount: 1, testCount: 0 }
                     },
-                    errors: { f1: [] },
+                    errors: {},
                     warnings: { f1: ['should warn'] },
                     skipped: []
                 });
@@ -512,7 +510,7 @@ describe('module: passableResult', () => {
                     testsPerformed: {
                         f1: { failCount: 0, warnCount: 1, testCount: 0 }
                     },
-                    errors: { f1: []  },
+                    errors: {},
                     warnings: { f1: ['should warn'] },
                     skipped: []
                 });
@@ -535,7 +533,7 @@ describe('module: passableResult', () => {
                         f1: { failCount: 1, warnCount: 0, testCount: 0 }
                     },
                     errors: { f1: ['should error'] },
-                    warnings: { f1: [] },
+                    warnings: {},
                     skipped: []
                 });
 

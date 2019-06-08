@@ -119,8 +119,6 @@
         failCount: 0,
         warnCount: 0
       };
-      output.errors[fieldName] = output.errors[fieldName] || [];
-      output.warnings[fieldName] = output.warnings[fieldName] || [];
     };
     /**
      * Bumps test counters to indicate tests that's being performed
