@@ -3,9 +3,15 @@ import passableResult from './index';
 import { WARN, FAIL } from '../../constants';
 import { expect } from 'chai';
 import { excludeFromResult } from '../../../config/test-setup';
-import { noop } from 'lodash';
+import { noop, sample } from 'lodash';
 import sinon from 'sinon';
 import faker from 'faker';
+
+const rejectLater = () => new Promise((res, rej) => {
+    setTimeout(() => {
+        sample([res, rej])();
+    }, 500);
+});
 
 describe('module: passableResult', () => {
     it('Should return correct initial object from constructor', () => {
@@ -189,6 +195,27 @@ describe('module: passableResult', () => {
                     done();
                 });
             });
+
+            describe('async/await', () => {
+                let fn1;
+
+                beforeEach(() => {
+                    fn1 = sinon.spy();
+
+                    passable(faker.lorem.word(), (test) => {
+                        test(faker.lorem.word(), faker.lorem.sentence(), async() => await rejectLater());
+                    }).done(fn1);
+                });
+
+                it('Should call done after completion', (done) => {
+                    expect(fn1.calledOnce).to.equal(false);
+
+                    setTimeout(() => {
+                        expect(fn1.calledOnce).to.equal(true);
+                        done();
+                    }, 550);
+                });
+            });
         });
 
         describe('When sync', () => {
@@ -209,17 +236,19 @@ describe('module: passableResult', () => {
     });
 
     describe('method: after', () => {
-        let res, f1, f2;
+        let res, f1, f2, f3;
 
         beforeEach(() => {
             f1 = faker.lorem.word();
             f2 = faker.lorem.word();
+            f3 = faker.lorem.word();
 
             res = passable(faker.lorem.word(), (test) => {
                 test(f1, faker.lorem.sentence(), new Promise((resolve, reject) => setTimeout(reject, 100)));
                 test(f2, faker.lorem.sentence(), noop);
                 test(f2, faker.lorem.sentence(), new Promise((resolve) => setTimeout(resolve)));
                 test(f2, faker.lorem.sentence(), new Promise((resolve, reject) => setTimeout(reject, 250)));
+                test(f3, faker.lorem.sentence(), async() => await rejectLater());
                 test('sync', faker.lorem.sentence(), noop);
             });
         });
@@ -238,6 +267,18 @@ describe('module: passableResult', () => {
                     expect(res.testsPerformed[f2].testCount).to.equal(3);
                     done();
                 });
+            });
+        });
+
+        describe('async/await', () => {
+            it('Should run callback after test finishes', (done) => {
+                const fn1 = sinon.spy();
+                res.after(f3, fn1);
+                expect(fn1.calledOnce).to.equal(false);
+                setTimeout(() => {
+                    expect(fn1.calledOnce).to.equal(true);
+                    done();
+                }, 550);
             });
         });
 

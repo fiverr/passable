@@ -46,9 +46,6 @@ class Passable {
 
     clearPendingTest = (test: PassableTest) => {
         this.pending = (this.pending.filter((t: PassableTest): boolean => t !== test): Array<PassableTest>);
-        if (this.pending.length === 0) {
-            this.res.runCompletionCallbacks();
-        }
     };
 
     /**
@@ -110,6 +107,7 @@ class Passable {
         let isAsync: boolean = typeof test.then === 'function';
         let testResult: AnyValue;
 
+
         if (!isAsync) {
             try {
                 testResult = test();
@@ -126,7 +124,7 @@ class Passable {
         }
 
         if (isAsync) {
-            this.res.markAsync(test.fieldName);
+            this.res.markAsync(fieldName);
 
             const done: Function = () => {
                 this.clearPendingTest(test);

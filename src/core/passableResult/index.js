@@ -123,6 +123,8 @@ const passableResult: Function = (name: string): PassableResult => {
             if (asyncObject[fieldName].callbacks) {
                 asyncObject[fieldName].callbacks.forEach((callback) => callback(output));
             }
+
+            runCompletionCallbacks();
         }
     };
 
@@ -150,7 +152,6 @@ const passableResult: Function = (name: string): PassableResult => {
      * @return {object} output object
      */
     const after: Function = (fieldName: string, callback) => {
-
         if (typeof callback !== 'function') {
             return output;
         }

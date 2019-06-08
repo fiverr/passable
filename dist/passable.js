@@ -225,6 +225,8 @@
             return callback(output);
           });
         }
+
+        runCompletionCallbacks();
       }
     };
     /**
@@ -508,10 +510,6 @@
       _this.pending = _this.pending.filter(function (t) {
         return t !== test;
       });
-
-      if (_this.pending.length === 0) {
-        _this.res.runCompletionCallbacks();
-      }
     });
 
     _defineProperty(this, "hasRemainingPendingTests", function (fieldName) {
@@ -568,7 +566,7 @@
       }
 
       if (isAsync) {
-        _this.res.markAsync(test.fieldName);
+        _this.res.markAsync(fieldName);
 
         var done = function done() {
           _this.clearPendingTest(test);

@@ -157,11 +157,9 @@ describe("Tests Passable's `test` functionality", () => {
                     f3 = lorem.word();
                     f4 = lorem.word();
 
-                    const rejectLater = () => {
-                        return new Promise((res, rej) => {
-                            setTimeout(rej, 500);
-                        });
-                    };
+                    const rejectLater = () => new Promise((res, rej) => {
+                        setTimeout(rej, 500);
+                    });
 
                     instance = new Passable(lorem.word(), (test) => {
                         test(f1, lorem.sentence(), () => Promise.reject());
@@ -171,9 +169,7 @@ describe("Tests Passable's `test` functionality", () => {
                         test(f3, lorem.sentence(), () => new Promise((resolve) => {
                             setTimeout(resolve, 100);
                         }));
-                        test(f4, lorem.sentence(), async() => {
-                            return await rejectLater();
-                        });
+                        test(f4, lorem.sentence(), async() => await rejectLater());
                     });
                 });
 
