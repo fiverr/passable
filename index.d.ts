@@ -295,63 +295,6 @@ declare module 'passable' {
             isNotEmpty(expect?: boolean): IEnforceInstance & T;
 
             /**
-             * Checks that your enforce value is larger than a given number
-             *
-             * @example
-             *
-             *  enforce([1]).largerThan(0) // truthy
-             *
-             *  enforce('').largerThan(0) // falsy
-             */
-            largerThan(size: number): IEnforceInstance & T;
-
-            /**
-             * Checks that your enforce value is larger than or equals a given number
-             *
-             * @example
-             *
-             *  enforce([1]).largerThanOrEquals(1) // truthy
-             *
-             *  enforce(0).largerThanOrEquals(1) // falsy
-             */
-            largerThanOrEquals(size: number): IEnforceInstance & T;
-
-            /**
-             * Checks that your enforce value equals the size of a given number
-             *
-             * @example
-             *
-             *  enforce([1]).sizeEquals(0) // truthy
-             *
-             *  enforce('hell').sizeEquals([1,2,3,4]) // truthy
-             *
-             *  enforce({1:1, 2:2}).sizeEquals([1, 2, 3]) // falsy
-             */
-            sizeEquals(size: number): IEnforceInstance & T;
-
-            /**
-             * Checks that your enforce value does not equal the size of a given number
-             *
-             * @example
-             *
-             *  enforce([1]).sizeNotEquals(2) // truthy
-             *
-             *  enforce([1]).sizeNotEquals(0) // falsy
-             */
-            sizeNotEquals(size: number): IEnforceInstance & T;
-
-            /**
-             * Checks that your enforce value is smaller than a given number
-             *
-             * @example
-             *
-             *  enforce([]).smallerThan(1) // truthy
-             *
-             *  enforce([1]).smallerThan(1) // falsy
-             */
-            smallerThan(size: number): IEnforceInstance & T;
-
-            /**
              * Checks that your enforce value is a numeric value
              *
              * @example
@@ -372,17 +315,6 @@ declare module 'passable' {
              *  enforce('-10').isNotNumeric() // falsy
              */
             isNotNumeric(): IEnforceInstance & T;
-
-            /**
-             * Checks that your enforce value is smaller than or equals another value
-             *
-             * @example
-             *
-             *  enforce([]).smallerThanOrEquals(1) // truthy
-             *
-             *  enforce('0').smallerThanOrEquals(0) // falsy
-             */
-            smallerThanOrEquals(size: number): IEnforceInstance & T;
 
             /**
              * Checks that your numeric enforce value is smaller than another value
