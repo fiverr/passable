@@ -918,7 +918,7 @@
     return suite.res.output;
   }
 
-  passable.VERSION = "6.3.5";
+  passable.VERSION = "7.0.0";
   passable.enforce = new Enforce({});
   passable.Enforce = Enforce;
   passable.validate = validate;
