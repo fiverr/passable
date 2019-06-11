@@ -13,9 +13,7 @@ class Passable {
     specific: Specific;
     res: PassableResult;
     test: TestProvider;
-    pending: Array<PassableTest>;
-
-    pending = [];
+    pending: Array<PassableTest> = [];
 
     /**
      * Initializes a validation suite, creates a new passableResult instance and runs pending tests
@@ -53,7 +51,17 @@ class Passable {
      * @param {String} fieldName name of the field to test against
      * @return {Boolean}
      */
-    hasRemainingPendingTests = (fieldName: string) => this.pending.some((test) => test.fieldName === fieldName);
+    hasRemainingPendingTests = (fieldName?: string) => {
+        if (!this.pending.length) {
+            return false;
+        }
+
+        if (fieldName) {
+            return this.pending.some((test) => test.fieldName === fieldName);
+        }
+
+        return !!this.pending.length;
+    }
 
     /**
      * Test function passed over to the consumer.
@@ -104,24 +112,8 @@ class Passable {
             statement: string
         } = test;
 
-        let isAsync: boolean = typeof test.then === 'function';
+        const isAsync: boolean = typeof test.then === 'function';
         let testResult: AnyValue;
-
-
-        if (!isAsync) {
-            try {
-                testResult = test();
-            } catch (e) {
-                testResult = false;
-            }
-
-            if (testResult && typeof testResult.then === 'function') {
-                isAsync = true;
-
-                // $FlowFixMe
-                test = testResult;
-            }
-        }
 
         if (isAsync) {
             this.res.markAsync(fieldName);
@@ -131,11 +123,18 @@ class Passable {
                 if (!this.hasRemainingPendingTests(fieldName)) {
                     this.res.markAsDone(fieldName);
                 }
+
+                if (!this.hasRemainingPendingTests()) {
+                    this.res.markAsDone();
+                }
             };
 
             const fail: Function = () => {
                 // order is important here! fail needs to be called before `done`.
-                this.res.fail(fieldName, statement, severity);
+
+                if (this.pending.includes(test)) {
+                    this.res.fail(fieldName, statement, severity);
+                }
                 done();
             };
 
@@ -143,15 +142,34 @@ class Passable {
                 // $FlowFixMe
                 test.then(done, fail);
             } catch (e) {
-                fail();
+                fail(test);
             }
         } else {
+            try {
+                testResult = test();
+            } catch (e) {
+                testResult = false;
+            }
 
+            // if is async after all
+            if (testResult && typeof testResult.then === 'function') {
+
+                testResult.fieldName = fieldName;
+                testResult.statement = statement;
+                testResult.severity = severity;
+
+                // $FlowFixMe
+                return this.addPendingTest(testResult);
+            }
+
+            // explicitly false
             if (testResult === false) {
                 this.res.fail(fieldName, statement, severity);
             }
+
             this.clearPendingTest(test);
         }
+
         this.res.bumpTestCounter(fieldName);
     }
 

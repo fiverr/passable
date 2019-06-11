@@ -1,6 +1,6 @@
-# The `.after()` callback
+# `.after()`
 
-> Since 6.4.0
+> Since 7.0.0
 
 The after callback is a function that can be chained to a passable suite and allows invoking a callback whenever a certain field has finished running, regardless of whether it passed or failed. It accepts two arguments: `fieldName` and `callback`. You may chain multiple callbacks to the same field.
 
@@ -36,7 +36,7 @@ passable('SendEmailForm', (test) => {
 });
 ```
 
-# The `.done()` callback
+# `.done()`
 
 > Since 6.1.0
 
@@ -76,23 +76,39 @@ passable('SendEmailForm', (test) => {
 }).done(reportToServer).done(promptUserQuestionnaire);
 ```
 
-In the example above, whenever the validation completes, the following functions will get called, with the [validation result object](./result.md) as an argument:
+# `.cancel()`
 
-1.
+> Since 7.0.0
+
+When running your validation suite multiple times in a short amount of time - for example, when validating user inputs upon change, your async validations may finish after you already started running the suite again. This will cause the `.done()` and `.after()` callbacks of the previous run to be run in proximity to the `.done()` and `.after()` callbacks of the current run.
+
+Depending on what you do in your callbacks, this can lead to wasteful action, or to validation state rapidly changing in front of the user's eyes.
+
+To combat this, there's the `.cancel()` callback, which cancels any pending `.done()` and `.after()` callbacks.
+
+You can use it in many ways, but the simplistic way to look at it is this: You need to keep track of your cancel callback in a scope that's still going to be accessible in the next run.
+
+Example:
+
 ```js
-(res) => {
-  if (res.hasErrors()) {
-    showValidationErrors(res.errors)
+let cancel = null;
+
+// this is a simple event handler
+const handleChange = (e) => {
+
+  if (cancel) {
+    cancel(); // now, if cancel already exists, it will cancel any pending callbacks
   }
+
+  // you should ideally import your suite from somewhere else, this is here just for the demonstration
+  const result = passable('MyForm', (test) => {
+    // some async validations go here
+  });
+
+  result.done((res) => {
+    // do something
+  });
+
+  cancel = result.cancel; // save the cancel callback aside
 }
-```
-
-2.
-```js
-reportToServer
-```
-
-3.
-```js
-promptUserQuestionnaire
 ```

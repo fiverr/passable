@@ -10,7 +10,8 @@ export const excludeFromResult = [
     'getErrors',
     'hasErrors',
     'hasWarnings',
-    'getWarnings'
+    'getWarnings',
+    'cancel'
 ];
 
 global.PASSABLE_VERSION = require('../package.json').version;

@@ -1,5 +1,6 @@
 import passable from '../..';
 import passableResult from './index';
+import { test } from 'mocha';
 import { WARN, FAIL } from '../../constants';
 import { expect } from 'chai';
 import { excludeFromResult } from '../../../config/test-setup';
@@ -7,10 +8,10 @@ import { noop, sample } from 'lodash';
 import sinon from 'sinon';
 import faker from 'faker';
 
-const rejectLater = () => new Promise((res, rej) => {
+const rejectLater = (time = 500) => new Promise((res, rej) => {
     setTimeout(() => {
         sample([res, rej])();
-    }, 500);
+    }, time);
 });
 
 describe('module: passableResult', () => {
@@ -235,6 +236,26 @@ describe('module: passableResult', () => {
                 expect(values).to.deep.equal([1, 2, 3, 4]);
             });
         });
+
+        test('done callbacks run exactly once', (done) => {
+            const spy1 = sinon.spy();
+            const spy2 = sinon.spy();
+
+            passable(faker.lorem.word(), (test) => {
+                test('t1', faker.lorem.sentence(), async() => await rejectLater());
+                test('t2', faker.lorem.sentence(), Promise.resolve());
+                test('t3', faker.lorem.sentence(), () => Promise.reject());
+                test('t4', faker.lorem.sentence(), () => enforce(1).equals(2));
+            }).done(spy1).done(spy2)
+                .after('t1', noop).after('t2', noop).after('t3', noop).after('t4', noop);
+
+            setTimeout(() => {
+                expect(spy1.callCount).to.equal(1);
+                expect(spy2.callCount).to.equal(1);
+                done();
+            }, 550);
+
+        });
     });
 
     describe('method: after', () => {
@@ -312,6 +333,53 @@ describe('module: passableResult', () => {
                 });
             });
         });
+    });
+
+    describe('method: cancel', () => {
+        let done1, done2, after1, after2, f1, f2, f3, result;
+
+        beforeEach(() => {
+            done1 = sinon.spy();
+            done2 = sinon.spy();
+            after1 = sinon.spy();
+            after2 = sinon.spy();
+            f1 = faker.lorem.word();
+            f2 = faker.lorem.word();
+            f3 = faker.lorem.word();
+
+            result = passable(faker.lorem.word(), (test) => {
+                test(f1, faker.lorem.sentence(), rejectLater());
+                test(f2, faker.lorem.sentence(), Promise.resolve());
+                test(f3, faker.lorem.sentence(), new Promise((...args) => {
+                    setTimeout(() => {
+                        sample(args)();
+                    }, 200);
+                }));
+            }).done(done1).done(done2).after(f1, after1).after(f2, after2);
+        });
+
+        it('Should cancel all async callbacks when invoked immediately', () => {
+            result.cancel();
+            expect(done1.callCount).to.equal(0);
+            expect(done2.callCount).to.equal(0);
+            expect(after1.callCount).to.equal(0);
+            expect(after2.callCount).to.equal(0);
+        });
+
+        it('Should cancel remaining async callbacks when invoked', (done) => {
+            setTimeout(() => {
+                result.cancel();
+            }, 250);
+
+            setTimeout(() => {
+                expect(done1.callCount).to.equal(0);
+                expect(done2.callCount).to.equal(0);
+                expect(after1.callCount).to.equal(0);
+                expect(after2.callCount).to.equal(1);
+                done();
+            }, 600);
+        });
+
     });
 
     describe('method: getErrors', () => {

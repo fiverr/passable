@@ -16,6 +16,7 @@ const passableResult: Function = (name: string): PassableResult => {
     let asyncObject: AsyncObject = null;
     let hasValidationErrors: boolean = false;
     let hasValidationWarnings: boolean = false;
+    let cancelled: boolean = false;
 
     /**
      * Initializes specific field's counters
@@ -97,7 +98,7 @@ const passableResult: Function = (name: string): PassableResult => {
      * regardless of success or failure
      */
     const runCompletionCallbacks: Function = () => {
-        completionCallbacks.forEach((cb) => cb(output));
+        completionCallbacks.forEach((cb) => !cancelled && cb(output));
     };
 
     /**
@@ -117,16 +118,19 @@ const passableResult: Function = (name: string): PassableResult => {
      * Marks an async field as done
      * @param {string} fieldName the name of the field marked as done
     */
-    const markAsDone: Function = (fieldName: string) => {
+    const markAsDone: Function = (fieldName?: string) => {
+
+        if (!fieldName) {
+            return runCompletionCallbacks();
+        }
+
         if (asyncObject !== null && asyncObject[fieldName]) {
             asyncObject[fieldName].done = true;
 
             // run field callbacks set in `after`
             if (asyncObject[fieldName].callbacks) {
-                asyncObject[fieldName].callbacks.forEach((callback) => callback(output));
+                asyncObject[fieldName].callbacks.forEach((callback) => !cancelled && callback(output));
             }
-
-            runCompletionCallbacks();
         }
     };
 
@@ -164,6 +168,15 @@ const passableResult: Function = (name: string): PassableResult => {
         } else if (asyncObject[fieldName]) {
             asyncObject[fieldName].callbacks = [...(asyncObject[fieldName].callbacks || []), callback];
         }
+
+        return output;
+    };
+
+    /**
+     * cancels done/after callbacks. They won't invoke when async operations complete
+     */
+    const cancel: Function = () => {
+        cancelled = true;
 
         return output;
     };
@@ -242,7 +255,8 @@ const passableResult: Function = (name: string): PassableResult => {
         getErrors,
         getWarnings,
         done,
-        after
+        after,
+        cancel
     };
 
     return {

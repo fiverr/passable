@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - [Major] Lowercased library name when imported on global object.
 - [Major] Renamed `validationErrors` and `validationWarnings` output properties to `errors` and `warnings`.
+- [Patch] Guarantee that `.done()` callbacks only run once.
 
 ### Added
 - [Minor] `.after()` callback that can run after a specific field finished execution.
@@ -16,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [Minor] New size rules (`longerThan`, `shorterThan`, `longerThanOrEquals`, `shorterThanOrEquals`, `lengthEquals`, `lengthNotEquals`).
 - [Minor] New content rules (`equals`, `notEquals`).
 - [Minor] Support returning promise from test callback for async tests.
+- [Minor] Add cancel callback.
 
 ### Removed
 - [Major] Removed output properties: `hasValidationErrors`, `hasValidationWarnings`.

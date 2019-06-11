@@ -104,6 +104,7 @@
     var asyncObject = null;
     var hasValidationErrors = false;
     var hasValidationWarnings = false;
+    var cancelled = false;
     /**
      * Initializes specific field's counters
      * @param {string} fieldName - The name of the field.
@@ -195,7 +196,7 @@
 
     var runCompletionCallbacks = function runCompletionCallbacks() {
       completionCallbacks.forEach(function (cb) {
-        return cb(output);
+        return !cancelled && cb(output);
       });
     };
     /**
@@ -219,16 +220,18 @@
 
 
     var markAsDone = function markAsDone(fieldName) {
+      if (!fieldName) {
+        return runCompletionCallbacks();
+      }
+
       if (asyncObject !== null && asyncObject[fieldName]) {
         asyncObject[fieldName].done = true; // run field callbacks set in `after`
 
         if (asyncObject[fieldName].callbacks) {
           asyncObject[fieldName].callbacks.forEach(function (callback) {
-            return callback(output);
+            return !cancelled && callback(output);
           });
         }
-
-        runCompletionCallbacks();
       }
     };
     /**
@@ -272,6 +275,15 @@
         asyncObject[fieldName].callbacks = [].concat(_toConsumableArray(asyncObject[fieldName].callbacks || []), [callback]);
       }
 
+      return output;
+    };
+    /**
+     * cancels done/after callbacks. They won't invoke when async operations complete
+     */
+
+
+    var cancel = function cancel() {
+      cancelled = true;
       return output;
     };
     /**
@@ -353,7 +365,8 @@
       getErrors: getErrors,
       getWarnings: getWarnings,
       done: done,
-      after: after
+      after: after,
+      cancel: cancel
     };
     return {
       initFieldCounters: initFieldCounters,
@@ -513,9 +526,17 @@
     });
 
     _defineProperty(this, "hasRemainingPendingTests", function (fieldName) {
-      return _this.pending.some(function (test) {
-        return test.fieldName === fieldName;
-      });
+      if (!_this.pending.length) {
+        return false;
+      }
+
+      if (fieldName) {
+        return _this.pending.some(function (test) {
+          return test.fieldName === fieldName;
+        });
+      }
+
+      return !!_this.pending.length;
     });
 
     _defineProperty(this, "test", function (fieldName, statement, test, severity) {
@@ -544,26 +565,11 @@
     });
 
     _defineProperty(this, "runTest", function (test) {
-      var _test = test,
-          fieldName = _test.fieldName,
-          statement = _test.statement,
-          severity = _test.severity;
+      var fieldName = test.fieldName,
+          statement = test.statement,
+          severity = test.severity;
       var isAsync = typeof test.then === 'function';
       var testResult;
-
-      if (!isAsync) {
-        try {
-          testResult = test();
-        } catch (e) {
-          testResult = false;
-        }
-
-        if (testResult && typeof testResult.then === 'function') {
-          isAsync = true; // $FlowFixMe
-
-          test = testResult;
-        }
-      }
 
       if (isAsync) {
         _this.res.markAsync(fieldName);
@@ -574,11 +580,17 @@
           if (!_this.hasRemainingPendingTests(fieldName)) {
             _this.res.markAsDone(fieldName);
           }
+
+          if (!_this.hasRemainingPendingTests()) {
+            _this.res.markAsDone();
+          }
         };
 
         var fail = function fail() {
           // order is important here! fail needs to be called before `done`.
-          _this.res.fail(fieldName, statement, severity);
+          if (_this.pending.includes(test)) {
+            _this.res.fail(fieldName, statement, severity);
+          }
 
           done();
         };
@@ -587,9 +599,25 @@
           // $FlowFixMe
           test.then(done, fail);
         } catch (e) {
-          fail();
+          fail(test);
         }
       } else {
+        try {
+          testResult = test();
+        } catch (e) {
+          testResult = false;
+        } // if is async after all
+
+
+        if (testResult && typeof testResult.then === 'function') {
+          testResult.fieldName = fieldName;
+          testResult.statement = statement;
+          testResult.severity = severity; // $FlowFixMe
+
+          return _this.addPendingTest(testResult);
+        } // explicitly false
+
+
         if (testResult === false) {
           _this.res.fail(fieldName, statement, severity);
         }

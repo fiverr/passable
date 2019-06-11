@@ -98,7 +98,8 @@ declare type PassableOutput = {
     getErrors: (fieldName?: string) => string[] | { [fieldName: string]: string[] },
     getWarnings: (fieldName?: string) => string[] | { [fieldName: string]: string[] },
     done: ((output: PassableOutput) => void) => PassableOutput,
-    after: ((output: PassableOutput) => void) => PassableOutput
+    after: ((output: PassableOutput) => void) => PassableOutput,
+    cancel: () => PassableOutput
 };
 
 declare type PassableResult = {
@@ -110,7 +111,7 @@ declare type PassableResult = {
     addToSkipped: (fieldName: string) => void,
     runCompletionCallbacks: () => void,
     markAsync: (fieldName: string) => void,
-    markAsDone: (fieldName: string) => void,
+    markAsDone: (fieldName?: string) => void,
     output: PassableOutput
 };
 
