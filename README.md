@@ -7,6 +7,8 @@ Declarative data validations.
 
 [Documentation homepage](https://fiverr.github.io/passable/)
 
+[Try it live](https://stackblitz.com/edit/passable-example?file=validate.js)
+
 ## What is Passable?
 Passable is a library for JS applications for writing validations in a way that's structured and declarative.
 
