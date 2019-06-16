@@ -9,7 +9,7 @@ import passable, { enforce } from 'passable';
 passable('MyForm', (test) => {
 
     test('name',  'should be at least 3 chars', () => {
-        enforce(data.name).largerThan(2);
+        enforce(data.name).longerThanOrEquals(3);
     });
 
     test('name',  'must be unique', new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ passable('MyForm', (test) => {
     }));
 
     test('age', 'must be at least 18', () => {
-        enforce(data.age).largerThan(17);
+        enforce(data.age).greaterThanOrEquals(18);
     });
 });
 ```
@@ -37,7 +37,7 @@ The synchronous test is simply a callback function passed as the third argument 
 
 ```js
 test('name',  'should be at least 3 chars', () => {
-    enforce(data.name).largerThan(2);
+    enforce(data.name).longerThan(2);
 });
 ```
 

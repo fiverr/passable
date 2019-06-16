@@ -20,7 +20,7 @@ import passable, { WARN, enforce } from 'passable';
 
 const result = passable('WarnAndPass', (test) => {
     test('WarnMe', 'Should warn and not fail', () => {
-        enforce(5).largerThan(500);
+        enforce(5).greaterThan(500);
     }, WARN);
 });
 

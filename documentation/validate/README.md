@@ -25,7 +25,7 @@ import {validate, enforce} from 'passable';
 
 // name = 'Eve'
 const valid = validate(() => {
-    enforce(name).largerThanOrEquals(5);
+    enforce(name).longerThanOrEquals(5);
 });
 
 // valid = false;

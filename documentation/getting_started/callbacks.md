@@ -27,7 +27,7 @@ passable('SendEmailForm', (test) => {
   }));
 
   test('Content', 'must be between 5 and 500 chars', () => {
-    enforce(data.content).largerThan(4).smallerThan(501);
+    enforce(data.content).longerThan(4).shorterThan(501);
   });
 }).after((res) => {
   if (res.hasErrors('username')) {
@@ -67,7 +67,7 @@ passable('SendEmailForm', (test) => {
   }));
 
   test('Content', 'must be between 5 and 500 chars', () => {
-    enforce(data.content).largerThan(4).smallerThan(501);
+    enforce(data.content).longerThan(4).shorterThan(501);
   });
 }).done((res) => {
   if (res.hasErrors()) {

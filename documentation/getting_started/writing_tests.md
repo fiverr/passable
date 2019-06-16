@@ -24,7 +24,7 @@ The most basic test would look somewhat like this:
 // }
 passable('NewUserForm', (test) => {
     test('username', 'Must be a string between 2 and 10 chars', () => {
-        enforce(data.username).isString().largerThan(1).smallerThan(11);
+        enforce(data.username).isString().longerThan(1).shorterThan(11);
     });
 
     test('username', 'already exists', fetch(`/check_availability?username=${data.username}`));
@@ -51,7 +51,7 @@ In the following example, we're preventing the async validation from running ove
 ```js
 passable('NewUserForm', (test, draft) => {
     test('username', 'Must be a string between 2 and 10 chars', () => {
-        enforce(data.username).isString().largerThan(1).smallerThan(11);
+        enforce(data.username).isString().longerThan(1).shorterThan(11);
     });
 
     if (!draft.hasErrors('username')) {

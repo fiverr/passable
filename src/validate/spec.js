@@ -5,7 +5,7 @@ import { expect } from 'chai';
 describe('Test validate function', () => {
     it('Should return `false` for a failing test', () => {
         expect(validate(() => {
-            enforce(33).largerThan(100);
+            enforce(33).greaterThan(100);
         })).to.equal(false);
     });
 

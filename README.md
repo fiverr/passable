@@ -5,9 +5,9 @@ Declarative data validations.
 [![npm version](https://badge.fury.io/js/passable.svg)](https://badge.fury.io/js/passable) [![Build Status](https://travis-ci.org/fiverr/passable.svg?branch=master)](https://travis-ci.org/fiverr/passable)
 
 
-[Documentation homepage](https://fiverr.github.io/passable/)
-
-[Try it live](https://stackblitz.com/edit/passable-example?file=validate.js)
+- [Documentation homepage](https://fiverr.github.io/passable/)
+- [Try it live](https://stackblitz.com/edit/passable-example?file=validate.js)
+- [Getting started](https://fiverr.github.io/passable/getting_started/writing_tests.html).
 
 ## What is Passable?
 Passable is a library for JS applications for writing validations in a way that's structured and declarative.
@@ -27,7 +27,7 @@ Much like most testing frameworks, Passable comes with its own assertion functio
 
 ---
 
-## Difference from testing frameworks
+## Syntactic differences from testing frameworks
 
 Since Passable is running in production environment, and accommodates different needs, some changes to the basic unit test syntax have been made, to cover the main ones quickly:
 
@@ -70,4 +70,9 @@ res.getErrors() // returns an object with an array of errors per field
 res.getErrors('username') // returns an array of errors for the `username` field
 ```
 
-[Getting started](https://fiverr.github.io/passable/getting_started/writing_tests.html).
+## "BUT HEY! I ALREADY USE X VALIDATION LIBRARY! CAN IT WORK WITH PASSABLE?"
+As a general rule, Passable works similarly to unit tests in term that if your test throws an exception, it is considered to be failing. Otherwise, it is considered to be passing.
+
+There are a [few more ways](https://fiverr.github.io/passable/test/how_to_fail.html) to handle failures in order to ease migration, and in most cases, you can move your validation logic directly to into Passable with only a few adjustments.
+
+For example, if you use a [different assertion libraries](https://fiverr.github.io/passable/compatability/assertions.html) such as `chai` (expect) or `v8n`, you can simply use it instead of enforce, and it should work straight out of the box.
