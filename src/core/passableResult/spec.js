@@ -166,7 +166,7 @@ describe('module: passableResult', () => {
 
         it('Should run done callback when done', (done) => {
             const startTime = Date.now();
-            passable(faker.lorem.word(), (test) => {
+            const output = passable(faker.lorem.word(), (test) => {
                 test(faker.lorem.word(), faker.lorem.sentence(), new Promise((resolve) => {
                     setTimeout(resolve, 250);
                 }));

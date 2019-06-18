@@ -1,8 +1,20 @@
 // @flow
+
+import Specific from './core/Specific';
+
 declare type AnyValue = any; // eslint-disable-line flowtype/no-weak-types
 declare type ArrayOrStringOfArrays = string[] | string;
 declare type NumStrBool = number | string | boolean;
 declare type MapType = Map<mixed, mixed>;
+
+// Context
+
+declare type Pending = Array<AsyncTest>;
+declare type ParentContext = {
+    specific: Specific,
+    result: PassableResult,
+    pending: Pending
+};
 
 // Validate function
 declare type ValidityObject = {
@@ -42,12 +54,29 @@ declare type AsyncObject = {
 declare type TestsWrapper = (test: TestProvider, draft: PassableOutput) => void;
 declare type TestProvider = (fieldName: string, statemenpt: string, test: PassableTest, severity: Severity) => void;
 
+declare type TestProperties = {
+    severity: Severity,
+    fieldName: string,
+    statement: string,
+    parent: ParentContext
+};
+
+declare type AsyncTest = {
+    (): Promise<void>,
+    severity: Severity,
+    fieldName: string,
+    statement: string,
+    parent: ParentContext,
+    then: Function
+};
+
 declare type PassableTest = {
     (): void | () => boolean | Promise<void>,
     severity: Severity,
     fieldName: string,
     statement: string,
-    then?: Function
+    then?: Function,
+    parent: ParentContext
 };
 
 // Test: Severity

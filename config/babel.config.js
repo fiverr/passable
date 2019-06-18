@@ -12,7 +12,8 @@ module.exports = (api) => {
     const plugins = [
         '@babel/plugin-transform-flow-strip-types',
         'babel-plugin-add-module-exports',
-        '@babel/plugin-proposal-class-properties'
+        '@babel/plugin-proposal-class-properties',
+        '@babel/plugin-transform-object-assign'
     ];
 
     return {

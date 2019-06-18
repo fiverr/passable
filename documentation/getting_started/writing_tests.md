@@ -14,15 +14,16 @@
 | `tests`    | No        | Function          | A function containing the actual validation logic.
 | `only/not` | Yes       | Array / Object    | Whitelist or blacklist of tests to run/skip in the suite see: [Running a specific tests](../test/specific.md)
 
-
 The most basic test would look somewhat like this:
 
 ```js
+import passable, { enforce, test } from 'passable';
+
 // data = {
 //     username: 'ealush',
 //     age: 27
 // }
-passable('NewUserForm', (test) => {
+passable('NewUserForm', () => {
     test('username', 'Must be a string between 2 and 10 chars', () => {
         enforce(data.username).isString().longerThan(1).shorterThan(11);
     });
@@ -49,6 +50,8 @@ In some cases, you might want to access the intermediate result, for example, if
 In the following example, we're preventing the async validation from running over the username field in case it already has errors.
 
 ```js
+import passable, { enforce } from 'passable';
+
 passable('NewUserForm', (test, draft) => {
     test('username', 'Must be a string between 2 and 10 chars', () => {
         enforce(data.username).isString().longerThan(1).shorterThan(11);

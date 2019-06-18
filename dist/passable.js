@@ -55,6 +55,24 @@
     return obj;
   }
 
+  function _extends() {
+    _extends = Object.assign || function (target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+
+      return target;
+    };
+
+    return _extends.apply(this, arguments);
+  }
+
   function _objectSpread(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i] != null ? arguments[i] : {};
@@ -93,6 +111,170 @@
   function _nonIterableSpread() {
     throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
+
+  var Context = function Context() {}; // eslint-disable-line
+
+
+  Context.prototype.set = function (parent) {
+    this.parent = parent;
+    return this;
+  };
+
+  var context = new Context();
+
+  /**
+   * Runs all async tests, updates output object with result
+   * @param {Promise} testPromise the actual test callback or promise
+   */
+
+  var runAsync = function runAsync(testPromise) {
+    var fieldName = testPromise.fieldName,
+        statement = testPromise.statement,
+        severity = testPromise.severity,
+        parent = testPromise.parent;
+    parent.result.markAsync(fieldName);
+
+    var done = function done() {
+      clearPendingTest(testPromise);
+
+      if (!hasRemainingPendingTests(parent, fieldName)) {
+        parent.result.markAsDone(fieldName);
+      }
+
+      if (!hasRemainingPendingTests(parent)) {
+        parent.result.markAsDone();
+      }
+    };
+
+    var fail = function fail() {
+      if (parent.pending.includes(testPromise)) {
+        parent.result.fail(fieldName, statement, severity);
+      }
+
+      done();
+    };
+
+    try {
+      testPromise.then(done, fail);
+    } catch (e) {
+      fail();
+    }
+  };
+  /**
+   * Clears pending test from parent context
+   * @param {Promise} testPromise the actual test callback or promise
+   */
+
+  var clearPendingTest = function clearPendingTest(testPromise) {
+    testPromise.parent.pending = testPromise.parent.pending.filter(function (t) {
+      return t !== testPromise;
+    });
+  };
+  /**
+   * Checks if there still are remaining pending tests for given criteria
+   * @param {Object} parent Parent context
+   * @param {String} fieldName name of the field to test against
+   * @return {Boolean}
+   */
+
+
+  var hasRemainingPendingTests = function hasRemainingPendingTests(parent, fieldName) {
+    if (!parent.pending.length) {
+      return false;
+    }
+
+    if (fieldName) {
+      return parent.pending.some(function (testPromise) {
+        return testPromise.fieldName === fieldName;
+      });
+    }
+
+    return !!parent.pending.length;
+  };
+  /**
+   * Performs shallow run over test functions, assuming sync tests only. Returning result
+   * @param {function | Promise} testFn the actual test callback or promise
+   * @return {*} result from test function
+   */
+
+
+  var preRun = function preRun(testFn) {
+    var result;
+
+    try {
+      result = testFn();
+    } catch (e) {
+      result = false;
+    }
+
+    if (result === false) {
+      testFn.parent.result.fail(testFn.fieldName, testFn.statement, testFn.severity);
+    }
+
+    return result;
+  };
+  /**
+   * Registers all supplied tests, if async - adds to pending array
+   * @param {function | Promise} testFn the actual test callback or promise
+   */
+
+
+  var register = function register(testFn) {
+    var _testFn = testFn,
+        parent = _testFn.parent,
+        fieldName = _testFn.fieldName;
+    var pending = false;
+    var result;
+
+    if (parent.specific.excludes(fieldName)) {
+      parent.result.addToSkipped(fieldName);
+      return;
+    }
+
+    parent.result.initFieldCounters(fieldName);
+    parent.result.bumpTestCounter(fieldName);
+
+    if (testFn && typeof testFn.then === 'function') {
+      pending = true;
+    } else {
+      result = preRun(testFn);
+    }
+
+    if (result && typeof result.then === 'function') {
+      pending = true;
+      testFn = _extends(result, testFn);
+    }
+
+    if (pending) {
+      // $FlowFixMe <- can't convince flow I actually refined here
+      parent.pending.push(testFn);
+    }
+  };
+  /**
+   * The function used by the consumer
+   * @param {String} fieldName name of the field to test against
+   * @param {String} statement the message shown to the user in case of a failure
+   * @param {function | Promise} testFn the actual test callback or promise
+   * @param {String} Severity indicates whether the test should fail or warn
+   */
+
+
+  var test = function test(fieldName, statement, testFn, severity) {
+    if (!testFn) {
+      return;
+    }
+
+    if (typeof testFn.then === 'function' || typeof testFn === 'function') {
+      _extends(testFn, {
+        fieldName: fieldName,
+        statement: statement,
+        severity: severity,
+        parent: context.parent
+      });
+
+      register(testFn);
+    }
+  };
 
   var WARN = 'warn';
   var FAIL = 'fail';
@@ -496,158 +678,35 @@
     return Specific;
   }();
 
-  var constructorError = function constructorError(name, value, doc) {
+  var initError = function initError(name, value, doc) {
     return "[Passable]: failed during suite initialization. Unexpected '".concat(_typeof(value), "' for '").concat(name, "' argument.\n    See: ").concat(doc ? doc : 'https://fiverr.github.io/passable/getting_started/writing_tests.html');
   };
-  /**
-   * Describes a passable validation suite
-   */
 
-
-  var Passable =
-  /**
-   * Initializes a validation suite, creates a new passableResult instance and runs pending tests
-   */
-  function Passable(name, tests, specific) {
-    var _this = this;
-
-    _classCallCheck(this, Passable);
-
-    _defineProperty(this, "pending", []);
-
-    _defineProperty(this, "addPendingTest", function (test) {
-      return _this.pending.push(test);
-    });
-
-    _defineProperty(this, "clearPendingTest", function (test) {
-      _this.pending = _this.pending.filter(function (t) {
-        return t !== test;
-      });
-    });
-
-    _defineProperty(this, "hasRemainingPendingTests", function (fieldName) {
-      if (!_this.pending.length) {
-        return false;
-      }
-
-      if (fieldName) {
-        return _this.pending.some(function (test) {
-          return test.fieldName === fieldName;
-        });
-      }
-
-      return !!_this.pending.length;
-    });
-
-    _defineProperty(this, "test", function (fieldName, statement, test, severity) {
-      if (_this.specific.excludes(fieldName)) {
-        _this.res.addToSkipped(fieldName);
-
-        return;
-      }
-
-      _this.res.initFieldCounters(fieldName);
-
-      var operation;
-
-      if (typeof test === 'function') {
-        operation = _this.runTest;
-      } else if (test instanceof Promise) {
-        operation = _this.addPendingTest;
-      } else {
-        return;
-      }
-
-      test.fieldName = fieldName;
-      test.statement = statement;
-      test.severity = severity;
-      operation(test);
-    });
-
-    _defineProperty(this, "runTest", function (test) {
-      var fieldName = test.fieldName,
-          statement = test.statement,
-          severity = test.severity;
-      var isAsync = typeof test.then === 'function';
-      var testResult;
-
-      if (isAsync) {
-        _this.res.markAsync(fieldName);
-
-        var done = function done() {
-          _this.clearPendingTest(test);
-
-          if (!_this.hasRemainingPendingTests(fieldName)) {
-            _this.res.markAsDone(fieldName);
-          }
-
-          if (!_this.hasRemainingPendingTests()) {
-            _this.res.markAsDone();
-          }
-        };
-
-        var fail = function fail() {
-          // order is important here! fail needs to be called before `done`.
-          if (_this.pending.includes(test)) {
-            _this.res.fail(fieldName, statement, severity);
-          }
-
-          done();
-        };
-
-        try {
-          // $FlowFixMe
-          test.then(done, fail);
-        } catch (e) {
-          fail(test);
-        }
-      } else {
-        try {
-          testResult = test();
-        } catch (e) {
-          testResult = false;
-        } // if is async after all
-
-
-        if (testResult && typeof testResult.then === 'function') {
-          testResult.fieldName = fieldName;
-          testResult.statement = statement;
-          testResult.severity = severity; // $FlowFixMe
-
-          return _this.addPendingTest(testResult);
-        } // explicitly false
-
-
-        if (testResult === false) {
-          _this.res.fail(fieldName, statement, severity);
-        }
-
-        _this.clearPendingTest(test);
-      }
-
-      _this.res.bumpTestCounter(fieldName);
-    });
-
-    _defineProperty(this, "runPendingTests", function () {
-      _toConsumableArray(_this.pending).forEach(_this.runTest);
-    });
-
+  var passable = function passable(name, tests, specific) {
     if (typeof name !== 'string') {
-      throw new TypeError(constructorError('suite name', name));
+      throw new TypeError(initError('suite name', name));
     }
 
     if (typeof tests !== 'function') {
-      throw new TypeError(constructorError('tests', tests));
+      throw new TypeError(initError('tests', tests));
     }
 
     if (specific && !Specific.is(specific)) {
-      throw new TypeError(constructorError('specific', tests, 'https://fiverr.github.io/passable/test/specific.html'));
+      throw new TypeError(initError('specific', tests, 'https://fiverr.github.io/passable/test/specific.html'));
     }
 
-    this.specific = new Specific(specific);
-    this.res = passableResult(name);
-    tests(this.test, this.res.output);
-    this.runPendingTests();
+    var result = passableResult(name);
+    var pending = [];
+    var parent = {
+      specific: new Specific(specific),
+      result: result,
+      pending: pending
+    };
+    context.set(parent);
+    tests(test, result.output);
+    context.set(null);
+    [].concat(pending).forEach(runAsync);
+    return result.output;
   };
 
   function isArray(value) {
@@ -913,13 +972,9 @@
     }
   }
 
-  function passable(name, tests, specific) {
-    var suite = new Passable(name, tests, specific);
-    return suite.res.output;
-  }
-
   passable.VERSION = "7.0.0";
   passable.enforce = new Enforce({});
+  passable.test = test;
   passable.Enforce = Enforce;
   passable.validate = validate;
   passable.WARN = WARN;

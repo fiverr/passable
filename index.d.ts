@@ -19,6 +19,7 @@ declare module 'passable' {
             specific?: string | string[] | {only?: string | string[], not?: string | string[]}):
             PassableNS.IValidationResult,
         enforce(value): PassableNS.IEnforceInstance;
+        test(name: string, errorMessage: string, callback: PassableNS.IFunctionOrPromise): void;
         Enforce: PassableNS.IEnforceConstructor;
         validate: PassableNS.IValidate;
         VERSION: PassableNS.IVERSION;

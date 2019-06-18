@@ -54,7 +54,7 @@ describe('Test suite `draft` argument', () => {
             expect(draft.hasWarnings('field3')).to.equal(true);
 
             test('field4', 'message', Promise.resolve(), WARN);
-            expect(draft.testCount).to.equal(3);
+            expect(draft.testCount).to.equal(4);
             expect(draft.failCount).to.equal(1);
             expect(draft.warnCount).to.equal(1);
             expect(draft.hasErrors()).to.equal(true);
