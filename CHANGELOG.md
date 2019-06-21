@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - [Minor] Added an option to directly import `test` from passable;
+- [Minor] `any` utility for assertions with `OR` `||` relationships.
 
 ## [7.0.0] - 2019-06-11
 

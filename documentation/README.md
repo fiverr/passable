@@ -12,7 +12,7 @@ PASSABLE {{PASSABLE_VERSION}}
         * [Warn only tests](./test/warn_only_tests.md)
         * [Skipping tests](./test/specific.md)
         * [Async tests](./test/async.md)
-    * [The `validate` Function](./validate/README.md)
+    * [Utilities](./utilities/README.md)
     * [Assertions with `enforce`](./enforce/README.md)
         * [Enforce Rules](./enforce/rules/README.md)
             * [content/matches](./enforce/rules/content/matches/README.md)
