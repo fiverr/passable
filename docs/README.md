@@ -7,7 +7,7 @@ Declarative data validations.
 
 - [Documentation homepage](https://fiverr.github.io/passable/)
 - [Try it live](https://stackblitz.com/edit/passable-example?file=validate.js)
-- [Getting started](https://fiverr.github.io/passable/getting_started/writing_tests.html).
+- [Getting started](getting_started/writing_tests).
 
 ## What is Passable?
 Passable is a library for JS applications for writing validations in a way that's structured and declarative.
@@ -17,13 +17,13 @@ Your validations run in production code, and you can use them in any framework (
 
 The idea behind passable is that you can easily adopt its very familiar syntax, and transfer your knowledge from the world of testing to your form validations.
 
-Much like most testing frameworks, Passable comes with its own assertion function, [enforce](https://fiverr.github.io/passable/enforce/index.html), all error based assertion libraries are supported.
+Much like most testing frameworks, Passable comes with its own assertion function, [enforce](./enforce/readme.md), all error based assertion libraries are supported.
 
 ## Key features
-1. [Non failing tests](https://fiverr.github.io/passable/test/warn_only_tests.html).
-2. [Conditionally running tests](https://fiverr.github.io/passable/test/specific.html).
-3. [Async validations](https://fiverr.github.io/passable/test/async.html).
-4. [Test callbacks](https://fiverr.github.io/passable/getting_started/callbacks.html).
+1. [Non failing tests](test/warn_only_tests).
+2. [Conditionally running tests](test/specific).
+3. [Async validations](test/async).
+4. [Test callbacks](getting_started/callbacks).
 
 ---
 
@@ -73,6 +73,6 @@ res.getErrors('username') // returns an array of errors for the `username` field
 ## "BUT HEY! I ALREADY USE X VALIDATION LIBRARY! CAN IT WORK WITH PASSABLE?"
 As a general rule, Passable works similarly to unit tests in term that if your test throws an exception, it is considered to be failing. Otherwise, it is considered to be passing.
 
-There are a [few more ways](https://fiverr.github.io/passable/test/how_to_fail.html) to handle failures in order to ease migration, and in most cases, you can move your validation logic directly to into Passable with only a few adjustments.
+There are a [few more ways](https://fiverr.github.io/passable/test/how_to_fail) to handle failures in order to ease migration, and in most cases, you can move your validation logic directly to into Passable with only a few adjustments.
 
-For example, if you use a [different assertion libraries](https://fiverr.github.io/passable/compatability/assertions.html) such as `chai` (expect) or `v8n`, you can simply use it instead of enforce, and it should work straight out of the box.
+For example, if you use a [different assertion libraries](https://fiverr.github.io/passable/compatability/assertions) such as `chai` (expect) or `v8n`, you can simply use it instead of enforce, and it should work straight out of the box.

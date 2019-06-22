@@ -26,7 +26,7 @@ test('field', 'should explicitly fail by returning `false`', () => data.value !=
 
 ## Promise rejection (Async)
 
-Since [async tests](https://fiverr.github.io/passable/test/async.html) rely on <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>, the way to fail the test is simply to reject it:
+Since [async tests](./test/async.html) rely on <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>, the way to fail the test is simply to reject it:
 
 ```js
 test('Field3', 'should wait some and fail',

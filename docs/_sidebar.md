@@ -1,5 +1,3 @@
-Passable {docsify-ignore}
-===
 
 * Getting Started
     * [Installation](./getting_started/installation.md)
@@ -11,7 +9,7 @@ Passable {docsify-ignore}
     * [Warn only tests](./test/warn_only_tests.md)
     * [Skipping tests](./test/specific.md)
     * [Async tests](./test/async.md)
-* [The `validate` Function](./validate/README.md)
+* [Test Utilities](./utilities/README.md)
 * [Assertions with `enforce`](./enforce/README.md)
     * [Enforce Rules](./enforce/rules/README.md)
     * [Custom Enforce Rules](./enforce/rules/custom.md)
