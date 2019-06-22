@@ -1,0 +1,28 @@
+.markdown-section code {
+    font-size: 85%;
+    color: #26B4AD;
+}
+
+.app-name {
+    padding: 10px;
+}
+
+.sidebar-nav {
+    padding-left: 10px;
+}
+
+body, .anchor span, a.anchor {
+    color: #3C4464;
+}
+
+.token.function,.token.keyword {
+    color: #26B4AD
+}
+
+.token.boolean, .token.number {
+    color: #59d4e8;
+}
+
+.markdown-section a:hover {
+    color: #3a6b96;
+}
