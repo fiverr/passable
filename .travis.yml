@@ -17,8 +17,6 @@ after_success:
 - node ./scripts/make_version_file.js
 - chmod +x ./scripts/push_tag_to_master.sh
 - if [ -n "$TRAVIS_TAG" ]; then ./scripts/push_tag_to_master.sh; fi
-- chmod +x ./scripts/docs.sh
-- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then ./scripts/docs.sh; fi
 - chmod +x ./scripts/prepare_next.sh
 - if [ "$TRAVIS_BRANCH" != "master" ]; then ./scripts/prepare_next.sh; fi
 
