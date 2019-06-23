@@ -1,4 +1,4 @@
-# ![Passable](https://cdn.rawgit.com/fiverr/passable/master/documentation/assets/img/logo.png?raw=true "Passable")
+# ![Passable](https://cdn.rawgit.com/fiverr/passable/master/docs/_assets/logo.png?raw=true "Passable")
 
 Declarative data validations.
 
@@ -17,7 +17,7 @@ Your validations run in production code, and you can use them in any framework (
 
 The idea behind passable is that you can easily adopt its very familiar syntax, and transfer your knowledge from the world of testing to your form validations.
 
-Much like most testing frameworks, Passable comes with its own assertion function, [enforce](./enforce/readme.md), all error based assertion libraries are supported.
+Much like most testing frameworks, Passable comes with its own assertion function, [enforce](./enforce/README.md), all error based assertion libraries are supported.
 
 ## Key features
 1. [Non failing tests](test/warn_only_tests).
@@ -73,6 +73,6 @@ res.getErrors('username') // returns an array of errors for the `username` field
 ## "BUT HEY! I ALREADY USE X VALIDATION LIBRARY! CAN IT WORK WITH PASSABLE?"
 As a general rule, Passable works similarly to unit tests in term that if your test throws an exception, it is considered to be failing. Otherwise, it is considered to be passing.
 
-There are a [few more ways](https://fiverr.github.io/passable/test/how_to_fail) to handle failures in order to ease migration, and in most cases, you can move your validation logic directly to into Passable with only a few adjustments.
+There are a [few more ways](test/how_to_fail) to handle failures in order to ease migration, and in most cases, you can move your validation logic directly to into Passable with only a few adjustments.
 
-For example, if you use a [different assertion libraries](https://fiverr.github.io/passable/compatability/assertions) such as `chai` (expect) or `v8n`, you can simply use it instead of enforce, and it should work straight out of the box.
+For example, if you use a [different assertion libraries](compatability/assertions) such as `chai` (expect) or `v8n`, you can simply use it instead of enforce, and it should work straight out of the box.
