@@ -972,11 +972,32 @@
     }
   }
 
+  /**
+   * Runs given functions and returns true if any of them passes
+   * @param  {[]Function} args array of assertion functions
+   */
+  var any = function any() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return function () {
+      return args.some(function (fn) {
+        try {
+          return fn() !== false;
+        } catch (err) {
+          return false;
+        }
+      });
+    };
+  };
+
   passable.VERSION = "7.0.0";
   passable.enforce = new Enforce({});
   passable.test = test;
   passable.Enforce = Enforce;
   passable.validate = validate;
+  passable.any = any;
   passable.WARN = WARN;
   passable.FAIL = FAIL;
 

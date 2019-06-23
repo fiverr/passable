@@ -1,8 +1,8 @@
-import validate from './index.js';
-import { enforce } from '../index';
+import validate from '.';
+import { enforce } from '../../Enforce';
 import { expect } from 'chai';
 
-describe('Test validate function', () => {
+describe('Utilities: validate', () => {
     it('Should return `false` for a failing test', () => {
         expect(validate(() => {
             enforce(33).greaterThan(100);

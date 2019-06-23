@@ -21,6 +21,7 @@ declare module 'passable' {
         enforce(value): PassableNS.IEnforceInstance;
         test(name: string, errorMessage: string, callback: PassableNS.IFunctionOrPromise): void;
         Enforce: PassableNS.IEnforceConstructor;
+        any: PassableNS.IAny;
         validate: PassableNS.IValidate;
         VERSION: PassableNS.IVERSION;
         WARN: PassableNS.IWARN;
@@ -116,6 +117,9 @@ declare module 'passable' {
         export type IFAIL = 'fail';
 
         export interface IValidate {
+            (): boolean;
+        }
+        export interface IAny {
             (): boolean;
         }
 
