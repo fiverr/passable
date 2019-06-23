@@ -975,6 +975,7 @@
   /**
    * Runs given functions and returns true if any of them passes
    * @param  {[]Function} args array of assertion functions
+   * @return {Function} A function which, when called, invokes all arguments
    */
   var any = function any() {
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {

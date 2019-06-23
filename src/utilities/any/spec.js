@@ -3,7 +3,7 @@ import { enforce } from '../../.';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-describe.only('Utilities: any', () => {
+describe('Utilities: any', () => {
     let fn1, fn2, fn3, fn4;
 
     describe('calling functions in sequence', () => {
