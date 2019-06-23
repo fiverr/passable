@@ -993,7 +993,7 @@
     };
   };
 
-  passable.VERSION = "7.0.0";
+  passable.VERSION = "7.1.0";
   passable.enforce = new Enforce({});
   passable.test = test;
   passable.Enforce = Enforce;
