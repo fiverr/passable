@@ -77,9 +77,7 @@ const passableResult: Function = (name: string): PassableResult => {
      */
     const fail: Function = (fieldName: string, statement: string, severity: Severity) => {
         if (!output.testsPerformed[fieldName]) { return output; }
-
         const selectedSeverity: Severity = severity && severities.includes(severity) ? severity : FAIL;
-
         selectedSeverity === WARN
             ? bumpTestWarning(fieldName, statement)
             : bumpTestError(fieldName, statement);
@@ -119,7 +117,6 @@ const passableResult: Function = (name: string): PassableResult => {
      * @param {string} fieldName the name of the field marked as done
     */
     const markAsDone: Function = (fieldName?: string) => {
-
         if (!fieldName) {
             return runCompletionCallbacks();
         }
@@ -142,7 +139,6 @@ const passableResult: Function = (name: string): PassableResult => {
      */
     const done: Function = (callback: Function) => {
         if (typeof callback !== 'function') {return output;}
-
         if (!asyncObject) {
             callback(output);
         }

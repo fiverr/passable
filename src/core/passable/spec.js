@@ -4,7 +4,7 @@ import { noop } from 'lodash';
 import sinon from 'sinon';
 import { expect } from 'chai';
 
-describe("Test Passable's class constructor ", () => {
+describe('Test passable suite wrapper', () => {
     const passable = (...args) => new Passable(...args);
 
     describe('Test arguments', () => {

@@ -1,16 +1,13 @@
 // @flow
-import Passable from './core/Passable';
+import passable from './core/passable';
+import test from './core/test';
 import Enforce from './Enforce';
 import validate from './validate';
 import { WARN, FAIL } from './constants';
 
-function passable(name: string, tests: TestsWrapper, specific: ?SpecificArgs) {
-    const suite: Passable = new Passable(name, tests, specific);
-    return suite.res.output;
-}
-
 passable.VERSION = PASSABLE_VERSION;
 passable.enforce = new Enforce({});
+passable.test = test;
 passable.Enforce = Enforce;
 passable.validate = validate;
 passable.WARN = WARN;
