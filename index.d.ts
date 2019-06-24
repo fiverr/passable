@@ -108,6 +108,11 @@ declare module 'passable' {
              * Registers a completion callback for a specific field
              */
             after: (fieldName: string, callback: (res: PassableNS.IValidationResult) => void) => PassableNS.IValidationResult;
+
+            /**
+             * Cancels Async tests callbacks (after/done)
+             */
+            cancel: () => PassableNS.IValidationResult;
         }
 
         export type IFunctionOrPromise = () => void | Promise<any>;
