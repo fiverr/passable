@@ -14,7 +14,7 @@ before_script:
 - flow
 
 after_success:
-- node ./scripts/make_version_file.js
+- node ./scripts/update_changelog.js
 - chmod +x ./scripts/push_tag_to_master.sh
 - if [ -n "$TRAVIS_TAG" ]; then ./scripts/push_tag_to_master.sh; fi
 - chmod +x ./scripts/prepare_next.sh
