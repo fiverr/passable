@@ -279,8 +279,6 @@
   var WARN = 'warn';
   var FAIL = 'fail';
 
-  var severities = [WARN, FAIL];
-
   var passableResult = function passableResult(name) {
     var completionCallbacks = [];
     var asyncObject = null;
@@ -358,12 +356,11 @@
         return output;
       }
 
-      var selectedSeverity = severity && severities.includes(severity) ? severity : FAIL;
-      selectedSeverity === WARN ? bumpTestWarning(fieldName, statement) : bumpTestError(fieldName, statement);
+      severity === WARN ? bumpTestWarning(fieldName, statement) : bumpTestError(fieldName, statement);
     };
     /**
      * Uniquely add a field to the `skipped` list
-     * @param {string} fieldName
+     * @param {string} fieldName - The name of the field.
      */
 
 
@@ -383,7 +380,7 @@
     };
     /**
      * Marks a field as async
-     * @param {string} fieldName the name of the field marked as async
+     * @param {string} fieldName - The name of the field.
     */
 
 
@@ -397,7 +394,7 @@
     };
     /**
      * Marks an async field as done
-     * @param {string} fieldName the name of the field marked as done
+     * @param {string} fieldName - The name of the field.
     */
 
 
@@ -419,8 +416,8 @@
     /**
      * Registers callback functions to be run when test suite is done running
      * If current suite is not async, runs the callback immediately
-     * @param {function} callback the function to be called on done
-     * @return {object} output object
+     * @param {function} callback - the function to be called on done.
+     * @return {object} - output object.
      */
 
 
@@ -439,8 +436,9 @@
     /**
      * Registers callback functions to be run when a certain field is done running
      * If field is not async, runs the callback immediately
-     * @param {function} callback the function to be called on done
-     * @return {object} output object
+     * @param {string} fieldName - The name of the field.
+     * @param {function} callback - the function to be called on done.
+     * @return {object} output object.
      */
 
 
@@ -470,8 +468,8 @@
     };
     /**
      * Gets all the errors of a field, or of the whole object
-     * @param {string} [fieldName] - The name of the field.
-     * @return {Array | Object} The field's errors, or all errors
+     * @param {string} fieldName - The name of the field.
+     * @return {array | object} - The field's errors, or all errors
      */
 
 
@@ -488,8 +486,8 @@
     };
     /**
      * Gets all the warnings of a field, or of the whole object
-     * @param {string} [fieldName] - The name of the field.
-     * @return {Array | Object} The field's warnings, or all warnings
+     * @param {string} fieldName - The name of the field.
+     * @return {array | object} The field's warnings, or all warnings.
      */
 
 
@@ -506,7 +504,7 @@
     };
     /**
      * Checks if a certain field (or the whole suite) has errors
-     * @param {string} [fieldName]
+     * @param {string} fieldName - The name of the field.
      * @return {boolean}
      */
 
@@ -520,7 +518,7 @@
     };
     /**
      * Checks if a certain field (or the whole suite) has warnings
-     * @param {string} [fieldName]
+     * @param {string} fieldName - The name of the field.
      * @return {boolean}
      */
 

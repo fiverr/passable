@@ -33,11 +33,26 @@ describe('module: passableResult', () => {
         expect(output.hasWarnings()).to.equal(false);
     });
 
-
-    ['done', 'getErrors', 'getWarnings', 'hasErrors', 'hasWarnings'].forEach((method) => {
+    [
+        'cancel',
+        'after',
+        'done',
+        'getErrors',
+        'getWarnings',
+        'hasErrors',
+        'hasWarnings'
+    ].forEach((method) => {
         it(`Should expose ${method} method`, () => {
             const res = passableResult(faker.lorem.word());
             expect(typeof res.output[method]).to.equal('function');
+        });
+
+        describe('When output is JSON stringified', () => {
+            it(`Should not expose ${method} method`, () => {
+                const res = passableResult(faker.lorem.word());
+                const stringifiedOutput = JSON.stringify(res.output);
+                expect(stringifiedOutput[method]).to.be.undefined;
+            });
         });
     });
 
