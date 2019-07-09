@@ -3,7 +3,7 @@ import { random } from 'faker';
 import numberEquals from './index';
 
 describe('Tests numberEquals rule', () => {
-    let arg0, arg1;
+    let arg0;
 
     describe('Arguments are numbers', () => {
         beforeEach(() => {

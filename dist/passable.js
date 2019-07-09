@@ -73,20 +73,24 @@
     return _extends.apply(this, arguments);
   }
 
-  function _objectSpread(target) {
+  function _objectSpread2(target) {
     for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-      var ownKeys = Object.keys(source);
+      if (i % 2) {
+        var source = arguments[i] != null ? arguments[i] : {};
+        var ownKeys = Object.keys(source);
 
-      if (typeof Object.getOwnPropertySymbols === 'function') {
-        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-        }));
+        if (typeof Object.getOwnPropertySymbols === 'function') {
+          ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+            return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+          }));
+        }
+
+        ownKeys.forEach(function (key) {
+          _defineProperty(target, key, source[key]);
+        });
+      } else {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(arguments[i]));
       }
-
-      ownKeys.forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
     }
 
     return target;
@@ -246,7 +250,6 @@
     }
 
     if (pending) {
-      // $FlowFixMe <- can't convince flow I actually refined here
       parent.pending.push(testFn);
     }
   };
@@ -780,6 +783,7 @@
       return true;
     }
   }
+
   isEmpty.negativeForm = 'isNotEmpty';
 
   function greaterThan(value, arg1) {
@@ -857,7 +861,6 @@
     return rules;
   }
 
-  // // 
   var rules = {
     isArray: isArray,
     isNumber: isNumber,
@@ -900,8 +903,6 @@
     }
   }
 
-  var glob = Function('return this')();
-
   var isRule = function isRule(rulesObject, name) {
     return rulesObject.hasOwnProperty(name) && typeof rulesObject[name] === 'function';
   };
@@ -909,7 +910,7 @@
   var Enforce = function Enforce() {
     var customRules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    var rulesObject = _objectSpread({}, rules$1, customRules);
+    var rulesObject = _objectSpread2({}, rules$1, {}, customRules);
 
     if (typeof Proxy === 'function') {
       return function (value) {

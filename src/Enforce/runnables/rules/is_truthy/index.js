@@ -1,6 +1,4 @@
-// @flow
-
-function isTruthy(value: mixed): boolean {
+function isTruthy(value) {
     return !!value;
 }
 

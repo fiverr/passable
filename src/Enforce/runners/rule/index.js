@@ -1,5 +1,3 @@
-// @flow
-
 /**
  * Run a single rule against enforced value (e.g. `isNumber()`)
  *
@@ -7,7 +5,7 @@
  * @param {Any} value
  * @param {Array} args list of arguments sent from consumer
  */
-function rule(rule: EnforceRule, value: AnyValue, ...args: RuleArgs): void {
+function rule(rule, value, ...args) {
 
     if (typeof rule !== 'function') { return; }
 

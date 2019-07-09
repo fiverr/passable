@@ -1,10 +1,4 @@
-// @flow
-
-type All = NumStrBool | Array<NumStrBool>;
-type Value = All | Array<NumStrBool>;
-type Arg = string | Array<NumStrBool>;
-
-function inside(value: Value, arg1: Arg): boolean {
+function inside(value, arg1) {
 
     if (Array.isArray(arg1) && ['string', 'number', 'boolean'].includes(typeof value)) {
         return arg1.includes(value);

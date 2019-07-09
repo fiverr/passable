@@ -1,16 +1,12 @@
-// @flow
-
 /** Class representing validation inclusion and exclusion groups */
 class Specific {
-    not: SpecificGroup;
-    only: SpecificGroup;
 
     /**
      * Initialize Specific object
      *
      * @param {String | Array | Object | undefined} specific
      */
-    constructor(specific: ?SpecificArgs) {
+    constructor(specific) {
 
         if (!specific) { return; }
 
@@ -40,7 +36,7 @@ class Specific {
      * @param {String | Array} field - the field to add to the group
      * @return {Object} modified group
      */
-    populateGroup(group: SpecificGroup, field: SpecificField) {
+    populateGroup(group, field) {
         group = group || {};
 
         if (typeof field === 'string') {
@@ -59,7 +55,7 @@ class Specific {
      * @param {String} fieldName
      * @return {Boolean}
      */
-    excludes(fieldName: string) {
+    excludes(fieldName) {
         if (this.only && !this.only[fieldName]) {
             return true;
         }
@@ -78,7 +74,7 @@ class Specific {
      * @param {Any} item
      * @return {boolean}
      */
-    static is(item: AnyValue) {
+    static is(item) {
         if (Array.isArray(item)) {
             return item.every((item) => typeof item === 'string');
         }

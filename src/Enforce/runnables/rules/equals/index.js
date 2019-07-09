@@ -1,6 +1,4 @@
-// @flow
-
-function equals(value: AnyValue, arg1: AnyValue): boolean {
+function equals(value, arg1) {
     return value === arg1;
 }
 

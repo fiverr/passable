@@ -1,17 +1,15 @@
-// @flow
-
 import ctx from '../context';
 
 /**
  * Runs all async tests, updates output object with result
  * @param {Promise} testPromise the actual test callback or promise
  */
-export const runAsync: Function = (testPromise: AsyncTest) => {
-    const { fieldName, statement, severity, parent }: TestProperties = testPromise;
+export const runAsync = (testPromise) => {
+    const { fieldName, statement, severity, parent } = testPromise;
 
     parent.result.markAsync(fieldName);
 
-    const done: Function = () => {
+    const done = () => {
         clearPendingTest(testPromise);
         if (!hasRemainingPendingTests(parent, fieldName)) {
             parent.result.markAsDone(fieldName);
@@ -22,7 +20,7 @@ export const runAsync: Function = (testPromise: AsyncTest) => {
         }
     };
 
-    const fail: Function = () => {
+    const fail = () => {
         if (parent.pending.includes(testPromise)) {
             parent.result.fail(fieldName, statement, severity);
         }
@@ -41,7 +39,7 @@ export const runAsync: Function = (testPromise: AsyncTest) => {
  * Clears pending test from parent context
  * @param {Promise} testPromise the actual test callback or promise
  */
-const clearPendingTest: Function = (testPromise: AsyncTest) => {
+const clearPendingTest = (testPromise) => {
     testPromise.parent.pending = testPromise.parent.pending.filter((t) => t !== testPromise);
 };
 
@@ -51,7 +49,7 @@ const clearPendingTest: Function = (testPromise: AsyncTest) => {
  * @param {String} fieldName name of the field to test against
  * @return {Boolean}
  */
-const hasRemainingPendingTests: Function = (parent: ParentContext, fieldName: string) => {
+const hasRemainingPendingTests = (parent, fieldName) => {
     if (!parent.pending.length) {
         return false;
     }
@@ -68,8 +66,8 @@ const hasRemainingPendingTests: Function = (parent: ParentContext, fieldName: st
  * @param {function | Promise} testFn the actual test callback or promise
  * @return {*} result from test function
  */
-const preRun: Function = (testFn: PassableTest) => {
-    let result: AnyValue;
+const preRun = (testFn) => {
+    let result;
     try {
         result = testFn();
     } catch (e) {
@@ -86,10 +84,10 @@ const preRun: Function = (testFn: PassableTest) => {
  * Registers all supplied tests, if async - adds to pending array
  * @param {function | Promise} testFn the actual test callback or promise
  */
-const register: Function = (testFn: PassableTest) => {
-    const { parent, fieldName }: TestProperties = testFn;
-    let pending: boolean = false;
-    let result: AnyValue;
+const register = (testFn) => {
+    const { parent, fieldName } = testFn;
+    let pending = false;
+    let result;
 
     if (parent.specific.excludes(fieldName)) {
         parent.result.addToSkipped(fieldName);
@@ -111,7 +109,6 @@ const register: Function = (testFn: PassableTest) => {
     }
 
     if (pending) {
-        // $FlowFixMe <- can't convince flow I actually refined here
         parent.pending.push(testFn);
     }
 };
@@ -123,7 +120,7 @@ const register: Function = (testFn: PassableTest) => {
  * @param {function | Promise} testFn the actual test callback or promise
  * @param {String} Severity indicates whether the test should fail or warn
  */
-const test: Function = (fieldName: string, statement: string, testFn: PassableTest, severity: Severity) => {
+const test = (fieldName, statement, testFn, severity) => {
     if (!testFn) {
         return;
     }

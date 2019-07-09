@@ -1,21 +1,16 @@
-// @flow
-
 import rules from './runnables';
 import ruleRunner from './runners/rule';
 
-// $FlowFixMe
-const glob: GlobalObject = Function('return this')();
-
-const isRule: Function = (rulesObject, name): boolean => (
+const isRule = (rulesObject, name) => (
     rulesObject.hasOwnProperty(name) && typeof rulesObject[name] === 'function'
 );
 
-const Enforce: Function = (customRules: EnforceRules = {}): EnforceInstance => {
-    const rulesObject: EnforceRules = {...rules, ...customRules};
+const Enforce = (customRules = {}) => {
+    const rulesObject = {...rules, ...customRules};
 
     if (typeof Proxy === 'function') {
-        return (value: AnyValue): EnforceRules => {
-            const proxy: EnforceRules = new Proxy(rulesObject, {
+        return (value) => {
+            const proxy = new Proxy(rulesObject, {
                 get: (rules, fnName) => {
                     if (!isRule(rules, fnName)) { return; }
 

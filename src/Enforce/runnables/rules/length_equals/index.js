@@ -1,6 +1,4 @@
-// @flow
-
-function lengthEquals(value: StringOrArray, arg1: number): boolean {
+function lengthEquals(value, arg1) {
     return value.length === arg1;
 }
 

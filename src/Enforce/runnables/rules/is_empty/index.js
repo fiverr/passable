@@ -1,7 +1,6 @@
-// @flow
 import isNumeric from '../is_numeric';
 
-function isEmpty(value: AnyValue): boolean {
+function isEmpty(value) {
     if (!value) {
         return true;
     } else if (isNumeric(value)) {
@@ -13,7 +12,7 @@ function isEmpty(value: AnyValue): boolean {
     } else {
         return true;
     }
-};
+}
 
 isEmpty.negativeForm = 'isNotEmpty';
 

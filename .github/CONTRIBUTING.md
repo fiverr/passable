@@ -87,18 +87,6 @@ npm test
 yarn test
 ```
 
-## Typechecking
-When writing code for Passable, we internally use Facebook's [Flow](https://flow.org/) for static type checking. Make sure you are familiar with Flow when modifying existing code or adding new functionality.
-
-To check flow coverage:
-```js
-npm run flow
-// or
-yarn flow
-// or
-npx flow
-```
-
 ## Linting
 Linting is done via eslint and Fiverr's eslint configuration.
 

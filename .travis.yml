@@ -11,7 +11,6 @@ env:
 before_script:
 - npm run build
 - npm run eslint
-- flow
 
 after_success:
 - node ./scripts/update_changelog.js
