@@ -1,6 +1,4 @@
-// @flow
-
-function isNumber(value: mixed): boolean {
+function isNumber(value) {
     return Boolean(typeof value === 'number');
 }
 

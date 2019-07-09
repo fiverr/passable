@@ -1,7 +1,6 @@
-// @flow
 import isNumeric from '../is_numeric';
 
-function lessThan(value: NumericValue, arg1: NumericValue): boolean {
+function lessThan(value, arg1) {
     return isNumeric(value) && isNumeric(arg1) && Number(value) < Number(arg1);
 }
 

@@ -5,12 +5,10 @@ module.exports = (api) => {
     }
 
     const presets = [
-        '@babel/preset-flow',
         '@babel/preset-env'
     ];
 
     const plugins = [
-        '@babel/plugin-transform-flow-strip-types',
         'babel-plugin-add-module-exports',
         '@babel/plugin-proposal-class-properties',
         '@babel/plugin-transform-object-assign'

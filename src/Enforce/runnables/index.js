@@ -1,5 +1,3 @@
-// // @flow
-
 import isArray from './rules/is_array';
 import isNumber from './rules/is_number';
 import isString from './rules/is_string';
@@ -19,7 +17,7 @@ import shorterThanOrEquals from './rules/shorter_than_or_equals';
 import lengthEquals from './rules/length_equals';
 import extendRules from './helpers/extend_rules';
 
-const rules: EnforceRules = {
+const rules = {
     isArray,
     isNumber,
     isString,

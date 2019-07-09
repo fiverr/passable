@@ -1,6 +1,4 @@
-// @flow
-
-function isString(value: mixed): boolean {
+function isString(value) {
     return Boolean(typeof value === 'string');
 }
 

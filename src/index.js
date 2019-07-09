@@ -1,4 +1,3 @@
-// @flow
 import passable from './core/passable';
 import test from './core/test';
 import Enforce from './Enforce';

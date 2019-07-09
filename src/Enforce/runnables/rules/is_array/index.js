@@ -1,6 +1,4 @@
-// @flow
-
-function isArray(value: mixed): boolean {
+function isArray(value) {
     return Boolean(Array.isArray(value));
 }
 

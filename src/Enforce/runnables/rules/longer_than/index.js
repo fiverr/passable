@@ -1,6 +1,4 @@
-// @flow
-
-function longerThan(value: StringOrArray, arg1: number): boolean {
+function longerThan(value, arg1) {
     return value.length > arg1;
 }
 

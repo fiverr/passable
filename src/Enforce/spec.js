@@ -1,5 +1,4 @@
 import Enforce from './index';
-import { random } from 'faker';
 import runnables from './runnables';
 import { expect } from 'chai';
 const allRules = Object.keys(runnables);
@@ -72,4 +71,3 @@ const suite = (noProxy) => describe('Test Passable\'s enforce function', () => {
 
 suite(false);
 suite(true);
-

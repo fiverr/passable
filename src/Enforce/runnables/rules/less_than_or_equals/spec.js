@@ -3,7 +3,7 @@ import { random } from 'faker';
 import lessThanOrEquals from './index';
 
 describe('Tests lessThanOrEquals rule', () => {
-    let arg0, arg1;
+    let arg0;
 
     describe('Arguments are numbers', () => {
         beforeEach(() => {

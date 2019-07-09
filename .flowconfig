@@ -1,7 +1,0 @@
-[libs]
-src/types.js
-
-[options]
-
-[ignore]
-.*/node_modules/@webassemblyjs/.*

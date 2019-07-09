@@ -1,11 +1,9 @@
-// @flow
-
 /**
  * Runs given functions and returns true if any of them passes
  * @param  {[]Function} args array of assertion functions
  * @return {Function} A function which, when called, invokes all arguments
  */
-const any: Function = (...args) => () => args.some((fn: Function): boolean => {
+const any = (...args) => () => args.some((fn) => {
     try {
         return fn() !== false;
     } catch (err) {
