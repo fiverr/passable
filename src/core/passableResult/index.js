@@ -237,15 +237,57 @@ const passableResult = (name) => {
         testsPerformed: {},
         errors: {},
         warnings: {},
-        skipped: [],
-        hasErrors,
-        hasWarnings,
-        getErrors,
-        getWarnings,
-        done,
-        after,
-        cancel
+        skipped: []
     };
+
+    Object.defineProperty(output, 'hasErrors', {
+        value: hasErrors,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
+
+    Object.defineProperty(output, 'hasWarnings', {
+        value: hasWarnings,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
+
+    Object.defineProperty(output, 'getErrors', {
+        value: getErrors,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
+
+    Object.defineProperty(output, 'getWarnings', {
+        value: getWarnings,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
+
+    Object.defineProperty(output, 'done', {
+        value: done,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
+
+    Object.defineProperty(output, 'after', {
+        value: after,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
+
+    Object.defineProperty(output, 'cancel', {
+        value: cancel,
+        writable: true,
+        configurable: true,
+        enumerable: false
+    });
 
     return {
         initFieldCounters,

@@ -4,14 +4,4 @@ const chaiExclude = require('chai-exclude');
 
 chai.use(chaiExclude);
 
-export const excludeFromResult = [
-    'after',
-    'done',
-    'getErrors',
-    'hasErrors',
-    'hasWarnings',
-    'getWarnings',
-    'cancel'
-];
-
 global.PASSABLE_VERSION = require('../package.json').version;
