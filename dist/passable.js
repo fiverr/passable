@@ -366,7 +366,7 @@
     };
     /**
      * Uniquely add a field to the `skipped` list
-     * @param {string} fieldName
+     * @param {string} fieldName - The name of the field.
      */
 
 
@@ -386,7 +386,7 @@
     };
     /**
      * Marks a field as async
-     * @param {string} fieldName the name of the field marked as async
+     * @param {string} fieldName - The name of the field.
     */
 
 
@@ -400,7 +400,7 @@
     };
     /**
      * Marks an async field as done
-     * @param {string} fieldName the name of the field marked as done
+     * @param {string} fieldName - The name of the field.
     */
 
 
@@ -442,6 +442,7 @@
     /**
      * Registers callback functions to be run when a certain field is done running
      * If field is not async, runs the callback immediately
+     * @param {string} fieldName - The name of the field.
      * @param {function} callback the function to be called on done
      * @return {object} output object
      */
@@ -473,8 +474,8 @@
     };
     /**
      * Gets all the errors of a field, or of the whole object
-     * @param {string} [fieldName] - The name of the field.
-     * @return {Array | Object} The field's errors, or all errors
+     * @param {string} fieldName - The name of the field.
+     * @return {array | object} The field's errors, or all errors
      */
 
 
@@ -492,7 +493,7 @@
     /**
      * Gets all the warnings of a field, or of the whole object
      * @param {string} [fieldName] - The name of the field.
-     * @return {Array | Object} The field's warnings, or all warnings
+     * @return {array | object} The field's warnings, or all warnings
      */
 
 
@@ -523,7 +524,7 @@
     };
     /**
      * Checks if a certain field (or the whole suite) has warnings
-     * @param {string} [fieldName]
+     * @param {string} [fieldName] - The name of the field.
      * @return {boolean}
      */
 
@@ -544,15 +545,52 @@
       testsPerformed: {},
       errors: {},
       warnings: {},
-      skipped: [],
-      hasErrors: hasErrors,
-      hasWarnings: hasWarnings,
-      getErrors: getErrors,
-      getWarnings: getWarnings,
-      done: done,
-      after: after,
-      cancel: cancel
+      skipped: []
     };
+    Object.defineProperties(output, {
+      hasErrors: {
+        value: hasErrors,
+        writable: true,
+        configurable: true,
+        enumerable: false
+      },
+      hasWarnings: {
+        value: hasWarnings,
+        writable: true,
+        configurable: true,
+        enumerable: false
+      },
+      getErrors: {
+        value: getErrors,
+        writable: true,
+        configurable: true,
+        enumerable: false
+      },
+      getWarnings: {
+        value: getWarnings,
+        writable: true,
+        configurable: true,
+        enumerable: false
+      },
+      done: {
+        value: done,
+        writable: true,
+        configurable: true,
+        enumerable: false
+      },
+      after: {
+        value: after,
+        writable: true,
+        configurable: true,
+        enumerable: false
+      },
+      cancel: {
+        value: cancel,
+        writable: true,
+        configurable: true,
+        enumerable: false
+      }
+    });
     return {
       initFieldCounters: initFieldCounters,
       bumpTestError: bumpTestError,

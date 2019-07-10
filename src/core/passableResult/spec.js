@@ -3,7 +3,6 @@ import passableResult from './index';
 import { test } from 'mocha';
 import { WARN, FAIL } from '../../constants';
 import { expect } from 'chai';
-import { excludeFromResult } from '../../../config/test-setup';
 import { noop, sample } from 'lodash';
 import sinon from 'sinon';
 import faker from 'faker';
@@ -14,11 +13,21 @@ const rejectLater = (time = 500) => new Promise((res, rej) => {
     }, time);
 });
 
+const ENUMERABLE_PROPERTIES = [
+    'name',
+    'failCount',
+    'warnCount',
+    'testCount',
+    'testsPerformed',
+    'errors',
+    'warnings',
+    'skipped'
+];
+
 describe('module: passableResult', () => {
     it('Should return correct initial object from constructor', () => {
         const output = passableResult('FormName').output;
-        expect(output)
-            .excluding(excludeFromResult).to.deep.equal({
+        expect(output).to.deep.equal({
                 name: 'FormName',
                 failCount: 0,
                 warnCount: 0,
@@ -38,6 +47,24 @@ describe('module: passableResult', () => {
         it(`Should expose ${method} method`, () => {
             const res = passableResult(faker.lorem.word());
             expect(typeof res.output[method]).to.equal('function');
+        });
+    });
+
+    ENUMERABLE_PROPERTIES.forEach((property) => {
+        describe('When output is JSON stringified', () => {
+            it(`Should expose ${property} property`, () => {
+                const res = passableResult(faker.lorem.word());
+                const stringifiedOutput = JSON.parse(JSON.stringify(res.output));
+                expect(stringifiedOutput[property]).to.not.be.undefined;
+            });
+        });
+    });
+
+    describe('When output is JSON stringified', () => {
+        it(`Should expose ${ENUMERABLE_PROPERTIES.length} properties`, () => {
+            const res = passableResult(faker.lorem.word());
+            const stringifiedOutput = JSON.parse(JSON.stringify(res.output));
+            expect(Object.keys(stringifiedOutput)).to.have.lengthOf(ENUMERABLE_PROPERTIES.length);
         });
     });
 
@@ -506,9 +533,7 @@ describe('module: passableResult', () => {
         it('Should return correct failing object', () => {
             testObject.fail('f1', 'should fail', FAIL);
 
-            expect(testObject.output)
-                .excluding(excludeFromResult)
-                .to.deep.equal({
+            expect(testObject.output).to.deep.equal({
                     name: 'FormName',
                     testCount: 0,
                     failCount: 1,
@@ -527,9 +552,7 @@ describe('module: passableResult', () => {
 
         it('Should return correct warning object', () => {
             testObject.fail('f1', 'should warn', WARN);
-            expect(testObject.output)
-                .excluding(excludeFromResult)
-                .to.deep.equal({
+            expect(testObject.output).to.deep.equal({
                     name: 'FormName',
                     testCount: 0,
                     failCount: 0,
@@ -550,9 +573,7 @@ describe('module: passableResult', () => {
             const testObject = passableResult('FormName');
             testObject.fail('f1', 'I do not exist');
 
-            expect(testObject.output)
-                .excluding(excludeFromResult)
-                .to.deep.equal(passableResult('FormName').output);
+            expect(testObject.output).to.deep.equal(passableResult('FormName').output);
         });
     });
 
@@ -568,9 +589,7 @@ describe('module: passableResult', () => {
         it('#bumpTestWarning Should correctly update instance with field\'s warnings', () => {
             testObject.bumpTestWarning('f1', 'should warn');
 
-            expect(testObject.output)
-                .excluding(excludeFromResult)
-                .to.deep.equal({
+            expect(testObject.output).to.deep.equal({
                     name: 'FormName',
                     testCount: 0,
                     failCount: 0,
@@ -590,9 +609,7 @@ describe('module: passableResult', () => {
         it('#bumpTestError Should correctly update instance with field\'s error', () => {
             testObject.bumpTestError('f1', 'should error');
 
-            expect(testObject.output)
-                .excluding(excludeFromResult)
-                .to.deep.equal({
+            expect(testObject.output).to.deep.equal({
                     name: 'FormName',
                     testCount: 0,
                     failCount: 1,
