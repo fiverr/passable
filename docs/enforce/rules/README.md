@@ -1064,3 +1064,24 @@ enforce('hello').isNotString();
 enforce(['hello']).isNotString();
 // true
 ```
+
+
+## isOdd
+### Description
+Checks if a value an odd numeric value.
+
+### usage examples:
+
+```js
+enforce('1').isOdd();
+enforce(9).isOdd();
+// true
+```
+
+```js
+enforce(2).isOdd();
+enforce('4').isOdd();
+enforce('1withNumber').isOdd();
+enforce([1]).isOdd();
+// false
+```

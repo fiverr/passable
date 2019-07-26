@@ -15,6 +15,7 @@ import longerThanOrEquals from './rules/longer_than_or_equals';
 import shorterThan from './rules/shorter_than';
 import shorterThanOrEquals from './rules/shorter_than_or_equals';
 import lengthEquals from './rules/length_equals';
+import isOdd from './rules/is_odd';
 import extendRules from './helpers/extend_rules';
 
 const rules = {
@@ -34,7 +35,8 @@ const rules = {
     longerThanOrEquals,
     shorterThan,
     shorterThanOrEquals,
-    lengthEquals
+    lengthEquals,
+    isOdd
 };
 
 export default extendRules(rules);

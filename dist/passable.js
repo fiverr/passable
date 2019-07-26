@@ -871,6 +871,24 @@
   lengthEquals.negativeForm = 'lengthNotEquals';
 
   /**
+   * Validates that a given value is an odd number
+   * @param {Number|String} value Value to be validated
+   * @return {Boolean}
+   */
+
+  var isOdd = function isOdd(value) {
+    if (!isNumeric(value)) {
+      return false;
+    }
+
+    if (typeof value === 'string') {
+      value = Number(value);
+    }
+
+    return Math.abs(value % 2) === 1;
+  };
+
+  /**
    * Collects rules with `negativeForm` or `alias` attributes.
    * Adds a rule with the correct configuration.
    * @param {Object} rules - enforce rules object
@@ -916,7 +934,8 @@
     longerThanOrEquals: longerThanOrEquals,
     shorterThan: shorterThan,
     shorterThanOrEquals: shorterThanOrEquals,
-    lengthEquals: lengthEquals
+    lengthEquals: lengthEquals,
+    isOdd: isOdd
   };
   var rules$1 = extendRules(rules);
 
