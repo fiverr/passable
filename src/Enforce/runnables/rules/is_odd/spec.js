@@ -17,7 +17,7 @@ describe('Tests isOdd rule', () => {
 
         it('Should return true', () => {
             oddNumbers.forEach((num) => {
-                expect(isOdd(1)).to.equal(true);
+                expect(isOdd(num)).to.equal(true);
             });
         });
 

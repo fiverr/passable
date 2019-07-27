@@ -889,6 +889,24 @@
   };
 
   /**
+   * Validates that a given value is an even number
+   * @param {Number|String} value Value to be validated
+   * @return {Boolean}
+   */
+
+  var isEven = function isEven(value) {
+    if (!isNumeric(value)) {
+      return false;
+    }
+
+    if (typeof value === 'string') {
+      value = Number(value);
+    }
+
+    return Math.abs(value % 2) === 0;
+  };
+
+  /**
    * Collects rules with `negativeForm` or `alias` attributes.
    * Adds a rule with the correct configuration.
    * @param {Object} rules - enforce rules object
@@ -935,7 +953,8 @@
     shorterThan: shorterThan,
     shorterThanOrEquals: shorterThanOrEquals,
     lengthEquals: lengthEquals,
-    isOdd: isOdd
+    isOdd: isOdd,
+    isEven: isEven
   };
   var rules$1 = extendRules(rules);
 

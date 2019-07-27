@@ -17,7 +17,7 @@ describe('Tests isEven rule', () => {
 
         it('Should return true', () => {
             evenNumbers.forEach((num) => {
-                expect(isEven(1)).to.equal(true);
+                expect(isEven(num)).to.equal(true);
             });
         });
 
