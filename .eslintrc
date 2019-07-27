@@ -7,17 +7,6 @@
         }
     },
     "parser": "babel-eslint",
-    "extends": [
-        "plugin:flowtype/recommended"
-    ],
-    "plugins": [
-        "flowtype"
-    ],
-    "settings": {
-        "flowtype": {
-            "onlyFilesWithFlowAnnotation": true
-        }
-    },
     "env": {
         "browser": true,
         "es6": true,
@@ -36,11 +25,6 @@
         "sinon": true
     },
     "rules": {
-        "flowtype/require-valid-file-annotation": [2, "always"],
-        "flowtype/require-variable-type": [2],
-        "flowtype/no-weak-types": [1, {
-            "Function": false
-        }],
         "eqeqeq": 2,
         "no-multi-spaces": [2, {
             "exceptions": {
