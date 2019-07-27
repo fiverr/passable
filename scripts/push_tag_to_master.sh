@@ -1,5 +1,5 @@
 
-git config --global user.email $GIT_EMAIL
+git config --global user.email "${GIT_NAME}@users.noreply.github.com" --replace-all
 git config --global user.name $GIT_NAME
 
 echo "Cloning repo"
