@@ -1089,7 +1089,7 @@ enforce([1]).isOdd();
 
 ## isEven
 ### Description
-Checks if a value is an odd numeric value.
+Checks if a value is an even numeric value.
 
 ### usage examples:
 

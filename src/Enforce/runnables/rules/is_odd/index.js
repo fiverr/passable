@@ -11,11 +11,7 @@ const isOdd = (value) => {
         return false;
     }
 
-    if (typeof value === 'string') {
-        value = Number(value);
-    }
-
-    return Math.abs(value % 2) === 1;
+    return value % 2 !== 0;
 };
 
 export default isOdd;
