@@ -46,7 +46,9 @@ const positiveRules = [
     'shorterThan',
     'shorterThanOrEquals',
     'longerThanOrEquals',
-    'lengthEquals'
+    'lengthEquals',
+    'isOdd',
+    'isEven'
 ];
 
 const allRules = [...new Set([...positiveRules, ...negativeRules])];
