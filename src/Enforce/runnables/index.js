@@ -4,6 +4,7 @@ import isString from './rules/is_string';
 import matches from './rules/matches';
 import inside from './rules/inside';
 import equals from './rules/equals';
+import numberEquals from './rules/number_equals';
 import isNumeric from './rules/is_numeric';
 import isEmpty from './rules/is_empty';
 import greaterThan from './rules/greater_than';
@@ -26,6 +27,7 @@ const rules = {
     matches,
     inside,
     equals,
+    numberEquals,
     isNumeric,
     isEmpty,
     greaterThan,

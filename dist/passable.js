@@ -808,6 +808,12 @@
 
   isNumeric.negativeForm = 'isNotNumeric';
 
+  function numberEquals(value, arg1) {
+    return isNumeric(value) && isNumeric(arg1) && Number(value) === Number(arg1);
+  }
+
+  numberEquals.negativeForm = 'numberNotEquals';
+
   function isEmpty(value) {
     if (!value) {
       return true;
@@ -881,11 +887,7 @@
       return false;
     }
 
-    if (typeof value === 'string') {
-      value = Number(value);
-    }
-
-    return Math.abs(value % 2) === 1;
+    return value % 2 !== 0;
   };
 
   /**
@@ -899,11 +901,7 @@
       return false;
     }
 
-    if (typeof value === 'string') {
-      value = Number(value);
-    }
-
-    return Math.abs(value % 2) === 0;
+    return value % 2 === 0;
   };
 
   /**
@@ -942,6 +940,7 @@
     matches: matches,
     inside: inside,
     equals: equals,
+    numberEquals: numberEquals,
     isNumeric: isNumeric,
     isEmpty: isEmpty,
     greaterThan: greaterThan,
