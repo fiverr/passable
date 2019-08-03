@@ -1080,7 +1080,7 @@
     };
   };
 
-  passable.VERSION = "7.1.2";
+  passable.VERSION = "7.2.0";
   passable.enforce = new Enforce({});
   passable.test = test;
   passable.Enforce = Enforce;
