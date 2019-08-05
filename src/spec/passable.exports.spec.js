@@ -1,4 +1,3 @@
-'use strict';
 import { expect } from 'chai';
 import passable, { Enforce, enforce, validate } from '../index';
 const passableExports = require('../index');

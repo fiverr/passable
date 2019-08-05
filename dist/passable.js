@@ -40,21 +40,6 @@
     return Constructor;
   }
 
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
   function _extends() {
     _extends = Object.assign || function (target) {
       for (var i = 1; i < arguments.length; i++) {
@@ -71,40 +56,6 @@
     };
 
     return _extends.apply(this, arguments);
-  }
-
-  function ownKeys(object, enumerableOnly) {
-    var keys = Object.keys(object);
-
-    if (Object.getOwnPropertySymbols) {
-      var symbols = Object.getOwnPropertySymbols(object);
-      if (enumerableOnly) symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-      keys.push.apply(keys, symbols);
-    }
-
-    return keys;
-  }
-
-  function _objectSpread2(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-
-      if (i % 2) {
-        ownKeys(source, true).forEach(function (key) {
-          _defineProperty(target, key, source[key]);
-        });
-      } else if (Object.getOwnPropertyDescriptors) {
-        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-      } else {
-        ownKeys(source).forEach(function (key) {
-          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-        });
-      }
-    }
-
-    return target;
   }
 
   function _toConsumableArray(arr) {
@@ -761,286 +712,6 @@
     return result.output;
   };
 
-  function isArray(value) {
-    return Boolean(Array.isArray(value));
-  }
-
-  isArray.negativeForm = 'isNotArray';
-
-  function isNumber(value) {
-    return Boolean(typeof value === 'number');
-  }
-
-  isNumber.negativeForm = 'isNotNumber';
-
-  function isString(value) {
-    return Boolean(typeof value === 'string');
-  }
-
-  isString.negativeForm = 'isNotString';
-
-  function matches(value, regex) {
-    if (regex instanceof RegExp) {
-      return regex.test(value);
-    } else if (typeof regex === 'string') {
-      return new RegExp(regex).test(value);
-    } else {
-      return false;
-    }
-  }
-
-  matches.negativeForm = 'notMatches';
-
-  function inside(value, arg1) {
-    if (Array.isArray(arg1) && ['string', 'number', 'boolean'].includes(_typeof(value))) {
-      return arg1.includes(value);
-    } // both value and arg1 are strings
-
-
-    if (typeof arg1 === 'string' && typeof value === 'string') {
-      return arg1.includes(value);
-    }
-
-    return false;
-  }
-
-  inside.negativeForm = 'notInside';
-
-  function equals(value, arg1) {
-    return value === arg1;
-  }
-
-  equals.negativeForm = 'notEquals';
-
-  function isNumeric(value) {
-    var result = !isNaN(parseFloat(value)) && !isNaN(Number(value)) && isFinite(value);
-    return Boolean(result);
-  }
-
-  isNumeric.negativeForm = 'isNotNumeric';
-
-  function numberEquals(value, arg1) {
-    return isNumeric(value) && isNumeric(arg1) && Number(value) === Number(arg1);
-  }
-
-  numberEquals.negativeForm = 'numberNotEquals';
-
-  function isEmpty(value) {
-    if (!value) {
-      return true;
-    } else if (isNumeric(value)) {
-      return value === 0;
-    } else if (value.hasOwnProperty('length')) {
-      return value.length === 0;
-    } else if (_typeof(value) === 'object') {
-      return Object.keys(value).length === 0;
-    } else {
-      return true;
-    }
-  }
-
-  isEmpty.negativeForm = 'isNotEmpty';
-
-  function greaterThan(value, arg1) {
-    return isNumeric(value) && isNumeric(arg1) && Number(value) > Number(arg1);
-  }
-
-  greaterThan.alias = 'gt';
-
-  function greaterThanOrEquals(value, arg1) {
-    return isNumeric(value) && isNumeric(arg1) && Number(value) >= Number(arg1);
-  }
-
-  greaterThanOrEquals.alias = 'gte';
-
-  function lessThan(value, arg1) {
-    return isNumeric(value) && isNumeric(arg1) && Number(value) < Number(arg1);
-  }
-
-  lessThan.alias = 'lt';
-
-  function lessThanOrEquals(value, arg1) {
-    return isNumeric(value) && isNumeric(arg1) && Number(value) <= Number(arg1);
-  }
-
-  lessThanOrEquals.alias = 'lte';
-
-  function longerThan(value, arg1) {
-    return value.length > arg1;
-  }
-
-  function longerThanOrEquals(value, arg1) {
-    return value.length >= arg1;
-  }
-
-  function shorterThan(value, arg1) {
-    return value.length < arg1;
-  }
-
-  function shorterThanOrEquals(value, arg1) {
-    return value.length <= arg1;
-  }
-
-  function lengthEquals(value, arg1) {
-    return value.length === arg1;
-  }
-
-  lengthEquals.negativeForm = 'lengthNotEquals';
-
-  /**
-   * Validates that a given value is an odd number
-   * @param {Number|String} value Value to be validated
-   * @return {Boolean}
-   */
-
-  var isOdd = function isOdd(value) {
-    if (!isNumeric(value)) {
-      return false;
-    }
-
-    return value % 2 !== 0;
-  };
-
-  /**
-   * Validates that a given value is an even number
-   * @param {Number|String} value Value to be validated
-   * @return {Boolean}
-   */
-
-  var isEven = function isEven(value) {
-    if (!isNumeric(value)) {
-      return false;
-    }
-
-    return value % 2 === 0;
-  };
-
-  /**
-   * Collects rules with `negativeForm` or `alias` attributes.
-   * Adds a rule with the correct configuration.
-   * @param {Object} rules - enforce rules object
-   * @returns {Object} extended rules object
-   */
-  function extendRules(rules) {
-    var _loop = function _loop(rule) {
-      var negativeForm = rules[rule].negativeForm;
-      var alias = rules[rule].alias;
-
-      if (negativeForm) {
-        rules[negativeForm] = function () {
-          return !rules[rule].apply(rules, arguments);
-        };
-      }
-
-      if (alias) {
-        rules[alias] = rules[rule];
-      }
-    };
-
-    for (var rule in rules) {
-      _loop(rule);
-    }
-
-    return rules;
-  }
-
-  var rules = {
-    isArray: isArray,
-    isNumber: isNumber,
-    isString: isString,
-    matches: matches,
-    inside: inside,
-    equals: equals,
-    numberEquals: numberEquals,
-    isNumeric: isNumeric,
-    isEmpty: isEmpty,
-    greaterThan: greaterThan,
-    greaterThanOrEquals: greaterThanOrEquals,
-    lessThan: lessThan,
-    lessThanOrEquals: lessThanOrEquals,
-    longerThan: longerThan,
-    longerThanOrEquals: longerThanOrEquals,
-    shorterThan: shorterThan,
-    shorterThanOrEquals: shorterThanOrEquals,
-    lengthEquals: lengthEquals,
-    isOdd: isOdd,
-    isEven: isEven
-  };
-  var rules$1 = extendRules(rules);
-
-  /**
-   * Run a single rule against enforced value (e.g. `isNumber()`)
-   *
-   * @param {Function} rule - rule to run
-   * @param {Any} value
-   * @param {Array} args list of arguments sent from consumer
-   */
-  function rule(rule, value) {
-    if (typeof rule !== 'function') {
-      return;
-    }
-
-    for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-      args[_key - 2] = arguments[_key];
-    }
-
-    if (rule.apply(void 0, [value].concat(args)) !== true) {
-      throw new Error("[Enforce]: invalid ".concat(_typeof(value), " value"));
-    }
-  }
-
-  var isRule = function isRule(rulesObject, name) {
-    return rulesObject.hasOwnProperty(name) && typeof rulesObject[name] === 'function';
-  };
-
-  var Enforce = function Enforce() {
-    var customRules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    var rulesObject = _objectSpread2({}, rules$1, {}, customRules);
-
-    if (typeof Proxy === 'function') {
-      return function (value) {
-        var proxy = new Proxy(rulesObject, {
-          get: function get(rules, fnName) {
-            if (!isRule(rules, fnName)) {
-              return;
-            }
-
-            return function () {
-              for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-              }
-
-              rule.apply(void 0, [rules[fnName], value].concat(args));
-              return proxy;
-            };
-          }
-        });
-        return proxy;
-      };
-    } // This is relatively heavier, and preferably should only be done when lacking proxy support
-
-
-    return function (value) {
-      return Object.keys(rulesObject).reduce(function (allRules, fnName) {
-        if (!isRule(rulesObject, fnName)) {
-          return allRules;
-        }
-
-        allRules[fnName] = function () {
-          for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-            args[_key2] = arguments[_key2];
-          }
-
-          rule.apply(void 0, [rulesObject[fnName], value].concat(args));
-          return allRules;
-        };
-
-        return allRules;
-      }, {});
-    };
-  };
-
   /**
    * Run tests and catch errors
    *
@@ -1080,10 +751,219 @@
     };
   };
 
+  var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+  function createCommonjsModule(fn, module) {
+  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  }
+
+  var n4s_min = createCommonjsModule(function (module, exports) {
+    !function (n, e) {
+       module.exports = e() ;
+    }(commonjsGlobal, function () {
+
+      function n(e) {
+        return (n = "function" == typeof Symbol && "symbol" == _typeof(Symbol.iterator) ? function (n) {
+          return _typeof(n);
+        } : function (n) {
+          return n && "function" == typeof Symbol && n.constructor === Symbol && n !== Symbol.prototype ? "symbol" : _typeof(n);
+        })(e);
+      }
+
+      function e(n, e, t) {
+        return e in n ? Object.defineProperty(n, e, {
+          value: t,
+          enumerable: !0,
+          configurable: !0,
+          writable: !0
+        }) : n[e] = t, n;
+      }
+
+      function t(n, e) {
+        var t = Object.keys(n);
+
+        if (Object.getOwnPropertySymbols) {
+          var r = Object.getOwnPropertySymbols(n);
+          e && (r = r.filter(function (e) {
+            return Object.getOwnPropertyDescriptor(n, e).enumerable;
+          })), t.push.apply(t, r);
+        }
+
+        return t;
+      }
+
+      function r(n) {
+        return Boolean(Array.isArray(n));
+      }
+
+      function o(n) {
+        return Boolean("number" == typeof n);
+      }
+
+      function u(n) {
+        return Boolean("string" == typeof n);
+      }
+
+      function i(n, e) {
+        return e instanceof RegExp ? e.test(n) : "string" == typeof e && new RegExp(e).test(n);
+      }
+
+      function a(e, t) {
+        return Array.isArray(t) && ["string", "number", "boolean"].includes(n(e)) ? t.includes(e) : "string" == typeof t && "string" == typeof e && t.includes(e);
+      }
+
+      function c(n, e) {
+        return n === e;
+      }
+
+      function f(n) {
+        var e = !isNaN(parseFloat(n)) && !isNaN(Number(n)) && isFinite(n);
+        return Boolean(e);
+      }
+
+      function s(n, e) {
+        return f(n) && f(e) && Number(n) === Number(e);
+      }
+
+      function l(e) {
+        return !e || (f(e) ? 0 === e : Object.prototype.hasOwnProperty.call(e, "length") ? 0 === e.length : "object" !== n(e) || 0 === Object.keys(e).length);
+      }
+
+      function y(n, e) {
+        return f(n) && f(e) && Number(n) > Number(e);
+      }
+
+      function p(n, e) {
+        return f(n) && f(e) && Number(n) >= Number(e);
+      }
+
+      function g(n, e) {
+        return f(n) && f(e) && Number(n) < Number(e);
+      }
+
+      function b(n, e) {
+        return f(n) && f(e) && Number(n) <= Number(e);
+      }
+
+      function m(n, e) {
+        return n.length === e;
+      }
+
+      r.negativeForm = "isNotArray", o.negativeForm = "isNotNumber", u.negativeForm = "isNotString", i.negativeForm = "notMatches", a.negativeForm = "notInside", c.negativeForm = "notEquals", f.negativeForm = "isNotNumeric", s.negativeForm = "numberNotEquals", l.negativeForm = "isNotEmpty", y.alias = "gt", p.alias = "gte", g.alias = "lt", b.alias = "lte", m.negativeForm = "lengthNotEquals";
+
+      var v = function (n) {
+        var e = function e(_e) {
+          var t = n[_e].negativeForm,
+              r = n[_e].alias;
+          t && (n[t] = function () {
+            return !n[_e].apply(n, arguments);
+          }), r && (n[r] = n[_e]);
+        };
+
+        for (var t in n) {
+          e(t);
+        }
+
+        return n;
+      }({
+        isArray: r,
+        isNumber: o,
+        isString: u,
+        matches: i,
+        inside: a,
+        equals: c,
+        numberEquals: s,
+        isNumeric: f,
+        isEmpty: l,
+        greaterThan: y,
+        greaterThanOrEquals: p,
+        lessThan: g,
+        lessThanOrEquals: b,
+        longerThan: function longerThan(n, e) {
+          return n.length > e;
+        },
+        longerThanOrEquals: function longerThanOrEquals(n, e) {
+          return n.length >= e;
+        },
+        shorterThan: function shorterThan(n, e) {
+          return n.length < e;
+        },
+        shorterThanOrEquals: function shorterThanOrEquals(n, e) {
+          return n.length <= e;
+        },
+        lengthEquals: m,
+        isOdd: function isOdd(n) {
+          return !!f(n) && n % 2 != 0;
+        },
+        isEven: function isEven(n) {
+          return !!f(n) && n % 2 == 0;
+        }
+      });
+
+      function h(e, t) {
+        if ("function" == typeof e) {
+          for (var r = arguments.length, o = new Array(r > 2 ? r - 2 : 0), u = 2; u < r; u++) {
+            o[u - 2] = arguments[u];
+          }
+
+          if (!0 !== e.apply(void 0, [t].concat(o))) throw new Error("[Enforce]: invalid ".concat(n(t), " value"));
+        }
+      }
+
+      var O = function O(n, e) {
+        return Object.prototype.hasOwnProperty.call(n, e) && "function" == typeof n[e];
+      };
+
+      function N() {
+        var n = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
+            r = function (n) {
+          for (var r = 1; r < arguments.length; r++) {
+            var o = null != arguments[r] ? arguments[r] : {};
+            r % 2 ? t(o, !0).forEach(function (t) {
+              e(n, t, o[t]);
+            }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(n, Object.getOwnPropertyDescriptors(o)) : t(o).forEach(function (e) {
+              Object.defineProperty(n, e, Object.getOwnPropertyDescriptor(o, e));
+            });
+          }
+
+          return n;
+        }({}, v, {}, n);
+
+        return "function" == typeof Proxy ? function (n) {
+          var e = new Proxy(r, {
+            get: function get(t, r) {
+              if (O(t, r)) return function () {
+                for (var o = arguments.length, u = new Array(o), i = 0; i < o; i++) {
+                  u[i] = arguments[i];
+                }
+
+                return h.apply(void 0, [t[r], n].concat(u)), e;
+              };
+            }
+          });
+          return e;
+        } : function (n) {
+          return Object.keys(r).reduce(function (e, t) {
+            return O(r, t) ? (e[t] = function () {
+              for (var o = arguments.length, u = new Array(o), i = 0; i < o; i++) {
+                u[i] = arguments[i];
+              }
+
+              return h.apply(void 0, [r[t], n].concat(u)), e;
+            }, e) : e;
+          }, {});
+        };
+      }
+
+      var d = new N();
+      return d.Enforce = N, d;
+    });
+  });
+
   passable.VERSION = "7.2.0";
-  passable.enforce = new Enforce({});
+  passable.enforce = n4s_min;
+  passable.Enforce = n4s_min.Enforce;
   passable.test = test;
-  passable.Enforce = Enforce;
   passable.validate = validate;
   passable.any = any;
   passable.WARN = WARN;

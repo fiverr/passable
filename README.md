@@ -17,7 +17,7 @@ Your validations run in production code, and you can use them in any framework (
 
 The idea behind passable is that you can easily adopt its very familiar syntax, and transfer your knowledge from the world of testing to your form validations.
 
-Much like most testing frameworks, Passable comes with its own assertion function, [enforce](https://fiverr.github.io/passable/#/./enforce/README), all error based assertion libraries are supported.
+Much like most testing frameworks, Passable comes with its own assertion function, [enforce](https://fiverr.github.io/passable/#/./enforce.md), all error based assertion libraries are supported.
 
 ## Key features
 1. [Non failing tests](https://fiverr.github.io/passable/#/test/warn_only_tests).

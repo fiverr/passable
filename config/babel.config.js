@@ -15,6 +15,7 @@ module.exports = (api) => {
     ];
 
     return {
+        include: [/src/, /node_modules/],
         presets,
         plugins
     };

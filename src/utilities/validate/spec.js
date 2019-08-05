@@ -1,5 +1,5 @@
 import validate from '.';
-import { enforce } from '../../Enforce';
+import { enforce } from '../../index';
 import { expect } from 'chai';
 
 describe('Utilities: validate', () => {

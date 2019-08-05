@@ -1,16 +1,18 @@
+import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 const { version } = require('../package.json');
 
-const output = {
-    name: 'passable',
-    format: 'umd'
-};
+const DEFAULT_FORMAT = 'umd';
+const LIBRARY_NAME = 'passable';
 
-const plugins = [
+const PLUGINS = [
     resolve(),
+    commonjs({
+        include: /node_modules\/n4s/
+    }),
     babel({
         babelrc: false,
         ...require('./babel.config')()
@@ -20,22 +22,25 @@ const plugins = [
     })
 ];
 
-export default [{
+const buildConfig = ({ format = DEFAULT_FORMAT, min = false } = {}) => ({
     input: 'src/index.js',
     output: {
-        file: 'dist/passable.js',
-        ...output
+        file: [
+            `dist/${LIBRARY_NAME}`,
+            min && 'min',
+            format !== DEFAULT_FORMAT && format,
+            'js'
+        ].filter(Boolean).join('.'),
+        name: LIBRARY_NAME,
+        format
     },
-    plugins
-},
-{
-    input: 'src/index.js',
-    output: {
-        file: 'dist/passable.min.js',
-        ...output
-    },
-    plugins: [
-        ...plugins,
-        terser()
-    ]
-}];
+    plugins: min
+        ? [ ...PLUGINS, terser() ]
+        : PLUGINS
+
+});
+
+export default [
+    buildConfig({ min: false }),
+    buildConfig()
+];
