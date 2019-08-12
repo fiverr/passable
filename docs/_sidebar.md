@@ -10,5 +10,5 @@
     * [Skipping tests](./test/specific.md)
     * [Async tests](./test/async.md)
 * [Test Utilities](./utilities/README.md)
-* [Assertions with `enforce`](../node_modules/n4s/README.md)
+* [Assertions with `enforce`](./enforce.md)
 * [Using with assertions libraries](./compatability/assertions.md)

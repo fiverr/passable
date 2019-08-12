@@ -41,6 +41,6 @@ const buildConfig = ({ format = DEFAULT_FORMAT, min = false } = {}) => ({
 });
 
 export default [
-    buildConfig({ min: false }),
+    buildConfig({ min: true }),
     buildConfig()
 ];

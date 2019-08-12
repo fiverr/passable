@@ -21,47 +21,48 @@ enforce(4)
 ```
 
 ## Content
-- [List of Enforce rules](#enforce-rules)
-    - [equals](#equals)
-    - [notEquals](#notequals)
-    - [isEmpty](#isempty)
-    - [isNotEmpty](#isnotempty)
-    - [isNumeric](#isnumeric)
-    - [isNotNumeric](#isnotnumeric)
-    - [greaterThan](#greaterthan)
-    - [greaterThanOrEquals](#greaterthanorequals)
-    - [lengthEquals](#lengthequals)
-    - [lengthNotEquals](#lengthnotequals)
-    - [lessThan](#lessthan)
-    - [lessThanOrEquals](#lessthanorequals)
-    - [longerThan](#longerthan)
-    - [longerThanOrEquals](#longerthanorequals)
-    - [numberEquals](#numberequals)
-    - [numberNotEquals](#numbernotequals)
-    - [shorterThan](#shorterthan)
-    - [shorterThanOrEquals](#shorterthanorequals)
-    - [matches](#matches)
-    - [notMatches](#notmatches)
-    - [inside](#inside)
-    - [notInside](#notinside)
-    - [isTruthy](#istruthy)
-    - [isFalsy](#isfalsy)
-    - [isArray](#isarray)
-    - [isNotArray](#isnotarray)
-    - [isNumber](#isnumber)
-    - [isNotNumber](#isnotnumber)
-    - [isString](#isstring)
-    - [isNotString](#isnotstring)
-    - [isOdd](#isodd)
-    - [isEven](#iseven)
+- [List of Enforce rules](#list-of-enforce-rules)
 - [Custom Enforce Rules](#custom-enforce-rules)
 
 Enforce exposes all predefined and custom rules. You may use chaining to make multiple enfocements for the same value.
 
 # List of Enforce rules
-Enforce rules are functions that allow you to test your data against different criteria. The following rules are supported out-of-the-box
+Enforce rules are functions that allow you to test your data against different criteria. The following rules are supported out-of-the-box.
 
-## equals
+- [equals](#equals)
+- [notEquals](#notequals)
+- [isEmpty](#isempty)
+- [isNotEmpty](#isnotempty)
+- [isNumeric](#isnumeric)
+- [isNotNumeric](#isnotnumeric)
+- [greaterThan](#greaterthan)
+- [greaterThanOrEquals](#greaterthanorequals)
+- [lengthEquals](#lengthequals)
+- [lengthNotEquals](#lengthnotequals)
+- [lessThan](#lessthan)
+- [lessThanOrEquals](#lessthanorequals)
+- [longerThan](#longerthan)
+- [longerThanOrEquals](#longerthanorequals)
+- [numberEquals](#numberequals)
+- [numberNotEquals](#numbernotequals)
+- [shorterThan](#shorterthan)
+- [shorterThanOrEquals](#shorterthanorequals)
+- [matches](#matches)
+- [notMatches](#notmatches)
+- [inside](#inside)
+- [notInside](#notinside)
+- [isTruthy](#istruthy)
+- [isFalsy](#isfalsy)
+- [isArray](#isarray)
+- [isNotArray](#isnotarray)
+- [isNumber](#isnumber)
+- [isNotNumber](#isnotnumber)
+- [isString](#isstring)
+- [isNotString](#isnotstring)
+- [isOdd](#isodd)
+- [isEven](#iseven)
+
+### equals
 ### Description
 Checks if your enforced value <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#Strict_equality_using" target="_blank">strictly equals</a> (`===`) another.
 
@@ -74,8 +75,6 @@ For numeric value comparison, you should use `numberEquals`, which coerces numer
 
 ### Usage examples:
 
-#### Passing
-
 ```js
 enforce(1).equals(1);
 
@@ -84,14 +83,13 @@ enforce('hello').equals('hello');
 const a = [1, 2, 3];
 
 enforce(a).equals(a);
+// passes
 ```
-
-#### failing
 
 ```js
 enforce('1').equals(1);
-
 enforce([1, 2, 3]).equals([1, 2, 3]);
+// throws
 ```
 
 
@@ -103,14 +101,12 @@ Reverse implementation of `equals`.
 
 ### Usage examples:
 
-#### Passing
-
 ```js
 enforce('1').notEquals(1);
 enforce([1, 2, 3]).notEquals([1, 2, 3]);
+// passes
 ```
 
-#### failing
 ```js
 enforce(1).notEquals(1);
 enforce('hello').notEquals('hello');
@@ -118,6 +114,7 @@ enforce('hello').notEquals('hello');
 const a = [1, 2, 3];
 
 enforce(a).notEquals(a);
+// throws
 ```
 
 
@@ -233,19 +230,18 @@ Strings are parsed using `Number()`, values which are non fully numeric always r
 
 ### Usage
 
-#### Passing examples:
 ```js
 enforce(1).greaterThan(0);
 enforce('10').greaterThan(0);
 enforce(900).gt('100');
+// passes
 ```
-
-#### Failing examples:
 
 ```js
 enforce(100).greaterThan(100);
 enforce('100').greaterThan(110);
 enforce([100]).gt(1);
+// throws
 ```
 
 
@@ -262,7 +258,6 @@ Strings are parsed using `Number()`, values which are non fully numeric always r
 
 ### Usage
 
-#### Passing examples:
 ```js
 enforce(1).greaterThanOrEquals(0);
 enforce('10').greaterThanOrEquals(0);
@@ -270,14 +265,14 @@ enforce(900).greaterThanOrEquals('100');
 enforce(100).greaterThanOrEquals('100');
 enforce(900).gte('900');
 enforce('1337').gte(1337);
+// passes
 ```
-
-#### Failing examples:
 
 ```js
 enforce(100).greaterThanOrEquals('120');
 enforce('100').greaterThanOrEquals(110);
 enforce([100]).gte(1);
+// throws
 ```
 
 
@@ -294,28 +289,17 @@ The `value` argument can be of the following types:
 
 ### Usage examples:
 
-#### Passing examples:
 ```js
 enforce([1]).lengthEquals(1);
-// passes
-```
-
-```js
 enforce('a').lengthEquals(1);
 // passes
 ```
 
-#### Failing examples:
 ```js
 enforce([1, 2]).lengthEquals(1);
-// throws
-```
-
-```js
 enforce('').lengthEquals(1);
 // throws
 ```
-
 
 ## lengthNotEquals
 ### Description
@@ -331,24 +315,14 @@ The `value` argument can be of the following types:
 
 ### Usage examples:
 
-#### Passing examples:
 ```js
 enforce([1]).lengthNotEquals(0);
-// passes
-```
-
-```js
 enforce('a').lengthNotEquals(3);
 // passes
 ```
 
-#### Failing examples:
 ```js
 enforce([1]).lengthNotEquals(1);
-// throws
-```
-
-```js
 enforce('').lengthNotEquals(0);
 // throws
 ```
@@ -368,19 +342,18 @@ Strings are parsed using `Number()`, values which are non fully numeric always r
 
 ### Usage
 
-#### Passing examples:
 ```js
 enforce(0).lessThan(1);
 enforce(2).lessThan('10');
 enforce('90').lt(100);
+// passes
 ```
-
-#### Failing examples:
 
 ```js
 enforce(100).lessThan(100);
 enforce('110').lessThan(100);
 enforce([0]).lt(1);
+// throws
 ```
 
 
@@ -398,20 +371,19 @@ Strings are parsed using `Number()`, values which are non fully numeric always r
 
 ### Usage
 
-#### Passing examples:
 ```js
 enforce(0).lessThanOrEquals(1);
 enforce(2).lessThanOrEquals('10');
 enforce('90').lte(100);
 enforce(100).lte('100');
+// passes
 ```
-
-#### Failing examples:
 
 ```js
 enforce(100).lessThanOrEquals(90);
 enforce('110').lessThanOrEquals(100);
 enforce([0]).lte(1);
+// throws
 ```
 
 
@@ -428,24 +400,14 @@ The `value` argument can be of the following types:
 
 ### Usage examples:
 
-#### Passing examples:
 ```js
 enforce([1]).longerThan(0);
-// passes
-```
-
-```js
 enforce('ab').longerThan(1);
 // passes
 ```
 
-#### Failing examples:
 ```js
 enforce([1]).longerThan(2);
-// throws
-```
-
-```js
 enforce('').longerThan(0);
 // throws
 ```
@@ -464,34 +426,16 @@ The `value` argument can be of the following types:
 
 ### Usage examples:
 
-#### Passing examples:
 ```js
 enforce([1]).longerThanOrEquals(0);
-// passes
-```
-
-```js
 enforce('ab').longerThanOrEquals(1);
-// passes
-```
-
-```js
 enforce([1]).longerThanOrEquals(1);
-// passes
-```
-
-```js
 enforce('a').longerThanOrEquals(1);
 // passes
 ```
 
-#### Failing examples:
 ```js
 enforce([1]).longerThanOrEquals(2);
-// throws
-```
-
-```js
 enforce('').longerThanOrEquals(1);
 // throws
 ```
@@ -508,19 +452,17 @@ Strings are parsed using `Number()`, values which are non fully numeric always r
 
 ### Usage
 
-#### Passing examples:
-
 ```js
 enforce(0).numberEquals(0);
 enforce(2).numberEquals('2');
+// passes
 ```
-
-#### Failing examples:
 
 ```js
 enforce(100).numberEquals(10);
 enforce('110').numberEquals(100);
 enforce([0]).numberEquals(1);
+// throws
 ```
 
 
@@ -536,18 +478,16 @@ Strings are parsed using `Number()`, values which are non fully numeric always r
 
 ### Usage
 
-#### Passing examples:
-
 ```js
 enforce(2).numberNotEquals(0);
 enforce('11').numberNotEquals('10');
+// passes
 ```
-
-#### Failing examples:
 
 ```js
 enforce(100).numberNotEquals(100);
 enforce('110').numberNotEquals(100);
+// throws
 ```
 
 
@@ -564,24 +504,14 @@ The `value` argument can be of the following types:
 
 ### Usage examples:
 
-#### Passing examples:
 ```js
 enforce([]).shorterThan(1);
-// passes
-```
-
-```js
 enforce('a').shorterThan(2);
 // passes
 ```
 
-#### Failing examples:
 ```js
 enforce([1]).shorterThan(0);
-// throws
-```
-
-```js
 enforce('').shorterThan(0);
 // throws
 ```
@@ -603,31 +533,14 @@ The `value` argument can be of the following types:
 #### Passing examples:
 ```js
 enforce([]).shorterThanOrEquals(1);
-// passes
-```
-
-```js
 enforce('a').shorterThanOrEquals(2);
-// passes
-```
-
-```js
 enforce([]).shorterThanOrEquals(0);
-// passes
-```
-
-```js
 enforce('a').shorterThanOrEquals(1);
 // passes
 ```
 
-#### Failing examples:
 ```js
 enforce([1]).shorterThanOrEquals(0);
-// throws
-```
-
-```js
 enforce('ab').shorterThanOrEquals(1);
 // throws
 ```
@@ -644,40 +557,16 @@ Checks if a value contains a regex match.
 
 ```js
 enforce(1984).matches(/[0-9]/);
-// passes
-```
-
-```js
 enforce(1984).matches('[0-9]');
-// passes
-```
-
-```js
 enforce('1984').matches(/[0-9]/);
-// passes
-```
-
-```js
 enforce('1984').matches('[0-9]');
-// passes
-```
-
-```js
 enforce('198four').matches(/[0-9]/);
-// passes
-```
-
-```js
 enforce('198four').matches('[0-9]');
 // passes
 ```
 
 ```js
 enforce('ninety eighty four').matches(/[0-9]/);
-// throws
-```
-
-```js
 enforce('ninety eighty four').matches('[0-9]');
 // throws
 ```
@@ -834,33 +723,17 @@ Anything not in the following list is considered to be truthy:
 ### Usage examples:
 
 ```js
-enforce(1).isFalsy();
-// throws
-```
-
-```js
-enforce(true).isFalsy();
-// throws
-```
-
-```js
-enforce('hi').isFalsy();
-// throws
-```
-
-```js
 enforce(false).isFalsy();
-// passes
-```
-
-```js
 enforce(0).isFalsy();
-// passes
-```
-
-```js
 enforce(undefined).isFalsy();
 // passes
+```
+
+```js
+enforce(1).isFalsy();
+enforce(true).isFalsy();
+enforce('hi').isFalsy();
+// throws
 ```
 
 
@@ -926,23 +799,15 @@ Reverse implementation of `isNumber`.
 ### Usage examples:
 
 ```js
-enforce(143).isNotNumber();
-// throws
-```
-
-```js
-enforce(NaN).isNotNumber();
-// throws (NaN is of type 'number!')
-```
-
-```js
 enforce('143').isNotNumber();
+enforce(143).isNotNumber();
 // passes
 ```
 
 ```js
 enforce(143).isNotNumber();
-// passes
+enforce(NaN).isNotNumber(); // throws (NaN is of type 'number!')
+// throws
 ```
 
 
