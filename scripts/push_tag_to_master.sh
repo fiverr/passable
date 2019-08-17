@@ -1,11 +1,10 @@
-
 git config --global user.email "${GIT_NAME}@users.noreply.github.com" --replace-all
 git config --global user.name $GIT_NAME
 
 echo "Cloning repo"
 git clone https://github.com/$TRAVIS_REPO_SLUG.git __temp
 cd __temp
-git checkout $TRAVIS_TAG
+git checkout $TRAVIS_BRANCH
 
 echo "Getting list of changes"
 msg="$(git log --pretty=oneline --abbrev-commit --no-merges origin/master..)"
@@ -21,17 +20,21 @@ git branch -D master
 echo "Switching to master"
 git checkout -b master
 
-echo "Updating package.json"
-npm version $TRAVIS_TAG --no-git-tag-version
+node ./scripts/handle_version.js "$msg"
 
 echo "Rebuilding with current tag"
 npm run build
 
-EMOJIS=(🚀 🤘 ✨ 🔔 🌈 🤯 ‼️)
+EMOJIS=(🚀 🤘 ✨ 🔔 🌈 🤯)
 EMOJI=${EMOJIS[$RANDOM % ${#EMOJIS[@]}]}
 
 git add .
-git commit -m "$EMOJI Passable update: $TRAVIS_TAG" -m "$msg"
+
+if (( $(grep -c . <<<"$msg") > 1 )); then
+    git commit -m "$EMOJI Passable cumulative update: $TRAVIS_TAG" -m "$msg"
+else
+    git commit -m "$EMOJI Passable update: $TRAVIS_TAG" -m "$msg"
+fi
 
 echo "Pushing to master"
 git push https://${GITHUB_TOKEN}@github.com/$GITHUB_REPO.git master

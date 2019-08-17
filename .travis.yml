@@ -13,10 +13,9 @@ before_script:
 - npm run eslint
 
 after_success:
-- node ./scripts/update_changelog.js
 - node ./scripts/prep_docs.js
 - chmod +x ./scripts/push_tag_to_master.sh
-- if [ -n "$TRAVIS_TAG" ]; then ./scripts/push_tag_to_master.sh; fi
+- if [ "$TRAVIS_BRANCH" = "release" ]; then ./scripts/push_tag_to_master.sh; fi
 - chmod +x ./scripts/prepare_next.sh
 - if [ "$TRAVIS_BRANCH" != "master" ]; then ./scripts/prepare_next.sh; fi
 
@@ -44,5 +43,5 @@ deploy:
     tag: "next-${TRAVIS_COMMIT:(0):6}"
     on:
       all_branches: true
-      condition: $TRAVIS_BRANCH != "next" && $TRAVIS_BRANCH != "master"
+      condition: $TRAVIS_BRANCH != "next" && $TRAVIS_BRANCH != "master" && $TRAVIS_BRANCH != "release"
       repo: fiverr/passable
