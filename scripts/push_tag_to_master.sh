@@ -31,7 +31,7 @@ EMOJIS=(🚀 🤘 ✨ 🔔 🌈 🤯 ‼️)
 EMOJI=${EMOJIS[$RANDOM % ${#EMOJIS[@]}]}
 
 git add .
-git commit -m "$EMOJI Passable cumulative update: $TRAVIS_TAG" -m "$msg"
+git commit -m "$EMOJI Passable update: $TRAVIS_TAG" -m "$msg"
 
 echo "Pushing to master"
 git push https://${GITHUB_TOKEN}@github.com/$GITHUB_REPO.git master

@@ -757,7 +757,7 @@
   	return module = { exports: {} }, fn(module, module.exports), module.exports;
   }
 
-  var n4s_min = createCommonjsModule(function (module, exports) {
+  var enforce_min = createCommonjsModule(function (module, exports) {
     !function (n, e) {
        module.exports = e() ;
     }(commonjsGlobal, function () {
@@ -793,65 +793,86 @@
       }
 
       function r(n) {
+        for (var r = 1; r < arguments.length; r++) {
+          var o = null != arguments[r] ? arguments[r] : {};
+          r % 2 ? t(o, !0).forEach(function (t) {
+            e(n, t, o[t]);
+          }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(n, Object.getOwnPropertyDescriptors(o)) : t(o).forEach(function (e) {
+            Object.defineProperty(n, e, Object.getOwnPropertyDescriptor(o, e));
+          });
+        }
+
+        return n;
+      }
+
+      var o = function o(n, e) {
+        return Object.prototype.hasOwnProperty.call(n, e) && "function" == typeof n[e];
+      },
+          u = Function("return this")(),
+          i = function i() {
+        return "function" == typeof u.Proxy;
+      };
+
+      function a(n) {
         return Boolean(Array.isArray(n));
       }
 
-      function o(n) {
+      function c(n) {
         return Boolean("number" == typeof n);
       }
 
-      function u(n) {
+      function f(n) {
         return Boolean("string" == typeof n);
       }
 
-      function i(n, e) {
+      function s(n, e) {
         return e instanceof RegExp ? e.test(n) : "string" == typeof e && new RegExp(e).test(n);
       }
 
-      function a(e, t) {
+      function l(e, t) {
         return Array.isArray(t) && ["string", "number", "boolean"].includes(n(e)) ? t.includes(e) : "string" == typeof t && "string" == typeof e && t.includes(e);
       }
 
-      function c(n, e) {
+      function y(n, e) {
         return n === e;
       }
 
-      function f(n) {
+      function p(n) {
         var e = !isNaN(parseFloat(n)) && !isNaN(Number(n)) && isFinite(n);
         return Boolean(e);
       }
 
-      function s(n, e) {
-        return f(n) && f(e) && Number(n) === Number(e);
-      }
-
-      function l(e) {
-        return !e || (f(e) ? 0 === e : Object.prototype.hasOwnProperty.call(e, "length") ? 0 === e.length : "object" !== n(e) || 0 === Object.keys(e).length);
-      }
-
-      function y(n, e) {
-        return f(n) && f(e) && Number(n) > Number(e);
-      }
-
-      function p(n, e) {
-        return f(n) && f(e) && Number(n) >= Number(e);
-      }
-
       function g(n, e) {
-        return f(n) && f(e) && Number(n) < Number(e);
+        return p(n) && p(e) && Number(n) === Number(e);
       }
 
-      function b(n, e) {
-        return f(n) && f(e) && Number(n) <= Number(e);
+      function b(e) {
+        return !e || (p(e) ? 0 === e : Object.prototype.hasOwnProperty.call(e, "length") ? 0 === e.length : "object" !== n(e) || 0 === Object.keys(e).length);
       }
 
       function m(n, e) {
+        return p(n) && p(e) && Number(n) > Number(e);
+      }
+
+      function v(n, e) {
+        return p(n) && p(e) && Number(n) >= Number(e);
+      }
+
+      function h(n, e) {
+        return p(n) && p(e) && Number(n) < Number(e);
+      }
+
+      function O(n, e) {
+        return p(n) && p(e) && Number(n) <= Number(e);
+      }
+
+      function N(n, e) {
         return n.length === e;
       }
 
-      r.negativeForm = "isNotArray", o.negativeForm = "isNotNumber", u.negativeForm = "isNotString", i.negativeForm = "notMatches", a.negativeForm = "notInside", c.negativeForm = "notEquals", f.negativeForm = "isNotNumeric", s.negativeForm = "numberNotEquals", l.negativeForm = "isNotEmpty", y.alias = "gt", p.alias = "gte", g.alias = "lt", b.alias = "lte", m.negativeForm = "lengthNotEquals";
+      a.negativeForm = "isNotArray", c.negativeForm = "isNotNumber", f.negativeForm = "isNotString", s.negativeForm = "notMatches", l.negativeForm = "notInside", y.negativeForm = "notEquals", p.negativeForm = "isNotNumeric", g.negativeForm = "numberNotEquals", b.negativeForm = "isNotEmpty", m.alias = "gt", v.alias = "gte", h.alias = "lt", O.alias = "lte", N.negativeForm = "lengthNotEquals";
 
-      var v = function (n) {
+      var d = function (n) {
         var e = function e(_e) {
           var t = n[_e].negativeForm,
               r = n[_e].alias;
@@ -866,19 +887,19 @@
 
         return n;
       }({
-        isArray: r,
-        isNumber: o,
-        isString: u,
-        matches: i,
-        inside: a,
-        equals: c,
-        numberEquals: s,
-        isNumeric: f,
-        isEmpty: l,
-        greaterThan: y,
-        greaterThanOrEquals: p,
-        lessThan: g,
-        lessThanOrEquals: b,
+        isArray: a,
+        isNumber: c,
+        isString: f,
+        matches: s,
+        inside: l,
+        equals: y,
+        numberEquals: g,
+        isNumeric: p,
+        isEmpty: b,
+        greaterThan: m,
+        greaterThanOrEquals: v,
+        lessThan: h,
+        lessThanOrEquals: O,
         longerThan: function longerThan(n, e) {
           return n.length > e;
         },
@@ -891,16 +912,16 @@
         shorterThanOrEquals: function shorterThanOrEquals(n, e) {
           return n.length <= e;
         },
-        lengthEquals: m,
+        lengthEquals: N,
         isOdd: function isOdd(n) {
-          return !!f(n) && n % 2 != 0;
+          return !!p(n) && n % 2 != 0;
         },
         isEven: function isEven(n) {
-          return !!f(n) && n % 2 == 0;
+          return !!p(n) && n % 2 == 0;
         }
       });
 
-      function h(e, t) {
+      function E(e, t) {
         if ("function" == typeof e) {
           for (var r = arguments.length, o = new Array(r > 2 ? r - 2 : 0), u = 2; u < r; u++) {
             o[u - 2] = arguments[u];
@@ -910,59 +931,45 @@
         }
       }
 
-      var O = function O(n, e) {
-        return Object.prototype.hasOwnProperty.call(n, e) && "function" == typeof n[e];
-      };
-
-      function N() {
+      function j() {
         var n = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-            r = function (n) {
-          for (var r = 1; r < arguments.length; r++) {
-            var o = null != arguments[r] ? arguments[r] : {};
-            r % 2 ? t(o, !0).forEach(function (t) {
-              e(n, t, o[t]);
-            }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(n, Object.getOwnPropertyDescriptors(o)) : t(o).forEach(function (e) {
-              Object.defineProperty(n, e, Object.getOwnPropertyDescriptor(o, e));
-            });
-          }
-
-          return n;
-        }({}, v, {}, n);
-
-        return "function" == typeof Proxy ? function (n) {
-          var e = new Proxy(r, {
+            t = r({}, d, {}, n);
+        if (i()) return function (n) {
+          var e = new Proxy(t, {
             get: function get(t, r) {
-              if (O(t, r)) return function () {
+              if (o(t, r)) return function () {
                 for (var o = arguments.length, u = new Array(o), i = 0; i < o; i++) {
                   u[i] = arguments[i];
                 }
 
-                return h.apply(void 0, [t[r], n].concat(u)), e;
+                return E.apply(void 0, [t[r], n].concat(u)), e;
               };
             }
           });
           return e;
-        } : function (n) {
-          return Object.keys(r).reduce(function (e, t) {
-            return O(r, t) ? (e[t] = function () {
-              for (var o = arguments.length, u = new Array(o), i = 0; i < o; i++) {
-                u[i] = arguments[i];
+        };
+        var u = Object.keys(t);
+        return function (n) {
+          return u.reduce(function (u, i) {
+            return _extends(u, r({}, o(t, i) && e({}, i, function () {
+              for (var e = arguments.length, r = new Array(e), o = 0; o < e; o++) {
+                r[o] = arguments[o];
               }
 
-              return h.apply(void 0, [r[t], n].concat(u)), e;
-            }, e) : e;
+              return E.apply(void 0, [t[i], n].concat(r)), u;
+            })));
           }, {});
         };
       }
 
-      var d = new N();
-      return d.Enforce = N, d;
+      var w = new j();
+      return w.Enforce = j, w;
     });
   });
 
   passable.VERSION = "7.2.2";
-  passable.enforce = n4s_min;
-  passable.Enforce = n4s_min.Enforce;
+  passable.enforce = enforce_min;
+  passable.Enforce = enforce_min.Enforce;
   passable.test = test;
   passable.validate = validate;
   passable.any = any;

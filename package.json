@@ -38,7 +38,7 @@
     "faker": "^4.1.0",
     "lodash": "^4.17.15",
     "mocha": "^6.2.0",
-    "n4s": "^0.3.0",
+    "n4s": "^0.4.1",
     "regenerator-runtime": "^0.13.3",
     "rollup": "^1.18.0",
     "rollup-plugin-babel": "^4.3.2",
