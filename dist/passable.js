@@ -967,7 +967,7 @@
     });
   });
 
-  passable.VERSION = "7.2.2";
+  passable.VERSION = "7.2.4";
   passable.enforce = enforce_min;
   passable.Enforce = enforce_min.Enforce;
   passable.test = test;
