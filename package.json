@@ -34,7 +34,7 @@
     "cross-env": "^5.2.0",
     "date-fns": "^2.0.1",
     "eslint": "^6.1.0",
-    "eslint-loader": "^2.1.2",
+    "eslint-loader": "^3.0.0",
     "faker": "^4.1.0",
     "lodash": "^4.17.15",
     "mocha": "^6.2.0",
