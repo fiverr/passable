@@ -132,7 +132,6 @@ describe('Test Passables "test" function', () => {
 
                 it('Should fail with custom statement when supplied', (done) => {
                     setTimeout(() => {
-                        expect(output.hasErrors(f2)).to.equal(true);
                         expect(output.getErrors(f2)).to.deep.equal([customStatement]);
 
                         done();
