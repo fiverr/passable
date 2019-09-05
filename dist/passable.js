@@ -112,9 +112,11 @@
       }
     };
 
-    var fail = function fail() {
+    var fail = function fail(customStatement) {
+      var failStatement = customStatement || statement;
+
       if (parent.pending.includes(testPromise)) {
-        parent.result.fail(fieldName, statement, severity);
+        parent.result.fail(fieldName, failStatement, severity);
       }
 
       done();
