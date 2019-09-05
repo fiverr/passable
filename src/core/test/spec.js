@@ -87,13 +87,15 @@ describe('Test Passables "test" function', () => {
         describe('Test is async', () => {
 
             describe('When returning promise to test callback', () => {
-                let f1, f2, f3, f4, output;
+                let f1, f2, f3, f4, f5, output;
+                const customStatement = lorem.word();
 
                 beforeEach(() => {
                     f1 = lorem.word();
                     f2 = lorem.word();
                     f3 = lorem.word();
                     f4 = lorem.word();
+                    f5 = lorem.word();
 
                     const rejectLater = () => new Promise((res, rej) => {
                         setTimeout(rej, 500);
@@ -101,32 +103,46 @@ describe('Test Passables "test" function', () => {
 
                     output = passable(lorem.word(), (test) => {
                         test(f1, lorem.sentence(), () => Promise.reject());
-                        test(f2, lorem.sentence(), () => new Promise((resolve, reject) => {
+                        test(f2, lorem.sentence(), () => Promise.reject(customStatement));
+                        test(f3, lorem.sentence(), () => new Promise((resolve, reject) => {
                             setTimeout(reject, 200);
                         }));
-                        test(f3, lorem.sentence(), () => new Promise((resolve) => {
+                        test(f4, lorem.sentence(), () => new Promise((resolve) => {
                             setTimeout(resolve, 100);
                         }));
-                        test(f4, lorem.sentence(), async() => await rejectLater());
+                        test(f5, lorem.sentence(), async() => await rejectLater());
                     });
                 });
 
                 it('Should fail for rejected promise', (done) => {
-                    expect(output.hasErrors(f1)).to.equal(false);
-                    expect(output.hasErrors(f2)).to.equal(false);
-                    expect(output.hasErrors(f4)).to.equal(false);
+                    const rejectedFields = [f1, f2, f3, f5];
+
+                    rejectedFields.forEach((field) => {
+                        expect(output.hasErrors(field)).to.equal(false);
+                    });
+
                     setTimeout(() => {
-                        expect(output.hasErrors(f1)).to.equal(true);
+                        rejectedFields.forEach((field) => {
+                            expect(output.hasErrors(field)).to.equal(true);
+                        });
+
+                        done();
+                    }, 550);
+                });
+
+                it('Should fail with custom statement when supplied', (done) => {
+                    setTimeout(() => {
                         expect(output.hasErrors(f2)).to.equal(true);
-                        expect(output.hasErrors(f4)).to.equal(true);
+                        expect(output.getErrors(f2)).to.deep.equal([customStatement]);
+
                         done();
                     }, 550);
                 });
 
                 it('Should pass for fulfilled promises', (done) => {
-                    expect(output.hasErrors(f3)).to.equal(false);
+                    expect(output.hasErrors(f4)).to.equal(false);
                     setTimeout(() => {
-                        expect(output.hasErrors(f3)).to.equal(false);
+                        expect(output.hasErrors(f4)).to.equal(false);
                         done();
                     }, 500);
                 });

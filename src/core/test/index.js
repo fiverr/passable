@@ -20,9 +20,11 @@ export const runAsync = (testPromise) => {
         }
     };
 
-    const fail = () => {
+    const fail = (customStatement) => {
+        const failStatement = customStatement || statement;
+
         if (parent.pending.includes(testPromise)) {
-            parent.result.fail(fieldName, statement, severity);
+            parent.result.fail(fieldName, failStatement, severity);
         }
 
         done();
