@@ -37,9 +37,12 @@ What if your promise can reject with different messages? No problem!
 You can reject the promise with your own message by passing it to the
 rejection callback.
 
-Notice that when using rejection messages we do not pass a `statement`
+Notice that when using rejection messages we do not need pass `statement`
 argument to `test`. This means that the statement will always be inferred
 from the rejection message.
+
+In case you do pass `statement`, it will serve as a fallback message in any
+case that the rejection message is not provided.
 
 ```js
 test('name', new Promise((resolve, reject) => {
