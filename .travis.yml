@@ -7,6 +7,8 @@ env:
     - GIT_EMAIL: opensource@fiverr.com
     - GITHUB_REPO: fiverr/passable
     - GIT_SOURCE: docs
+script:
+- echo "skipping tests"
 
 before_script:
 - npm run build

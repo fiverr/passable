@@ -8,9 +8,15 @@ const CHANGELOG_TITLES = {
     [PATCH_KEYWORD]: 'Fixes and non breaking changes'
 };
 
+const EXCLUDED_WORDS = [
+    'dependabot',
+    '[config]'
+];
+
 module.exports = {
     PATCH_KEYWORD,
     MINOR_KEYWORD,
     MAJOR_KEYWORD,
-    CHANGELOG_TITLES
+    CHANGELOG_TITLES,
+    EXCLUDED_WORDS
 };

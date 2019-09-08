@@ -2,7 +2,7 @@
 const fs = require('fs');
 const { format } = require('date-fns');
 const determineLevel = require('./determine_change_level');
-const { MAJOR_KEYWORD, MINOR_KEYWORD, PATCH_KEYWORD, CHANGELOG_TITLES } = require('./constants');
+const { MAJOR_KEYWORD, MINOR_KEYWORD, PATCH_KEYWORD, CHANGELOG_TITLES, EXCLUDED_WORDS } = require('./constants');
 
 /**
  * Takes commit history and groups messages by change level
@@ -11,6 +11,10 @@ const { MAJOR_KEYWORD, MINOR_KEYWORD, PATCH_KEYWORD, CHANGELOG_TITLES } = requir
  */
 const groupMessages = (gitLog) => gitLog.split('\n').reduce((accumulator, current) => {
     const level = determineLevel(current);
+
+    if (EXCLUDED_WORDS.some((word) => current.toLowerCase().includes(word.toLowerCase()))) {
+        return accumulator;
+    }
 
     if (!accumulator[level]) {
         accumulator[level] = `### ${CHANGELOG_TITLES[level]}\n`;
@@ -29,7 +33,7 @@ const groupMessages = (gitLog) => gitLog.split('\n').reduce((accumulator, curren
 const updateChangelog = (version, gitLog) => {
     const groupedMessages = groupMessages(gitLog);
 
-    const changelogTitle = `## [${version}] - ${format(new Date(), 'YYYY-MM-DD')}\n`;
+    const changelogTitle = `## [${version}] - ${format(new Date(), 'yyyy-MM-dd')}\n`;
 
     const versionLog = [
         changelogTitle,

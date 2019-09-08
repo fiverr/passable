@@ -7,7 +7,7 @@ cd __temp
 git checkout $TRAVIS_BRANCH
 
 echo "Getting list of changes"
-msg="$(git log --pretty=oneline --abbrev-commit --no-merges origin/master..)"
+msg="$(git log --format=format:"%h %s (%aN)" --no-merges origin/master..)"
 echo "$msg"
 
 echo "Deleting cloned repo"
