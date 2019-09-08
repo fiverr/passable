@@ -138,7 +138,6 @@ describe('Test Passables "test" function', () => {
                     setTimeout(() => {
                         [f3, f4].forEach((field) => {
                             expect(output.getErrors(field)).to.include(rejectionMessage);
-                            expect(output.getErrors(field)).not.to.include(field);
                         });
 
                         done();
