@@ -138,7 +138,6 @@ const isTestFn = (testFn) => {
  * @param {String} [severity] indicates whether the test should fail or warn
  */
 const test = (fieldName, ...args) => {
-
     let statement,
         testFn,
         severity;
