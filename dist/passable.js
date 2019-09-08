@@ -112,9 +112,11 @@
       }
     };
 
-    var fail = function fail() {
+    var fail = function fail(rejectionMessage) {
+      var message = typeof rejectionMessage === 'string' ? rejectionMessage : statement;
+
       if (parent.pending.includes(testPromise)) {
-        parent.result.fail(fieldName, statement, severity);
+        parent.result.fail(fieldName, message, severity);
       }
 
       done();
@@ -216,15 +218,44 @@
     }
   };
   /**
-   * The function used by the consumer
-   * @param {String} fieldName name of the field to test against
-   * @param {String} statement the message shown to the user in case of a failure
-   * @param {function | Promise} testFn the actual test callback or promise
-   * @param {String} Severity indicates whether the test should fail or warn
+   * Checks that a given argument qualifies as a test function
+   * @param {*} testFn
+   * @return {Boolean}
    */
 
 
-  var test = function test(fieldName, statement, testFn, severity) {
+  var isTestFn = function isTestFn(testFn) {
+    if (!testFn) {
+      return false;
+    }
+
+    return typeof testFn.then === 'function' || typeof testFn === 'function';
+  };
+  /**
+   * The function used by the consumer
+   * @param {String} fieldName name of the field to test against
+   @param {String} [statement] the message shown to the user in case of a failure
+   * @param {function | Promise} testFn the actual test callback or promise
+   * @param {String} [severity] indicates whether the test should fail or warn
+   */
+
+
+  var test = function test(fieldName) {
+    var statement, testFn, severity;
+
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    if (typeof args[0] === 'string') {
+      statement = args[0];
+      testFn = args[1];
+      severity = args[2];
+    } else if (isTestFn(args[0])) {
+      testFn = args[0];
+      severity = args[1];
+    }
+
     if (!testFn) {
       return;
     }

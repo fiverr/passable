@@ -1,9 +1,8 @@
 import passable from '../passable';
 import test from '.';
-import ctx from '../context';
 import { expect } from 'chai';
-import { WARN, FAIL } from '../../index';
-import { noop, random, sample, clone } from 'lodash';
+import { FAIL, WARN } from '../../index';
+import { clone, noop, random } from 'lodash';
 import { lorem } from 'faker';
 import sinon from 'sinon';
 
@@ -87,13 +86,15 @@ describe('Test Passables "test" function', () => {
         describe('Test is async', () => {
 
             describe('When returning promise to test callback', () => {
-                let f1, f2, f3, f4, output;
+                let f1, f2, f3, f4, f5, output;
+                const rejectionMessage = lorem.sentence();
 
                 beforeEach(() => {
                     f1 = lorem.word();
                     f2 = lorem.word();
                     f3 = lorem.word();
                     f4 = lorem.word();
+                    f5 = lorem.word();
 
                     const rejectLater = () => new Promise((res, rej) => {
                         setTimeout(rej, 500);
@@ -104,29 +105,41 @@ describe('Test Passables "test" function', () => {
                         test(f2, lorem.sentence(), () => new Promise((resolve, reject) => {
                             setTimeout(reject, 200);
                         }));
-                        test(f3, lorem.sentence(), () => new Promise((resolve) => {
+                        test(f3, () => Promise.reject(rejectionMessage));
+                        test(f4, lorem.sentence(), () => new Promise((resolve) => {
                             setTimeout(resolve, 100);
                         }));
-                        test(f4, lorem.sentence(), async() => await rejectLater());
+                        test(f5, lorem.sentence(), async() => await rejectLater());
                     });
                 });
 
                 it('Should fail for rejected promise', (done) => {
-                    expect(output.hasErrors(f1)).to.equal(false);
-                    expect(output.hasErrors(f2)).to.equal(false);
-                    expect(output.hasErrors(f4)).to.equal(false);
+                    [f1, f2, f3, f5].forEach((field) =>
+                        expect(output.hasErrors(field)).to.equal(false)
+                    );
+
                     setTimeout(() => {
-                        expect(output.hasErrors(f1)).to.equal(true);
-                        expect(output.hasErrors(f2)).to.equal(true);
-                        expect(output.hasErrors(f4)).to.equal(true);
+                        [f1, f2, f3, f5].forEach((field) =>
+                            expect(output.hasErrors(field)).to.equal(true)
+                        );
+
+                        done();
+                    }, 550);
+                });
+
+                it('Should fail with rejection message when provided', (done) => {
+                    setTimeout(() => {
+                        expect(output.getErrors(f3)).to.deep.equal([rejectionMessage]);
+
                         done();
                     }, 550);
                 });
 
                 it('Should pass for fulfilled promises', (done) => {
-                    expect(output.hasErrors(f3)).to.equal(false);
+                    expect(output.hasErrors(f4)).to.equal(false);
+
                     setTimeout(() => {
-                        expect(output.hasErrors(f3)).to.equal(false);
+                        expect(output.hasErrors(f4)).to.equal(false);
                         done();
                     }, 500);
                 });
@@ -134,34 +147,47 @@ describe('Test Passables "test" function', () => {
 
             describe('When passing a Promise as a test', () => {
                 describe('failing', () => {
-                    let f1, f2;
+                    let f1, f2, f3;
+                    const rejectionMessage = lorem.sentence();
+
                     beforeEach(() => {
                         f1 = lorem.word();
                         f2 = lorem.word();
+                        f3 = lorem.word();
 
-                        output = passable(lorem.word(), (test, draft) => {
-                            test(f1, lorem.sentence(), new Promise((resolve, reject) => setImmediate(reject)));
-                            test(f2, lorem.sentence(), new Promise((resolve) => setTimeout(resolve)));
-                            test(f2, lorem.sentence(), new Promise((resolve) => setTimeout(resolve, 500)));
+                        output = passable(lorem.word(), (test) => {
+                            test(f1, lorem.sentence(), new Promise((_, reject) => setImmediate(reject)));
+                            test(f2, new Promise((_, reject) => setImmediate(() => reject(rejectionMessage))));
+                            test(f3, lorem.sentence(), new Promise((resolve) => setTimeout(resolve)));
+                            test(f3, lorem.sentence(), new Promise((resolve) => setTimeout(resolve, 500)));
                             test(lorem.word(), lorem.sentence(), noop);
                         });
                     });
 
                     it('Should immediately register tests', () => {
-                        expect(output.testCount).to.equal(4);
+                        expect(output.testCount).to.equal(5);
                     });
 
                     it('Should run async test promise', (done) => {
                         passable(lorem.word(), (test) => {
-                            test(f1, lorem.sentence(), new Promise((resolve) => done()));
+                            test(f1, lorem.sentence(), new Promise(() => done()));
                             test(lorem.word(), lorem.sentence(), noop);
                         });
                     });
 
+                    it('Should fail with rejection message when provided', (done) => {
+                        setTimeout(() => {
+                            expect(output.getErrors(f2)).to.deep.equal([rejectionMessage]);
+
+                            done();
+                        }, 10);
+                    });
+
                     it('Should only mark test as failing after rejection', (done) => {
                         expect(output.failCount).to.equal(0);
+
                         setTimeout(() => {
-                            expect(output.failCount).to.equal(1);
+                            expect(output.failCount).to.equal(2);
                             done();
                         }, 10);
                     });

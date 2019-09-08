@@ -16,7 +16,7 @@ test('name', 'must be unique', new Promise((resolve, reject) => {
             } else {
                 resolve(); // completes. doesn't mark the test as failing
             }
-        }
+        });
 }));
 ```
 
@@ -24,9 +24,33 @@ test('name', 'must be unique', new Promise((resolve, reject) => {
 
 ```js
 test('name',  'Should be unique', async () => {
-    const res = await doesUserExist(user)
+    const res = await doesUserExist(user);
     return res;
 });
 
 test('name',  'I fail', async () => Promise.reject());
+```
+
+## Rejecting with rejection message
+
+What if your promise can reject with different messages? No problem!
+You can reject the promise with your own message by passing it to the
+rejection callback.
+
+Notice that when using rejection messages we do not pass a `statement`
+argument to `test`. This means that the statement will always be inferred
+from the rejection message.
+
+```js
+test('name', new Promise((resolve, reject) => {
+    fetch(`/checkUsername?name=${name}`)
+        .then(res => res.json)
+        .then(data => {
+            if (data.status === 'fail') {
+                reject(data.message); // rejects with message and marks the test as failing
+            } else {
+                resolve(); // completes. doesn't mark the test as failing
+            }
+        });
+}));
 ```
