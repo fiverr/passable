@@ -148,20 +148,18 @@ const test = (fieldName, ...args) => {
         [testFn, severity] = args;
     }
 
-    if (!testFn) {
+    if (!isTestFn(testFn)) {
         return;
     }
 
-    if (typeof testFn.then === 'function' || typeof testFn === 'function') {
-        Object.assign(testFn, {
-            fieldName,
-            statement,
-            severity,
-            parent: ctx.parent
-        });
+    Object.assign(testFn, {
+        fieldName,
+        statement,
+        severity,
+        parent: ctx.parent
+    });
 
-        register(testFn);
-    }
+    register(testFn);
 };
 
 export default test;

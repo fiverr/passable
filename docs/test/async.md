@@ -37,7 +37,7 @@ What if your promise can reject with different messages? No problem!
 You can reject the promise with your own message by passing it to the
 rejection callback.
 
-Notice that when using rejection messages we do not need pass `statement`
+Notice that when using rejection messages we do not need to pass `statement`
 argument to `test`. This means that the statement will always be inferred
 from the rejection message.
 

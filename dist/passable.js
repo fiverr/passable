@@ -256,20 +256,18 @@
       severity = args[1];
     }
 
-    if (!testFn) {
+    if (!isTestFn(testFn)) {
       return;
     }
 
-    if (typeof testFn.then === 'function' || typeof testFn === 'function') {
-      _extends(testFn, {
-        fieldName: fieldName,
-        statement: statement,
-        severity: severity,
-        parent: context.parent
-      });
+    _extends(testFn, {
+      fieldName: fieldName,
+      statement: statement,
+      severity: severity,
+      parent: context.parent
+    });
 
-      register(testFn);
-    }
+    register(testFn);
   };
 
   var WARN = 'warn';
