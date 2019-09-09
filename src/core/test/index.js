@@ -133,7 +133,7 @@ const isTestFn = (testFn) => {
 /**
  * The function used by the consumer
  * @param {String} fieldName name of the field to test against
- @param {String} [statement] the message shown to the user in case of a failure
+ * @param {String} [statement] the message shown to the user in case of a failure
  * @param {function | Promise} testFn the actual test callback or promise
  * @param {String} [severity] indicates whether the test should fail or warn
  */
