@@ -234,7 +234,7 @@
   /**
    * The function used by the consumer
    * @param {String} fieldName name of the field to test against
-   @param {String} [statement] the message shown to the user in case of a failure
+   * @param {String} [statement] the message shown to the user in case of a failure
    * @param {function | Promise} testFn the actual test callback or promise
    * @param {String} [severity] indicates whether the test should fail or warn
    */
@@ -996,7 +996,7 @@
     });
   });
 
-  passable.VERSION = "7.2.4";
+  passable.VERSION = "7.3.0";
   passable.enforce = enforce_min;
   passable.Enforce = enforce_min.Enforce;
   passable.test = test;
