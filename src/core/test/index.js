@@ -20,9 +20,13 @@ export const runAsync = (testPromise) => {
         }
     };
 
-    const fail = () => {
+    const fail = (rejectionMessage) => {
+        const message = typeof rejectionMessage === 'string'
+            ? rejectionMessage
+            : statement;
+
         if (parent.pending.includes(testPromise)) {
-            parent.result.fail(fieldName, statement, severity);
+            parent.result.fail(fieldName, message, severity);
         }
 
         done();
@@ -114,26 +118,48 @@ const register = (testFn) => {
 };
 
 /**
+ * Checks that a given argument qualifies as a test function
+ * @param {*} testFn
+ * @return {Boolean}
+ */
+const isTestFn = (testFn) => {
+    if (!testFn) {
+        return false;
+    }
+
+    return typeof testFn.then === 'function' || typeof testFn === 'function';
+};
+
+/**
  * The function used by the consumer
  * @param {String} fieldName name of the field to test against
- * @param {String} statement the message shown to the user in case of a failure
+ * @param {String} [statement] the message shown to the user in case of a failure
  * @param {function | Promise} testFn the actual test callback or promise
- * @param {String} Severity indicates whether the test should fail or warn
+ * @param {String} [severity] indicates whether the test should fail or warn
  */
-const test = (fieldName, statement, testFn, severity) => {
-    if (!testFn) {
+const test = (fieldName, ...args) => {
+    let statement,
+        testFn,
+        severity;
+
+    if (typeof args[0] === 'string') {
+        [statement, testFn, severity] = args;
+    } else if (isTestFn(args[0])) {
+        [testFn, severity] = args;
+    }
+
+    if (!isTestFn(testFn)) {
         return;
     }
-    if (typeof testFn.then === 'function' || typeof testFn === 'function') {
-        Object.assign(testFn, {
-            fieldName,
-            statement,
-            severity,
-            parent: ctx.parent
-        });
 
-        register(testFn);
-    }
+    Object.assign(testFn, {
+        fieldName,
+        statement,
+        severity,
+        parent: ctx.parent
+    });
+
+    register(testFn);
 };
 
 export default test;
