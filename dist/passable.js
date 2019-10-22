@@ -88,20 +88,42 @@
 
   var context = new Context();
 
+  function TestObject(testFn, parent, fieldName, statement, severity) {
+    this.testFn = testFn;
+    this.fieldName = fieldName;
+    this.statement = statement;
+    this.severity = severity;
+    this.parent = parent;
+  }
+
+  TestObject.prototype.valueOf = function () {
+    return this.isValid !== false;
+  };
+
+  TestObject.prototype.fail = function () {
+    this.parent.result.fail(this.fieldName, this.statement, this.severity);
+    this.isValid = false;
+    return this;
+  };
+
+  TestObject.prototype.setPending = function () {
+    this.parent.pending.push(this);
+  };
+
   /**
    * Runs all async tests, updates output object with result
    * @param {Promise} testPromise the actual test callback or promise
    */
 
-  var runAsync = function runAsync(testPromise) {
-    var fieldName = testPromise.fieldName,
-        statement = testPromise.statement,
-        severity = testPromise.severity,
-        parent = testPromise.parent;
+  var runAsync = function runAsync(testObject) {
+    var fieldName = testObject.fieldName,
+        testFn = testObject.testFn,
+        statement = testObject.statement,
+        parent = testObject.parent;
     parent.result.markAsync(fieldName);
 
     var done = function done() {
-      clearPendingTest(testPromise);
+      clearPendingTest(testObject);
 
       if (!hasRemainingPendingTests(parent, fieldName)) {
         parent.result.markAsDone(fieldName);
@@ -113,17 +135,17 @@
     };
 
     var fail = function fail(rejectionMessage) {
-      var message = typeof rejectionMessage === 'string' ? rejectionMessage : statement;
+      testObject.statement = typeof rejectionMessage === 'string' ? rejectionMessage : statement;
 
-      if (parent.pending.includes(testPromise)) {
-        parent.result.fail(fieldName, message, severity);
+      if (parent.pending.includes(testObject)) {
+        testObject.fail();
       }
 
       done();
     };
 
     try {
-      testPromise.then(done, fail);
+      testFn.then(done, fail);
     } catch (e) {
       fail();
     }
@@ -133,15 +155,15 @@
    * @param {Promise} testPromise the actual test callback or promise
    */
 
-  var clearPendingTest = function clearPendingTest(testPromise) {
-    testPromise.parent.pending = testPromise.parent.pending.filter(function (t) {
-      return t !== testPromise;
+  var clearPendingTest = function clearPendingTest(testObject) {
+    testObject.parent.pending = testObject.parent.pending.filter(function (t) {
+      return t !== testObject;
     });
   };
   /**
    * Checks if there still are remaining pending tests for given criteria
-   * @param {Object} parent Parent context
-   * @param {String} fieldName name of the field to test against
+   * @param {Object} parent       Parent context
+   * @param {String} [fieldName]  Name of the field to test against
    * @return {Boolean}
    */
 
@@ -152,8 +174,8 @@
     }
 
     if (fieldName) {
-      return parent.pending.some(function (testPromise) {
-        return testPromise.fieldName === fieldName;
+      return parent.pending.some(function (testObject) {
+        return testObject.fieldName === fieldName;
       });
     }
 
@@ -166,17 +188,17 @@
    */
 
 
-  var preRun = function preRun(testFn) {
+  var preRun = function preRun(testObject) {
     var result;
 
     try {
-      result = testFn();
+      result = testObject.testFn();
     } catch (e) {
       result = false;
     }
 
     if (result === false) {
-      testFn.parent.result.fail(testFn.fieldName, testFn.statement, testFn.severity);
+      testObject.fail();
     }
 
     return result;
@@ -187,10 +209,10 @@
    */
 
 
-  var register = function register(testFn) {
-    var _testFn = testFn,
-        parent = _testFn.parent,
-        fieldName = _testFn.fieldName;
+  var register = function register(testObject) {
+    var testFn = testObject.testFn,
+        parent = testObject.parent,
+        fieldName = testObject.fieldName;
     var pending = false;
     var result;
 
@@ -205,16 +227,16 @@
     if (testFn && typeof testFn.then === 'function') {
       pending = true;
     } else {
-      result = preRun(testFn);
+      result = preRun(testObject);
     }
 
     if (result && typeof result.then === 'function') {
       pending = true;
-      testFn = _extends(result, testFn);
+      testObject.testFn = result;
     }
 
     if (pending) {
-      parent.pending.push(testFn);
+      testObject.setPending();
     }
   };
   /**
@@ -260,14 +282,9 @@
       return;
     }
 
-    _extends(testFn, {
-      fieldName: fieldName,
-      statement: statement,
-      severity: severity,
-      parent: context.parent
-    });
-
-    register(testFn);
+    var testObject = new TestObject(testFn, context.parent, fieldName, statement, severity);
+    register(testObject);
+    return testObject;
   };
 
   var WARN = 'warn';

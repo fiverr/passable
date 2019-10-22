@@ -1,16 +1,18 @@
 import ctx from '../context';
+import TestObject from './TestObject';
 
 /**
  * Runs all async tests, updates output object with result
  * @param {Promise} testPromise the actual test callback or promise
  */
-export const runAsync = (testPromise) => {
-    const { fieldName, statement, severity, parent } = testPromise;
+export const runAsync = (testObject) => {
+    const { fieldName, testFn, statement, parent } = testObject;
 
     parent.result.markAsync(fieldName);
 
     const done = () => {
-        clearPendingTest(testPromise);
+        clearPendingTest(testObject);
+
         if (!hasRemainingPendingTests(parent, fieldName)) {
             parent.result.markAsDone(fieldName);
         }
@@ -21,19 +23,19 @@ export const runAsync = (testPromise) => {
     };
 
     const fail = (rejectionMessage) => {
-        const message = typeof rejectionMessage === 'string'
+        testObject.statement = typeof rejectionMessage === 'string'
             ? rejectionMessage
             : statement;
 
-        if (parent.pending.includes(testPromise)) {
-            parent.result.fail(fieldName, message, severity);
+        if (parent.pending.includes(testObject)) {
+            testObject.fail();
         }
 
         done();
     };
 
     try {
-        testPromise.then(done, fail);
+        testFn.then(done, fail);
     } catch (e) {
         fail();
     }
@@ -43,14 +45,14 @@ export const runAsync = (testPromise) => {
  * Clears pending test from parent context
  * @param {Promise} testPromise the actual test callback or promise
  */
-const clearPendingTest = (testPromise) => {
-    testPromise.parent.pending = testPromise.parent.pending.filter((t) => t !== testPromise);
+const clearPendingTest = (testObject) => {
+    testObject.parent.pending = testObject.parent.pending.filter((t) => t !== testObject);
 };
 
 /**
  * Checks if there still are remaining pending tests for given criteria
- * @param {Object} parent Parent context
- * @param {String} fieldName name of the field to test against
+ * @param {Object} parent       Parent context
+ * @param {String} [fieldName]  Name of the field to test against
  * @return {Boolean}
  */
 const hasRemainingPendingTests = (parent, fieldName) => {
@@ -59,7 +61,7 @@ const hasRemainingPendingTests = (parent, fieldName) => {
     }
 
     if (fieldName) {
-        return parent.pending.some((testPromise) => testPromise.fieldName === fieldName);
+        return parent.pending.some((testObject) => testObject.fieldName === fieldName);
     }
 
     return !!parent.pending.length;
@@ -70,15 +72,16 @@ const hasRemainingPendingTests = (parent, fieldName) => {
  * @param {function | Promise} testFn the actual test callback or promise
  * @return {*} result from test function
  */
-const preRun = (testFn) => {
+const preRun = (testObject) => {
     let result;
     try {
-        result = testFn();
+        result = testObject.testFn();
     } catch (e) {
         result = false;
     }
+
     if (result === false) {
-        testFn.parent.result.fail(testFn.fieldName, testFn.statement, testFn.severity);
+        testObject.fail();
     }
 
     return result;
@@ -88,8 +91,8 @@ const preRun = (testFn) => {
  * Registers all supplied tests, if async - adds to pending array
  * @param {function | Promise} testFn the actual test callback or promise
  */
-const register = (testFn) => {
-    const { parent, fieldName } = testFn;
+const register = (testObject) => {
+    const { testFn, parent, fieldName } = testObject;
     let pending = false;
     let result;
 
@@ -104,16 +107,17 @@ const register = (testFn) => {
     if (testFn && typeof testFn.then === 'function') {
         pending = true;
     } else {
-        result = preRun(testFn);
+        result = preRun(testObject);
     }
 
     if (result && typeof result.then === 'function') {
         pending = true;
-        testFn = Object.assign(result, testFn);
+
+        testObject.testFn = result;
     }
 
     if (pending) {
-        parent.pending.push(testFn);
+        testObject.setPending();
     }
 };
 
@@ -152,14 +156,17 @@ const test = (fieldName, ...args) => {
         return;
     }
 
-    Object.assign(testFn, {
+    const testObject = new TestObject(
+        testFn,
+        ctx.parent,
         fieldName,
         statement,
-        severity,
-        parent: ctx.parent
-    });
+        severity
+    );
 
-    register(testFn);
+    register(testObject);
+
+    return testObject;
 };
 
 export default test;
