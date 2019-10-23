@@ -5,7 +5,7 @@ import { WARN, FAIL } from '../../../../constants';
 import passableResult from '../../../passableResult';
 import TestObject from '.';
 
-describe.only('TestObject module', () => {
+describe('TestObject module', () => {
     let testObject, parent, testFn, fieldName, statement, severity;
 
     beforeEach(() => {
@@ -56,7 +56,7 @@ describe.only('TestObject module', () => {
         });
     });
 
-    describe('.valueOf', () => {
+    describe('.valueOf()', () => {
 
         describe('Default case', () => {
             it('Should return true', () => {
