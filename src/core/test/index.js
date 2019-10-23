@@ -1,9 +1,9 @@
 import ctx from '../context';
-import TestObject from './TestObject';
+import { isTestFn, TestObject } from './lib';
 
 /**
- * Runs all async tests, updates output object with result
- * @param {Promise} testPromise the actual test callback or promise
+ * Run async test.
+ * @param {TestObject} testObject A TestObject instance.
  */
 export const runAsync = (testObject) => {
     const { fieldName, testFn, statement, parent } = testObject;
@@ -11,7 +11,7 @@ export const runAsync = (testObject) => {
     parent.result.markAsync(fieldName);
 
     const done = () => {
-        clearPendingTest(testObject);
+        testObject.clearPending();
 
         if (!hasRemainingPendingTests(parent, fieldName)) {
             parent.result.markAsDone(fieldName);
@@ -42,14 +42,6 @@ export const runAsync = (testObject) => {
 };
 
 /**
- * Clears pending test from parent context
- * @param {Promise} testPromise the actual test callback or promise
- */
-const clearPendingTest = (testObject) => {
-    testObject.parent.pending = testObject.parent.pending.filter((t) => t !== testObject);
-};
-
-/**
  * Checks if there still are remaining pending tests for given criteria
  * @param {Object} parent       Parent context
  * @param {String} [fieldName]  Name of the field to test against
@@ -68,9 +60,9 @@ const hasRemainingPendingTests = (parent, fieldName) => {
 };
 
 /**
- * Performs shallow run over test functions, assuming sync tests only. Returning result
- * @param {function | Promise} testFn the actual test callback or promise
- * @return {*} result from test function
+ * Performs "shallow" run over test functions, assuming sync tests only.
+ * @param {TestObject} testObject TestObject instance.
+ * @return {*} Result from test function
  */
 const preRun = (testObject) => {
     let result;
@@ -88,8 +80,8 @@ const preRun = (testObject) => {
 };
 
 /**
- * Registers all supplied tests, if async - adds to pending array
- * @param {function | Promise} testFn the actual test callback or promise
+ * Registers test, if async - adds to pending array
+ * @param {TestObject} testObject   A TestObject Instance.
  */
 const register = (testObject) => {
     const { testFn, parent, fieldName } = testObject;
@@ -122,24 +114,12 @@ const register = (testObject) => {
 };
 
 /**
- * Checks that a given argument qualifies as a test function
- * @param {*} testFn
- * @return {Boolean}
- */
-const isTestFn = (testFn) => {
-    if (!testFn) {
-        return false;
-    }
-
-    return typeof testFn.then === 'function' || typeof testFn === 'function';
-};
-
-/**
- * The function used by the consumer
- * @param {String} fieldName name of the field to test against
- * @param {String} [statement] the message shown to the user in case of a failure
- * @param {function | Promise} testFn the actual test callback or promise
- * @param {String} [severity] indicates whether the test should fail or warn
+ * Test function used by consumer to provide their own validations.
+ * @param {String} fieldName            Name of the field to test.
+ * @param {String} [statement]          The message returned in case of a failure.
+ * @param {function | Promise} testFn   The actual test callback or promise.
+ * @param {String} [severity]           Indicates whether the test should fail or warn.
+ * @return {TestObject}                 A TestObject instance.
  */
 const test = (fieldName, ...args) => {
     let statement,
@@ -157,10 +137,10 @@ const test = (fieldName, ...args) => {
     }
 
     const testObject = new TestObject(
-        testFn,
         ctx.parent,
         fieldName,
         statement,
+        testFn,
         severity
     );
 

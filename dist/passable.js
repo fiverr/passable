@@ -88,31 +88,76 @@
 
   var context = new Context();
 
-  function TestObject(testFn, parent, fieldName, statement, severity) {
+  /**
+   * Checks that a given argument qualifies as a test function
+   * @param {*} testFn
+   * @return {Boolean}
+   */
+  var isTestFn = function isTestFn(testFn) {
+    if (!testFn) {
+      return false;
+    }
+
+    return typeof testFn.then === 'function' || typeof testFn === 'function';
+  };
+
+  /**
+   * Describes a test call inside a passable suite.
+   * @param {Object} parent               Parent Context.
+   * @param {String} fieldName            Name of the field being tested.
+   * @param {String} statement            The message returned when failing.
+   * @param {Promise|Function} testFn     The actual test callbrack or promise.
+   * @param {String} [severity]           Indicates whether the test should fail or warn.
+   */
+  function TestObject(parent, fieldName, statement, testFn, severity) {
     this.testFn = testFn;
     this.fieldName = fieldName;
     this.statement = statement;
     this.severity = severity;
     this.parent = parent;
   }
+  /**
+   * @returns Current validity status of a test.
+   */
 
   TestObject.prototype.valueOf = function () {
     return this.isValid !== false;
   };
+  /**
+   * Sets a field to failed.
+   * @returns {TestObject} Current instance.
+   */
+
 
   TestObject.prototype.fail = function () {
     this.parent.result.fail(this.fieldName, this.statement, this.severity);
     this.isValid = false;
     return this;
   };
+  /**
+   * Adds current test to pending list.
+   */
+
 
   TestObject.prototype.setPending = function () {
     this.parent.pending.push(this);
   };
+  /**
+   * Removes test from pending list.
+   */
+
+
+  TestObject.prototype.clearPending = function () {
+    var _this = this;
+
+    this.parent.pending = this.parent.pending.filter(function (t) {
+      return t !== _this;
+    });
+  };
 
   /**
-   * Runs all async tests, updates output object with result
-   * @param {Promise} testPromise the actual test callback or promise
+   * Run async test.
+   * @param {TestObject} testObject A TestObject instance.
    */
 
   var runAsync = function runAsync(testObject) {
@@ -123,7 +168,7 @@
     parent.result.markAsync(fieldName);
 
     var done = function done() {
-      clearPendingTest(testObject);
+      testObject.clearPending();
 
       if (!hasRemainingPendingTests(parent, fieldName)) {
         parent.result.markAsDone(fieldName);
@@ -151,22 +196,11 @@
     }
   };
   /**
-   * Clears pending test from parent context
-   * @param {Promise} testPromise the actual test callback or promise
-   */
-
-  var clearPendingTest = function clearPendingTest(testObject) {
-    testObject.parent.pending = testObject.parent.pending.filter(function (t) {
-      return t !== testObject;
-    });
-  };
-  /**
    * Checks if there still are remaining pending tests for given criteria
    * @param {Object} parent       Parent context
    * @param {String} [fieldName]  Name of the field to test against
    * @return {Boolean}
    */
-
 
   var hasRemainingPendingTests = function hasRemainingPendingTests(parent, fieldName) {
     if (!parent.pending.length) {
@@ -182,9 +216,9 @@
     return !!parent.pending.length;
   };
   /**
-   * Performs shallow run over test functions, assuming sync tests only. Returning result
-   * @param {function | Promise} testFn the actual test callback or promise
-   * @return {*} result from test function
+   * Performs "shallow" run over test functions, assuming sync tests only.
+   * @param {TestObject} testObject TestObject instance.
+   * @return {*} Result from test function
    */
 
 
@@ -204,8 +238,8 @@
     return result;
   };
   /**
-   * Registers all supplied tests, if async - adds to pending array
-   * @param {function | Promise} testFn the actual test callback or promise
+   * Registers test, if async - adds to pending array
+   * @param {TestObject} testObject   A TestObject Instance.
    */
 
 
@@ -240,25 +274,12 @@
     }
   };
   /**
-   * Checks that a given argument qualifies as a test function
-   * @param {*} testFn
-   * @return {Boolean}
-   */
-
-
-  var isTestFn = function isTestFn(testFn) {
-    if (!testFn) {
-      return false;
-    }
-
-    return typeof testFn.then === 'function' || typeof testFn === 'function';
-  };
-  /**
-   * The function used by the consumer
-   * @param {String} fieldName name of the field to test against
-   * @param {String} [statement] the message shown to the user in case of a failure
-   * @param {function | Promise} testFn the actual test callback or promise
-   * @param {String} [severity] indicates whether the test should fail or warn
+   * Test function used by consumer to provide their own validations.
+   * @param {String} fieldName            Name of the field to test.
+   * @param {String} [statement]          The message returned in case of a failure.
+   * @param {function | Promise} testFn   The actual test callback or promise.
+   * @param {String} [severity]           Indicates whether the test should fail or warn.
+   * @return {TestObject}                 A TestObject instance.
    */
 
 
@@ -282,7 +303,7 @@
       return;
     }
 
-    var testObject = new TestObject(testFn, context.parent, fieldName, statement, severity);
+    var testObject = new TestObject(context.parent, fieldName, statement, testFn, severity);
     register(testObject);
     return testObject;
   };
