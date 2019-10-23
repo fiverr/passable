@@ -110,11 +110,13 @@
    * @param {String} [severity]           Indicates whether the test should fail or warn.
    */
   function TestObject(parent, fieldName, statement, testFn, severity) {
-    this.testFn = testFn;
-    this.fieldName = fieldName;
-    this.statement = statement;
-    this.severity = severity;
-    this.parent = parent;
+    _extends(this, {
+      parent: parent,
+      testFn: testFn,
+      fieldName: fieldName,
+      statement: statement,
+      severity: severity
+    });
   }
   /**
    * @returns Current validity status of a test.
