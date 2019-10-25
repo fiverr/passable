@@ -1,3 +1,4 @@
+import { FAIL } from '../../constants';
 import ctx from '../context';
 import { isTestFn, TestObject } from './lib';
 
@@ -141,7 +142,7 @@ const test = (fieldName, ...args) => {
         fieldName,
         statement,
         testFn,
-        severity
+        severity || FAIL
     );
 
     register(testObject);

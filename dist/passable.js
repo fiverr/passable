@@ -88,6 +88,9 @@
 
   var context = new Context();
 
+  var WARN = 'warn';
+  var FAIL = 'fail';
+
   /**
    * Checks that a given argument qualifies as a test function
    * @param {*} testFn
@@ -306,13 +309,10 @@
       return;
     }
 
-    var testObject = new TestObject(context.parent, fieldName, statement, testFn, severity);
+    var testObject = new TestObject(context.parent, fieldName, statement, testFn, severity || FAIL);
     register(testObject);
     return testObject;
   };
-
-  var WARN = 'warn';
-  var FAIL = 'fail';
 
   var severities = [WARN, FAIL];
 
