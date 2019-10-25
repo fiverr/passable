@@ -28,10 +28,10 @@ describe('TestObject module', () => {
     });
 
     describe('.fail() methoh', () => {
-        it('Should set `isValid` to false', () => {
-            expect(testObject.isValid).to.equal(undefined);
+        it('Should set `failed` to true', () => {
+            expect(testObject.failed).to.equal(false);
             testObject.fail();
-            expect(testObject.isValid).to.equal(false);
+            expect(testObject.failed).to.equal(true);
         });
     });
 

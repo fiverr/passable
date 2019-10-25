@@ -115,7 +115,8 @@
       testFn: testFn,
       fieldName: fieldName,
       statement: statement,
-      severity: severity
+      severity: severity,
+      failed: false
     });
   }
   /**
@@ -123,7 +124,7 @@
    */
 
   TestObject.prototype.valueOf = function () {
-    return this.isValid !== false;
+    return this.failed !== true;
   };
   /**
    * Sets a field to failed.
@@ -133,7 +134,7 @@
 
   TestObject.prototype.fail = function () {
     this.parent.result.fail(this.fieldName, this.statement, this.severity);
-    this.isValid = false;
+    this.failed = true;
     return this;
   };
   /**

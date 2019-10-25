@@ -12,7 +12,8 @@ function TestObject(parent, fieldName, statement, testFn, severity) {
         testFn,
         fieldName,
         statement,
-        severity
+        severity,
+        failed: false
     });
 };
 
@@ -20,7 +21,7 @@ function TestObject(parent, fieldName, statement, testFn, severity) {
  * @returns Current validity status of a test.
  */
 TestObject.prototype.valueOf = function() {
-    return this.isValid !== false;
+    return this.failed !== true;
 };
 
 /**
@@ -35,7 +36,7 @@ TestObject.prototype.fail = function() {
         this.severity
     );
 
-    this.isValid = false;
+    this.failed = true;
     return this;
 };
 
