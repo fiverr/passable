@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
   (global = global || self, global.passable = factory());
-}(this, function () { 'use strict';
+}(this, (function () { 'use strict';
 
   function _typeof(obj) {
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
@@ -759,27 +759,6 @@
     }
   }
 
-  /**
-   * Runs given functions and returns true if any of them passes
-   * @param  {[]Function} args array of assertion functions
-   * @return {Function} A function which, when called, invokes all arguments
-   */
-  var any = function any() {
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return function () {
-      return args.some(function (fn) {
-        try {
-          return fn() !== false;
-        } catch (err) {
-          return false;
-        }
-      });
-    };
-  };
-
   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
   function createCommonjsModule(fn, module) {
@@ -1001,11 +980,11 @@
   passable.Enforce = enforce_min.Enforce;
   passable.test = test;
   passable.validate = validate;
-  passable.any = any;
+  passable.any = require('anyone/any');
   passable.WARN = WARN;
   passable.FAIL = FAIL;
 
   return passable;
 
-}));
+})));
 //# sourceMappingURL=passable.js.map
