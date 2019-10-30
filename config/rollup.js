@@ -11,7 +11,7 @@ const LIBRARY_NAME = 'passable';
 const PLUGINS = [
     resolve(),
     commonjs({
-        include: /node_modules\/n4s/
+        include: /node_modules\/(anyone|n4s)/
     }),
     babel({
         babelrc: false,
