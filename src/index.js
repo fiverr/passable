@@ -3,13 +3,14 @@ import test from './core/test';
 import validate from './utilities/validate';
 import { WARN, FAIL } from './constants';
 import enforce from 'n4s/dist/enforce.min';
+import any from 'anyone/any'
 
 passable.VERSION = PASSABLE_VERSION;
 passable.enforce = enforce;
 passable.Enforce = enforce.Enforce;
 passable.test = test;
 passable.validate = validate;
-passable.any = require('anyone/any');
+passable.any = any;
 passable.WARN = WARN;
 passable.FAIL = FAIL;
 

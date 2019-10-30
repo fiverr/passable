@@ -975,12 +975,53 @@
     });
   });
 
+  var any = createCommonjsModule(function (module, exports) {
+    (function (global, factory) {
+       module.exports = factory() ;
+    })(commonjsGlobal, function () {
+      /**
+       * Accepts a value or a function, and coerces it into a boolean value
+       * @param {*|Function} [arg] Any expression or value
+       * @return {Boolean}
+       */
+
+      var run = function run(arg) {
+        if (typeof arg === 'function') {
+          try {
+            var output = arg();
+            return output != false && Boolean(output);
+          } catch (err) {
+            return false;
+          }
+        }
+
+        return arg != false && Boolean(arg);
+      };
+      /**
+       * Checks that at least one passed argument evaluates to a truthy value.
+       * @param  {[]*} [args] Any amount of values or expressions.
+       * @returns {Boolean}
+       */
+
+
+      var any = function any() {
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return args.some(run);
+      };
+
+      return any;
+    });
+  });
+
   passable.VERSION = "7.3.0";
   passable.enforce = enforce_min;
   passable.Enforce = enforce_min.Enforce;
   passable.test = test;
   passable.validate = validate;
-  passable.any = require('anyone/any');
+  passable.any = any;
   passable.WARN = WARN;
   passable.FAIL = FAIL;
 
