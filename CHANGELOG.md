@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [7.4.0] - 2019-11-04
+
+### Additions
+- c0a9aec [MINOR] Add return value for test. (#197) (Evyatar Alush)
+
+### Fixes and non breaking changes
+- 7ec4daf Use anyone/any instead of any (#198) (Evyatar Alush)
+
 ## [7.3.0] - 2019-09-09
 
 ### Additions
