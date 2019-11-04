@@ -135,6 +135,7 @@ const passableResult = (name) => {
         }
 
         completionCallbacks.push(callback);
+
         return output;
     };
 

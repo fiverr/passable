@@ -28,15 +28,15 @@ describe('module: passableResult', () => {
     it('Should return correct initial object from constructor', () => {
         const output = passableResult('FormName').output;
         expect(output).to.deep.equal({
-                name: 'FormName',
-                failCount: 0,
-                warnCount: 0,
-                testCount: 0,
-                testsPerformed: {},
-                errors: {},
-                warnings: {},
-                skipped: []
-            });
+            name: 'FormName',
+            failCount: 0,
+            warnCount: 0,
+            testCount: 0,
+            testsPerformed: {},
+            errors: {},
+            warnings: {},
+            skipped: []
+        });
 
         expect(output.hasErrors()).to.equal(false);
         expect(output.hasWarnings()).to.equal(false);
