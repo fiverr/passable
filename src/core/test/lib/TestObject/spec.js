@@ -6,10 +6,10 @@ import passableResult from '../../../passableResult';
 import TestObject from '.';
 
 describe('TestObject module', () => {
-    let testObject, parent, testFn, fieldName, statement, severity;
+    let testObject, ctx, testFn, fieldName, statement, severity;
 
     beforeEach(() => {
-        parent = {
+        ctx = {
             result: passableResult(faker.lorem.word()),
             pending: []
         };
@@ -19,7 +19,7 @@ describe('TestObject module', () => {
         severity = _.sample([WARN, FAIL]);
 
         testObject = new TestObject(
-            parent,
+            ctx,
             testFn,
             fieldName,
             statement,
@@ -37,10 +37,10 @@ describe('TestObject module', () => {
 
     describe('.setPending() method', () => {
         it('Should push current instance to pending array', () => {
-            expect(parent.pending).to.have.lengthOf(0);
+            expect(ctx.pending).to.have.lengthOf(0);
             testObject.setPending();
-            expect(parent.pending).to.have.lengthOf(1);
-            expect(parent.pending).to.have.members([testObject]);
+            expect(ctx.pending).to.have.lengthOf(1);
+            expect(ctx.pending).to.have.members([testObject]);
         });
     });
 
@@ -50,9 +50,9 @@ describe('TestObject module', () => {
         });
 
         it('Should push current instance to pending array', () => {
-            expect(parent.pending).to.have.members([testObject]);
+            expect(ctx.pending).to.have.members([testObject]);
             testObject.clearPending();
-            expect(parent.pending).not.to.have.members([testObject]);
+            expect(ctx.pending).not.to.have.members([testObject]);
         });
     });
 
