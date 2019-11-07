@@ -15,7 +15,7 @@ const throwMultiplePassableError = (...versions) => {
  * @param {Function} passable Reference to passable.
  * @return {Function} Global passable reference.
  */
-export const register = (passable, Context) => {
+const register = (passable, Context) => {
 
     const existing = go[SYMBOL_PASSABLE];
 

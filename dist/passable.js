@@ -385,6 +385,7 @@
 
     return globalObject[SYMBOL_PASSABLE];
   };
+
   var singletonExport = {
     use: function use() {
       return globalObject[SYMBOL_PASSABLE];
@@ -393,12 +394,12 @@
   };
 
   /**
-   * Creates a new context object, and assigns it as a static property on the constructor function for outside reference.
+   * Creates a new context object, and assigns it as a static property on Passable's singleton.
    * @param {Object} parent   Parent context.
    */
 
   var Context = function Context(parent) {
-    singletonExport.use().Context.ctx = this;
+    singletonExport.use().ctx = this;
 
     _extends(this, parent);
   };
@@ -408,7 +409,7 @@
 
 
   Context.clear = function () {
-    singletonExport.use().Context.ctx = null;
+    singletonExport.use().ctx = null;
   };
 
   /**
@@ -644,7 +645,7 @@
       return;
     }
 
-    var testObject = new TestObject(singletonExport.use().Context.ctx, fieldName, statement, testFn, severity || FAIL);
+    var testObject = new TestObject(singletonExport.use().ctx, fieldName, statement, testFn, severity || FAIL);
     register$1(testObject);
     return testObject;
   };
@@ -1126,7 +1127,7 @@
    */
 
   var draft = function draft() {
-    var ctx = singletonExport.use().Context.ctx;
+    var ctx = singletonExport.use().ctx;
 
     if (ctx) {
       return ctx.result.output;

@@ -1,11 +1,11 @@
-import singleton from '../../lib/singleton';
+import { singleton } from '../../lib';
 
 /**
- * Creates a new context object, and assigns it as a static property on the constructor function for outside reference.
+ * Creates a new context object, and assigns it as a static property on Passable's singleton.
  * @param {Object} parent   Parent context.
  */
 const Context = function(parent) {
-    singleton.use().Context.ctx = this;
+    singleton.use().ctx = this;
     Object.assign(this, parent);
 };
 
@@ -13,7 +13,7 @@ const Context = function(parent) {
  * Clears stored instance from constructor function.
  */
 Context.clear = function() {
-    singleton.use().Context.ctx = null;
+    singleton.use().ctx = null;
 };
 
 export default Context;

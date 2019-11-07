@@ -1,4 +1,4 @@
-import singleton from '../../lib/singleton';
+import { singleton } from '../../lib';
 import { ERROR_NO_CONTEXT } from './constants';
 
 /**
@@ -6,7 +6,7 @@ import { ERROR_NO_CONTEXT } from './constants';
  */
 const draft = () => {
 
-    const ctx = singleton.use().Context.ctx;
+    const ctx = singleton.use().ctx;
 
     if (ctx) {
         return ctx.result.output;

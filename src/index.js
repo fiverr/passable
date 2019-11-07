@@ -5,7 +5,7 @@ import Context from './core/Context';
 import draft from './core/draft';
 import test from './core/test';
 import validate from './utilities/validate';
-import singleton from './lib/singleton';
+import { singleton } from './lib';
 import { WARN, FAIL, VERSION } from './constants';
 
 passable.VERSION = VERSION;
