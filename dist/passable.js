@@ -78,15 +78,23 @@
     throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
 
-  var Context = function Context() {}; // eslint-disable-line
+  /**
+   * Creates a new context object, and assigns it as a static property on the constructor function for outside reference.
+   * @param {Object} parent   Parent context.
+   */
+  var Context = function Context(parent) {
+    Context.ctx = this;
 
-
-  Context.prototype.set = function (parent) {
-    this.parent = parent;
-    return this;
+    _extends(this, parent);
   };
+  /**
+   * Clears stored instance from constructor function.
+   */
 
-  var context = new Context();
+
+  Context.clear = function () {
+    Context.ctx = null;
+  };
 
   var WARN = 'warn';
   var FAIL = 'fail';
@@ -112,9 +120,9 @@
    * @param {Promise|Function} testFn     The actual test callbrack or promise.
    * @param {String} [severity]           Indicates whether the test should fail or warn.
    */
-  function TestObject(parent, fieldName, statement, testFn, severity) {
+  function TestObject(ctx, fieldName, statement, testFn, severity) {
     _extends(this, {
-      parent: parent,
+      ctx: ctx,
       testFn: testFn,
       fieldName: fieldName,
       statement: statement,
@@ -136,7 +144,7 @@
 
 
   TestObject.prototype.fail = function () {
-    this.parent.result.fail(this.fieldName, this.statement, this.severity);
+    this.ctx.result.fail(this.fieldName, this.statement, this.severity);
     this.failed = true;
     return this;
   };
@@ -146,7 +154,7 @@
 
 
   TestObject.prototype.setPending = function () {
-    this.parent.pending.push(this);
+    this.ctx.pending.push(this);
   };
   /**
    * Removes test from pending list.
@@ -156,7 +164,7 @@
   TestObject.prototype.clearPending = function () {
     var _this = this;
 
-    this.parent.pending = this.parent.pending.filter(function (t) {
+    this.ctx.pending = this.ctx.pending.filter(function (t) {
       return t !== _this;
     });
   };
@@ -170,25 +178,25 @@
     var fieldName = testObject.fieldName,
         testFn = testObject.testFn,
         statement = testObject.statement,
-        parent = testObject.parent;
-    parent.result.markAsync(fieldName);
+        ctx = testObject.ctx;
+    ctx.result.markAsync(fieldName);
 
     var done = function done() {
       testObject.clearPending();
 
-      if (!hasRemainingPendingTests(parent, fieldName)) {
-        parent.result.markAsDone(fieldName);
+      if (!hasRemainingPendingTests(ctx, fieldName)) {
+        ctx.result.markAsDone(fieldName);
       }
 
-      if (!hasRemainingPendingTests(parent)) {
-        parent.result.markAsDone();
+      if (!hasRemainingPendingTests(ctx)) {
+        ctx.result.markAsDone();
       }
     };
 
     var fail = function fail(rejectionMessage) {
       testObject.statement = typeof rejectionMessage === 'string' ? rejectionMessage : statement;
 
-      if (parent.pending.includes(testObject)) {
+      if (ctx.pending.includes(testObject)) {
         testObject.fail();
       }
 
@@ -203,23 +211,23 @@
   };
   /**
    * Checks if there still are remaining pending tests for given criteria
-   * @param {Object} parent       Parent context
+   * @param {Object} ctx          Parent context
    * @param {String} [fieldName]  Name of the field to test against
    * @return {Boolean}
    */
 
-  var hasRemainingPendingTests = function hasRemainingPendingTests(parent, fieldName) {
-    if (!parent.pending.length) {
+  var hasRemainingPendingTests = function hasRemainingPendingTests(ctx, fieldName) {
+    if (!ctx.pending.length) {
       return false;
     }
 
     if (fieldName) {
-      return parent.pending.some(function (testObject) {
+      return ctx.pending.some(function (testObject) {
         return testObject.fieldName === fieldName;
       });
     }
 
-    return !!parent.pending.length;
+    return !!ctx.pending.length;
   };
   /**
    * Performs "shallow" run over test functions, assuming sync tests only.
@@ -251,18 +259,18 @@
 
   var register = function register(testObject) {
     var testFn = testObject.testFn,
-        parent = testObject.parent,
+        ctx = testObject.ctx,
         fieldName = testObject.fieldName;
     var pending = false;
     var result;
 
-    if (parent.specific.excludes(fieldName)) {
-      parent.result.addToSkipped(fieldName);
+    if (ctx.specific.excludes(fieldName)) {
+      ctx.result.addToSkipped(fieldName);
       return;
     }
 
-    parent.result.initFieldCounters(fieldName);
-    parent.result.bumpTestCounter(fieldName);
+    ctx.result.initFieldCounters(fieldName);
+    ctx.result.bumpTestCounter(fieldName);
 
     if (testFn && typeof testFn.then === 'function') {
       pending = true;
@@ -309,7 +317,7 @@
       return;
     }
 
-    var testObject = new TestObject(context.parent, fieldName, statement, testFn, severity || FAIL);
+    var testObject = new TestObject(Context.ctx, fieldName, statement, testFn, severity || FAIL);
     register(testObject);
     return testObject;
   };
@@ -770,16 +778,34 @@
 
     var result = passableResult(name);
     var pending = [];
-    var parent = {
+    new Context({
       specific: new Specific(specific),
       result: result,
       pending: pending
-    };
-    context.set(parent);
+    });
     tests(test, result.output);
-    context.set(null);
+    Context.clear();
     [].concat(pending).forEach(runAsync);
     return result.output;
+  };
+
+  /**
+   * @type {String} Error thrown when draft gets called without an active Passable context.
+   */
+  var ERROR_NO_CONTEXT = '[Passable]: Draft was called outside of the context of a running suite. Please make sure you call it only from your Passable suite.';
+
+  /**
+   * @return {Object} Current draft.
+   */
+
+  var draft = function draft() {
+    if (Context.ctx) {
+      return Context.ctx.result.output;
+    }
+
+    setTimeout(function () {
+      throw new Error(ERROR_NO_CONTEXT);
+    });
   };
 
   /**
@@ -1059,6 +1085,7 @@
 
   passable.VERSION = "7.4.0";
   passable.enforce = enforce_min;
+  passable.draft = draft;
   passable.Enforce = enforce_min.Enforce;
   passable.test = test;
   passable.validate = validate;

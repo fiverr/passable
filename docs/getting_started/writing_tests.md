@@ -40,15 +40,40 @@ In the example above, we tested a form named `NewUserForm`, and ran two tests on
 If our validation fails, among other information, we would get the names of the fields, and an array of errors for each, so we can show them back to the user.
 
 ## Accessing the intermediate test result from within your suite
-// since 6.3.0
+// since 7.5.0
 
-In some cases, you might want to access the intermediate result, for example, if you'd like to stop a server call from happening for a field that's already invalid. To do that, you can access the draft of the result object from within the test suite, using its second argument.
+In some cases, you might want to access the intermediate result, for example, if you'd like to stop a server call from happening for a field that you already know is invalid. To do that, you can access the draft of the result object from within the test suite.
 
-**Note**: It is only possible to access intermediate test results for sync tests, and it is recommended to put all the async tests at the bottom of your suite so they have access to the result of all the sync tests.
+To use `draft`, import it from passable, and call it as a function. Its return value is the intermediate result of your test suite.
+
+**Note**
+* It is only possible to access intermediate test results for sync tests, and it is recommended to put all the async tests at the bottom of your suite so they have access to the result of all the sync tests.
+* You may not call `draft` from outside a running suite. Doing that will result in a thrown error.
 
 In the following example, we're preventing the async validation from running over the username field in case it already has errors.
 
 ```js
+import passable, { test, enforce, draft } from 'passable';
+
+passable('NewUserForm', () => {
+    test('username', 'Must be a string between 2 and 10 chars', () => {
+        enforce(data.username).isString().longerThan(1).shorterThan(11);
+    });
+
+    if (!draft().hasErrors('username')) {
+        // if the username did not pass the previous test, the following test won't run
+        test('username', 'already exists', fetch(`/check_availability?username=${data.username}`));
+    }
+});
+```
+
+You can also use `draft` as the second argument of the your passable suite tests callback. This api is likely to be deprecated in an upcoming major version. Using draft this way does not require you to call it as a function.
+
+### Example:
+
+```js
+import passable, { enforce } from 'passable';
+
 passable('NewUserForm', (test, draft) => {
     test('username', 'Must be a string between 2 and 10 chars', () => {
         enforce(data.username).isString().longerThan(1).shorterThan(11);

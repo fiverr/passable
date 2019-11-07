@@ -1,5 +1,5 @@
 import { FAIL } from '../../constants';
-import ctx from '../context';
+import Context from '../Context';
 import { isTestFn, TestObject } from './lib';
 
 /**
@@ -7,19 +7,19 @@ import { isTestFn, TestObject } from './lib';
  * @param {TestObject} testObject A TestObject instance.
  */
 export const runAsync = (testObject) => {
-    const { fieldName, testFn, statement, parent } = testObject;
+    const { fieldName, testFn, statement, ctx } = testObject;
 
-    parent.result.markAsync(fieldName);
+    ctx.result.markAsync(fieldName);
 
     const done = () => {
         testObject.clearPending();
 
-        if (!hasRemainingPendingTests(parent, fieldName)) {
-            parent.result.markAsDone(fieldName);
+        if (!hasRemainingPendingTests(ctx, fieldName)) {
+            ctx.result.markAsDone(fieldName);
         }
 
-        if (!hasRemainingPendingTests(parent)) {
-            parent.result.markAsDone();
+        if (!hasRemainingPendingTests(ctx)) {
+            ctx.result.markAsDone();
         }
     };
 
@@ -28,7 +28,7 @@ export const runAsync = (testObject) => {
             ? rejectionMessage
             : statement;
 
-        if (parent.pending.includes(testObject)) {
+        if (ctx.pending.includes(testObject)) {
             testObject.fail();
         }
 
@@ -44,20 +44,20 @@ export const runAsync = (testObject) => {
 
 /**
  * Checks if there still are remaining pending tests for given criteria
- * @param {Object} parent       Parent context
+ * @param {Object} ctx          Parent context
  * @param {String} [fieldName]  Name of the field to test against
  * @return {Boolean}
  */
-const hasRemainingPendingTests = (parent, fieldName) => {
-    if (!parent.pending.length) {
+const hasRemainingPendingTests = (ctx, fieldName) => {
+    if (!ctx.pending.length) {
         return false;
     }
 
     if (fieldName) {
-        return parent.pending.some((testObject) => testObject.fieldName === fieldName);
+        return ctx.pending.some((testObject) => testObject.fieldName === fieldName);
     }
 
-    return !!parent.pending.length;
+    return !!ctx.pending.length;
 };
 
 /**
@@ -85,17 +85,17 @@ const preRun = (testObject) => {
  * @param {TestObject} testObject   A TestObject Instance.
  */
 const register = (testObject) => {
-    const { testFn, parent, fieldName } = testObject;
+    const { testFn, ctx, fieldName } = testObject;
     let pending = false;
     let result;
 
-    if (parent.specific.excludes(fieldName)) {
-        parent.result.addToSkipped(fieldName);
+    if (ctx.specific.excludes(fieldName)) {
+        ctx.result.addToSkipped(fieldName);
         return;
     }
 
-    parent.result.initFieldCounters(fieldName);
-    parent.result.bumpTestCounter(fieldName);
+    ctx.result.initFieldCounters(fieldName);
+    ctx.result.bumpTestCounter(fieldName);
 
     if (testFn && typeof testFn.then === 'function') {
         pending = true;
@@ -138,7 +138,7 @@ const test = (fieldName, ...args) => {
     }
 
     const testObject = new TestObject(
-        ctx.parent,
+        Context.ctx,
         fieldName,
         statement,
         testFn,

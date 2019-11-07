@@ -1,4 +1,4 @@
-import ctx from '../context';
+import Context from '../Context';
 import test, { runAsync } from '../test';
 import passableResult from '../passableResult';
 import Specific from '../Specific';
@@ -24,16 +24,15 @@ const passable = (name, tests, specific) => {
 
     const pending = [];
 
-    const parent = {
+    new Context({
         specific: new Specific(specific),
         result,
         pending
-    };
-
-    ctx.set(parent);
+    });
 
     tests(test, result.output);
-    ctx.set(null);
+
+    Context.clear();
 
     [...pending].forEach(runAsync);
 

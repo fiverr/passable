@@ -6,9 +6,9 @@
  * @param {Promise|Function} testFn     The actual test callbrack or promise.
  * @param {String} [severity]           Indicates whether the test should fail or warn.
  */
-function TestObject(parent, fieldName, statement, testFn, severity) {
+function TestObject(ctx, fieldName, statement, testFn, severity) {
     Object.assign(this, {
-        parent,
+        ctx,
         testFn,
         fieldName,
         statement,
@@ -30,7 +30,7 @@ TestObject.prototype.valueOf = function() {
  */
 TestObject.prototype.fail = function() {
 
-    this.parent.result.fail(
+    this.ctx.result.fail(
         this.fieldName,
         this.statement,
         this.severity
@@ -44,14 +44,14 @@ TestObject.prototype.fail = function() {
  * Adds current test to pending list.
  */
 TestObject.prototype.setPending = function() {
-    this.parent.pending.push(this);
+    this.ctx.pending.push(this);
 };
 
 /**
  * Removes test from pending list.
  */
 TestObject.prototype.clearPending = function() {
-    this.parent.pending = this.parent.pending.filter((t) => t !== this);
+    this.ctx.pending = this.ctx.pending.filter((t) => t !== this);
 };
 
 export default TestObject;

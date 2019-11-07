@@ -1,4 +1,5 @@
 import passable from './core/passable';
+import draft from './core/draft';
 import test from './core/test';
 import validate from './utilities/validate';
 import { WARN, FAIL } from './constants';
@@ -7,6 +8,7 @@ import any from 'anyone/any';
 
 passable.VERSION = PASSABLE_VERSION;
 passable.enforce = enforce;
+passable.draft = draft;
 passable.Enforce = enforce.Enforce;
 passable.test = test;
 passable.validate = validate;
