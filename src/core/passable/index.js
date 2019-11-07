@@ -2,12 +2,12 @@ import Context from '../Context';
 import test, { runAsync } from '../test';
 import passableResult from '../passableResult';
 import Specific from '../Specific';
+import { singleton } from '../../lib';
 
 const initError = (name, value, doc) => `[Passable]: failed during suite initialization. Unexpected '${typeof value}' for '${name}' argument.
     See: ${doc ? doc : 'https://fiverr.github.io/passable/getting_started/writing_tests.html'}`;
 
 const passable = (name, tests, specific) => {
-
     if (typeof name !== 'string') {
         throw new TypeError(initError('suite name', name));
     }

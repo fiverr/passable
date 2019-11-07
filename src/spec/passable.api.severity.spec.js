@@ -75,5 +75,5 @@ const runSpec = (passable) => {
 };
 
 runSpec(require('../'));
-// runSpec(require('../../dist/passable'));
-// runSpec(require('../../dist/passable.min.js'));
+runSpec(require('../../dist/passable'));
+runSpec(require('../../dist/passable.min.js'));

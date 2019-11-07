@@ -360,7 +360,7 @@
       versions[_key] = arguments[_key];
     }
 
-    throw new Error("[Passable]: Two versions of Passable detected: (".concat(versions.join(), ").\n    Most features should work regularly, but for optimal feature compatibility, you should have all running instances use the same version."));
+    throw new Error("[Passable]: Multiple versions of Passable detected: (".concat(versions.join(), ").\n    Most features should work regularly, but for optimal feature compatibility, you should have all running instances use the same version."));
   };
   /**
    * Registers current Passable instance on global object.
@@ -369,7 +369,7 @@
    */
 
 
-  var register = function register(passable, Context) {
+  var register = function register(passable) {
     var existing = globalObject[SYMBOL_PASSABLE];
 
     if (existing) {
@@ -380,7 +380,6 @@
       }
     } else {
       globalObject[SYMBOL_PASSABLE] = passable;
-      globalObject[SYMBOL_PASSABLE].Context = Context;
     }
 
     return globalObject[SYMBOL_PASSABLE];
@@ -1165,7 +1164,7 @@
   passable.any = any;
   passable.WARN = WARN;
   passable.FAIL = FAIL;
-  singletonExport.register(passable, Context);
+  singletonExport.register(passable);
 
   return passable;
 

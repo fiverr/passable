@@ -6,7 +6,7 @@ import { SYMBOL_PASSABLE } from './constants';
  * @throws {Error}
  */
 const throwMultiplePassableError = (...versions) => {
-    throw new Error(`[Passable]: Two versions of Passable detected: (${versions.join()}).
+    throw new Error(`[Passable]: Multiple versions of Passable detected: (${versions.join()}).
     Most features should work regularly, but for optimal feature compatibility, you should have all running instances use the same version.`);
 };
 
@@ -15,7 +15,7 @@ const throwMultiplePassableError = (...versions) => {
  * @param {Function} passable Reference to passable.
  * @return {Function} Global passable reference.
  */
-const register = (passable, Context) => {
+const register = (passable) => {
 
     const existing = go[SYMBOL_PASSABLE];
 
@@ -25,7 +25,6 @@ const register = (passable, Context) => {
         }
     } else {
         go[SYMBOL_PASSABLE] = passable;
-        go[SYMBOL_PASSABLE].Context = Context;
     }
 
     return go[SYMBOL_PASSABLE];
