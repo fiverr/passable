@@ -1,6 +1,6 @@
 /**
  * Describes a test call inside a passable suite.
- * @param {Object} parent               Parent Context.
+ * @param {Object} ctx                  Parent context.
  * @param {String} fieldName            Name of the field being tested.
  * @param {String} statement            The message returned when failing.
  * @param {Promise|Function} testFn     The actual test callbrack or promise.

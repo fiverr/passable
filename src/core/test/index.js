@@ -1,5 +1,5 @@
 import { FAIL } from '../../constants';
-import Context from '../Context';
+import singleton from '../../lib/singleton';
 import { isTestFn, TestObject } from './lib';
 
 /**
@@ -138,7 +138,7 @@ const test = (fieldName, ...args) => {
     }
 
     const testObject = new TestObject(
-        Context.ctx,
+        singleton.use().Context.ctx,
         fieldName,
         statement,
         testFn,
