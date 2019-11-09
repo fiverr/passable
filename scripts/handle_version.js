@@ -6,3 +6,5 @@ const gitLog = process.argv[2] || '';
 const nextVersion = bumpPackage(gitLog);
 
 updateChangelog(nextVersion, gitLog);
+
+console.log(nextVersion);
