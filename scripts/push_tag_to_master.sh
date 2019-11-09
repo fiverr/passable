@@ -20,7 +20,7 @@ git branch -D master
 echo "Switching to master"
 git checkout -b master
 
-node ./scripts/handle_version.js "$msg"
+export NEXT_VERSION=$(node ./scripts/handle_version.js "$msg")
 
 echo "Rebuilding with current tag"
 npm run build
@@ -31,10 +31,13 @@ EMOJI=${EMOJIS[$RANDOM % ${#EMOJIS[@]}]}
 git add .
 
 if (( $(grep -c . <<<"$msg") > 1 )); then
-    git commit -m "$EMOJI Passable cumulative update: $TRAVIS_TAG" -m "$msg"
+    git commit -m "$EMOJI Passable cumulative update: $NEXT_VERSION" -m "$msg"
 else
-    git commit -m "$EMOJI Passable update: $TRAVIS_TAG" -m "$msg"
+    git commit -m "$EMOJI Passable update: $NEXT_VERSION" -m "$msg"
 fi
 
 echo "Pushing to master"
 git push https://${GITHUB_TOKEN}@github.com/$GITHUB_REPO.git master
+
+git tag $NEXT_VERSION
+git push origin $NEXT_VERSION
