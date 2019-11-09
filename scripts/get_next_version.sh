@@ -13,15 +13,16 @@ echo "Getting list of changes"
 export commit_msg="$(git log --format=format:"%h %s (%aN)" --no-merges origin/master..)"
 echo "$commit_msg"
 
+echo "Calling handle version"
 node ./scripts/handle_version.js "$commit_msg"
-
-echo "Rebuilding with current tag"
-npm run build
-
-echo "Next version number:"
-export version_number="$(npm view . version)"
-echo "$version_number"
 
 echo "Deleting cloned repo"
 cd ../
 rm -rf __temp
+
+echo "Rebuilding with current tag"
+yarn build
+
+echo "Next version number:"
+export version_number="$(npm view . version)"
+echo "$version_number"

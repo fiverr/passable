@@ -5,4 +5,6 @@ const gitLog = process.argv[2] || '';
 
 const nextVersion = bumpPackage(gitLog);
 
+console.log('handleVersion: version is:', nextVersion);
+
 updateChangelog(nextVersion, gitLog);
