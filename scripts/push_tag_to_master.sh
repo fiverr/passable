@@ -31,9 +31,9 @@ EMOJI=${EMOJIS[$RANDOM % ${#EMOJIS[@]}]}
 git add .
 
 if (( $(grep -c . <<<"$msg") > 1 )); then
-    git commit -m "$EMOJI Passable cumulative update: $TRAVIS_TAG" -m "$msg"
+    git commit -m "$EMOJI Passable cumulative update: $(npm view . version)" -m "$msg"
 else
-    git commit -m "$EMOJI Passable update: $TRAVIS_TAG" -m "$msg"
+    git commit -m "$EMOJI Passable update: $(npm view . version)" -m "$msg"
 fi
 
 echo "Pushing to master"
