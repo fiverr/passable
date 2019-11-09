@@ -308,13 +308,13 @@
         if (typeof arg === 'function') {
           try {
             var output = arg();
-            return output != false && Boolean(output);
+            return output != false && Boolean(output); // eslint-disable-line
           } catch (err) {
             return false;
           }
         }
 
-        return arg != false && Boolean(arg);
+        return arg != false && Boolean(arg); // eslint-disable-line
       };
       /**
        * Checks that at least one passed argument evaluates to a truthy value.
