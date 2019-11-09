@@ -15,6 +15,9 @@ echo "$commit_msg"
 
 node ./scripts/handle_version.js "$commit_msg"
 
+echo "Rebuilding with current tag"
+npm run build
+
 echo "Next version number:"
 export version_number="$(npm view . version)"
 echo "$version_number"

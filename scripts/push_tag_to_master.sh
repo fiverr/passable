@@ -1,11 +1,8 @@
-echo "Removing old satmer"
-git branch -D satmer
+echo "Removing old master"
+git branch -D master
 
-echo "Switching to satmer"
-git checkout -b satmer
-
-echo "Rebuilding with current tag"
-npm run build
+echo "Switching to master"
+git checkout -b master
 
 EMOJIS=(🚀 🤘 ✨ 🔔 🌈 🤯)
 EMOJI=${EMOJIS[$RANDOM % ${#EMOJIS[@]}]}
@@ -20,5 +17,8 @@ fi
 
 git tag
 
-echo "Pushing to satmer"
-git push https://${GITHUB_TOKEN}@github.com/$GITHUB_REPO.git satmer
+echo "Pushing to master"
+git push https://${GITHUB_TOKEN}@github.com/$GITHUB_REPO.git master
+
+git tag $version_number
+get push origin $version_number
