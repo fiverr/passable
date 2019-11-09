@@ -17,7 +17,7 @@ before_script:
 after_success:
 - node ./scripts/prep_docs.js
 - chmod +x ./scripts/push_tag_to_master.sh
-- if [ "$TRAVIS_BRANCH" = "release" ]; then ./scripts/push_tag_to_master.sh; fi
+- ./scripts/push_tag_to_master.sh
 - chmod +x ./scripts/prepare_next.sh
 - if [ "$TRAVIS_BRANCH" != "master" ]; then ./scripts/prepare_next.sh; fi
 
