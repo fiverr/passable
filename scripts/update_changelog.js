@@ -4,6 +4,9 @@ const { format } = require('date-fns');
 const determineLevel = require('./determine_change_level');
 const { MAJOR_KEYWORD, MINOR_KEYWORD, PATCH_KEYWORD, CHANGELOG_TITLES, EXCLUDED_WORDS } = require('./constants');
 
+const version = process.env.NEXT_VERSION;
+const gitLog = process.env.COMMIT_MESSAGES;
+
 /**
  * Takes commit history and groups messages by change level
  * @param {String} gitLog commit history
@@ -25,12 +28,7 @@ const groupMessages = (gitLog) => gitLog.split('\n').reduce((accumulator, curren
     });
 }, {});
 
-/**
- * Updates changelog file with recent version and commit history
- * @param {String} version semver version for current release
- * @param {String} gitLog commit history
- */
-const updateChangelog = (version, gitLog) => {
+const updateChangelog = () => {
     const groupedMessages = groupMessages(gitLog);
 
     const changelogTitle = `## [${version}] - ${format(new Date(), 'yyyy-MM-dd')}\n`;
