@@ -78,12 +78,327 @@
     throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
 
+  var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+  function createCommonjsModule(fn, module) {
+  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  }
+
+  var enforce_min = createCommonjsModule(function (module, exports) {
+    !function (n, e) {
+       module.exports = e() ;
+    }(commonjsGlobal, function () {
+
+      function n(e) {
+        return (n = "function" == typeof Symbol && "symbol" == _typeof(Symbol.iterator) ? function (n) {
+          return _typeof(n);
+        } : function (n) {
+          return n && "function" == typeof Symbol && n.constructor === Symbol && n !== Symbol.prototype ? "symbol" : _typeof(n);
+        })(e);
+      }
+
+      function e(n, e, t) {
+        return e in n ? Object.defineProperty(n, e, {
+          value: t,
+          enumerable: !0,
+          configurable: !0,
+          writable: !0
+        }) : n[e] = t, n;
+      }
+
+      function t(n, e) {
+        var t = Object.keys(n);
+
+        if (Object.getOwnPropertySymbols) {
+          var r = Object.getOwnPropertySymbols(n);
+          e && (r = r.filter(function (e) {
+            return Object.getOwnPropertyDescriptor(n, e).enumerable;
+          })), t.push.apply(t, r);
+        }
+
+        return t;
+      }
+
+      function r(n) {
+        for (var r = 1; r < arguments.length; r++) {
+          var o = null != arguments[r] ? arguments[r] : {};
+          r % 2 ? t(o, !0).forEach(function (t) {
+            e(n, t, o[t]);
+          }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(n, Object.getOwnPropertyDescriptors(o)) : t(o).forEach(function (e) {
+            Object.defineProperty(n, e, Object.getOwnPropertyDescriptor(o, e));
+          });
+        }
+
+        return n;
+      }
+
+      var o = function o(n, e) {
+        return Object.prototype.hasOwnProperty.call(n, e) && "function" == typeof n[e];
+      },
+          u = Function("return this")(),
+          i = function i() {
+        return "function" == typeof u.Proxy;
+      };
+
+      function a(n) {
+        return Boolean(Array.isArray(n));
+      }
+
+      function c(n) {
+        return Boolean("number" == typeof n);
+      }
+
+      function f(n) {
+        return Boolean("string" == typeof n);
+      }
+
+      function s(n, e) {
+        return e instanceof RegExp ? e.test(n) : "string" == typeof e && new RegExp(e).test(n);
+      }
+
+      function l(e, t) {
+        return Array.isArray(t) && ["string", "number", "boolean"].includes(n(e)) ? t.includes(e) : "string" == typeof t && "string" == typeof e && t.includes(e);
+      }
+
+      function y(n, e) {
+        return n === e;
+      }
+
+      function p(n) {
+        var e = !isNaN(parseFloat(n)) && !isNaN(Number(n)) && isFinite(n);
+        return Boolean(e);
+      }
+
+      function g(n, e) {
+        return p(n) && p(e) && Number(n) === Number(e);
+      }
+
+      function b(e) {
+        return !e || (p(e) ? 0 === e : Object.prototype.hasOwnProperty.call(e, "length") ? 0 === e.length : "object" !== n(e) || 0 === Object.keys(e).length);
+      }
+
+      function m(n, e) {
+        return p(n) && p(e) && Number(n) > Number(e);
+      }
+
+      function v(n, e) {
+        return p(n) && p(e) && Number(n) >= Number(e);
+      }
+
+      function h(n, e) {
+        return p(n) && p(e) && Number(n) < Number(e);
+      }
+
+      function O(n, e) {
+        return p(n) && p(e) && Number(n) <= Number(e);
+      }
+
+      function N(n, e) {
+        return n.length === e;
+      }
+
+      a.negativeForm = "isNotArray", c.negativeForm = "isNotNumber", f.negativeForm = "isNotString", s.negativeForm = "notMatches", l.negativeForm = "notInside", y.negativeForm = "notEquals", p.negativeForm = "isNotNumeric", g.negativeForm = "numberNotEquals", b.negativeForm = "isNotEmpty", m.alias = "gt", v.alias = "gte", h.alias = "lt", O.alias = "lte", N.negativeForm = "lengthNotEquals";
+
+      var d = function (n) {
+        var e = function e(_e) {
+          var t = n[_e].negativeForm,
+              r = n[_e].alias;
+          t && (n[t] = function () {
+            return !n[_e].apply(n, arguments);
+          }), r && (n[r] = n[_e]);
+        };
+
+        for (var t in n) {
+          e(t);
+        }
+
+        return n;
+      }({
+        isArray: a,
+        isNumber: c,
+        isString: f,
+        matches: s,
+        inside: l,
+        equals: y,
+        numberEquals: g,
+        isNumeric: p,
+        isEmpty: b,
+        greaterThan: m,
+        greaterThanOrEquals: v,
+        lessThan: h,
+        lessThanOrEquals: O,
+        longerThan: function longerThan(n, e) {
+          return n.length > e;
+        },
+        longerThanOrEquals: function longerThanOrEquals(n, e) {
+          return n.length >= e;
+        },
+        shorterThan: function shorterThan(n, e) {
+          return n.length < e;
+        },
+        shorterThanOrEquals: function shorterThanOrEquals(n, e) {
+          return n.length <= e;
+        },
+        lengthEquals: N,
+        isOdd: function isOdd(n) {
+          return !!p(n) && n % 2 != 0;
+        },
+        isEven: function isEven(n) {
+          return !!p(n) && n % 2 == 0;
+        }
+      });
+
+      function E(e, t) {
+        if ("function" == typeof e) {
+          for (var r = arguments.length, o = new Array(r > 2 ? r - 2 : 0), u = 2; u < r; u++) {
+            o[u - 2] = arguments[u];
+          }
+
+          if (!0 !== e.apply(void 0, [t].concat(o))) throw new Error("[Enforce]: invalid ".concat(n(t), " value"));
+        }
+      }
+
+      function j() {
+        var n = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
+            t = r({}, d, {}, n);
+        if (i()) return function (n) {
+          var e = new Proxy(t, {
+            get: function get(t, r) {
+              if (o(t, r)) return function () {
+                for (var o = arguments.length, u = new Array(o), i = 0; i < o; i++) {
+                  u[i] = arguments[i];
+                }
+
+                return E.apply(void 0, [t[r], n].concat(u)), e;
+              };
+            }
+          });
+          return e;
+        };
+        var u = Object.keys(t);
+        return function (n) {
+          return u.reduce(function (u, i) {
+            return _extends(u, r({}, o(t, i) && e({}, i, function () {
+              for (var e = arguments.length, r = new Array(e), o = 0; o < e; o++) {
+                r[o] = arguments[o];
+              }
+
+              return E.apply(void 0, [t[i], n].concat(r)), u;
+            })));
+          }, {});
+        };
+      }
+
+      var w = new j();
+      return w.Enforce = j, w;
+    });
+  });
+
+  var any = createCommonjsModule(function (module, exports) {
+    (function (global, factory) {
+       module.exports = factory() ;
+    })(commonjsGlobal, function () {
+      /**
+       * Accepts a value or a function, and coerces it into a boolean value
+       * @param {*|Function} [arg] Any expression or value
+       * @return {Boolean}
+       */
+
+      var run = function run(arg) {
+        if (typeof arg === 'function') {
+          try {
+            var output = arg();
+            return output != false && Boolean(output); // eslint-disable-line
+          } catch (err) {
+            return false;
+          }
+        }
+
+        return arg != false && Boolean(arg); // eslint-disable-line
+      };
+      /**
+       * Checks that at least one passed argument evaluates to a truthy value.
+       * @param  {[]*} [args] Any amount of values or expressions.
+       * @returns {Boolean}
+       */
+
+
+      var any = function any() {
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return args.some(run);
+      };
+
+      return any;
+    });
+  });
+
   /**
-   * Creates a new context object, and assigns it as a static property on the constructor function for outside reference.
+   * @type {Object} Reference to global object.
+   */
+  var globalObject = Function('return this')();
+
+  /**
+   * @type {String} Passable's major version.
+   */
+  var PASSABLE_MAJOR = "7.4.0".split('.')[0];
+  /**
+   * @type {Symbol} Used to store a global instance of Passable.
+   */
+
+  var SYMBOL_PASSABLE = Symbol["for"]("PASSABLE#".concat(PASSABLE_MAJOR));
+
+  /**
+   * @param  {String[]} versions List of passable versions.
+   * @throws {Error}
+   */
+
+  var throwMultiplePassableError = function throwMultiplePassableError() {
+    for (var _len = arguments.length, versions = new Array(_len), _key = 0; _key < _len; _key++) {
+      versions[_key] = arguments[_key];
+    }
+
+    throw new Error("[Passable]: Multiple versions of Passable detected: (".concat(versions.join(), ").\n    Most features should work regularly, but for optimal feature compatibility, you should have all running instances use the same version."));
+  };
+  /**
+   * Registers current Passable instance on global object.
+   * @param {Function} passable Reference to passable.
+   * @return {Function} Global passable reference.
+   */
+
+
+  var register = function register(passable) {
+    var existing = globalObject[SYMBOL_PASSABLE];
+
+    if (existing) {
+      if (existing.VERSION !== passable.VERSION) {
+        setTimeout(function () {
+          return throwMultiplePassableError(passable.VERSION, existing.VERSION);
+        });
+      }
+    } else {
+      globalObject[SYMBOL_PASSABLE] = passable;
+    }
+
+    return globalObject[SYMBOL_PASSABLE];
+  };
+
+  var singletonExport = {
+    use: function use() {
+      return globalObject[SYMBOL_PASSABLE];
+    },
+    register: register
+  };
+
+  /**
+   * Creates a new context object, and assigns it as a static property on Passable's singleton.
    * @param {Object} parent   Parent context.
    */
+
   var Context = function Context(parent) {
-    Context.ctx = this;
+    singletonExport.use().ctx = this;
 
     _extends(this, parent);
   };
@@ -93,10 +408,22 @@
 
 
   Context.clear = function () {
-    Context.ctx = null;
+    singletonExport.use().ctx = null;
   };
 
+  /**
+   * @type {String} Version number derived from current tag.
+   */
+  var VERSION = "7.4.0";
+  /**
+   * @type {String} Keyword used for marking non failing tests.
+   */
+
   var WARN = 'warn';
+  /**
+   * @type {String} Keyword used for marking failing tests.
+   */
+
   var FAIL = 'fail';
 
   /**
@@ -114,7 +441,7 @@
 
   /**
    * Describes a test call inside a passable suite.
-   * @param {Object} parent               Parent Context.
+   * @param {Object} ctx                  Parent context.
    * @param {String} fieldName            Name of the field being tested.
    * @param {String} statement            The message returned when failing.
    * @param {Promise|Function} testFn     The actual test callbrack or promise.
@@ -257,7 +584,7 @@
    */
 
 
-  var register = function register(testObject) {
+  var register$1 = function register(testObject) {
     var testFn = testObject.testFn,
         ctx = testObject.ctx,
         fieldName = testObject.fieldName;
@@ -317,8 +644,8 @@
       return;
     }
 
-    var testObject = new TestObject(Context.ctx, fieldName, statement, testFn, severity || FAIL);
-    register(testObject);
+    var testObject = new TestObject(singletonExport.use().ctx, fieldName, statement, testFn, severity || FAIL);
+    register$1(testObject);
     return testObject;
   };
 
@@ -799,8 +1126,10 @@
    */
 
   var draft = function draft() {
-    if (Context.ctx) {
-      return Context.ctx.result.output;
+    var ctx = singletonExport.use().ctx;
+
+    if (ctx) {
+      return ctx.result.output;
     }
 
     setTimeout(function () {
@@ -826,264 +1155,7 @@
     }
   }
 
-  var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-  function createCommonjsModule(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
-  }
-
-  var enforce_min = createCommonjsModule(function (module, exports) {
-    !function (n, e) {
-       module.exports = e() ;
-    }(commonjsGlobal, function () {
-
-      function n(e) {
-        return (n = "function" == typeof Symbol && "symbol" == _typeof(Symbol.iterator) ? function (n) {
-          return _typeof(n);
-        } : function (n) {
-          return n && "function" == typeof Symbol && n.constructor === Symbol && n !== Symbol.prototype ? "symbol" : _typeof(n);
-        })(e);
-      }
-
-      function e(n, e, t) {
-        return e in n ? Object.defineProperty(n, e, {
-          value: t,
-          enumerable: !0,
-          configurable: !0,
-          writable: !0
-        }) : n[e] = t, n;
-      }
-
-      function t(n, e) {
-        var t = Object.keys(n);
-
-        if (Object.getOwnPropertySymbols) {
-          var r = Object.getOwnPropertySymbols(n);
-          e && (r = r.filter(function (e) {
-            return Object.getOwnPropertyDescriptor(n, e).enumerable;
-          })), t.push.apply(t, r);
-        }
-
-        return t;
-      }
-
-      function r(n) {
-        for (var r = 1; r < arguments.length; r++) {
-          var o = null != arguments[r] ? arguments[r] : {};
-          r % 2 ? t(o, !0).forEach(function (t) {
-            e(n, t, o[t]);
-          }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(n, Object.getOwnPropertyDescriptors(o)) : t(o).forEach(function (e) {
-            Object.defineProperty(n, e, Object.getOwnPropertyDescriptor(o, e));
-          });
-        }
-
-        return n;
-      }
-
-      var o = function o(n, e) {
-        return Object.prototype.hasOwnProperty.call(n, e) && "function" == typeof n[e];
-      },
-          u = Function("return this")(),
-          i = function i() {
-        return "function" == typeof u.Proxy;
-      };
-
-      function a(n) {
-        return Boolean(Array.isArray(n));
-      }
-
-      function c(n) {
-        return Boolean("number" == typeof n);
-      }
-
-      function f(n) {
-        return Boolean("string" == typeof n);
-      }
-
-      function s(n, e) {
-        return e instanceof RegExp ? e.test(n) : "string" == typeof e && new RegExp(e).test(n);
-      }
-
-      function l(e, t) {
-        return Array.isArray(t) && ["string", "number", "boolean"].includes(n(e)) ? t.includes(e) : "string" == typeof t && "string" == typeof e && t.includes(e);
-      }
-
-      function y(n, e) {
-        return n === e;
-      }
-
-      function p(n) {
-        var e = !isNaN(parseFloat(n)) && !isNaN(Number(n)) && isFinite(n);
-        return Boolean(e);
-      }
-
-      function g(n, e) {
-        return p(n) && p(e) && Number(n) === Number(e);
-      }
-
-      function b(e) {
-        return !e || (p(e) ? 0 === e : Object.prototype.hasOwnProperty.call(e, "length") ? 0 === e.length : "object" !== n(e) || 0 === Object.keys(e).length);
-      }
-
-      function m(n, e) {
-        return p(n) && p(e) && Number(n) > Number(e);
-      }
-
-      function v(n, e) {
-        return p(n) && p(e) && Number(n) >= Number(e);
-      }
-
-      function h(n, e) {
-        return p(n) && p(e) && Number(n) < Number(e);
-      }
-
-      function O(n, e) {
-        return p(n) && p(e) && Number(n) <= Number(e);
-      }
-
-      function N(n, e) {
-        return n.length === e;
-      }
-
-      a.negativeForm = "isNotArray", c.negativeForm = "isNotNumber", f.negativeForm = "isNotString", s.negativeForm = "notMatches", l.negativeForm = "notInside", y.negativeForm = "notEquals", p.negativeForm = "isNotNumeric", g.negativeForm = "numberNotEquals", b.negativeForm = "isNotEmpty", m.alias = "gt", v.alias = "gte", h.alias = "lt", O.alias = "lte", N.negativeForm = "lengthNotEquals";
-
-      var d = function (n) {
-        var e = function e(_e) {
-          var t = n[_e].negativeForm,
-              r = n[_e].alias;
-          t && (n[t] = function () {
-            return !n[_e].apply(n, arguments);
-          }), r && (n[r] = n[_e]);
-        };
-
-        for (var t in n) {
-          e(t);
-        }
-
-        return n;
-      }({
-        isArray: a,
-        isNumber: c,
-        isString: f,
-        matches: s,
-        inside: l,
-        equals: y,
-        numberEquals: g,
-        isNumeric: p,
-        isEmpty: b,
-        greaterThan: m,
-        greaterThanOrEquals: v,
-        lessThan: h,
-        lessThanOrEquals: O,
-        longerThan: function longerThan(n, e) {
-          return n.length > e;
-        },
-        longerThanOrEquals: function longerThanOrEquals(n, e) {
-          return n.length >= e;
-        },
-        shorterThan: function shorterThan(n, e) {
-          return n.length < e;
-        },
-        shorterThanOrEquals: function shorterThanOrEquals(n, e) {
-          return n.length <= e;
-        },
-        lengthEquals: N,
-        isOdd: function isOdd(n) {
-          return !!p(n) && n % 2 != 0;
-        },
-        isEven: function isEven(n) {
-          return !!p(n) && n % 2 == 0;
-        }
-      });
-
-      function E(e, t) {
-        if ("function" == typeof e) {
-          for (var r = arguments.length, o = new Array(r > 2 ? r - 2 : 0), u = 2; u < r; u++) {
-            o[u - 2] = arguments[u];
-          }
-
-          if (!0 !== e.apply(void 0, [t].concat(o))) throw new Error("[Enforce]: invalid ".concat(n(t), " value"));
-        }
-      }
-
-      function j() {
-        var n = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-            t = r({}, d, {}, n);
-        if (i()) return function (n) {
-          var e = new Proxy(t, {
-            get: function get(t, r) {
-              if (o(t, r)) return function () {
-                for (var o = arguments.length, u = new Array(o), i = 0; i < o; i++) {
-                  u[i] = arguments[i];
-                }
-
-                return E.apply(void 0, [t[r], n].concat(u)), e;
-              };
-            }
-          });
-          return e;
-        };
-        var u = Object.keys(t);
-        return function (n) {
-          return u.reduce(function (u, i) {
-            return _extends(u, r({}, o(t, i) && e({}, i, function () {
-              for (var e = arguments.length, r = new Array(e), o = 0; o < e; o++) {
-                r[o] = arguments[o];
-              }
-
-              return E.apply(void 0, [t[i], n].concat(r)), u;
-            })));
-          }, {});
-        };
-      }
-
-      var w = new j();
-      return w.Enforce = j, w;
-    });
-  });
-
-  var any = createCommonjsModule(function (module, exports) {
-    (function (global, factory) {
-       module.exports = factory() ;
-    })(commonjsGlobal, function () {
-      /**
-       * Accepts a value or a function, and coerces it into a boolean value
-       * @param {*|Function} [arg] Any expression or value
-       * @return {Boolean}
-       */
-
-      var run = function run(arg) {
-        if (typeof arg === 'function') {
-          try {
-            var output = arg();
-            return output != false && Boolean(output);
-          } catch (err) {
-            return false;
-          }
-        }
-
-        return arg != false && Boolean(arg);
-      };
-      /**
-       * Checks that at least one passed argument evaluates to a truthy value.
-       * @param  {[]*} [args] Any amount of values or expressions.
-       * @returns {Boolean}
-       */
-
-
-      var any = function any() {
-        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
-        }
-
-        return args.some(run);
-      };
-
-      return any;
-    });
-  });
-
-  passable.VERSION = "7.4.0";
+  passable.VERSION = VERSION;
   passable.enforce = enforce_min;
   passable.draft = draft;
   passable.Enforce = enforce_min.Enforce;
@@ -1092,6 +1164,7 @@
   passable.any = any;
   passable.WARN = WARN;
   passable.FAIL = FAIL;
+  singletonExport.register(passable);
 
   return passable;
 
