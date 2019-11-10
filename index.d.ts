@@ -20,6 +20,7 @@ declare module 'passable' {
             PassableNS.IValidationResult,
         enforce(value): PassableNS.IEnforceInstance;
         test(name: string, errorMessage: string, callback: PassableNS.IFunctionOrPromise): void;
+        draft(): PassableNS.IEnforceInstance;
         Enforce: PassableNS.IEnforceConstructor;
         any: PassableNS.IAny;
         validate: PassableNS.IValidate;
