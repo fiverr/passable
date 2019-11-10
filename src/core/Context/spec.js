@@ -1,4 +1,5 @@
 import faker from 'faker';
+import { singleton } from '../../lib';
 import Context from '.';
 
 describe('Context', () => {
@@ -21,15 +22,15 @@ describe('Context', () => {
         });
     });
 
-    it('Should store instance as constructor property', () => {
-        expect(Context.ctx).to.equal(instance);
+    it('Should store instance on singleton', () => {
+        expect(singleton.use().ctx).to.equal(instance);
     });
 
     describe('Context.clear', () => {
         it('Should nullify stored instance', () => {
-            expect(Context.ctx).to.equal(instance);
+            expect(singleton.use().ctx).to.equal(instance);
             Context.clear();
-            expect(Context.ctx).to.equal(null);
+            expect(singleton.use().ctx).to.equal(null);
         });
     });
 });

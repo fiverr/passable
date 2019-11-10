@@ -1,4 +1,4 @@
-import Context from '../Context';
+import { singleton } from '../../lib';
 import { ERROR_NO_CONTEXT } from './constants';
 
 /**
@@ -6,8 +6,10 @@ import { ERROR_NO_CONTEXT } from './constants';
  */
 const draft = () => {
 
-    if (Context.ctx) {
-        return Context.ctx.result.output;
+    const ctx = singleton.use().ctx;
+
+    if (ctx) {
+        return ctx.result.output;
     }
 
     setTimeout(() => {
