@@ -7,14 +7,14 @@ env:
     - GIT_EMAIL: opensource@fiverr.com
     - GITHUB_REPO: fiverr/passable
     - GIT_SOURCE: docs
-script:
-- echo "skipping tests"
 
 before_script:
 - npm run build
 - npm run eslint
 
 after_success:
+- chmod +x ./scripts/handle_changes.sh
+- source ./scripts/handle_changes.sh
 - node ./scripts/prep_docs.js
 - chmod +x ./scripts/push_tag_to_master.sh
 - if [ "$TRAVIS_BRANCH" = "release" ]; then ./scripts/push_tag_to_master.sh; fi
@@ -42,7 +42,7 @@ deploy:
     email: evyatar.a@fiverr.com
     skip_cleanup: true
     api_key: $NPM_TOKEN
-    tag: "next-${TRAVIS_COMMIT:(0):6}"
+    tag: "DEVELOPMENT"
     on:
       all_branches: true
       condition: $TRAVIS_BRANCH != "next" && $TRAVIS_BRANCH != "master" && $TRAVIS_BRANCH != "release"
