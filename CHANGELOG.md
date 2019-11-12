@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [7.5.0] - 2019-11-12
+
+### Additions
+- 37ed4d7 [Minor] Add draft as an export from passable (#204) (ealush)
+- aff8c86 [Minor] Create a Passable singleton | future hook support (#213) (ealush)
+
 ## [7.4.0] - 2019-11-04
 
 ### Additions

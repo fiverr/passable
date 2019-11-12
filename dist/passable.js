@@ -343,7 +343,7 @@
   /**
    * @type {String} Passable's major version.
    */
-  var PASSABLE_MAJOR = "7.4.0".split('.')[0];
+  var PASSABLE_MAJOR = "7.5.0".split('.')[0];
   /**
    * @type {Symbol} Used to store a global instance of Passable.
    */
@@ -414,7 +414,7 @@
   /**
    * @type {String} Version number derived from current tag.
    */
-  var VERSION = "7.4.0";
+  var VERSION = "7.5.0";
   /**
    * @type {String} Keyword used for marking non failing tests.
    */
