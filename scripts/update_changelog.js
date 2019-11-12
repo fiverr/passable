@@ -44,6 +44,8 @@ const updateChangelog = () => {
     changelog.splice(6, 0, versionLog);
 
     fs.writeFileSync('./CHANGELOG.md', changelog.join('\n'));
+
+    console.log(versionLog);
 };
 
-module.exports = updateChangelog;
+updateChangelog();

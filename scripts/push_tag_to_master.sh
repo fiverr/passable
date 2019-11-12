@@ -14,7 +14,7 @@ echo "Rebuilding with current tag"
 yarn build
 
 echo "Updating changelog"
-node ./scripts/update_changelog.js
+CHANGELOG=$(node ./scripts/update_changelog.js)
 
 EMOJIS=(🚀 🤘 ✨ 🔔 🌈 🤯)
 EMOJI=${EMOJIS[$RANDOM % ${#EMOJIS[@]}]}
@@ -32,3 +32,6 @@ git push https://${GITHUB_TOKEN}@github.com/$GITHUB_REPO.git master
 
 git tag $NEXT_VERSION
 git push origin $NEXT_VERSION
+
+echo "Publishing Release"
+node ./scripts/create_release.js "$CHANGELOG"

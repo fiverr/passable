@@ -13,7 +13,7 @@ function listMessages(commits = []) {
 }
 
 function getCommitDiff(repo, branches, token) {
-    return fetch(compareUrl(repo, branches), { ...token && { headers: { token } } })
+    return fetch(compareUrl(repo, branches), { ...token && { headers: { Authorization: `token ${token}` } } })
         .then((res) => res.json())
         .catch(() => process.exit(1));
 }
