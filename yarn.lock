@@ -2686,9 +2686,9 @@ mute-stream@0.0.8:
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
 n4s@^0.4.1:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/n4s/-/n4s-0.4.4.tgz#d3dfbf27873bb596bdadd9a00e8c4a66976addc5"
-  integrity sha512-469Dstvn02shx0ckLuYHkHHpYqvcB8YDRFNo+tdCWuoigRAf1kxSo8lMHynVBMuLLJRvVOZpM6yez8NGH+HX/A==
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/n4s/-/n4s-0.4.6.tgz#fc0d915e4b61b4af1c28ac8550b805b3705d0171"
+  integrity sha512-QnNNTefO6oMqK/oDRzBBFxwLl6jZ/USvuk2L7rGvAgE1hCK4GMBJg0qCtcUDbd+dV8VocL1hveadfgUtzsuSwQ==
 
 nan@^2.12.1:
   version "2.14.0"
