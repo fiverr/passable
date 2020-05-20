@@ -1,5 +1,3 @@
-import {IEnforceInstance} from "passable";
-
 declare module 'passable' {
 
     const passable: Passable;
