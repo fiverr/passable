@@ -6,9 +6,13 @@ dev
 .eslintignore
 .eslintrc
 .travis.yml
+.github
 webpack.config.js
 yarn.lock
 _docpress
 _docs
+docs
+scripts
+config
 flow-typed
 playground
