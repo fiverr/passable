@@ -23,14 +23,14 @@ after_success:
 
 deploy:
   - provider: npm
-    email: evyatar.a@fiverr.com
+    email: it@fiverr.com
     skip_cleanup: true
     api_key: $NPM_TOKEN
     on:
       repo: fiverr/passable
       branch: master
   - provider: npm
-    email: evyatar.a@fiverr.com
+    email: it@fiverr.com
     skip_cleanup: true
     api_key: $NPM_TOKEN
     tag: "next"
@@ -39,7 +39,7 @@ deploy:
       condition: $TRAVIS_BRANCH = "next"
       repo: fiverr/passable
   - provider: npm
-    email: evyatar.a@fiverr.com
+    email: it@fiverr.com
     skip_cleanup: true
     api_key: $NPM_TOKEN
     tag: "DEVELOPMENT"
