@@ -661,9 +661,9 @@
     semver "^5.5.0"
 
 "@babel/register@^7.5.5":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@babel/register/-/register-7.7.0.tgz#4e23ecf840296ef79c605baaa5c89e1a2426314b"
-  integrity sha512-HV3GJzTvSoyOMWGYn2TAh6uL6g+gqKTgEZ99Q3+X9UURT1VPT/WcU46R61XftIc5rXytcOHZ4Z0doDlsjPomIg==
+  version "7.10.1"
+  resolved "https://registry.yarnpkg.com/@babel/register/-/register-7.10.1.tgz#b6567c5cb5049f44bbf8c35d6ff68ca3c43238ed"
+  integrity sha512-sl96+kB3IA2B9EzpwwBmYadOT14vw3KaXOknGDbJaZCOj52GDA4Tivudq9doCJcB+bEIKCEARZYwRgBBsCGXyg==
   dependencies:
     find-cache-dir "^2.0.0"
     lodash "^4.17.13"
