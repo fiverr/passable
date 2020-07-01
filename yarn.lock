@@ -2661,10 +2661,10 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-n4s@^0.4.1:
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/n4s/-/n4s-0.4.6.tgz#fc0d915e4b61b4af1c28ac8550b805b3705d0171"
-  integrity sha512-QnNNTefO6oMqK/oDRzBBFxwLl6jZ/USvuk2L7rGvAgE1hCK4GMBJg0qCtcUDbd+dV8VocL1hveadfgUtzsuSwQ==
+n4s@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/n4s/-/n4s-2.0.0.tgz#6d51a18165a5e4fb00586778948bcb24ab7e5782"
+  integrity sha512-uVCP9pOFLl3+Q4iHpaMjvP8DSajtlBCBGjvu8EWIt7njsF7dwgS600o05qvwVe5tq+xQLiaTXR+ukFyxDtZ13g==
 
 nan@^2.12.1:
   version "2.14.0"
