@@ -38,7 +38,7 @@
     "eslint-loader": "^3.0.0",
     "faker": "^4.1.0",
     "lodash": "^4.17.15",
-    "mocha": "^7.2.0",
+    "mocha": "^8.0.1",
     "n4s": "^2.0.0",
     "node-fetch": "^2.6.0",
     "regenerator-runtime": "^0.13.3",
