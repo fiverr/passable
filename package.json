@@ -1,6 +1,6 @@
 {
   "name": "passable",
-  "version": "7.5.1",
+  "version": "7.6.0-rc",
   "description": "Isomorphic Data Model Validations",
   "main": "./dist/passable.min.js",
   "typings": "index.d.ts",
