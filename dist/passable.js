@@ -343,7 +343,7 @@
   /**
    * @type {String} Passable's major version.
    */
-  var PASSABLE_MAJOR = "7.5.0".split('.')[0];
+  var PASSABLE_MAJOR = "7.5.1".split('.')[0];
   /**
    * @type {Symbol} Used to store a global instance of Passable.
    */
@@ -414,7 +414,7 @@
   /**
    * @type {String} Version number derived from current tag.
    */
-  var VERSION = "7.5.0";
+  var VERSION = "7.5.1";
   /**
    * @type {String} Keyword used for marking non failing tests.
    */
@@ -625,19 +625,21 @@
 
 
   var test = function test(fieldName) {
-    var statement, testFn, severity;
-
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
 
-    if (typeof args[0] === 'string') {
+    var statement, testFn, severity;
+
+    if (isTestFn(args[0])) {
+      testFn = args[0];
+      severity = args[1];
+    } else if (['string', 'object'].some(function (type) {
+      return _typeof(args[0]) === type;
+    })) {
       statement = args[0];
       testFn = args[1];
       severity = args[2];
-    } else if (isTestFn(args[0])) {
-      testFn = args[0];
-      severity = args[1];
     }
 
     if (!isTestFn(testFn)) {
