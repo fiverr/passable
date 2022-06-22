@@ -39,7 +39,7 @@
     "faker": "^5.5.3",
     "lodash": "^4.17.15",
     "mocha": "^9.0.3",
-    "n4s": "0.4.1",
+    "n4s": "^0.4.1",
     "node-fetch": "^2.6.0",
     "regenerator-runtime": "^0.13.3",
     "rollup": "^2.55.1",
