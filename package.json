@@ -1,7 +1,7 @@
 {
   "name": "passable",
-  "version": "7.5.1",
-  "description": "Isomorphic Data Model Validations",
+  "version": "8.0.0",
+  "description": "Isomorphic Data Model Validations.",
   "main": "./dist/passable.min.js",
   "typings": "index.d.ts",
   "author": "Evyatar <evyatar.a@fiverr.com>",
@@ -39,7 +39,7 @@
     "faker": "^5.5.3",
     "lodash": "^4.17.15",
     "mocha": "^9.0.3",
-    "n4s": "^2.0.0",
+    "n4s": "0.4.1",
     "node-fetch": "^2.6.0",
     "regenerator-runtime": "^0.13.3",
     "rollup": "^2.55.1",

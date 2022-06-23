@@ -1,10 +1,12 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.passable = factory());
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.passable = factory());
 }(this, (function () { 'use strict';
 
   function _typeof(obj) {
+    "@babel/helpers - typeof";
+
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       _typeof = function (obj) {
         return typeof obj;
@@ -59,23 +61,36 @@
   }
 
   function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
   }
 
   function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
-
-      return arr2;
-    }
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
   }
 
   function _iterableToArray(iter) {
-    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+  }
+
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+    return arr2;
   }
 
   function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance");
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -86,7 +101,7 @@
 
   var enforce_min = createCommonjsModule(function (module, exports) {
     !function (n, e) {
-       module.exports = e() ;
+      module.exports = e() ;
     }(commonjsGlobal, function () {
 
       function n(e) {
@@ -296,7 +311,7 @@
 
   var any = createCommonjsModule(function (module, exports) {
     (function (global, factory) {
-       module.exports = factory() ;
+      module.exports = factory() ;
     })(commonjsGlobal, function () {
       /**
        * Accepts a value or a function, and coerces it into a boolean value
@@ -343,7 +358,7 @@
   /**
    * @type {String} Passable's major version.
    */
-  var PASSABLE_MAJOR = "7.5.0".split('.')[0];
+  var PASSABLE_MAJOR = "8.0.0".split('.')[0];
   /**
    * @type {Symbol} Used to store a global instance of Passable.
    */
@@ -369,7 +384,7 @@
    */
 
 
-  var register = function register(passable) {
+  var register$1 = function register(passable) {
     var existing = globalObject[SYMBOL_PASSABLE];
 
     if (existing) {
@@ -389,7 +404,7 @@
     use: function use() {
       return globalObject[SYMBOL_PASSABLE];
     },
-    register: register
+    register: register$1
   };
 
   /**
@@ -414,7 +429,7 @@
   /**
    * @type {String} Version number derived from current tag.
    */
-  var VERSION = "7.5.0";
+  var VERSION = "8.0.0";
   /**
    * @type {String} Keyword used for marking non failing tests.
    */
@@ -584,7 +599,7 @@
    */
 
 
-  var register$1 = function register(testObject) {
+  var register = function register(testObject) {
     var testFn = testObject.testFn,
         ctx = testObject.ctx,
         fieldName = testObject.fieldName;
@@ -625,19 +640,21 @@
 
 
   var test = function test(fieldName) {
-    var statement, testFn, severity;
-
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
 
-    if (typeof args[0] === 'string') {
+    var statement, testFn, severity;
+
+    if (isTestFn(args[0])) {
+      testFn = args[0];
+      severity = args[1];
+    } else if (['string', 'object'].some(function (type) {
+      return _typeof(args[0]) === type;
+    })) {
       statement = args[0];
       testFn = args[1];
       severity = args[2];
-    } else if (isTestFn(args[0])) {
-      testFn = args[0];
-      severity = args[1];
     }
 
     if (!isTestFn(testFn)) {
@@ -645,7 +662,7 @@
     }
 
     var testObject = new TestObject(singletonExport.use().ctx, fieldName, statement, testFn, severity || FAIL);
-    register$1(testObject);
+    register(testObject);
     return testObject;
   };
 
@@ -973,9 +990,7 @@
   };
 
   /** Class representing validation inclusion and exclusion groups */
-  var Specific =
-  /*#__PURE__*/
-  function () {
+  var Specific = /*#__PURE__*/function () {
     /**
      * Initialize Specific object
      *
