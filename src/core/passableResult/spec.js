@@ -534,17 +534,17 @@ describe('module: passableResult', () => {
             testObject.fail('f1', 'should fail', FAIL);
 
             expect(testObject.output).to.deep.equal({
-                    name: 'FormName',
-                    testCount: 0,
-                    failCount: 1,
-                    warnCount: 0,
-                    testsPerformed: {
-                        f1: { failCount: 1, warnCount: 0, testCount: 0 }
-                    },
-                    errors: { f1: ['should fail'] },
-                    warnings: {},
-                    skipped: []
-                });
+                name: 'FormName',
+                testCount: 0,
+                failCount: 1,
+                warnCount: 0,
+                testsPerformed: {
+                    f1: { failCount: 1, warnCount: 0, testCount: 0 }
+                },
+                errors: { f1: ['should fail'] },
+                warnings: {},
+                skipped: []
+            });
 
             expect(testObject.output.hasErrors()).to.equal(true);
             expect(testObject.output.hasWarnings()).to.equal(false);
@@ -553,17 +553,17 @@ describe('module: passableResult', () => {
         it('Should return correct warning object', () => {
             testObject.fail('f1', 'should warn', WARN);
             expect(testObject.output).to.deep.equal({
-                    name: 'FormName',
-                    testCount: 0,
-                    failCount: 0,
-                    warnCount: 1,
-                    testsPerformed: {
-                        f1: { failCount: 0, warnCount: 1, testCount: 0 }
-                    },
-                    errors: {},
-                    warnings: { f1: ['should warn'] },
-                    skipped: []
-                });
+                name: 'FormName',
+                testCount: 0,
+                failCount: 0,
+                warnCount: 1,
+                testsPerformed: {
+                    f1: { failCount: 0, warnCount: 1, testCount: 0 }
+                },
+                errors: {},
+                warnings: { f1: ['should warn'] },
+                skipped: []
+            });
 
             expect(testObject.output.hasErrors()).to.equal(false);
             expect(testObject.output.hasWarnings()).to.equal(true);
@@ -590,17 +590,17 @@ describe('module: passableResult', () => {
             testObject.bumpTestWarning('f1', 'should warn');
 
             expect(testObject.output).to.deep.equal({
-                    name: 'FormName',
-                    testCount: 0,
-                    failCount: 0,
-                    warnCount: 1,
-                    testsPerformed: {
-                        f1: { failCount: 0, warnCount: 1, testCount: 0 }
-                    },
-                    errors: {},
-                    warnings: { f1: ['should warn'] },
-                    skipped: []
-                });
+                name: 'FormName',
+                testCount: 0,
+                failCount: 0,
+                warnCount: 1,
+                testsPerformed: {
+                    f1: { failCount: 0, warnCount: 1, testCount: 0 }
+                },
+                errors: {},
+                warnings: { f1: ['should warn'] },
+                skipped: []
+            });
 
             expect(testObject.output.hasErrors()).to.equal(false);
             expect(testObject.output.hasWarnings()).to.equal(true);
@@ -610,17 +610,17 @@ describe('module: passableResult', () => {
             testObject.bumpTestError('f1', 'should error');
 
             expect(testObject.output).to.deep.equal({
-                    name: 'FormName',
-                    testCount: 0,
-                    failCount: 1,
-                    warnCount: 0,
-                    testsPerformed: {
-                        f1: { failCount: 1, warnCount: 0, testCount: 0 }
-                    },
-                    errors: { f1: ['should error'] },
-                    warnings: {},
-                    skipped: []
-                });
+                name: 'FormName',
+                testCount: 0,
+                failCount: 1,
+                warnCount: 0,
+                testsPerformed: {
+                    f1: { failCount: 1, warnCount: 0, testCount: 0 }
+                },
+                errors: { f1: ['should error'] },
+                warnings: {},
+                skipped: []
+            });
 
             expect(testObject.output.hasErrors()).to.equal(true);
             expect(testObject.output.hasWarnings()).to.equal(false);

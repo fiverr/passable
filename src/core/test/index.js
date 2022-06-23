@@ -127,10 +127,10 @@ const test = (fieldName, ...args) => {
         testFn,
         severity;
 
-    if (typeof args[0] === 'string') {
-        [statement, testFn, severity] = args;
-    } else if (isTestFn(args[0])) {
+    if (isTestFn(args[0])) {
         [testFn, severity] = args;
+    } else if (['string', 'object'].some((type) => typeof args[0] === type)) {
+        [statement, testFn, severity] = args;
     }
 
     if (!isTestFn(testFn)) {
