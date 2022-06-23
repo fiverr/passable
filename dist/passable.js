@@ -100,191 +100,212 @@
   }
 
   var enforce_min = createCommonjsModule(function (module, exports) {
-
-    !function (n, r) {
-      module.exports = r() ;
+    !function (n, e) {
+      module.exports = e() ;
     }(commonjsGlobal, function () {
-      function n() {
-        return (n = Object.assign || function (n) {
-          for (var r = 1; r < arguments.length; r++) {
-            var t,
-                e = arguments[r];
 
-            for (t in e) {
-              Object.prototype.hasOwnProperty.call(e, t) && (n[t] = e[t]);
-            }
-          }
+      function n(e) {
+        return (n = "function" == typeof Symbol && "symbol" == _typeof(Symbol.iterator) ? function (n) {
+          return _typeof(n);
+        } : function (n) {
+          return n && "function" == typeof Symbol && n.constructor === Symbol && n !== Symbol.prototype ? "symbol" : _typeof(n);
+        })(e);
+      }
 
-          return n;
-        }).apply(this, arguments);
+      function e(n, e, t) {
+        return e in n ? Object.defineProperty(n, e, {
+          value: t,
+          enumerable: !0,
+          configurable: !0,
+          writable: !0
+        }) : n[e] = t, n;
+      }
+
+      function t(n, e) {
+        var t = Object.keys(n);
+
+        if (Object.getOwnPropertySymbols) {
+          var r = Object.getOwnPropertySymbols(n);
+          e && (r = r.filter(function (e) {
+            return Object.getOwnPropertyDescriptor(n, e).enumerable;
+          })), t.push.apply(t, r);
+        }
+
+        return t;
       }
 
       function r(n) {
-        return !!Array.isArray(n);
+        for (var r = 1; r < arguments.length; r++) {
+          var o = null != arguments[r] ? arguments[r] : {};
+          r % 2 ? t(o, !0).forEach(function (t) {
+            e(n, t, o[t]);
+          }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(n, Object.getOwnPropertyDescriptors(o)) : t(o).forEach(function (e) {
+            Object.defineProperty(n, e, Object.getOwnPropertyDescriptor(o, e));
+          });
+        }
+
+        return n;
       }
 
-      function t(n) {
-        return "number" == typeof n;
-      }
-
-      function e(n) {
-        return "string" == typeof n;
-      }
-
-      function o(n, r) {
-        return r instanceof RegExp ? r.test(n) : "string" == typeof r && new RegExp(r).test(n);
-      }
-
-      function u(n, r) {
-        return !!(Array.isArray(r) && ["string", "number", "boolean"].includes(_typeof(n)) || "string" == typeof r && "string" == typeof n) && r.includes(n);
-      }
-
-      function i(n, r) {
-        return n === r;
-      }
+      var o = function o(n, e) {
+        return Object.prototype.hasOwnProperty.call(n, e) && "function" == typeof n[e];
+      },
+          u = Function("return this")(),
+          i = function i() {
+        return "function" == typeof u.Proxy;
+      };
 
       function a(n) {
-        return !(isNaN(parseFloat(n)) || isNaN(Number(n)) || !isFinite(n));
-      }
-
-      function f(n, r) {
-        return a(n) && a(r) && Number(n) === Number(r);
+        return Boolean(Array.isArray(n));
       }
 
       function c(n) {
-        return !n || (a(n) ? 0 === n : Object.prototype.hasOwnProperty.call(n, "length") ? 0 === n.length : "object" != _typeof(n) || 0 === Object.keys(n).length);
+        return Boolean("number" == typeof n);
       }
 
-      function s(n, r) {
-        return a(n) && a(r) && Number(n) > Number(r);
+      function f(n) {
+        return Boolean("string" == typeof n);
       }
 
-      function l(n, r) {
-        return a(n) && a(r) && Number(n) >= Number(r);
+      function s(n, e) {
+        return e instanceof RegExp ? e.test(n) : "string" == typeof e && new RegExp(e).test(n);
       }
 
-      function y(n, r) {
-        return a(n) && a(r) && Number(n) < Number(r);
+      function l(e, t) {
+        return Array.isArray(t) && ["string", "number", "boolean"].includes(n(e)) ? t.includes(e) : "string" == typeof t && "string" == typeof e && t.includes(e);
       }
 
-      function g(n, r) {
-        return a(n) && a(r) && Number(n) <= Number(r);
+      function y(n, e) {
+        return n === e;
       }
 
-      function p(n, r) {
-        return n.length === r;
+      function p(n) {
+        var e = !isNaN(parseFloat(n)) && !isNaN(Number(n)) && isFinite(n);
+        return Boolean(e);
       }
 
-      function m(n) {
-        return !!n;
+      function g(n, e) {
+        return p(n) && p(e) && Number(n) === Number(e);
       }
 
-      function h(n, r) {
-        if ("function" == typeof n) {
-          for (var t = arguments.length, e = Array(2 < t ? t - 2 : 0), o = 2; o < t; o++) {
-            e[o - 2] = arguments[o];
-          }
-
-          if (!0 !== n.apply(void 0, [r].concat(e))) throw Error("[Enforce]: invalid " + _typeof(r) + " value");
-        }
+      function b(e) {
+        return !e || (p(e) ? 0 === e : Object.prototype.hasOwnProperty.call(e, "length") ? 0 === e.length : "object" !== n(e) || 0 === Object.keys(e).length);
       }
 
-      function v(r) {
-        void 0 === r && (r = {});
-        var t = n({}, d, {}, r);
-        if ("function" == typeof N.Proxy) return function (n) {
-          var r = new Proxy(t, {
-            get: function get(t, e) {
-              if (b(t, e)) return function () {
-                for (var o = arguments.length, u = Array(o), i = 0; i < o; i++) {
-                  u[i] = arguments[i];
-                }
-
-                return h.apply(void 0, [t[e], n].concat(u)), r;
-              };
-            }
-          });
-          return r;
-        };
-        var e = Object.keys(t);
-        return function (r) {
-          return e.reduce(function (e, o) {
-            var u;
-            return n(e, n({}, b(t, o) && ((u = {})[o] = function () {
-              for (var n = arguments.length, u = Array(n), i = 0; i < n; i++) {
-                u[i] = arguments[i];
-              }
-
-              return h.apply(void 0, [t[o], r].concat(u)), e;
-            }, u)));
-          }, {});
-        };
+      function m(n, e) {
+        return p(n) && p(e) && Number(n) > Number(e);
       }
 
-      var b = function b(n, r) {
-        return (n = Object.prototype.hasOwnProperty.call(n, r) && "function" == typeof n[r]) || function (n) {
-          setTimeout(function () {
-            throw Error("[enforce]: " + n);
-          });
-        }('Rule "' + r + '" was not found in rules object. Make sure you typed it correctly.'), n;
-      },
-          N = Function("return this")();
+      function v(n, e) {
+        return p(n) && p(e) && Number(n) >= Number(e);
+      }
 
-      r.negativeForm = "isNotArray", t.negativeForm = "isNotNumber", e.negativeForm = "isNotString", o.negativeForm = "notMatches", u.negativeForm = "notInside", i.negativeForm = "notEquals", a.negativeForm = "isNotNumeric", f.negativeForm = "numberNotEquals", c.negativeForm = "isNotEmpty", s.alias = "gt", l.alias = "gte", y.alias = "lt", g.alias = "lte", p.negativeForm = "lengthNotEquals", m.negativeForm = "isFalsy";
+      function h(n, e) {
+        return p(n) && p(e) && Number(n) < Number(e);
+      }
+
+      function O(n, e) {
+        return p(n) && p(e) && Number(n) <= Number(e);
+      }
+
+      function N(n, e) {
+        return n.length === e;
+      }
+
+      a.negativeForm = "isNotArray", c.negativeForm = "isNotNumber", f.negativeForm = "isNotString", s.negativeForm = "notMatches", l.negativeForm = "notInside", y.negativeForm = "notEquals", p.negativeForm = "isNotNumeric", g.negativeForm = "numberNotEquals", b.negativeForm = "isNotEmpty", m.alias = "gt", v.alias = "gte", h.alias = "lt", O.alias = "lte", N.negativeForm = "lengthNotEquals";
 
       var d = function (n) {
-        var r,
-            t = function t(r) {
-          var t = n[r].negativeForm,
-              e = n[r].alias;
+        var e = function e(_e) {
+          var t = n[_e].negativeForm,
+              r = n[_e].alias;
           t && (n[t] = function () {
-            return !n[r].apply(n, arguments);
-          }), e && (n[e] = n[r]);
+            return !n[_e].apply(n, arguments);
+          }), r && (n[r] = n[_e]);
         };
 
-        for (r in n) {
-          t(r);
+        for (var t in n) {
+          e(t);
         }
 
         return n;
       }({
-        isArray: r,
-        isNumber: t,
-        isString: e,
-        matches: o,
-        inside: u,
-        equals: i,
-        numberEquals: f,
-        isNumeric: a,
-        isEmpty: c,
-        greaterThan: s,
-        greaterThanOrEquals: l,
-        lessThan: y,
-        lessThanOrEquals: g,
-        longerThan: function longerThan(n, r) {
-          return n.length > r;
+        isArray: a,
+        isNumber: c,
+        isString: f,
+        matches: s,
+        inside: l,
+        equals: y,
+        numberEquals: g,
+        isNumeric: p,
+        isEmpty: b,
+        greaterThan: m,
+        greaterThanOrEquals: v,
+        lessThan: h,
+        lessThanOrEquals: O,
+        longerThan: function longerThan(n, e) {
+          return n.length > e;
         },
-        longerThanOrEquals: function longerThanOrEquals(n, r) {
-          return n.length >= r;
+        longerThanOrEquals: function longerThanOrEquals(n, e) {
+          return n.length >= e;
         },
-        shorterThan: function shorterThan(n, r) {
-          return n.length < r;
+        shorterThan: function shorterThan(n, e) {
+          return n.length < e;
         },
-        shorterThanOrEquals: function shorterThanOrEquals(n, r) {
-          return n.length <= r;
+        shorterThanOrEquals: function shorterThanOrEquals(n, e) {
+          return n.length <= e;
         },
-        lengthEquals: p,
+        lengthEquals: N,
         isOdd: function isOdd(n) {
-          return !!a(n) && 0 != n % 2;
+          return !!p(n) && n % 2 != 0;
         },
         isEven: function isEven(n) {
-          return !!a(n) && 0 == n % 2;
-        },
-        isTruthy: m
-      }),
-          E = new v();
+          return !!p(n) && n % 2 == 0;
+        }
+      });
 
-      return E.Enforce = v, E;
+      function E(e, t) {
+        if ("function" == typeof e) {
+          for (var r = arguments.length, o = new Array(r > 2 ? r - 2 : 0), u = 2; u < r; u++) {
+            o[u - 2] = arguments[u];
+          }
+
+          if (!0 !== e.apply(void 0, [t].concat(o))) throw new Error("[Enforce]: invalid ".concat(n(t), " value"));
+        }
+      }
+
+      function j() {
+        var n = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
+            t = r({}, d, {}, n);
+        if (i()) return function (n) {
+          var e = new Proxy(t, {
+            get: function get(t, r) {
+              if (o(t, r)) return function () {
+                for (var o = arguments.length, u = new Array(o), i = 0; i < o; i++) {
+                  u[i] = arguments[i];
+                }
+
+                return E.apply(void 0, [t[r], n].concat(u)), e;
+              };
+            }
+          });
+          return e;
+        };
+        var u = Object.keys(t);
+        return function (n) {
+          return u.reduce(function (u, i) {
+            return _extends(u, r({}, o(t, i) && e({}, i, function () {
+              for (var e = arguments.length, r = new Array(e), o = 0; o < e; o++) {
+                r[o] = arguments[o];
+              }
+
+              return E.apply(void 0, [t[i], n].concat(r)), u;
+            })));
+          }, {});
+        };
+      }
+
+      var w = new j();
+      return w.Enforce = j, w;
     });
   });
 
@@ -337,7 +358,7 @@
   /**
    * @type {String} Passable's major version.
    */
-  var PASSABLE_MAJOR = "7.6.0".split('.')[0];
+  var PASSABLE_MAJOR = "8.0.0".split('.')[0];
   /**
    * @type {Symbol} Used to store a global instance of Passable.
    */
@@ -408,7 +429,7 @@
   /**
    * @type {String} Version number derived from current tag.
    */
-  var VERSION = "7.6.0";
+  var VERSION = "8.0.0";
   /**
    * @type {String} Keyword used for marking non failing tests.
    */
