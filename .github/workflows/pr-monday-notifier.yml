@@ -1,0 +1,17 @@
+---
+name: PR Monday Notifier
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, edited, closed]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  notify-monday:
+    uses: fiverr/github_workflows/.github/workflows/pr-monday-notifier.yml@master
+    secrets:
+      MONDAY_API_TOKEN: ${{ secrets.MONDAY_API_TOKEN }}
+      GITHUBOT_TOKEN: ${{ secrets.GITHUBOT_TOKEN }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
