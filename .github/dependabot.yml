@@ -1,0 +1,46 @@
+version: 2
+registries:
+  npm-registry-registry-npmjs-org:
+    type: npm-registry
+    url: https://registry.npmjs.org
+    token: "${{secrets.NPM_REGISTRY_REGISTRY_NPMJS_ORG_TOKEN}}"
+  npm-registry-fiverr-jfrog-io-fiverr:
+    type: npm-registry
+    url: https://fiverr.jfrog.io/fiverr
+    username: "${{secrets.NPM_REGISTRY_FIVERR_JFROG_IO_FIVERR_USERNAME}}"
+    password: "${{secrets.NPM_REGISTRY_FIVERR_JFROG_IO_FIVERR_PASSWORD}}"
+  npm-registry-fiverr-jfrog-io-fiverr-api-npm-npm-fiverr:
+    type: npm-registry
+    url: https://fiverr.jfrog.io/fiverr/api/npm/npm-fiverr
+    username: "${{secrets.NPM_REGISTRY_FIVERR_JFROG_IO_FIVERR_API_NPM_NPM_FIVERR_USERNAME}}"
+    password: "${{secrets.NPM_REGISTRY_FIVERR_JFROG_IO_FIVERR_API_NPM_NPM_FIVERR_PASSWORD}}"
+
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+  open-pull-requests-limit: 10
+  target-branch: next
+  versioning-strategy: widen
+  ignore:
+  - dependency-name: eslint
+    versions:
+    - 7.16.0
+    - 7.19.0
+  - dependency-name: sinon
+    versions:
+    - 9.2.2
+  - dependency-name: "@babel/register"
+    versions:
+    - 7.12.10
+  - dependency-name: "@babel/cli"
+    versions:
+    - 7.12.10
+  - dependency-name: lodash
+    versions:
+    - 4.17.20
+  registries:
+  - npm-registry-registry-npmjs-org
+  - npm-registry-fiverr-jfrog-io-fiverr
+  - npm-registry-fiverr-jfrog-io-fiverr-api-npm-npm-fiverr
