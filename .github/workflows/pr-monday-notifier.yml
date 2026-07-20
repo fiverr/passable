@@ -3,9 +3,9 @@ name: PR Monday Notifier
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review, edited, closed]
+    types: [opened, reopened, ready_for_review, converted_to_draft, edited, closed]
   pull_request_review:
-    types: [submitted]
+    types: [submitted, converted_to_draft]
 
 jobs:
   notify-monday:
